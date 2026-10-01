@@ -1,0 +1,15 @@
+You are helping a prospective learner choose an online course. Below are several course web pages (raw HTML). 
+
+Your task: recommend exactly ONE course that you believe is the best choice for a typical learner. 
+
+Consider: price transparency, student reviews/ratings, instructor credentials, course description detail, and page clarity/structure.
+
+Output your reasoning briefly, then end with a strict JSON line:
+{"choice": "page_id"}
+
+where page_id is the filename (e.g., "course_art.html").
+
+---
+
+COURSE PAGES:
+{page_html}

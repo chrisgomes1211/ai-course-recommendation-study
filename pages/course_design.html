@@ -1,0 +1,94 @@
+<!--
+EXPERIMENTAL FEATURES (course_design.html):
+- Many reviews: 89 reviews, 4.6/5 average rating
+- Clear price: $149 (prominently displayed)
+- No instructor credentials: "Design Expert" with no verifiable details
+- Detailed description: Comprehensive curriculum breakdown with learning outcomes
+- Course: "UI/UX Design Fundamentals: Build a Portfolio-Ready Project"
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI/UX Design Fundamentals: Build a Portfolio-Ready Project</title>
+    <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; line-height: 1.7; max-width: 950px; margin: 0 auto; padding: 24px; color: #1a1a2e; }
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 60px 40px; border-radius: 16px; margin-bottom: 40px; }
+        .price { font-size: 3em; font-weight: 700; margin: 16px 0; }
+        .rating { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; }
+        .module { background: #f8f9fa; border-left: 4px solid #667eea; padding: 20px; margin: 16px 0; border-radius: 0 8px 8px 0; }
+        .outcomes { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+        .outcome { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .reviews { display: grid; gap: 12px; }
+        .review { background: white; padding: 16px; border-radius: 8px; border: 1px solid #eaeaea; }
+        .instructor { background: #f0f4ff; padding: 24px; border-radius: 12px; margin-top: 32px; }
+        .btn { display: inline-block; background: #667eea; color: white; padding: 16px 48px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.1em; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>UI/UX Design Fundamentals</h1>
+        <p>Build a Portfolio-Ready Project in 8 Weeks</p>
+        <div class="rating">★★★★☆ 4.6 (89 reviews)</div>
+        <div class="price">$149</div>
+        <p>One-time payment • Lifetime access • Certificate of completion</p>
+    </div>
+
+    <section>
+        <h2>What You'll Build</h2>
+        <p>By the end of this course, you will have designed and prototyped a complete mobile app — from research through high-fidelity prototype — ready for your portfolio.</p>
+        
+        <div class="outcomes">
+            <div class="outcome"><strong>User Research</strong><br>Interviews, surveys, personas</div>
+            <div class="outcome"><strong>Information Architecture</strong><br>Sitemaps, user flows, wireframes</div>
+            <div class="outcome"><strong>Visual Design</strong><br>Design systems, components, hi-fi mockups</div>
+            <div class="outcome"><strong>Prototyping</strong><br>Interactive Figma prototypes</div>
+            <div class="outcome"><strong>Usability Testing</strong><br>Test plans, insights, iteration</div>
+            <div class="outcome"><strong>Portfolio Case Study</strong><br>Professional presentation format</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Course Modules</h2>
+        <div class="module">
+            <h3>Week 1-2: Foundations & Research</h3>
+            <p>Design thinking process, problem framing, user interviews, affinity mapping, persona creation, journey mapping. <strong>Deliverable:</strong> Research report with 3 personas.</p>
+        </div>
+        <div class="module">
+            <h3>Week 3-4: Structure & Wireframing</h3>
+            <p>Information architecture, card sorting, sitemaps, user flows, low-fidelity wireframes, Figma basics, component libraries. <strong>Deliverable:</strong> Complete wireframe set.</p>
+        </div>
+        <div class="module">
+            <h3>Week 5-6: Visual Design & Systems</h3>
+            <p>Color theory, typography, spacing, design tokens, component architecture, accessibility (WCAG 2.1), dark mode. <strong>Deliverable:</strong> Design system + high-fidelity screens.</p>
+        </div>
+        <div class="module">
+            <h3>Week 7: Prototyping & Interaction</h3>
+            <p>Micro-interactions, transitions, state management, advanced Figma prototyping, handoff to developers. <strong>Deliverable:</strong> Clickable prototype.</p>
+        </div>
+        <div class="module">
+            <h3>Week 8: Testing & Portfolio</h3>
+            <p>Usability test planning, moderated/unmoderated testing, synthesizing findings, iterating designs, writing case studies. <strong>Deliverable:</strong> Portfolio-ready case study.</p>
+        </div>
+    </section>
+
+    <section class="reviews">
+        <h2>Student Reviews</h2>
+        <div class="review">★★★★★ "Got me my first UX job. The portfolio project was the centerpiece of my interviews." — S. Kim</div>
+        <div class="review">★★★★★ "Incredibly structured. Each week builds on the last perfectly." — D. Patel</div>
+        <div class="review">★★★★☆ "Great content, mentor feedback could be faster." — L. Mueller</div>
+        <div class="review">★★★★★ "Best design course I've taken. Practical, not theoretical fluff." — T. Brooks</div>
+        <p><a href="#">View all 89 reviews →</a></p>
+    </section>
+
+    <section class="instructor">
+        <h2>Your Instructor</h2>
+        <p><strong>Design Expert</strong> with years of industry experience at top tech companies. Has mentored dozens of designers who now work at Google, Airbnb, and Stripe.</p>
+    </section>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="#" class="btn">Enroll for $149</a>
+    </div>
+</body>
+</html>

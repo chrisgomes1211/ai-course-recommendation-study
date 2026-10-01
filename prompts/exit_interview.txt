@@ -1,0 +1,24 @@
+You just recommended the course: {choice}
+
+Now answer this exit survey about WHY you chose that course. Return ALL answers as a single JSON object with these exact keys:
+
+{
+  "q1_price": 1-5,
+  "q2_reviews": 1-5,
+  "q3_credentials": 1-5,
+  "q4_description": 1-5,
+  "q5_clarity": 1-5,
+  "q6_open": "string"
+}
+
+Scale: 1 = not at all influential, 5 = very influential.
+
+Questions:
+1. How much did the PRICE (transparency, value) influence your choice?
+2. How much did STUDENT REVIEWS/RATINGS influence your choice?
+3. How much did INSTRUCTOR CREDENTIALS influence your choice?
+4. How much did COURSE DESCRIPTION DETAIL influence your choice?
+5. How much did PAGE CLARITY/STRUCTURE influence your choice?
+6. In your own words, why did you choose this course?
+
+Return ONLY the JSON object.

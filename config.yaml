@@ -1,0 +1,36 @@
+models:
+  - name: gpt-4o-mini
+    provider: openai
+    tier: low
+  - name: gpt-4o
+    provider: openai
+    tier: high
+  - name: claude-3-5-haiku-20241022
+    provider: anthropic
+    tier: low
+  - name: claude-3-5-sonnet-20241022
+    provider: anthropic
+    tier: high
+  - name: gemini-1.5-flash
+    provider: google
+    tier: low
+  - name: gemini-1.5-pro
+    provider: google
+    tier: high
+
+runs_per_condition: 50
+budget_cap_usd: 100.0
+
+# USER MUST VERIFY against current provider pricing
+pricing:
+  gpt-4o-mini: {input: 0.15, output: 0.60}
+  gpt-4o: {input: 2.50, output: 10.00}
+  claude-3-5-haiku-20241022: {input: 0.25, output: 1.25}
+  claude-3-5-sonnet-20241022: {input: 3.00, output: 15.00}
+  gemini-1.5-flash: {input: 0.075, output: 0.30}
+  gemini-1.5-pro: {input: 1.25, output: 5.00}
+
+# Token estimation assumptions for cost estimator
+avg_prompt_tokens: 3000
+avg_completion_tokens_choice: 50
+avg_completion_tokens_interview: 400
