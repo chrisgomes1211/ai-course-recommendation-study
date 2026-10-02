@@ -32,6 +32,36 @@ def debug_env():
         "openai_prefix": os.getenv("OPENAI_API_KEY", "")[:10] if os.getenv("OPENAI_API_KEY") else None,
     })
 
+@app.route("/debug/test-provider/<model_name>")
+def debug_test_provider(model_name):
+    try:
+        config = load_config()
+        model_config = next((m for m in config["models"] if m["name"] == model_name), None)
+        if not model_config:
+            return jsonify({"error": "Model not found"}), 404
+        
+        pricing = config["pricing"]
+        provider = get_provider(model_config, pricing)
+        
+        # Simple test prompt
+        test_prompt = "Reply with just the word 'OK'"
+        resp = provider.complete(test_prompt)
+        
+        return jsonify({
+            "success": True,
+            "model": model_name,
+            "response": resp.text[:100],
+            "input_tokens": resp.input_tokens,
+            "output_tokens": resp.output_tokens,
+            "cost": resp.estimated_cost_usd
+        })
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "trace": traceback.format_exc()
+        }), 500
+
 def get_models_from_config() -> List[Dict[str, Any]]:
     config = load_config()
     return config["models"]
