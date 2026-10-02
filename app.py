@@ -124,8 +124,12 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
     
     choice_prompt = buying_prompt_template.format(page_html=page_html_block)
     
+    # Debug: log prompt size
+    app.logger.info(f"Choice prompt length: {len(choice_prompt)} chars")
+    
     try:
         choice_resp = provider.complete(choice_prompt)
+        app.logger.info(f"Choice response: {choice_resp.text[:200]}")
         chosen_page = parse_choice(choice_resp.text, page_ids)
     except Exception as e:
         return {"success": False, "error": f"Choice phase failed: {e}", "trace": traceback.format_exc()}
