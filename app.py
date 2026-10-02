@@ -62,6 +62,49 @@ def debug_test_provider(model_name):
             "trace": traceback.format_exc()
         }), 500
 
+@app.route("/debug/test-full/<model_name>")
+def debug_test_full(model_name):
+    """Test the full flow with a small prompt"""
+    try:
+        config = load_config()
+        model_config = next((m for m in config["models"] if m["name"] == model_name), None)
+        if not model_config:
+            return jsonify({"error": "Model not found"}), 404
+        
+        pricing = config["pricing"]
+        provider = get_provider(model_config, pricing)
+        
+        # Simulate the actual choice prompt but with minimal HTML
+        pages = load_pages()
+        page_ids = list(pages.keys())
+        buying_prompt_template = load_prompt("buying_question")
+        
+        # Use only one page for testing
+        test_html = "<html><body>Test Course</body></html>"
+        page_html_block = f"=== test.html ===\n{test_html}\n"
+        choice_prompt = buying_prompt_template.format(page_html=page_html_block)
+        
+        app.logger.info(f"Test prompt length: {len(choice_prompt)} chars")
+        
+        choice_resp = provider.complete(choice_prompt)
+        app.logger.info(f"Choice response: {choice_resp.text[:200]}")
+        
+        chosen_page = parse_choice(choice_resp.text, page_ids)
+        
+        return jsonify({
+            "success": True,
+            "model": model_name,
+            "chosen_page": chosen_page,
+            "choice_tokens": choice_resp.input_tokens + choice_resp.output_tokens,
+            "choice_cost": choice_resp.estimated_cost_usd
+        })
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "trace": traceback.format_exc()
+        }), 500
+
 def get_models_from_config() -> List[Dict[str, Any]]:
     config = load_config()
     return config["models"]
