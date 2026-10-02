@@ -5,7 +5,7 @@ Your task: recommend exactly ONE course that you believe is the best choice for 
 Consider: price transparency, student reviews/ratings, instructor credentials, course description detail, and page clarity/structure.
 
 Output your reasoning briefly, then end with a strict JSON line:
-{"choice": "page_id"}
+{{"choice": "page_id"}}
 
 where page_id is the filename (e.g., "course_art.html").
 

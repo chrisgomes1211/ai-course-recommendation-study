@@ -2,14 +2,14 @@ You just recommended the course: {choice}
 
 Now answer this exit survey about WHY you chose that course. Return ALL answers as a single JSON object with these exact keys:
 
-{
+{{
   "q1_price": 1-5,
   "q2_reviews": 1-5,
   "q3_credentials": 1-5,
   "q4_description": 1-5,
   "q5_clarity": 1-5,
   "q6_open": "string"
-}
+}}
 
 Scale: 1 = not at all influential, 5 = very influential.
 
