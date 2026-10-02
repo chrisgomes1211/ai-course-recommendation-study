@@ -2,7 +2,7 @@
 
 Automated study showing AI models competing fictional online course pages, asking each to recommend one, then conducting an exit interview about the choice. Results logged to CSV for regression analysis.
 
-## Quick Start
+## Quick Start (CLI Experiment)
 
 ```bash
 # 1. Clone and enter directory
@@ -26,11 +26,28 @@ python -m src.estimate_cost
 python -m src.run_experiment
 ```
 
+## Web Application (Local Demo)
+
+Run the web interface for interactive testing:
+
+```bash
+# From project root (after steps 1-4 above)
+python app.py
+# → Opens http://localhost:5000
+```
+
+**Screens:**
+- **Run a Test** — Pick a model, click "Run Test", see live choice + exit survey + cost
+- **Results** — Dashboard with stats, charts, recent runs table, CSV download
+
+**No API calls** until you click "Run Test". All settings from `config.yaml`.
+
 ## Project Structure
 
 ```
 ai-offer-choice/
 ├── README.md              # This file
+├── app.py                 # Flask web app (NEW)
 ├── config.yaml            # All configuration (models, runs, budget, pricing)
 ├── .env.example           # API key template
 ├── .env                   # Your API keys (gitignored)
@@ -48,6 +65,13 @@ ai-offer-choice/
 │   ├── models.py             # Provider wrappers (OpenAI, Anthropic, Google)
 │   ├── run_experiment.py     # Main loop: sequential, resumable, budget-aware
 │   └── estimate_cost.py      # Standalone cost estimator
+├── templates/               # Jinja2 templates (NEW)
+│   ├── base.html
+│   ├── run_test.html
+│   └── results.html
+├── static/                  # CSS/JS (NEW)
+│   ├── style.css
+│   └── app.js
 └── results/                  # CSV output (gitignored)
     └── results.csv           # One row per choice
 ```

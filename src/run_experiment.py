@@ -8,7 +8,10 @@ from pathlib import Path
 from typing import Set, Tuple, List, Dict, Any
 from tqdm import tqdm
 
-from models import get_provider, parse_choice, parse_interview, ModelResponse
+try:
+    from .models import get_provider, parse_choice, parse_interview, ModelResponse
+except ImportError:
+    from models import get_provider, parse_choice, parse_interview, ModelResponse
 
 RESULTS_DIR = Path("results")
 RESULTS_FILE = RESULTS_DIR / "results.csv"

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Results Dashboard - AI Course Recommendation Study{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="header-row">
+        <h1>Results Dashboard</h1>
+        <a href="{{ url_for('download_csv') }}" class="btn btn-secondary">Download CSV</a>
+    </div>
+    <p class="subtitle">Overview of all recorded experiment runs</p>
+</div>
+
+<div class="stats-grid" id="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value" id="stat-total-runs">—</div>
+        <div class="stat-label">Total Runs</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" id="stat-total-cost">—</div>
+        <div class="stat-label">Total Cost (USD)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" id="stat-models-used">—</div>
+        <div class="stat-label">Models Tested</div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Course Recommendations (Overall)</h2>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" id="overall-chart">
+            <p class="loading">Loading...</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Recommendations by Model</h2>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" id="model-chart">
+            <p class="loading">Loading...</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Recent Runs</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper">
+            <table id="runs-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Model</th>
+                        <th>Tier</th>
+                        <th>Run #</th>
+                        <th>Chosen Course</th>
+                        <th>Price</th>
+                        <th>Reviews</th>
+                        <th>Credentials</th>
+                        <th>Description</th>
+                        <th>Clarity</th>
+                        <th>Reason</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody id="runs-tbody">
+                    <tr><td colspan="12" class="loading">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

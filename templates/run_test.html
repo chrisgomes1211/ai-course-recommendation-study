@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Run a Test - AI Course Recommendation Study{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Run a Test</h1>
+    <p class="subtitle">Select an AI model and run a single recommendation + exit interview</p>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Configuration</h2>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="model-select">AI Model</label>
+            <select id="model-select" class="form-select">
+                {% for model in models %}
+                <option value="{{ model.name }}" data-provider="{{ model.provider }}" data-tier="{{ model.tier }}">
+                    {{ model.name }} ({{ model.provider }}, {{ model.tier }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button id="run-btn" class="btn btn-primary" onclick="runTest()">
+            <span class="btn-text">Run Test</span>
+            <span class="btn-loading" style="display:none;">
+                <span class="spinner"></span> Running...
+            </span>
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Course Pages</h2>
+    </div>
+    <div class="card-body">
+        <div class="pages-grid" id="pages-grid">
+            {% for page_id, html in pages.items() %}
+            <div class="page-card">
+                <div class="page-card-header">
+                    <h3>{{ page_id }}</h3>
+                </div>
+                <div class="page-card-content">
+                    <iframe class="page-iframe" srcdoc="{{ html | safe }}"></iframe>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="card" id="results-panel" style="display: none;">
+    <div class="card-header">
+        <h2>Results</h2>
+    </div>
+    <div class="card-body">
+        <div id="results-content"></div>
+    </div>
+</div>
+
+<div class="card" id="error-panel" style="display: none;">
+    <div class="card-header error">
+        <h2>Error</h2>
+    </div>
+    <div class="card-body">
+        <p id="error-message"></p>
+    </div>
+</div>
+{% endblock %}
