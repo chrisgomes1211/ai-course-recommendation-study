@@ -66,7 +66,6 @@ class AnthropicProvider(ModelProvider):
         response = self.client.messages.create(
             model=self.model_name,
             max_tokens=2000,
-            temperature=0.1,
             messages=[{"role": "user", "content": prompt}]
         )
         text = response.content[0].text
