@@ -1,7 +1,6 @@
 import os
 import csv
 import yaml
-import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional
@@ -23,87 +22,14 @@ from run_experiment import (
 
 app = Flask(__name__)
 
-@app.route("/debug/env")
-def debug_env():
+@app.route("/health")
+def health():
     return jsonify({
+        "status": "ok",
         "openai": bool(os.getenv("OPENAI_API_KEY")),
         "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
-        "google": bool(os.getenv("GOOGLE_API_KEY")),
-        "openai_prefix": os.getenv("OPENAI_API_KEY", "")[:10] if os.getenv("OPENAI_API_KEY") else None,
+        "google": bool(os.getenv("GOOGLE_API_KEY"))
     })
-
-@app.route("/debug/test-provider/<model_name>")
-def debug_test_provider(model_name):
-    try:
-        config = load_config()
-        model_config = next((m for m in config["models"] if m["name"] == model_name), None)
-        if not model_config:
-            return jsonify({"error": "Model not found"}), 404
-        
-        pricing = config["pricing"]
-        provider = get_provider(model_config, pricing)
-        
-        # Simple test prompt
-        test_prompt = "Reply with just the word 'OK'"
-        resp = provider.complete(test_prompt)
-        
-        return jsonify({
-            "success": True,
-            "model": model_name,
-            "response": resp.text[:100],
-            "input_tokens": resp.input_tokens,
-            "output_tokens": resp.output_tokens,
-            "cost": resp.estimated_cost_usd
-        })
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "trace": traceback.format_exc()
-        }), 500
-
-@app.route("/debug/test-full/<model_name>")
-def debug_test_full(model_name):
-    """Test the full flow with a small prompt"""
-    try:
-        config = load_config()
-        model_config = next((m for m in config["models"] if m["name"] == model_name), None)
-        if not model_config:
-            return jsonify({"error": "Model not found"}), 404
-        
-        pricing = config["pricing"]
-        provider = get_provider(model_config, pricing)
-        
-        # Simulate the actual choice prompt but with minimal HTML
-        pages = load_pages()
-        page_ids = list(pages.keys())
-        buying_prompt_template = load_prompt("buying_question")
-        
-        # Use only one page for testing
-        test_html = "<html><body>Test Course</body></html>"
-        page_html_block = f"=== test.html ===\n{test_html}\n"
-        choice_prompt = buying_prompt_template.format(page_html=page_html_block)
-        
-        app.logger.info(f"Test prompt length: {len(choice_prompt)} chars")
-        
-        choice_resp = provider.complete(choice_prompt)
-        app.logger.info(f"Choice response: {choice_resp.text[:200]}")
-        
-        chosen_page = parse_choice(choice_resp.text, page_ids)
-        
-        return jsonify({
-            "success": True,
-            "model": model_name,
-            "chosen_page": chosen_page,
-            "choice_tokens": choice_resp.input_tokens + choice_resp.output_tokens,
-            "choice_cost": choice_resp.estimated_cost_usd
-        })
-    except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e),
-            "trace": traceback.format_exc()
-        }), 500
 
 def get_models_from_config() -> List[Dict[str, Any]]:
     config = load_config()
@@ -163,19 +89,15 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
     try:
         provider = get_provider(model_config, pricing)
     except ValueError as e:
-        return {"success": False, "error": str(e), "trace": traceback.format_exc()}
+        return {"success": False, "error": str(e)}
     
     choice_prompt = buying_prompt_template.format(page_html=page_html_block)
     
-    # Debug: log prompt size
-    app.logger.info(f"Choice prompt length: {len(choice_prompt)} chars")
-    
     try:
         choice_resp = provider.complete(choice_prompt)
-        app.logger.info(f"Choice response: {choice_resp.text[:200]}")
         chosen_page = parse_choice(choice_resp.text, page_ids)
     except Exception as e:
-        return {"success": False, "error": f"Choice phase failed: {e}", "trace": traceback.format_exc()}
+        return {"success": False, "error": f"Choice phase failed: {e}"}
     
     interview_prompt = interview_prompt_template.format(choice=chosen_page)
     
@@ -183,7 +105,7 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
         interview_resp = provider.complete(interview_prompt)
         interview_data = parse_interview(interview_resp.text)
     except Exception as e:
-        return {"success": False, "error": f"Interview phase failed: {e}", "trace": traceback.format_exc()}
+        return {"success": False, "error": f"Interview phase failed: {e}"}
     
     run_number = get_next_run_number(model_name, chosen_page)
     
