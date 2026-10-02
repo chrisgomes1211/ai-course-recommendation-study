@@ -1,6 +1,7 @@
 import os
 import csv
 import yaml
+import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional
@@ -89,7 +90,7 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
     try:
         provider = get_provider(model_config, pricing)
     except ValueError as e:
-        return {"success": False, "error": str(e)}
+        return {"success": False, "error": str(e), "trace": traceback.format_exc()}
     
     choice_prompt = buying_prompt_template.format(page_html=page_html_block)
     
@@ -97,7 +98,7 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
         choice_resp = provider.complete(choice_prompt)
         chosen_page = parse_choice(choice_resp.text, page_ids)
     except Exception as e:
-        return {"success": False, "error": f"Choice phase failed: {e}"}
+        return {"success": False, "error": f"Choice phase failed: {e}", "trace": traceback.format_exc()}
     
     interview_prompt = interview_prompt_template.format(choice=chosen_page)
     
@@ -105,7 +106,7 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
         interview_resp = provider.complete(interview_prompt)
         interview_data = parse_interview(interview_resp.text)
     except Exception as e:
-        return {"success": False, "error": f"Interview phase failed: {e}"}
+        return {"success": False, "error": f"Interview phase failed: {e}", "trace": traceback.format_exc()}
     
     run_number = get_next_run_number(model_name, chosen_page)
     
