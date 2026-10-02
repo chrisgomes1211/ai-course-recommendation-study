@@ -22,6 +22,15 @@ from run_experiment import (
 
 app = Flask(__name__)
 
+@app.route("/debug/env")
+def debug_env():
+    return jsonify({
+        "openai": bool(os.getenv("OPENAI_API_KEY")),
+        "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
+        "google": bool(os.getenv("GOOGLE_API_KEY")),
+        "openai_prefix": os.getenv("OPENAI_API_KEY", "")[:10] if os.getenv("OPENAI_API_KEY") else None,
+    })
+
 def get_models_from_config() -> List[Dict[str, Any]]:
     config = load_config()
     return config["models"]
