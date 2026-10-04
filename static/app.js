@@ -132,6 +132,7 @@ async function loadDashboard() {
         const response = await fetch('/api/results');
         const data = await response.json();
         renderStats(data.stats);
+        renderSummary(data.stats);
         renderOverallChart(data.stats.course_counts);
         renderModelChart(data.stats.model_course_counts);
         renderRecentRuns(data.recent_runs);
@@ -144,6 +145,30 @@ function renderStats(stats) {
     document.getElementById('stat-total-runs').textContent = stats.total_runs;
     document.getElementById('stat-total-cost').textContent = '$' + stats.total_cost.toFixed(2);
     document.getElementById('stat-models-used').textContent = stats.models_used.length;
+}
+
+function renderSummary(stats) {
+    const summaryEl = document.getElementById('summary-line');
+    if (!summaryEl) return;
+    
+    if (!stats.course_counts || Object.keys(stats.course_counts).length === 0) {
+        summaryEl.style.display = 'none';
+        return;
+    }
+    
+    const total = Object.values(stats.course_counts).reduce((a, b) => a + b, 0);
+    let topCourse = '';
+    let topCount = 0;
+    for (const [course, count] of Object.entries(stats.course_counts)) {
+        if (count > topCount) {
+            topCount = count;
+            topCourse = course;
+        }
+    }
+    const pct = total > 0 ? ((topCount / total) * 100).toFixed(1) : 0;
+    
+    summaryEl.innerHTML = `Across <strong>${total}</strong> runs, <strong>${escapeHtml(topCourse)}</strong> was chosen most often (<strong>${pct}%</strong> of recommendations)`;
+    summaryEl.style.display = 'block';
 }
 
 function renderOverallChart(courseCounts) {

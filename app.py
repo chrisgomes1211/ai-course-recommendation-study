@@ -1,6 +1,8 @@
 import os
 import csv
 import yaml
+import threading
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional
@@ -30,6 +32,13 @@ def health():
         "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
         "google": bool(os.getenv("GOOGLE_API_KEY"))
     })
+
+def load_features() -> Dict[str, Any]:
+    features_path = Path("pages/features.yaml")
+    if features_path.exists():
+        with open(features_path, "r") as f:
+            return yaml.safe_load(f)
+    return {}
 
 def get_models_from_config() -> List[Dict[str, Any]]:
     config = load_config()
@@ -188,6 +197,125 @@ def get_stats() -> Dict[str, Any]:
         "model_course_counts": model_course_counts
     }
 
+# Batch run state management
+class BatchRunState:
+    def __init__(self):
+        self.running = False
+        self.completed = 0
+        self.total = 0
+        self.current_cost = 0.0
+        self.errors = []
+        self.current_model = ""
+        self.current_page = ""
+        self.lock = threading.Lock()
+    
+    def reset(self):
+        with self.lock:
+            self.running = False
+            self.completed = 0
+            self.total = 0
+            self.current_cost = 0.0
+            self.errors = []
+            self.current_model = ""
+            self.current_page = ""
+    
+    def start(self, total: int):
+        with self.lock:
+            self.running = True
+            self.completed = 0
+            self.total = total
+            self.current_cost = get_current_total_cost()
+            self.errors = []
+    
+    def update(self, completed: int = None, cost: float = None, model: str = None, page: str = None, error: str = None):
+        with self.lock:
+            if completed is not None:
+                self.completed = completed
+            if cost is not None:
+                self.current_cost = cost
+            if model is not None:
+                self.current_model = model
+            if page is not None:
+                self.current_page = page
+            if error is not None:
+                self.errors.append(error)
+    
+    def stop(self):
+        with self.lock:
+            self.running = False
+    
+    def get_status(self) -> Dict[str, Any]:
+        with self.lock:
+            return {
+                "running": self.running,
+                "completed": self.completed,
+                "total": self.total,
+                "current_cost": self.current_cost,
+                "errors": self.errors[-10:],  # Last 10 errors
+                "current_model": self.current_model,
+                "current_page": self.current_page,
+            }
+
+batch_state = BatchRunState()
+
+def run_batch_experiment(model_names: List[str], runs_per_model_page: int) -> None:
+    """Background thread function to run batch experiment."""
+    config = load_config()
+    models = config["models"]
+    pricing = config["pricing"]
+    budget_cap = config.get("budget_cap_usd", 100.0)
+    pages = load_pages()
+    page_ids = list(pages.keys())
+    
+    # Filter models
+    selected_models = [m for m in models if m["name"] in model_names]
+    if not selected_models:
+        batch_state.update(error="No valid models selected")
+        batch_state.stop()
+        return
+    
+    # Calculate total combinations
+    total_combinations = len(selected_models) * len(page_ids) * runs_per_model_page
+    batch_state.start(total_combinations)
+    
+    completed = 0
+    
+    for model_config in selected_models:
+        if not batch_state.running:
+            break
+            
+        model_name = model_config["name"]
+        
+        for page_id in page_ids:
+            if not batch_state.running:
+                break
+                
+            for run_num in range(1, runs_per_model_page + 1):
+                if not batch_state.running:
+                    break
+                
+                batch_state.update(model=model_name, page=page_id)
+                
+                # Check budget
+                current_cost = get_current_total_cost()
+                if current_cost >= budget_cap:
+                    batch_state.update(error=f"Budget cap (${budget_cap:.2f}) reached")
+                    batch_state.stop()
+                    return
+                
+                # Run single experiment
+                result = run_single_experiment(model_name)
+                
+                completed += 1
+                new_cost = get_current_total_cost()
+                
+                if result["success"]:
+                    batch_state.update(completed=completed, cost=new_cost)
+                else:
+                    batch_state.update(completed=completed, cost=new_cost, error=f"{model_name}/{page_id}: {result['error']}")
+    
+    batch_state.stop()
+
 @app.route("/")
 def index():
     return redirect(url_for("run_test"))
@@ -197,7 +325,8 @@ def run_test():
     config = load_config()
     models = config["models"]
     pages = load_pages()
-    return render_template("run_test.html", models=models, pages=pages)
+    features = load_features()
+    return render_template("run_test.html", models=models, pages=pages, features=features)
 
 @app.route("/api/run-test", methods=["POST"])
 def api_run_test():
@@ -232,6 +361,41 @@ def download_csv():
 def api_pages():
     pages = load_pages()
     return jsonify(pages)
+
+@app.route("/api/batch-start", methods=["POST"])
+def api_batch_start():
+    if batch_state.running:
+        return jsonify({"success": False, "error": "Batch run already in progress"}), 400
+    
+    data = request.get_json()
+    model_names = data.get("models", [])
+    runs_per_model_page = data.get("runs_per_model_page", 1)
+    
+    if not model_names:
+        return jsonify({"success": False, "error": "No models specified"}), 400
+    
+    if runs_per_model_page < 1:
+        return jsonify({"success": False, "error": "runs_per_model_page must be >= 1"}), 400
+    
+    # Start batch run in background thread
+    thread = threading.Thread(target=run_batch_experiment, args=(model_names, runs_per_model_page))
+    thread.daemon = True
+    thread.start()
+    
+    return jsonify({"success": True, "message": "Batch run started"})
+
+@app.route("/api/batch-stop", methods=["POST"])
+def api_batch_stop():
+    batch_state.stop()
+    return jsonify({"success": True, "message": "Batch run stopped"})
+
+@app.route("/api/batch-status")
+def api_batch_status():
+    return jsonify(batch_state.get_status())
+
+@app.route("/api/features")
+def api_features():
+    return jsonify(load_features())
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))

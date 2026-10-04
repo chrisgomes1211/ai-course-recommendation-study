@@ -1,0 +1,113 @@
+# Controlled features for each course page
+# Used for experiment documentation and UI feature tags
+# Each feature is a controlled variable in the experiment
+
+course_art.html:
+  name: "Mastering Oil Painting: From Beginner to Professional"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 199
+    label: "Price: $199 (shown)"
+  reviews:
+    level: "many"
+    count: 127
+    rating: 4.8
+    label: "Reviews: many (127, 4.8★)"
+  credentials:
+    present: true
+    detail: "detailed"
+    label: "Credentials: yes (detailed)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+
+course_music.html:
+  name: "Learn Guitar Fast: Play Songs in 30 Days"
+  category: "Music"
+  price:
+    display: "hidden"
+    value: null
+    label: "Price: hidden (contact for pricing)"
+  reviews:
+    level: "none"
+    count: 0
+    rating: null
+    label: "Reviews: none"
+  credentials:
+    present: false
+    detail: "none"
+    label: "Credentials: no"
+  description:
+    detail: "short"
+    label: "Description: short"
+  structure:
+    level: "unstructured"
+    label: "Structure: unstructured"
+
+course_design.html:
+  name: "UI/UX Design Fundamentals: Build a Portfolio-Ready Project"
+  category: "Design"
+  price:
+    display: "shown"
+    value: 149
+    label: "Price: $149 (shown)"
+  reviews:
+    level: "many"
+    count: 89
+    rating: 4.6
+    label: "Reviews: many (89, 4.6★)"
+  credentials:
+    present: false
+    detail: "none"
+    label: "Credentials: no"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+
+course_photography.html:
+  name: "Wildlife Photography Masterclass"
+  category: "Photography"
+  price:
+    display: "shown"
+    value: 299
+    label: "Price: $299 (shown)"
+  reviews:
+    level: "few"
+    count: 12
+    rating: 4.2
+    label: "Reviews: few (12, 4.2★)"
+  credentials:
+    present: true
+    detail: "detailed"
+    label: "Credentials: yes (detailed)"
+  description:
+    detail: "short"
+    label: "Description: short"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+
+# Feature definitions for experiment documentation
+feature_definitions:
+  price:
+    description: "Whether the course price is transparently displayed or hidden behind 'contact for pricing'"
+    levels: ["shown", "hidden"]
+  reviews:
+    description: "Volume and visibility of student reviews/ratings"
+    levels: ["many", "few", "none"]
+  credentials:
+    description: "Whether instructor credentials are provided and how detailed"
+    levels: ["detailed", "minimal", "none"]
+  description:
+    description: "Depth and detail of course description and curriculum"
+    levels: ["detailed", "short"]
+  structure:
+    description: "Page organization and clarity of information architecture"
+    levels: ["structured", "unstructured"]

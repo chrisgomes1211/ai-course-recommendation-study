@@ -5,12 +5,12 @@
 {% block content %}
 <div class="page-header">
     <h1>Run a Test</h1>
-    <p class="subtitle">Select an AI model and run a single recommendation + exit interview</p>
+    <p class="subtitle">Select an AI model and run a single recommendation + exit interview, or start a batch run</p>
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h2>Configuration</h2>
+        <h2>Single Run Configuration</h2>
     </div>
     <div class="card-body">
         <div class="form-group">
@@ -34,6 +34,57 @@
 
 <div class="card">
     <div class="card-header">
+        <h2>Batch Run</h2>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label>Models to Include</label>
+            <div id="model-checkboxes" class="checkbox-group">
+                {% for model in models %}
+                <label class="checkbox-label">
+                    <input type="checkbox" name="batch-models" value="{{ model.name }}" checked>
+                    <span>{{ model.name }} ({{ model.provider }}, {{ model.tier }})</span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="runs-per-model-page">Runs per Model per Page</label>
+            <input type="number" id="runs-per-model-page" class="form-select" value="1" min="1" max="100" style="max-width: 120px;">
+            <small class="form-hint">Each model will run this many times for each course page. Total runs = models × pages × runs.</small>
+        </div>
+        <div class="batch-actions">
+            <button id="batch-start-btn" class="btn btn-primary" onclick="startBatchRun()">
+                <span class="btn-text">Start Batch Run</span>
+                <span class="btn-loading" style="display:none;">
+                    <span class="spinner"></span> Starting...
+                </span>
+            </button>
+            <button id="batch-stop-btn" class="btn btn-secondary" onclick="stopBatchRun()" style="display: none;">
+                Stop Batch Run
+            </button>
+        </div>
+        <div id="batch-progress" class="batch-progress" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="progress-info">
+                <span id="progress-text">0 / 0 completed</span>
+                <span id="progress-cost">Cost: $0.00</span>
+            </div>
+            <div class="progress-current" id="progress-current" style="display: none;">
+                Running: <span id="current-model"></span> on <span id="current-page"></span>
+            </div>
+            <div class="progress-errors" id="progress-errors" style="display: none;">
+                <strong>Recent errors:</strong>
+                <ul id="errors-list"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
         <h2>Course Pages</h2>
     </div>
     <div class="card-body">
@@ -42,6 +93,26 @@
             <div class="page-card">
                 <div class="page-card-header">
                     <h3>{{ page_id }}</h3>
+                    {% if features and page_id in features %}
+                    <div class="feature-tags">
+                        {% set f = features[page_id] %}
+                        {% if f.price %}
+                        <span class="feature-tag feature-price">{{ f.price.label }}</span>
+                        {% endif %}
+                        {% if f.reviews %}
+                        <span class="feature-tag feature-reviews">{{ f.reviews.label }}</span>
+                        {% endif %}
+                        {% if f.credentials %}
+                        <span class="feature-tag feature-credentials">{{ f.credentials.label }}</span>
+                        {% endif %}
+                        {% if f.description %}
+                        <span class="feature-tag feature-description">{{ f.description.label }}</span>
+                        {% endif %}
+                        {% if f.structure %}
+                        <span class="feature-tag feature-structure">{{ f.structure.label }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="page-card-content">
                     <iframe class="page-iframe" srcdoc="{{ html | safe }}"></iframe>
@@ -69,4 +140,268 @@
         <p id="error-message"></p>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let batchPollInterval = null;
+
+async function startBatchRun() {
+    const checkboxes = document.querySelectorAll('input[name="batch-models"]:checked');
+    const models = Array.from(checkboxes).map(cb => cb.value);
+    const runsPerModelPage = parseInt(document.getElementById('runs-per-model-page').value) || 1;
+    
+    if (models.length === 0) {
+        alert('Please select at least one model');
+        return;
+    }
+    
+    const startBtn = document.getElementById('batch-start-btn');
+    const stopBtn = document.getElementById('batch-stop-btn');
+    const progressDiv = document.getElementById('batch-progress');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const progressCost = document.getElementById('progress-cost');
+    const progressCurrent = document.getElementById('progress-current');
+    const currentModel = document.getElementById('current-model');
+    const currentPage = document.getElementById('current-page');
+    const progressErrors = document.getElementById('progress-errors');
+    const errorsList = document.getElementById('errors-list');
+    
+    startBtn.disabled = true;
+    startBtn.querySelector('.btn-text').style.display = 'none';
+    startBtn.querySelector('.btn-loading').style.display = 'inline-flex';
+    stopBtn.style.display = 'inline-flex';
+    progressDiv.style.display = 'block';
+    progressCurrent.style.display = 'block';
+    progressErrors.style.display = 'none';
+    
+    try {
+        const response = await fetch('/api/batch-start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ models, runs_per_model_page: runsPerModelPage })
+        });
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+            throw new Error(data.error || 'Failed to start batch run');
+        }
+        
+        // Start polling for status
+        batchPollInterval = setInterval(pollBatchStatus, 2000);
+        
+    } catch (err) {
+        alert('Error: ' + err.message);
+        resetBatchUI();
+    }
+}
+
+function stopBatchRun() {
+    fetch('/api/batch-stop', { method: 'POST' })
+        .then(() => {
+            if (batchPollInterval) clearInterval(batchPollInterval);
+            resetBatchUI();
+        });
+}
+
+function resetBatchUI() {
+    const startBtn = document.getElementById('batch-start-btn');
+    const stopBtn = document.getElementById('batch-stop-btn');
+    const progressDiv = document.getElementById('batch-progress');
+    
+    startBtn.disabled = false;
+    startBtn.querySelector('.btn-text').style.display = 'inline';
+    startBtn.querySelector('.btn-loading').style.display = 'none';
+    stopBtn.style.display = 'none';
+    progressDiv.style.display = 'none';
+    
+    if (batchPollInterval) {
+        clearInterval(batchPollInterval);
+        batchPollInterval = null;
+    }
+}
+
+async function pollBatchStatus() {
+    try {
+        const response = await fetch('/api/batch-status');
+        const status = await response.json();
+        
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const progressCost = document.getElementById('progress-cost');
+        const progressCurrent = document.getElementById('progress-current');
+        const currentModel = document.getElementById('current-model');
+        const currentPage = document.getElementById('current-page');
+        const progressErrors = document.getElementById('progress-errors');
+        const errorsList = document.getElementById('errors-list');
+        
+        const pct = status.total > 0 ? (status.completed / status.total) * 100 : 0;
+        progressFill.style.width = pct + '%';
+        progressText.textContent = `${status.completed} / ${status.total} completed`;
+        progressCost.textContent = `Cost: $${status.current_cost.toFixed(4)}`;
+        
+        if (status.current_model) {
+            currentModel.textContent = status.current_model;
+            currentPage.textContent = status.current_page;
+        }
+        
+        if (status.errors && status.errors.length > 0) {
+            progressErrors.style.display = 'block';
+            errorsList.innerHTML = status.errors.map(e => `<li>${escapeHtml(e)}</li>`).join('');
+        }
+        
+        if (!status.running) {
+            clearInterval(batchPollInterval);
+            batchPollInterval = null;
+            resetBatchUI();
+            
+            // Refresh dashboard if on results page
+            if (document.getElementById('stats-grid')) {
+                loadDashboard();
+            }
+        }
+        
+    } catch (err) {
+        console.error('Failed to poll batch status:', err);
+    }
+}
+
+// Re-use existing runTest function
+async function runTest() {
+    const modelSelect = document.getElementById('model-select');
+    const modelName = modelSelect.value;
+    const runBtn = document.getElementById('run-btn');
+    const btnText = runBtn.querySelector('.btn-text');
+    const btnLoading = runBtn.querySelector('.btn-loading');
+    const resultsPanel = document.getElementById('results-panel');
+    const resultsContent = document.getElementById('results-content');
+    const errorPanel = document.getElementById('error-panel');
+    const errorMessage = document.getElementById('error-message');
+
+    runBtn.disabled = true;
+    btnText.style.display = 'none';
+    btnLoading.style.display = 'inline-flex';
+    resultsPanel.style.display = 'none';
+    errorPanel.style.display = 'none';
+
+    try {
+        const response = await fetch('/api/run-test', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ model: modelName })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error || 'Unknown error');
+        }
+
+        renderResults(data);
+        resultsPanel.style.display = 'block';
+        errorPanel.style.display = 'none';
+
+    } catch (err) {
+        errorMessage.textContent = err.message;
+        errorPanel.style.display = 'block';
+        resultsPanel.style.display = 'none';
+    } finally {
+        runBtn.disabled = false;
+        btnText.style.display = 'inline';
+        btnLoading.style.display = 'none';
+    }
+}
+
+function renderResults(data) {
+    const container = document.getElementById('results-content');
+    const interview = data.interview_data;
+    const choice = data.choice_resp;
+    const interviewResp = data.interview_resp;
+    const totalCost = data.total_cost_usd;
+
+    container.innerHTML = `
+        <div class="results-summary">
+            <div class="result-item">
+                <span class="result-label">Chosen Course</span>
+                <span class="result-value">${escapeHtml(data.chosen_page)}</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Model</span>
+                <span class="result-value">${document.getElementById('model-select').value}</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Tier</span>
+                <span class="result-value">${data.tier}</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Run Number</span>
+                <span class="result-value">${data.run_number}</span>
+            </div>
+        </div>
+
+        <div class="likert-grid">
+            <div class="likert-item">
+                <span class="likert-label">Price Influence</span>
+                <span class="likert-score">${interview.q1_price}</span>
+            </div>
+            <div class="likert-item">
+                <span class="likert-label">Reviews Influence</span>
+                <span class="likert-score">${interview.q2_reviews}</span>
+            </div>
+            <div class="likert-item">
+                <span class="likert-label">Credentials Influence</span>
+                <span class="likert-score">${interview.q3_credentials}</span>
+            </div>
+            <div class="likert-item">
+                <span class="likert-label">Description Influence</span>
+                <span class="likert-score">${interview.q4_description}</span>
+            </div>
+            <div class="likert-item">
+                <span class="likert-label">Clarity Influence</span>
+                <span class="likert-score">${interview.q5_clarity}</span>
+            </div>
+        </div>
+
+        <div class="result-item">
+            <span class="result-label">Reason</span>
+            <span class="result-value reason">${escapeHtml(interview.q6_open)}</span>
+        </div>
+
+        <div class="cost-breakdown">
+            <div class="cost-item">
+                <span class="cost-label">Choice Call</span>
+                <span class="cost-value">${choice.input_tokens} in / ${choice.output_tokens} out</span>
+            </div>
+            <div class="cost-item">
+                <span class="cost-label">Choice Cost</span>
+                <span class="cost-value">$${choice.cost_usd.toFixed(6)}</span>
+            </div>
+            <div class="cost-item">
+                <span class="cost-label">Interview Call</span>
+                <span class="cost-value">${interviewResp.input_tokens} in / ${interviewResp.output_tokens} out</span>
+            </div>
+            <div class="cost-item">
+                <span class="cost-label">Interview Cost</span>
+                <span class="cost-value">$${interviewResp.cost_usd.toFixed(6)}</span>
+            </div>
+            <div class="cost-item">
+                <span class="cost-label">Total Cost</span>
+                <span class="cost-value total">$${totalCost.toFixed(6)}</span>
+            </div>
+        </div>
+
+        <p style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--color-text-muted);">
+            Saved to results/results.csv (run #${data.run_number} for this model + course combination)
+        </p>
+    `;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+</script>
 {% endblock %}
