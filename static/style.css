@@ -659,3 +659,56 @@ td.reason {
     font-weight: 500;
     color: var(--color-primary);
 }
+
+/* Page header row with view link */
+.page-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+/* Small button variant */
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.75rem;
+}
+
+/* Winner feature tags in results */
+.winner-features {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    background: var(--color-bg);
+    border-radius: var(--radius-md);
+}
+
+.winner-features h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winner-features .feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+}
+
+.winner-features .feature-tag {
+    font-size: 0.7rem;
+}
+
+/* View page link in results table */
+.view-page-link {
+    color: var(--color-secondary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.view-page-link:hover {
+    text-decoration: underline;
+}

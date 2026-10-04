@@ -397,6 +397,14 @@ def api_batch_status():
 def api_features():
     return jsonify(load_features())
 
+@app.route("/page/<path:page_id>")
+def view_page(page_id):
+    """Serve the raw HTML page for viewing in a new tab."""
+    page_path = Path("pages") / page_id
+    if not page_path.exists():
+        return "Page not found", 404
+    return page_path.read_text(encoding="utf-8"), 200, {"Content-Type": "text/html"}
+
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)

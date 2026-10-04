@@ -1,0 +1,82 @@
+<!--
+EXPERIMENTAL FEATURES (canvas_color.html):
+- Price: Hidden (contact for pricing)
+- Reviews: Few (15 reviews, 4.0/5 average)
+- Credentials: Yes (detailed)
+- Description: Short
+- Structure: Structured
+- Course: "Oil Painting Foundations"
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas & Color - Oil Painting Foundations</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; padding: 40px 0; border-bottom: 2px solid #e0e0e0; }
+        .price { font-size: 2.5em; font-weight: bold; color: #666; margin: 20px 0; }
+        .rating { color: #f39c12; font-size: 1.2em; margin: 10px 0; }
+        .section { margin: 40px 0; padding: 20px; background: #fafafa; border-radius: 8px; }
+        .instructor { display: flex; align-items: center; gap: 20px; }
+        .instructor img { width: 100px; height: 100px; border-radius: 50%; background: #ddd; }
+        .reviews { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+        .review { background: white; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+        .curriculum { list-style: none; padding: 0; }
+        .curriculum li { padding: 10px; border-bottom: 1px solid #eee; }
+        .btn { display: inline-block; background: #2c3e50; color: white; padding: 15px 40px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Canvas & Color - Oil Painting Foundations</h1>
+        <p class="rating">★★★★☆ 4.0 (15 reviews)</p>
+        <div class="price">Contact for pricing</div>
+        <p>Schedule a consultation to discuss your learning goals</p>
+    </div>
+
+    <div class="section">
+        <h2>Course Curriculum</h2>
+        <ul class="curriculum">
+            <li>Module 1: Materials & Setup</li>
+            <li>Module 2: Basic Color Theory</li>
+            <li>Module 3: Simple Brushwork</li>
+            <li>Module 4: Still Life Basics</li>
+            <li>Module 5: Landscape Introduction</li>
+        </ul>
+        <p><strong>5 modules • Self-paced • Downloadable resources included</strong></p>
+    </div>
+
+    <div class="section instructor">
+        <img src="instructor.jpg" alt="Professor Elena Vasquez">
+        <div>
+            <h2>Your Instructor: Professor Elena Vasquez</h2>
+            <p><strong>MFA, Yale University School of Art</strong></p>
+            <p>15+ years teaching at Rhode Island School of Design and Parsons. Exhibited at MoMA, Whitney Museum, and Gagosian Gallery. Author of "Contemporary Oil Techniques" (Phaidon, 2019). Recipient of the Pollock-Krasner Foundation Grant and Guggenheim Fellowship.</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Student Reviews</h2>
+        <div class="reviews">
+            <div class="review">★★★★☆ "Good fundamentals, but price wasn't transparent." — M. Chen</div>
+            <div class="review">★★★★☆ "Elena is an amazing teacher. Worth the consultation." — J. Rodriguez</div>
+            <div class="review">★★★☆☆ "Expected more modules for the price." — K. Thompson</div>
+        </div>
+        <p><a href="#">View all 15 reviews →</a></p>
+    </div>
+
+    <div class="section">
+        <h2>Frequently Asked Questions</h2>
+        <p><strong>Do I need prior experience?</strong> No, this course starts from absolute basics.</p>
+        <p><strong>Why is pricing hidden?</strong> We customize programs based on your goals. Contact us for a quote.</p>
+        <p><strong>Is there a community?</strong> Yes, private Discord with 500+ students.</p>
+        <p><strong>Can I download videos?</strong> Yes, all content is downloadable for offline viewing.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="#" class="btn">Get Pricing</a>
+    </div>
+</body>
+</html>

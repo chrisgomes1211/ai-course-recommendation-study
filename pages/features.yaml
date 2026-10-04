@@ -2,8 +2,54 @@
 # Used for experiment documentation and UI feature tags
 # Each feature is a controlled variable in the experiment
 
-course_art.html:
-  name: "Mastering Oil Painting: From Beginner to Professional"
+artistry_academy.html:
+  name: "Artistry Academy - Complete Oil Painting Mastery"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 249
+    label: "Price: $249 (shown)"
+  reviews:
+    level: "many"
+    count: 150
+    rating: 4.9
+    label: "Reviews: many (150, 4.9★)"
+  credentials:
+    present: true
+    detail: "detailed"
+    label: "Credentials: yes (detailed)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+
+canvas_color.html:
+  name: "Canvas & Color - Oil Painting Foundations"
+  category: "Art"
+  price:
+    display: "hidden"
+    value: null
+    label: "Price: hidden (contact for pricing)"
+  reviews:
+    level: "few"
+    count: 15
+    rating: 4.0
+    label: "Reviews: few (15, 4.0★)"
+  credentials:
+    present: true
+    detail: "detailed"
+    label: "Credentials: yes (detailed)"
+  description:
+    detail: "short"
+    label: "Description: short"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+
+palette_masters.html:
+  name: "Palette Masters - The Complete Painter's Path"
   category: "Art"
   price:
     display: "shown"
@@ -11,79 +57,33 @@ course_art.html:
     label: "Price: $199 (shown)"
   reviews:
     level: "many"
-    count: 127
-    rating: 4.8
-    label: "Reviews: many (127, 4.8★)"
+    count: 120
+    rating: 4.7
+    label: "Reviews: many (120, 4.7★)"
   credentials:
-    present: true
-    detail: "detailed"
-    label: "Credentials: yes (detailed)"
+    present: false
+    detail: "none"
+    label: "Credentials: no"
   description:
     detail: "detailed"
     label: "Description: detailed"
   structure:
-    level: "structured"
-    label: "Structure: structured"
+    level: "unstructured"
+    label: "Structure: unstructured"
 
-course_music.html:
-  name: "Learn Guitar Fast: Play Songs in 30 Days"
-  category: "Music"
+brushstroke_studio.html:
+  name: "Brushstroke Studio - Professional Oil Painting Program"
+  category: "Art"
   price:
-    display: "hidden"
-    value: null
-    label: "Price: hidden (contact for pricing)"
+    display: "shown"
+    value: 299
+    label: "Price: $299 (shown)"
   reviews:
     level: "none"
     count: 0
     rating: null
     label: "Reviews: none"
   credentials:
-    present: false
-    detail: "none"
-    label: "Credentials: no"
-  description:
-    detail: "short"
-    label: "Description: short"
-  structure:
-    level: "unstructured"
-    label: "Structure: unstructured"
-
-course_design.html:
-  name: "UI/UX Design Fundamentals: Build a Portfolio-Ready Project"
-  category: "Design"
-  price:
-    display: "shown"
-    value: 149
-    label: "Price: $149 (shown)"
-  reviews:
-    level: "many"
-    count: 89
-    rating: 4.6
-    label: "Reviews: many (89, 4.6★)"
-  credentials:
-    present: false
-    detail: "none"
-    label: "Credentials: no"
-  description:
-    detail: "detailed"
-    label: "Description: detailed"
-  structure:
-    level: "structured"
-    label: "Structure: structured"
-
-course_photography.html:
-  name: "Wildlife Photography Masterclass"
-  category: "Photography"
-  price:
-    display: "shown"
-    value: 299
-    label: "Price: $299 (shown)"
-  reviews:
-    level: "few"
-    count: 12
-    rating: 4.2
-    label: "Reviews: few (12, 4.2★)"
-  credentials:
     present: true
     detail: "detailed"
     label: "Credentials: yes (detailed)"
@@ -93,6 +93,29 @@ course_photography.html:
   structure:
     level: "structured"
     label: "Structure: structured"
+
+creative_canvas.html:
+  name: "Creative Canvas - Oil Painting for Everyone"
+  category: "Art"
+  price:
+    display: "hidden"
+    value: null
+    label: "Price: hidden (contact for pricing)"
+  reviews:
+    level: "few"
+    count: 8
+    rating: 3.8
+    label: "Reviews: few (8, 3.8★)"
+  credentials:
+    present: false
+    detail: "none"
+    label: "Credentials: no"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "unstructured"
+    label: "Structure: unstructured"
 
 # Feature definitions for experiment documentation
 feature_definitions:

@@ -92,7 +92,10 @@
             {% for page_id, html in pages.items() %}
             <div class="page-card">
                 <div class="page-card-header">
-                    <h3>{{ page_id }}</h3>
+                    <div class="page-header-row">
+                        <h3>{{ page_id }}</h3>
+                        <a href="/page/{{ page_id }}" target="_blank" class="btn btn-sm btn-secondary">View Page</a>
+                    </div>
                     {% if features and page_id in features %}
                     <div class="feature-tags">
                         {% set f = features[page_id] %}

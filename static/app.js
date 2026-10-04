@@ -43,6 +43,41 @@ async function runTest() {
     }
 }
 
+let featuresCache = null;
+
+async function loadFeatures() {
+    if (featuresCache) return featuresCache;
+    try {
+        const response = await fetch('/api/features');
+        featuresCache = await response.json();
+        return featuresCache;
+    } catch (err) {
+        console.error('Failed to load features:', err);
+        return {};
+    }
+}
+
+function renderWinnerFeatures(pageId, features) {
+    const f = features[pageId];
+    if (!f) return '';
+    
+    let tags = [];
+    if (f.price) tags.push(`<span class="feature-tag feature-price">${f.price.label}</span>`);
+    if (f.reviews) tags.push(`<span class="feature-tag feature-reviews">${f.reviews.label}</span>`);
+    if (f.credentials) tags.push(`<span class="feature-tag feature-credentials">${f.credentials.label}</span>`);
+    if (f.description) tags.push(`<span class="feature-tag feature-description">${f.description.label}</span>`);
+    if (f.structure) tags.push(`<span class="feature-tag feature-structure">${f.structure.label}</span>`);
+    
+    if (tags.length === 0) return '';
+    
+    return `
+        <div class="winner-features">
+            <h4>Winning Page Features</h4>
+            <div class="feature-tags">${tags.join('')}</div>
+        </div>
+    `;
+}
+
 function renderResults(data) {
     const container = document.getElementById('results-content');
     const interview = data.interview_data;
@@ -50,81 +85,89 @@ function renderResults(data) {
     const interviewResp = data.interview_resp;
     const totalCost = data.total_cost_usd;
 
-    container.innerHTML = `
-        <div class="results-summary">
-            <div class="result-item">
-                <span class="result-label">Chosen Course</span>
-                <span class="result-value">${escapeHtml(data.chosen_page)}</span>
+    // Load features and render with winner features
+    loadFeatures().then(features => {
+        const winnerFeaturesHtml = renderWinnerFeatures(data.chosen_page, features);
+        const viewPageLink = `<a href="/page/${escapeHtml(data.chosen_page)}" target="_blank" class="view-page-link">View Page →</a>`;
+        
+        container.innerHTML = `
+            <div class="results-summary">
+                <div class="result-item">
+                    <span class="result-label">Chosen Course</span>
+                    <span class="result-value">${escapeHtml(data.chosen_page)} ${viewPageLink}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Model</span>
+                    <span class="result-value">${document.getElementById('model-select').value}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Tier</span>
+                    <span class="result-value">${data.tier}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Run Number</span>
+                    <span class="result-value">${data.run_number}</span>
+                </div>
             </div>
-            <div class="result-item">
-                <span class="result-label">Model</span>
-                <span class="result-value">${document.getElementById('model-select').value}</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Tier</span>
-                <span class="result-value">${data.tier}</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Run Number</span>
-                <span class="result-value">${data.run_number}</span>
-            </div>
-        </div>
 
-        <div class="likert-grid">
-            <div class="likert-item">
-                <span class="likert-label">Price Influence</span>
-                <span class="likert-score">${interview.q1_price}</span>
-            </div>
-            <div class="likert-item">
-                <span class="likert-label">Reviews Influence</span>
-                <span class="likert-score">${interview.q2_reviews}</span>
-            </div>
-            <div class="likert-item">
-                <span class="likert-label">Credentials Influence</span>
-                <span class="likert-score">${interview.q3_credentials}</span>
-            </div>
-            <div class="likert-item">
-                <span class="likert-label">Description Influence</span>
-                <span class="likert-score">${interview.q4_description}</span>
-            </div>
-            <div class="likert-item">
-                <span class="likert-label">Clarity Influence</span>
-                <span class="likert-score">${interview.q5_clarity}</span>
-            </div>
-        </div>
+            ${winnerFeaturesHtml}
 
-        <div class="result-item">
-            <span class="result-label">Reason</span>
-            <span class="result-value reason">${escapeHtml(interview.q6_open)}</span>
-        </div>
+            <div class="likert-grid">
+                <div class="likert-item">
+                    <span class="likert-label">Price Influence</span>
+                    <span class="likert-score">${interview.q1_price}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Reviews Influence</span>
+                    <span class="likert-score">${interview.q2_reviews}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Credentials Influence</span>
+                    <span class="likert-score">${interview.q3_credentials}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Description Influence</span>
+                    <span class="likert-score">${interview.q4_description}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Clarity Influence</span>
+                    <span class="likert-score">${interview.q5_clarity}</span>
+                </div>
+            </div>
 
-        <div class="cost-breakdown">
-            <div class="cost-item">
-                <span class="cost-label">Choice Call</span>
-                <span class="cost-value">${choice.input_tokens} in / ${choice.output_tokens} out</span>
+            <div class="result-item">
+                <span class="result-label">Reason</span>
+                <span class="result-value reason">${escapeHtml(interview.q6_open)}</span>
             </div>
-            <div class="cost-item">
-                <span class="cost-label">Choice Cost</span>
-                <span class="cost-value">$${choice.cost_usd.toFixed(6)}</span>
-            </div>
-            <div class="cost-item">
-                <span class="cost-label">Interview Call</span>
-                <span class="cost-value">${interviewResp.input_tokens} in / ${interviewResp.output_tokens} out</span>
-            </div>
-            <div class="cost-item">
-                <span class="cost-label">Interview Cost</span>
-                <span class="cost-value">$${interviewResp.cost_usd.toFixed(6)}</span>
-            </div>
-            <div class="cost-item">
-                <span class="cost-label">Total Cost</span>
-                <span class="cost-value total">$${totalCost.toFixed(6)}</span>
-            </div>
-        </div>
 
-        <p style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--color-text-muted);">
-            Saved to results/results.csv (run #${data.run_number} for this model + course combination)
-        </p>
-    `;
+            <div class="cost-breakdown">
+                <div class="cost-item">
+                    <span class="cost-label">Choice Call</span>
+                    <span class="cost-value">${choice.input_tokens} in / ${choice.output_tokens} out</span>
+                </div>
+                <div class="cost-item">
+                    <span class="cost-label">Choice Cost</span>
+                    <span class="cost-value">$${choice.cost_usd.toFixed(6)}</span>
+                </div>
+                <div class="cost-item">
+                    <span class="cost-label">Interview Call</span>
+                    <span class="cost-value">${interviewResp.input_tokens} in / ${interviewResp.output_tokens} out</span>
+                </div>
+                <div class="cost-item">
+                    <span class="cost-label">Interview Cost</span>
+                    <span class="cost-value">$${interviewResp.cost_usd.toFixed(6)}</span>
+                </div>
+                <div class="cost-item">
+                    <span class="cost-label">Total Cost</span>
+                    <span class="cost-value total">$${totalCost.toFixed(6)}</span>
+                </div>
+            </div>
+
+            <p style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--color-text-muted);">
+                Saved to results/results.csv (run #${data.run_number} for this model + course combination)
+            </p>
+        `;
+    });
 }
 
 async function loadDashboard() {
@@ -235,13 +278,14 @@ function renderRecentRuns(runs) {
     let html = '';
     for (const run of runs) {
         const totalCost = (parseFloat(run.choice_cost_usd) + parseFloat(run.interview_cost_usd)).toFixed(6);
+        const viewLink = `<a href="/page/${escapeHtml(run.which_page_won)}" target="_blank" class="view-page-link">${escapeHtml(run.which_page_won)}</a>`;
         html += `
             <tr>
                 <td>${formatTimestamp(run.timestamp)}</td>
                 <td>${escapeHtml(run.model)}</td>
                 <td>${escapeHtml(run.tier)}</td>
                 <td>${run.run_number}</td>
-                <td>${escapeHtml(run.which_page_won)}</td>
+                <td>${viewLink}</td>
                 <td>${run.q1_price}</td>
                 <td>${run.q2_reviews}</td>
                 <td>${run.q3_credentials}</td>
