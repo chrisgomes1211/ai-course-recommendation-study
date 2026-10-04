@@ -7,3 +7,6 @@ tqdm>=4.66
 python-dotenv>=1.0
 flask>=3.0
 gunicorn>=21.0
+beautifulsoup4>=4.12
+playwright>=1.40
+lxml>=4.9

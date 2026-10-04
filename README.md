@@ -210,6 +210,60 @@ For another researcher to replicate exactly:
 
 Drop `.html` files in `pages/`. Each filename becomes a `page_id`. Update prompts if you change the number of pages shown simultaneously.
 
+## Real Page Fetching (Optional)
+
+For validation studies or demos, you can fetch live course pages instead of using fictional ones.
+
+### Setup
+
+```bash
+# 1. Edit pages/urls.yaml with real URLs
+# 2. Install extra dependencies
+pip install playwright beautifulsoup4 lxml
+playwright install chromium
+```
+
+### Manual Refresh
+
+```bash
+# Refresh all pages (static fetch)
+python scripts/refresh_pages.py
+
+# Refresh with JavaScript rendering (for dynamic sites)
+python scripts/refresh_pages.py --force-js
+
+# Refresh only specific pages
+python scripts/refresh_pages.py --only artistry_academy palette_masters
+
+# Dry run to preview
+python scripts/refresh_pages.py --dry-run
+```
+
+### Auto-Refresh (GitHub Actions)
+
+Configured in `.github/workflows/refresh-pages.yml` — runs weekly on Sundays. Requires:
+- `playwright` in requirements (already added)
+- GitHub Actions write permission (Settings → Actions → General → Workflow permissions)
+
+### Legal & Ethics
+
+**Important**: See `docs/REAL_PAGES.md` for legal/ethical guidelines. Key points:
+- Check `robots.txt` and Terms of Service before scraping
+- Use fictional pages for controlled experiments (clean causal inference)
+- Use real pages only for validation studies or demos
+- Respect rate limits, ToS, and copyright
+
+### Integration
+
+The `load_pages()` function in `src/run_experiment.py` supports live fetching:
+
+```python
+# Use live pages (fetches from URLs, falls back to local files)
+pages = load_pages(use_live=True)
+```
+
+Live pages override local files but results are cached to `pages/` for reproducibility.
+
 ## License
 
 MIT — use freely for research.

@@ -1,0 +1,42 @@
+# URL mappings for live course page fetching
+# Replace placeholder URLs with real course page URLs
+# Each entry supports:
+#   url: The page URL to fetch
+#   selector: CSS selector to extract main content (optional)
+#   wait_for: CSS selector to wait for (forces Playwright JS rendering)
+#   headers: Custom HTTP headers (optional)
+
+artistry_academy:
+  url: "https://example.com/artistry-academy-oil-painting"
+  selector: "main"
+  wait_for: ".course-price"
+  headers:
+    User-Agent: "Mozilla/5.0 (compatible; ResearchBot/1.0)"
+
+canvas_color:
+  url: "https://example.com/canvas-color-oil-foundations"
+  selector: "main"
+  wait_for: null
+  headers:
+    User-Agent: "Mozilla/5.0 (compatible; ResearchBot/1.0)"
+
+palette_masters:
+  url: "https://example.com/palette-masters-complete-path"
+  selector: "main"
+  wait_for: null
+  headers:
+    User-Agent: "Mozilla/5.0 (compatible; ResearchBot/1.0)"
+
+brushstroke_studio:
+  url: "https://example.com/brushstroke-studio-pro-program"
+  selector: "main"
+  wait_for: null
+  headers:
+    User-Agent: "Mozilla/5.0 (compatible; ResearchBot/1.0)"
+
+creative_canvas:
+  url: "https://example.com/creative-canvas-oil-everyone"
+  selector: "main"
+  wait_for: null
+  headers:
+    User-Agent: "Mozilla/5.0 (compatible; ResearchBot/1.0)"

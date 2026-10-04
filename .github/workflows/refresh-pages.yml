@@ -1,0 +1,42 @@
+name: Refresh Pages
+
+on:
+  schedule:
+    - cron: "0 3 * * 0"  # Weekly Sunday 3 AM UTC
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install playwright beautifulsoup4 lxml
+          playwright install chromium
+
+      - name: Refresh pages
+        run: python scripts/refresh_pages.py --force-js
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add pages/
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: refresh course pages [skip ci]"
+            git push
+          else
+            echo "No changes"
+          fi
