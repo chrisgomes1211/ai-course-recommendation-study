@@ -37,17 +37,28 @@ python app.py
 ```
 
 **Screens:**
-- **Run a Test** — Pick a model, click "Run Test", see live choice + exit survey + cost
-- **Results** — Dashboard with stats, charts, recent runs table, CSV download
+- **Run a Test** — Pick a model, click "Run Test", see live choice + exit survey + cost. **NEW:** Feature tags on each course card showing controlled variables (price display, reviews, credentials, description detail, structure). **NEW:** Batch Run section to run large-scale experiments.
+- **Results** — Dashboard with stats, charts (overall + by-model), summary line, recent runs table, CSV download.
 
-**No API calls** until you click "Run Test". All settings from `config.yaml`.
+**No API calls** until you click "Run Test" or "Start Batch". All settings from `config.yaml`.
+
+### Batch Run (for 1,000+ choices)
+
+1. On the "Run a Test" screen, scroll to **Batch Run** section
+2. Select which models to include (checkboxes, default: all from config.yaml)
+3. Set **Runs per Model per Page** (default: 1, configurable)
+4. Click **Start Batch Run** — runs all combinations in background
+5. Live progress shows: completed/total, running cost, current model/page
+6. Respects `budget_cap_usd` from config.yaml (stops before exceeding)
+7. Resumable — if interrupted, re-run to continue from where it left off
+8. Results append to same `results/results.csv` as single runs
 
 ## Project Structure
 
 ```
 ai-offer-choice/
 ├── README.md              # This file
-├── app.py                 # Flask web app (NEW)
+├── app.py                 # Flask web app
 ├── config.yaml            # All configuration (models, runs, budget, pricing)
 ├── .env.example           # API key template
 ├── .env                   # Your API keys (gitignored)
@@ -57,7 +68,8 @@ ai-offer-choice/
 │   ├── course_art.html           # Many reviews, clear price, detailed instructor, structured
 │   ├── course_music.html         # No reviews, hidden price, no instructor creds, unstructured
 │   ├── course_design.html        # Many reviews, clear price, no instructor creds, detailed desc
-│   └── course_photography.html   # Few reviews, clear price, detailed instructor, minimal desc
+│   ├── course_photography.html   # Few reviews, clear price, detailed instructor, minimal desc
+│   └── features.yaml             # Controlled features for each page (NEW)
 ├── prompts/
 │   ├── buying_question.txt   # Asks model to pick ONE course, return JSON {"choice": "page_id"}
 │   └── exit_interview.txt    # 5 Likert (1-5) + 1 open-ended, return JSON
@@ -65,11 +77,11 @@ ai-offer-choice/
 │   ├── models.py             # Provider wrappers (OpenAI, Anthropic, Google)
 │   ├── run_experiment.py     # Main loop: sequential, resumable, budget-aware
 │   └── estimate_cost.py      # Standalone cost estimator
-├── templates/               # Jinja2 templates (NEW)
+├── templates/               # Jinja2 templates
 │   ├── base.html
 │   ├── run_test.html
 │   └── results.html
-├── static/                  # CSS/JS (NEW)
+├── static/                  # CSS/JS
 │   ├── style.css
 │   └── app.js
 └── results/                  # CSV output (gitignored)
@@ -100,6 +112,19 @@ avg_completion_tokens_interview: 400
 ```
 
 **Add/remove models** by editing the `models` list. Each needs `name` (exact API model ID), `provider` (openai/anthropic/google), and `tier` (your label).
+
+## Course Page Features (`pages/features.yaml`)
+
+Each course page has documented controlled features for experimental reproducibility:
+
+| Page | Category | Price | Reviews | Credentials | Description | Structure |
+|------|----------|-------|---------|-------------|-------------|-----------|
+| `course_art.html` | Art | Shown ($199) | Many (127, 4.8★) | Detailed | Detailed | Structured |
+| `course_music.html` | Music | Hidden | None | None | Short | Unstructured |
+| `course_design.html` | Design | Shown ($149) | Many (89, 4.6★) | None | Detailed | Structured |
+| `course_photography.html` | Photography | Shown ($299) | Few (12, 4.2★) | Detailed | Short | Structured |
+
+Feature tags are displayed on the "Run a Test" screen for each course card. Edit `pages/features.yaml` to modify or add pages — the UI reads from this file automatically.
 
 ## Results CSV Schema (`results/results.csv`)
 
