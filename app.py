@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from models import get_provider, parse_choice, parse_interview, ModelResponse
+from models import get_provider, parse_choice, parse_interview, ModelResponse, run_phase
 from run_experiment import (
     load_config, load_pages, load_prompt, build_page_html_block,
     append_result, CSV_HEADERS, RESULTS_FILE, RESULTS_DIR
@@ -103,16 +103,14 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
     choice_prompt = buying_prompt_template.format(page_html=page_html_block)
     
     try:
-        choice_resp = provider.complete(choice_prompt)
-        chosen_page = parse_choice(choice_resp.text, page_ids)
+        choice_resp, chosen_page = run_phase(provider, choice_prompt, lambda t: parse_choice(t, page_ids))
     except Exception as e:
         return {"success": False, "error": f"Choice phase failed: {e}"}
     
     interview_prompt = interview_prompt_template.format(choice=chosen_page)
     
     try:
-        interview_resp = provider.complete(interview_prompt)
-        interview_data = parse_interview(interview_resp.text)
+        interview_resp, interview_data = run_phase(provider, interview_prompt, parse_interview)
     except Exception as e:
         return {"success": False, "error": f"Interview phase failed: {e}"}
     

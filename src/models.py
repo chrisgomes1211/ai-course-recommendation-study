@@ -4,7 +4,38 @@ from typing import Dict, Any
 import json
 import re
 import os
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from tenacity import retry, stop_after_attempt, retry_if_exception
+
+def _is_transient(exc: BaseException) -> bool:
+    name = type(exc).__name__
+    if any(k in name for k in ("RateLimit", "Timeout", "Connection", "ServiceUnavailable",
+                               "InternalServerError", "ResourceExhausted", "DeadlineExceeded",
+                               "TooManyRequests", "Aborted")):
+        return True
+    status = getattr(exc, "status_code", None)
+    try:
+        return status is not None and int(status) >= 500
+    except (TypeError, ValueError):
+        return False
+
+def _backoff(retry_state) -> float:
+    exc = retry_state.outcome.exception() if retry_state.outcome and retry_state.outcome.failed else None
+    n = retry_state.attempt_number
+    if exc is not None and any(k in type(exc).__name__ for k in ("RateLimit", "ResourceExhausted", "TooManyRequests")):
+        return float(min(10 * 2 ** (n - 1), 60))
+    return float(min(2 * 2 ** (n - 1), 16))
+
+def _log_retry(retry_state):
+    exc = retry_state.outcome.exception() if retry_state.outcome else None
+    print(f"[retry] {type(exc).__name__}: {str(exc)[:140]} (attempt {retry_state.attempt_number})", flush=True)
+
+RETRY_KWARGS = dict(
+    wait=_backoff,
+    stop=stop_after_attempt(7),
+    retry=retry_if_exception(_is_transient),
+    reraise=True,
+    before_sleep=_log_retry,
+)
 
 @dataclass
 class ModelResponse:
@@ -33,11 +64,7 @@ class OpenAIProvider(ModelProvider):
         from openai import OpenAI
         self.client = OpenAI(api_key=api_key)
     
-    @retry(
-        wait=wait_exponential(multiplier=1, min=2, max=10),
-        stop=stop_after_attempt(3),
-        retry=retry_if_exception_type(Exception)
-    )
+    @retry(**RETRY_KWARGS)
     def complete(self, prompt: str) -> ModelResponse:
         response = self.client.chat.completions.create(
             model=self.model_name,
@@ -57,11 +84,7 @@ class AnthropicProvider(ModelProvider):
         from anthropic import Anthropic
         self.client = Anthropic(api_key=api_key)
     
-    @retry(
-        wait=wait_exponential(multiplier=1, min=2, max=10),
-        stop=stop_after_attempt(3),
-        retry=retry_if_exception_type(Exception)
-    )
+    @retry(**RETRY_KWARGS)
     def complete(self, prompt: str) -> ModelResponse:
         response = self.client.messages.create(
             model=self.model_name,
@@ -81,11 +104,7 @@ class GoogleProvider(ModelProvider):
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel(model_name)
     
-    @retry(
-        wait=wait_exponential(multiplier=1, min=2, max=10),
-        stop=stop_after_attempt(3),
-        retry=retry_if_exception_type(Exception)
-    )
+    @retry(**RETRY_KWARGS)
     def complete(self, prompt: str) -> ModelResponse:
         response = self.model.generate_content(
             prompt,
@@ -104,11 +123,7 @@ class XAIProvider(ModelProvider):
         from openai import OpenAI
         self.client = OpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
     
-    @retry(
-        wait=wait_exponential(multiplier=1, min=2, max=10),
-        stop=stop_after_attempt(3),
-        retry=retry_if_exception_type(Exception)
-    )
+    @retry(**RETRY_KWARGS)
     def complete(self, prompt: str) -> ModelResponse:
         response = self.client.chat.completions.create(
             model=self.model_name,
@@ -145,6 +160,20 @@ def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, floa
         return XAIProvider(model_name, pricing, api_key)
     else:
         raise ValueError(f"Unknown provider: {provider_type}")
+
+def run_phase(provider: "ModelProvider", prompt: str, parse_fn, attempts: int = 3):
+    """Call the model and parse; re-sample up to `attempts` times on parse failure only."""
+    last_err = None
+    for _ in range(attempts):
+        try:
+            resp = provider.complete(prompt)
+        except Exception:
+            raise
+        try:
+            return resp, parse_fn(resp.text)
+        except Exception as e:
+            last_err = e
+    raise last_err
 
 def parse_choice(response_text: str, valid_page_ids: list) -> str:
     json_match = re.search(r'\{[^}]*"choice"[^}]*\}', response_text)

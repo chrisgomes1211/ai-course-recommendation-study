@@ -9,9 +9,9 @@ from typing import Set, Tuple, List, Dict, Any
 from tqdm import tqdm
 
 try:
-    from .models import get_provider, parse_choice, parse_interview, ModelResponse
+    from .models import get_provider, parse_choice, parse_interview, ModelResponse, run_phase
 except ImportError:
-    from models import get_provider, parse_choice, parse_interview, ModelResponse
+    from models import get_provider, parse_choice, parse_interview, ModelResponse, run_phase
 
 RESULTS_DIR = Path("results")
 RESULTS_FILE = RESULTS_DIR / "results.csv"
@@ -148,8 +148,7 @@ def main():
                     choice_prompt = buying_prompt_template.format(page_html=page_html_block)
                     
                     try:
-                        choice_resp = provider.complete(choice_prompt)
-                        chosen_page = parse_choice(choice_resp.text, page_ids)
+                        choice_resp, chosen_page = run_phase(provider, choice_prompt, lambda t: parse_choice(t, page_ids))
                     except Exception as e:
                         print(f"\nError in choice phase for {model_name}/{page_id}/run{run_num}: {e}")
                         completed.add(key)
@@ -159,8 +158,7 @@ def main():
                     interview_prompt = interview_prompt_template.format(choice=chosen_page)
                     
                     try:
-                        interview_resp = provider.complete(interview_prompt)
-                        interview_data = parse_interview(interview_resp.text)
+                        interview_resp, interview_data = run_phase(provider, interview_prompt, parse_interview)
                     except Exception as e:
                         print(f"\nError in interview phase for {model_name}/{page_id}/run{run_num}: {e}")
                         completed.add(key)
