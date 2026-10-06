@@ -399,6 +399,13 @@ def api_features():
 
 @app.route("/api/keys-check")
 def api_keys_check():
+    try:
+        return _keys_check_impl()
+    except BaseException:
+        import traceback
+        return jsonify({"error": traceback.format_exc()[-2500:]}), 500
+
+def _keys_check_impl():
     """Verify provider keys, list valid model IDs, and probe each provider once."""
     import src.models as models_mod
 
