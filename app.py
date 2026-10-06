@@ -397,6 +397,48 @@ def api_batch_status():
 def api_features():
     return jsonify(load_features())
 
+@app.route("/api/keys-check")
+def api_keys_check():
+    """Verify provider keys and test every model in config.yaml with a minimal call."""
+    import src.models as models_mod
+
+    with open("config.yaml", "r") as f:
+        cfg = yaml.safe_load(f)
+
+    provider_keys = {
+        "openai": os.getenv("OPENAI_API_KEY"),
+        "anthropic": os.getenv("ANTHROPIC_API_KEY"),
+        "google": os.getenv("GOOGLE_API_KEY"),
+        "xai": os.getenv("XAI_API_KEY"),
+    }
+    available = {k: bool(v) for k, v in provider_keys.items()}
+
+    results = []
+    for m in cfg.get("models", []):
+        name, provider = m["name"], m["provider"]
+        entry = {"model": name, "provider": provider, "ok": False, "error": None}
+        if not provider_keys.get(provider):
+            entry["error"] = f"no {provider} key configured"
+            results.append(entry)
+            continue
+        try:
+            prov = models_mod.get_provider(m, cfg.get("pricing", {}))
+            resp = prov.complete("Hi")
+            entry["ok"] = True
+            entry["tokens"] = {"in": resp.input_tokens, "out": resp.output_tokens}
+            entry["cost_usd"] = round(resp.estimated_cost_usd, 6)
+        except Exception as e:
+            entry["error"] = str(e)[:300]
+        results.append(entry)
+
+    return jsonify({
+        "keys": available,
+        "budget_cap_usd": cfg.get("budget_cap_usd"),
+        "results": results,
+        "ok_count": sum(1 for r in results if r["ok"]),
+        "total": len(results),
+    })
+
 @app.route("/page/<path:page_id>")
 def view_page(page_id):
     """Serve the raw HTML page for viewing in a new tab."""
