@@ -110,7 +110,7 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
     interview_prompt = interview_prompt_template.format(choice=chosen_page)
     
     try:
-        interview_resp, interview_data = run_phase(provider, interview_prompt, parse_interview)
+        interview_resp, interview_data = run_phase(provider, interview_prompt, parse_interview, attempts=5)
     except Exception as e:
         return {"success": False, "error": f"Interview phase failed: {e}"}
     

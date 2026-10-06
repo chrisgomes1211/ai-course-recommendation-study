@@ -164,6 +164,7 @@ def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, floa
 def run_phase(provider: "ModelProvider", prompt: str, parse_fn, attempts: int = 3):
     """Call the model and parse; re-sample up to `attempts` times on parse failure only."""
     last_err = None
+    last_raw = None
     for _ in range(attempts):
         try:
             resp = provider.complete(prompt)
@@ -173,7 +174,8 @@ def run_phase(provider: "ModelProvider", prompt: str, parse_fn, attempts: int = 
             return resp, parse_fn(resp.text)
         except Exception as e:
             last_err = e
-    raise last_err
+            last_raw = resp.text[:600]
+    raise RuntimeError(f"{last_err} | last raw response: {last_raw!r}")
 
 def parse_choice(response_text: str, valid_page_ids: list) -> str:
     json_match = re.search(r'\{[^}]*"choice"[^}]*\}', response_text)
