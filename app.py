@@ -495,7 +495,8 @@ def _keys_check_impl():
         key = provider_keys.get(prov)
         if not key:
             return jsonify({"probe_ok": False, "probe_error": f"no {prov} key"}), 200
-        if name not in [cm["name"] for cm in cfg.get("models", [])]:
+        if prov in listed and name not in listed[prov]:
+            return jsonify({"probe_ok": False, "probe_error": "model not available for this key"}), 200
             return jsonify({"probe_ok": False, "probe_error": "model not in config.yaml"}), 200
         try:
             info = probe_model(prov, name, key)
