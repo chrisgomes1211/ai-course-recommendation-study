@@ -15,173 +15,227 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
     <title>Artistry Academy - Complete Oil Painting Mastery</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: Georgia, 'Times New Roman', serif;
-            line-height: 1.65;
-            color: #1c1c1c;
-            background: #faf7f0;
-        }
+        body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.65; color: #1c1c1c; background: #faf7f0; overflow-x: hidden; }
         a { color: #1a2744; }
-        .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; }
+        .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+        img { display: block; }
 
-        .topbar {
-            background: #16213e;
-            border-bottom: 3px solid #c9a227;
-        }
-        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; }
+        /* progress bar */
+        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, #c9a227, #e0b83a); z-index: 999; transition: width .1s linear; }
+
+        /* topbar */
+        .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
+        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
         .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo {
-            width: 34px; height: 34px; border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #e0b83a, #c9a227 60%, #9a7a17);
-            display: flex; align-items: center; justify-content: center;
-            color: #16213e; font-weight: bold; font-size: 17px;
-            border: 1px solid #e0b83a;
-        }
-        .brand-name { color: #fff; font-size: 17px; letter-spacing: 0.04em; }
+        .logo { width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e0b83a, #c9a227 60%, #9a7a17); display: flex; align-items: center; justify-content: center; color: #16213e; font-weight: bold; font-size: 17px; border: 1px solid #e0b83a; }
+        .brand-name { color: #fff; font-size: 17px; letter-spacing: 0.04em; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
         .brand-name span { color: #c9a227; }
-        .topnav { display: flex; gap: 18px; }
-        .topnav a { color: #d8d3c5; text-decoration: none; font-size: 13.5px; font-family: Verdana, sans-serif; }
-        .topnav a:hover { color: #e0b83a; }
+        .topnav { display: flex; gap: 20px; }
+        .topnav a { color: #e8e3d5; text-decoration: none; font-size: 13.5px; font-family: Verdana, sans-serif; position: relative; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+        .topnav a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1.5px; background: #e0b83a; transform: scaleX(0); transform-origin: right; transition: transform .35s cubic-bezier(.65,0,.35,1); }
+        .topnav a:hover::after { transform: scaleX(1); transform-origin: left; }
 
-        .hero { background: linear-gradient(165deg, #16213e 0%, #1f3055 100%); color: #fff; padding: 52px 0 46px; text-align: center; }
-        .eyebrow {
-            display: inline-block; font-family: Verdana, sans-serif; font-size: 11px;
-            letter-spacing: 0.22em; text-transform: uppercase; color: #e0b83a;
-            border: 1px solid #c9a227; padding: 5px 14px; margin-bottom: 18px;
-        }
-        .hero h1 { font-size: 36px; font-weight: normal; line-height: 1.2; margin-bottom: 12px; }
-        .hero .stars { color: #e0b83a; font-size: 18px; letter-spacing: 2px; }
-        .hero .rating-line { font-family: Verdana, sans-serif; font-size: 13px; color: #d8d3c5; margin: 8px 0 22px; }
+        /* hero */
+        .hero { position: relative; min-height: 92vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #16213e; }
+        .hero-media { position: absolute; inset: -6%; z-index: 0; }
+        .hero-media img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 22s ease-in-out infinite alternate; will-change: transform; }
+        @keyframes kenburns { from { transform: scale(1) translate(0,0); } to { transform: scale(1.12) translate(-1.5%, -1.5%); } }
+        .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(22,33,62,.86) 0%, rgba(22,33,62,.62) 45%, rgba(22,33,62,.92) 100%); }
+        .hero::after { content: ""; position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse at center, transparent 45%, rgba(10,15,30,.55) 100%); pointer-events: none; }
+        .grain { position: absolute; inset: 0; z-index: 3; opacity: .10; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E"); }
+        .hero-inner { position: relative; z-index: 4; padding: 120px 22px 80px; max-width: 780px; }
+        .reveal-line { overflow: hidden; }
+        .reveal-line > * { display: block; transform: translateY(115%); animation: riseUp .9s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes riseUp { to { transform: translateY(0); } }
+        .d1 > * { animation-delay: .15s; } .d2 > * { animation-delay: .3s; } .d3 > * { animation-delay: .45s; }
+        .d4 > * { animation-delay: .6s; } .d5 > * { animation-delay: .75s; } .d6 > * { animation-delay: .9s; }
+        .eyebrow { display: inline-block; font-family: Verdana, sans-serif; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: #e0b83a; border: 1px solid rgba(224,184,58,.6); padding: 6px 16px; opacity: 0; animation: fadeIn .8s ease 1.05s forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .hero h1 { font-size: clamp(34px, 6vw, 56px); font-weight: normal; line-height: 1.12; color: #fff; margin: 18px 0 14px; }
+        .hero h1 em { font-style: italic; color: #e0b83a; }
+        .hero .stars { color: #e0b83a; font-size: 20px; letter-spacing: 4px; }
+        .hero .rating-line { font-family: Verdana, sans-serif; font-size: 13px; color: #d8d3c5; margin: 8px 0 24px; }
         .hero .rating-line strong { color: #fff; }
-        .price { font-size: 44px; font-weight: bold; color: #e0b83a; line-height: 1; margin-bottom: 6px; }
-        .price-terms { font-family: Verdana, sans-serif; font-size: 12px; color: #b8b2a3; margin-bottom: 26px; }
-        .cta {
-            display: inline-block; background: linear-gradient(180deg, #e0b83a, #c9a227);
-            color: #16213e; font-family: Verdana, sans-serif; font-weight: bold; font-size: 15px;
-            padding: 15px 44px; text-decoration: none; border: 1px solid #9a7a17;
-            box-shadow: 0 3px 0 #9a7a17; letter-spacing: 0.03em;
-        }
-        .cta:hover { background: linear-gradient(180deg, #ecc75a, #d4ad32); text-decoration: none; }
-        .guarantee { font-family: Verdana, sans-serif; font-size: 11.5px; color: #b8b2a3; margin-top: 14px; }
+        .price { font-size: clamp(40px, 7vw, 54px); font-weight: bold; color: #e0b83a; line-height: 1; }
+        .price-terms { font-family: Verdana, sans-serif; font-size: 12px; color: #b8b2a3; margin: 8px 0 28px; }
+        .cta { display: inline-block; background: linear-gradient(180deg, #e0b83a, #c9a227); color: #16213e; font-family: Verdana, sans-serif; font-weight: bold; font-size: 15px; padding: 16px 48px; text-decoration: none; border: 1px solid #9a7a17; box-shadow: 0 4px 0 #9a7a17, 0 12px 32px rgba(224,184,58,.28); letter-spacing: .03em; transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s; }
+        .cta:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #9a7a17, 0 18px 40px rgba(224,184,58,.4); text-decoration: none; }
+        .cta:active { transform: translateY(1px); box-shadow: 0 2px 0 #9a7a17; }
+        .guarantee { font-family: Verdana, sans-serif; font-size: 11.5px; color: #b8b2a3; margin-top: 16px; opacity: 0; animation: fadeIn .8s ease 1.2s forwards; }
+        .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 5; color: #e0b83a; font-size: 18px; animation: bob 1.6s ease-in-out infinite; }
+        @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
 
-        .stats { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border: 1px solid #e4ddcc; border-top: none; }
-        .stat { text-align: center; padding: 18px 8px; border-right: 1px solid #e4ddcc; }
+        /* marquee */
+        .marquee { background: #16213e; border-top: 1px solid rgba(224,184,58,.4); border-bottom: 1px solid rgba(224,184,58,.4); overflow: hidden; padding: 11px 0; white-space: nowrap; }
+        .marquee-track { display: inline-block; animation: scrollX 26s linear infinite; }
+        .marquee-track span { font-family: Verdana, sans-serif; font-size: 11.5px; letter-spacing: .28em; text-transform: uppercase; color: #e0b83a; padding: 0 26px; }
+        @keyframes scrollX { to { transform: translateX(-50%); } }
+
+        /* stats */
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-bottom: 1px solid #e4ddcc; }
+        .stat { text-align: center; padding: 22px 8px; border-right: 1px solid #e4ddcc; }
         .stat:last-child { border-right: none; }
-        .stat b { display: block; font-size: 21px; color: #1a2744; }
-        .stat span { font-family: Verdana, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: #7a7568; }
+        .stat b { display: block; font-size: 30px; color: #1a2744; line-height: 1.1; }
+        .stat span { font-family: Verdana, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; color: #7a7568; }
 
-        section { padding: 44px 0; }
-        .sec-label { font-family: Verdana, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #c9a227; margin-bottom: 6px; }
-        h2 { font-size: 27px; font-weight: normal; color: #16213e; margin-bottom: 20px; }
-        h2::after { content: ""; display: block; width: 54px; height: 2px; background: #c9a227; margin-top: 10px; }
+        /* reveal on scroll */
+        .rv { opacity: 0; transform: translateY(46px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+        .rv.in { opacity: 1; transform: translateY(0); }
+        .rv-d1 { transition-delay: .12s; } .rv-d2 { transition-delay: .24s; } .rv-d3 { transition-delay: .36s; }
+
+        section { padding: 56px 0; }
+        .sec-label { font-family: Verdana, sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #c9a227; margin-bottom: 6px; }
+        h2 { font-size: clamp(24px, 4vw, 32px); font-weight: normal; color: #16213e; margin-bottom: 24px; }
+        h2::after { content: ""; display: block; width: 54px; height: 2px; background: #c9a227; margin-top: 10px; transition: width .8s cubic-bezier(.16,1,.3,1) .2s; }
+        .rv.in h2::after, .rv h2::after { width: 54px; }
 
         .modules { display: grid; gap: 10px; }
-        .module {
-            display: flex; align-items: baseline; gap: 14px; background: #fff;
-            border: 1px solid #e4ddcc; padding: 13px 16px;
-        }
-        .module .num { font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: #c9a227; min-width: 62px; letter-spacing: 0.06em; }
+        .module { display: flex; align-items: baseline; gap: 14px; background: #fff; border: 1px solid #e4ddcc; padding: 14px 16px; transition: transform .3s, box-shadow .3s, border-color .3s; }
+        .module:hover { transform: translateX(8px); border-color: #c9a227; box-shadow: -6px 0 0 #c9a227; }
+        .module .num { font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: #c9a227; min-width: 62px; letter-spacing: .06em; }
         .module .name { flex: 1; color: #1c1c1c; }
         .module .lessons { font-family: Verdana, sans-serif; font-size: 11.5px; color: #7a7568; white-space: nowrap; }
-        .total-line { margin-top: 16px; font-family: Verdana, sans-serif; font-size: 13px; color: #16213e; font-weight: bold; background: #f3eedd; border-left: 3px solid #c9a227; padding: 11px 14px; }
+        .total-line { margin-top: 16px; font-family: Verdana, sans-serif; font-size: 13px; color: #16213e; font-weight: bold; background: #f3eedd; border-left: 3px solid #c9a227; padding: 12px 14px; }
 
         .instructor { background: #fff; border-top: 1px solid #e4ddcc; border-bottom: 1px solid #e4ddcc; }
         .instructor .inner { display: flex; gap: 26px; align-items: flex-start; }
-        .avatar {
-            width: 110px; height: 110px; border-radius: 50%; flex-shrink: 0;
-            background: linear-gradient(145deg, #1f3055, #16213e);
-            border: 3px solid #c9a227;
-            display: flex; align-items: center; justify-content: center;
-            color: #e0b83a; font-size: 34px; letter-spacing: 1px;
-        }
+        .avatar { width: 110px; height: 110px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(145deg, #1f3055, #16213e); border: 3px solid #c9a227; display: flex; align-items: center; justify-content: center; color: #e0b83a; font-size: 34px; }
         .instructor h2 { margin-bottom: 4px; }
         .instructor .degree { font-family: Verdana, sans-serif; font-size: 12.5px; font-weight: bold; color: #c9a227; margin-bottom: 10px; }
         .instructor p { color: #4a463c; font-size: 15px; }
 
+        /* gallery */
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .gitem { position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; background: linear-gradient(135deg, #1f3055, #16213e); clip-path: inset(0 0 100% 0); transition: clip-path 1s cubic-bezier(.16,1,.3,1); }
+        .gitem:nth-child(2) { transition-delay: .15s; } .gitem:nth-child(3) { transition-delay: .3s; }
+        .rv.in .gitem { clip-path: inset(0 0 0 0); }
+        .gitem img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(35%) contrast(1.05); transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s; }
+        .gitem:hover img { transform: scale(1.09); filter: grayscale(0); }
+        .gitem::after { content: "⤢"; position: absolute; right: 10px; bottom: 8px; color: #fff; font-size: 16px; background: rgba(22,33,62,.75); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(8px); transition: .3s; }
+        .gitem:hover::after { opacity: 1; transform: translateY(0); }
+
         .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-        .review { background: #fff; border: 1px solid #e4ddcc; padding: 16px; }
+        .review { background: #fff; border: 1px solid #e4ddcc; padding: 17px; transition: transform .3s, box-shadow .3s; }
+        .review:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(22,33,62,.12); }
         .review .stars { color: #c9a227; font-size: 14px; letter-spacing: 1px; }
         .review blockquote { font-style: italic; color: #3d3a32; margin: 8px 0 10px; font-size: 14.5px; }
-        .review cite { font-family: Verdana, sans-serif; font-style: normal; font-size: 11.5px; color: #7a7568; text-transform: uppercase; letter-spacing: 0.06em; }
-        .all-reviews { display: inline-block; margin-top: 16px; font-family: Verdana, sans-serif; font-size: 13px; color: #1a2744; font-weight: bold; }
+        .review cite { font-family: Verdana, sans-serif; font-style: normal; font-size: 11.5px; color: #7a7568; text-transform: uppercase; letter-spacing: .06em; }
+        .all-reviews { display: inline-block; margin-top: 16px; font-family: Verdana, sans-serif; font-size: 13px; color: #1a2744; font-weight: bold; border-bottom: 2px solid #c9a227; text-decoration: none; padding-bottom: 2px; transition: border-color .3s; }
+        .all-reviews:hover { border-color: #1a2744; }
 
-        .faq { display: grid; gap: 14px; }
-        .qa { background: #fff; border: 1px solid #e4ddcc; padding: 15px 17px; }
-        .qa dt { font-weight: bold; color: #16213e; font-size: 15.5px; margin-bottom: 5px; }
-        .qa dd { color: #4a463c; font-size: 14.5px; }
+        /* faq accordion */
+        .faq details { background: #fff; border: 1px solid #e4ddcc; margin-bottom: 10px; overflow: hidden; }
+        .faq summary { cursor: pointer; padding: 15px 18px; font-weight: bold; color: #16213e; font-size: 15.5px; list-style: none; position: relative; transition: background .3s; }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after { content: "+"; position: absolute; right: 18px; color: #c9a227; font-size: 20px; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+        .faq details[open] summary::after { transform: rotate(135deg); }
+        .faq summary:hover { background: #f8f4e8; }
+        .faq .a { padding: 0 18px 16px; color: #4a463c; font-size: 14.5px; animation: fadeSlide .4s ease; }
+        @keyframes fadeSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .enroll-band { background: #16213e; text-align: center; padding: 40px 0; }
+        .enroll-band { background: linear-gradient(150deg, #16213e, #1f3055); text-align: center; padding: 56px 0; position: relative; overflow: hidden; }
+        .enroll-band::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(224,184,58,.14), transparent 45%), radial-gradient(circle at 80% 80%, rgba(224,184,58,.1), transparent 45%); }
+        .enroll-band .wrap { position: relative; }
         .enroll-band h2 { color: #fff; }
         .enroll-band h2::after { margin-left: auto; margin-right: auto; }
-        .enroll-band .price { font-size: 34px; }
-        .enroll-band .price-terms { margin-bottom: 20px; }
+        .enroll-band .price { font-size: clamp(34px, 6vw, 44px); }
 
-        footer { background: #0f1730; color: #8a8578; font-family: Verdana, sans-serif; font-size: 11.5px; padding: 20px 0; text-align: center; }
+        footer { background: #0f1730; color: #8a8578; font-family: Verdana, sans-serif; font-size: 11.5px; padding: 22px 0; text-align: center; }
         footer a { color: #b8b2a3; }
 
+        /* sticky cta */
+        .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(15,23,48,.97); border-top: 2px solid #c9a227; padding: 11px 0; transform: translateY(110%); transition: transform .5s cubic-bezier(.16,1,.3,1); backdrop-filter: blur(6px); }
+        .sticky-cta.show { transform: translateY(0); }
+        .sticky-cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+        .sticky-cta .sc-price { color: #e0b83a; font-size: 22px; font-weight: bold; }
+        .sticky-cta .sc-name { color: #b8b2a3; font-family: Verdana, sans-serif; font-size: 11.5px; }
+        .sticky-cta .cta { padding: 11px 30px; font-size: 13.5px; box-shadow: 0 3px 0 #9a7a17; }
+
+        /* lightbox */
+        .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(8,12,25,.94); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; opacity: 0; transition: opacity .35s; }
+        .lightbox.open { display: flex; }
+        .lightbox.vis { opacity: 1; }
+        .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; box-shadow: 0 30px 80px rgba(0,0,0,.6); transform: scale(.92); transition: transform .4s cubic-bezier(.16,1,.3,1); }
+        .lightbox.vis img { transform: scale(1); }
+
         @media (max-width: 640px) {
-            .hero h1 { font-size: 27px; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             .stat:nth-child(2) { border-right: none; }
             .instructor .inner { flex-direction: column; align-items: center; text-align: center; }
             .topnav { display: none; }
+            .gallery { grid-template-columns: 1fr; }
+            .hero { min-height: 78vh; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            .rv { opacity: 1; transform: none; }
+            .gitem { clip-path: none; }
+            .reveal-line > * { transform: none; }
         }
     </style>
 </head>
 <body>
+    <div id="progress"></div>
+
     <div class="topbar">
         <div class="wrap">
             <a class="brand" href="#"><span class="logo">A</span><span class="brand-name">Artistry <span>Academy</span></span></a>
             <nav class="topnav">
                 <a href="#curriculum">Curriculum</a>
                 <a href="#instructor">Instructor</a>
+                <a href="#gallery">Gallery</a>
                 <a href="#reviews">Reviews</a>
                 <a href="#faq">FAQ</a>
             </nav>
         </div>
     </div>
 
-    <header class="hero">
-        <div class="wrap">
-            <span class="eyebrow">Online Course · Oil Painting</span>
-            <h1>Complete Oil Painting Mastery</h1>
-            <div class="stars">★★★★★</div>
-            <p class="rating-line"><strong>4.9</strong> average rating · <strong>150</strong> reviews</p>
-            <div class="price">$249</div>
-            <p class="price-terms">One-time payment · Lifetime access</p>
-            <a class="cta" href="#enroll">Enroll Now</a>
+    <header class="hero" id="hero">
+        <div class="hero-media" id="heroMedia"><img src="https://live.staticflickr.com/1795/42212626780_63edc1f1a3_b.jpg" alt=""></div>
+        <div class="grain"></div>
+        <div class="hero-inner">
+            <div class="reveal-line d1"><span class="eyebrow">Online Course · Oil Painting</span></div>
+            <div class="reveal-line d2"><h1>Complete Oil Painting <em>Mastery</em></h1></div>
+            <div class="reveal-line d3"><div class="stars">★★★★★</div></div>
+            <div class="reveal-line d4"><p class="rating-line"><strong>4.9</strong> average rating · <strong>150</strong> reviews</p></div>
+            <div class="reveal-line d5"><div><div class="price">$249</div><p class="price-terms">One-time payment · Lifetime access</p></div></div>
+            <div class="reveal-line d6"><div><a class="cta magnetic" href="#enroll">Enroll Now</a></div></div>
             <p class="guarantee">30-day money-back guarantee · No subscription required</p>
         </div>
+        <div class="scroll-hint">▾</div>
     </header>
 
-    <div class="stats">
-        <div class="stat"><b>81</b><span>Lessons</span></div>
-        <div class="stat"><b>24h</b><span>Video</span></div>
-        <div class="stat"><b>8</b><span>Modules</span></div>
+    <div class="marquee"><div class="marquee-track">
+        <span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span><span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span>
+    </div></div>
+
+    <div class="stats" id="stats">
+        <div class="stat"><b class="count" data-count="81">0</b><span>Lessons</span></div>
+        <div class="stat"><b><span class="count" data-count="24">0</span>h</b><span>Video</span></div>
+        <div class="stat"><b class="count" data-count="8">0</b><span>Modules</span></div>
         <div class="stat"><b>∞</b><span>Lifetime Access</span></div>
     </div>
 
     <section id="curriculum">
         <div class="wrap">
-            <p class="sec-label">Curriculum</p>
-            <h2>Eight modules, in order</h2>
+            <div class="rv"><p class="sec-label">Curriculum</p><h2>Eight modules, in order</h2></div>
             <div class="modules">
-                <div class="module"><span class="num">Module 1</span><span class="name">Materials &amp; Studio Setup</span><span class="lessons">8 lessons</span></div>
-                <div class="module"><span class="num">Module 2</span><span class="name">Color Theory &amp; Mixing Mastery</span><span class="lessons">12 lessons</span></div>
-                <div class="module"><span class="num">Module 3</span><span class="name">Brushwork Techniques &amp; Edge Control</span><span class="lessons">10 lessons</span></div>
-                <div class="module"><span class="num">Module 4</span><span class="name">Still Life &amp; Composition Fundamentals</span><span class="lessons">15 lessons</span></div>
-                <div class="module"><span class="num">Module 5</span><span class="name">Portrait Painting in Oils</span><span class="lessons">12 lessons</span></div>
-                <div class="module"><span class="num">Module 6</span><span class="name">Landscape &amp; Plein Air Painting</span><span class="lessons">10 lessons</span></div>
-                <div class="module"><span class="num">Module 7</span><span class="name">Developing Your Artistic Voice</span><span class="lessons">8 lessons</span></div>
-                <div class="module"><span class="num">Module 8</span><span class="name">Professional Practices for Artists</span><span class="lessons">6 lessons</span></div>
+                <div class="module rv rv-d1"><span class="num">Module 1</span><span class="name">Materials &amp; Studio Setup</span><span class="lessons">8 lessons</span></div>
+                <div class="module rv rv-d1"><span class="num">Module 2</span><span class="name">Color Theory &amp; Mixing Mastery</span><span class="lessons">12 lessons</span></div>
+                <div class="module rv rv-d2"><span class="num">Module 3</span><span class="name">Brushwork Techniques &amp; Edge Control</span><span class="lessons">10 lessons</span></div>
+                <div class="module rv rv-d2"><span class="num">Module 4</span><span class="name">Still Life &amp; Composition Fundamentals</span><span class="lessons">15 lessons</span></div>
+                <div class="module rv rv-d3"><span class="num">Module 5</span><span class="name">Portrait Painting in Oils</span><span class="lessons">12 lessons</span></div>
+                <div class="module rv rv-d3"><span class="num">Module 6</span><span class="name">Landscape &amp; Plein Air Painting</span><span class="lessons">10 lessons</span></div>
+                <div class="module rv rv-d3"><span class="num">Module 7</span><span class="name">Developing Your Artistic Voice</span><span class="lessons">8 lessons</span></div>
+                <div class="module rv rv-d3"><span class="num">Module 8</span><span class="name">Professional Practices for Artists</span><span class="lessons">6 lessons</span></div>
             </div>
-            <p class="total-line">Total: 81 lessons · 24 hours of video · 50+ downloadable resources</p>
+            <p class="total-line rv">Total: 81 lessons · 24 hours of video · 50+ downloadable resources</p>
         </div>
     </section>
 
     <section class="instructor" id="instructor">
         <div class="wrap">
-            <div class="inner">
+            <div class="inner rv">
                 <div class="avatar">EV</div>
                 <div>
                     <p class="sec-label">Your Instructor</p>
@@ -193,45 +247,129 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
         </div>
     </section>
 
+    <section id="gallery">
+        <div class="wrap">
+            <div class="rv"><p class="sec-label">In the studio</p><h2>What you'll learn to paint</h2></div>
+            <div class="gallery rv">
+                <div class="gitem"><img src="https://live.staticflickr.com/3773/13108402563_8c4588cd12_b.jpg" alt="" loading="lazy"></div>
+                <div class="gitem"><img src="https://live.staticflickr.com/8142/29178835570_1d3462bc4c_b.jpg" alt="" loading="lazy"></div>
+                <div class="gitem"><img src="https://live.staticflickr.com/2742/4435959199_b96ac33aab_b.jpg" alt="" loading="lazy"></div>
+            </div>
+        </div>
+    </section>
+
     <section id="reviews">
         <div class="wrap">
-            <p class="sec-label">Student Reviews</p>
-            <h2>What 150 students say</h2>
+            <div class="rv"><p class="sec-label">Student Reviews</p><h2>What 150 students say</h2></div>
             <div class="reviews-grid">
-                <div class="review"><div class="stars">★★★★★</div><blockquote>"Transformed my painting completely. Elena's teaching is clear and encouraging."</blockquote><cite>— M. Chen</cite></div>
-                <div class="review"><div class="stars">★★★★★</div><blockquote>"Best investment in my art career. The curriculum is comprehensive."</blockquote><cite>— J. Rodriguez</cite></div>
-                <div class="review"><div class="stars">★★★★★</div><blockquote>"Finally understand color mixing! The exercises are brilliant."</blockquote><cite>— K. Thompson</cite></div>
-                <div class="review"><div class="stars">★★★★☆</div><blockquote>"Great content, wish there were more live sessions."</blockquote><cite>— A. Park</cite></div>
-                <div class="review"><div class="stars">★★★★★</div><blockquote>"Professional quality instruction at a fraction of art school cost."</blockquote><cite>— R. Williams</cite></div>
+                <div class="review rv rv-d1"><div class="stars">★★★★★</div><blockquote>"Transformed my painting completely. Elena's teaching is clear and encouraging."</blockquote><cite>— M. Chen</cite></div>
+                <div class="review rv rv-d2"><div class="stars">★★★★★</div><blockquote>"Best investment in my art career. The curriculum is comprehensive."</blockquote><cite>— J. Rodriguez</cite></div>
+                <div class="review rv rv-d3"><div class="stars">★★★★★</div><blockquote>"Finally understand color mixing! The exercises are brilliant."</blockquote><cite>— K. Thompson</cite></div>
+                <div class="review rv rv-d1"><div class="stars">★★★★☆</div><blockquote>"Great content, wish there were more live sessions."</blockquote><cite>— A. Park</cite></div>
+                <div class="review rv rv-d2"><div class="stars">★★★★★</div><blockquote>"Professional quality instruction at a fraction of art school cost."</blockquote><cite>— R. Williams</cite></div>
             </div>
-            <a class="all-reviews" href="#">View all 150 reviews →</a>
+            <div class="rv"><a class="all-reviews" href="#">View all 150 reviews →</a></div>
         </div>
     </section>
 
     <section id="faq" style="background:#fff; border-top:1px solid #e4ddcc; border-bottom:1px solid #e4ddcc;">
         <div class="wrap">
-            <p class="sec-label">FAQ</p>
-            <h2>Frequently asked questions</h2>
-            <dl class="faq">
-                <div class="qa"><dt>Do I need prior experience?</dt><dd>No, this course starts from absolute basics.</dd></div>
-                <div class="qa"><dt>What materials do I need?</dt><dd>A detailed supply list is provided in Module 1 (approx. $150–200).</dd></div>
-                <div class="qa"><dt>Is there a community?</dt><dd>Yes, private Discord with 2,000+ students and weekly critique sessions.</dd></div>
-                <div class="qa"><dt>Can I download videos?</dt><dd>Yes, all content is downloadable for offline viewing.</dd></div>
-            </dl>
+            <div class="rv"><p class="sec-label">FAQ</p><h2>Frequently asked questions</h2></div>
+            <div class="faq">
+                <details class="rv" open><summary>Do I need prior experience?</summary><div class="a">No, this course starts from absolute basics.</div></details>
+                <details class="rv"><summary>What materials do I need?</summary><div class="a">A detailed supply list is provided in Module 1 (approx. $150–200).</div></details>
+                <details class="rv"><summary>Is there a community?</summary><div class="a">Yes, private Discord with 2,000+ students and weekly critique sessions.</div></details>
+                <details class="rv"><summary>Can I download videos?</summary><div class="a">Yes, all content is downloadable for offline viewing.</div></details>
+            </div>
         </div>
     </section>
 
     <section class="enroll-band" id="enroll">
         <div class="wrap">
-            <h2>Start painting today</h2>
-            <div class="price">$249</div>
-            <p class="price-terms">One-time payment · Lifetime access · 30-day money-back guarantee</p>
-            <a class="cta" href="#">Enroll Now - $249</a>
+            <div class="rv">
+                <h2>Start painting today</h2>
+                <div class="price">$249</div>
+                <p class="price-terms">One-time payment · Lifetime access · 30-day money-back guarantee</p>
+                <a class="cta magnetic" href="#">Enroll Now - $249</a>
+            </div>
         </div>
     </section>
 
-    <footer>
-        © 2026 Artistry Academy · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Contact</a>
-    </footer>
+    <footer>© 2026 Artistry Academy · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Contact</a></footer>
+
+    <div class="sticky-cta" id="stickyCta">
+        <div class="wrap">
+            <div><div class="sc-price">$249</div><div class="sc-name">Complete Oil Painting Mastery · Lifetime access</div></div>
+            <a class="cta" href="#enroll">Enroll Now</a>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox"><img src="" alt=""></div>
+
+    <script>
+        (function () {
+            var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var progress = document.getElementById('progress');
+            var hero = document.getElementById('hero');
+            var heroMedia = document.getElementById('heroMedia');
+            var sticky = document.getElementById('stickyCta');
+
+            function onScroll() {
+                var y = scrollY;
+                var h = document.documentElement.scrollHeight - innerHeight;
+                progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+                if (!reduce && heroMedia && y < innerHeight) heroMedia.style.transform = 'translateY(' + y * 0.35 + 'px)';
+                if (sticky) sticky.classList.toggle('show', y > hero.offsetHeight * 0.85);
+            }
+            addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            var io = new IntersectionObserver(function (es) {
+                es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+            }, { threshold: 0.18 });
+            document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+            var counted = false;
+            var statsIO = new IntersectionObserver(function (es) {
+                if (!es[0].isIntersecting || counted) return;
+                counted = true;
+                document.querySelectorAll('.count').forEach(function (el) {
+                    var target = +el.dataset.count;
+                    if (reduce) { el.textContent = target; return; }
+                    var t0 = performance.now();
+                    (function tick(t) {
+                        var p = Math.min((t - t0) / 1400, 1);
+                        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                        if (p < 1) requestAnimationFrame(tick);
+                    })(t0);
+                });
+                statsIO.disconnect();
+            }, { threshold: 0.4 });
+            statsIO.observe(document.getElementById('stats'));
+
+            var lb = document.getElementById('lightbox');
+            var lbImg = lb.querySelector('img');
+            document.querySelectorAll('.gitem').forEach(function (g) {
+                g.addEventListener('click', function () {
+                    lbImg.src = g.querySelector('img').src;
+                    lb.classList.add('open');
+                    requestAnimationFrame(function () { lb.classList.add('vis'); });
+                });
+            });
+            lb.addEventListener('click', function () {
+                lb.classList.remove('vis');
+                setTimeout(function () { lb.classList.remove('open'); }, 350);
+            });
+            addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.click(); });
+
+            if (!reduce) document.querySelectorAll('.magnetic').forEach(function (btn) {
+                btn.addEventListener('mousemove', function (e) {
+                    var r = btn.getBoundingClientRect();
+                    btn.style.transform = 'translate(' + ((e.clientX - r.left - r.width / 2) * 0.12) + 'px,' + ((e.clientY - r.top - r.height / 2) * 0.18 - 3) + 'px)';
+                });
+                btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
+            });
+        })();
+    </script>
 </body>
 </html>

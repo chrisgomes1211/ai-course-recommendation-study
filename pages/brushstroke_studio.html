@@ -15,125 +15,201 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
     <title>Brushstroke Studio - Professional Oil Painting Program</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: "Arial Narrow", Arial, Helvetica, sans-serif; line-height: 1.55; color: #e8e8e8; background: #141416; }
+        body { font-family: "Arial Narrow", Arial, Helvetica, sans-serif; line-height: 1.55; color: #e8e8e8; background: #141416; overflow-x: hidden; }
         a { color: #ff6b00; }
-        .wrap { max-width: 840px; margin: 0 auto; padding: 0 22px; }
+        .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; }
+        img { display: block; }
 
-        .topbar { background: #1c1c1f; border-bottom: 1px solid #2e2e33; position: sticky; top: 0; }
-        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding: 13px 0; }
-        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: bold; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; }
-        .logo { width: 30px; height: 30px; background: #ff6b00; display: flex; align-items: center; justify-content: center; color: #141416; font-weight: 900; font-size: 16px; transform: rotate(-4deg); }
-        .topnav { display: flex; gap: 18px; }
-        .topnav a { color: #9a9aa2; text-decoration: none; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; }
+        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, #ff6b00, #ffb066); z-index: 999; transition: width .1s linear; }
+
+        .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
+        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: bold; font-size: 16px; letter-spacing: .06em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+        .logo { width: 30px; height: 30px; background: #ff6b00; display: flex; align-items: center; justify-content: center; color: #141416; font-weight: 900; font-size: 16px; transform: rotate(-4deg); box-shadow: 0 6px 18px rgba(255,107,0,.45); transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+        .brand:hover .logo { transform: rotate(8deg) scale(1.1); }
+        .topnav { display: flex; gap: 20px; }
+        .topnav a { color: #c4c4cc; text-decoration: none; font-size: 12.5px; text-transform: uppercase; letter-spacing: .12em; font-weight: bold; position: relative; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
+        .topnav a::after { content: ""; position: absolute; left: 0; bottom: -5px; width: 100%; height: 2px; background: #ff6b00; transform: scaleX(0) skewX(-25deg); transform-origin: right; transition: transform .4s cubic-bezier(.65,0,.35,1); }
+        .topnav a:hover::after { transform: scaleX(1) skewX(-25deg); transform-origin: left; }
         .topnav a:hover { color: #ff6b00; }
 
-        .hero { padding: 52px 0 44px; border-bottom: 1px solid #2e2e33; }
-        .kicker { color: #ff6b00; font-size: 12px; font-weight: bold; letter-spacing: 0.24em; text-transform: uppercase; margin-bottom: 12px; }
-        .hero h1 { font-size: 42px; font-weight: 900; line-height: 1.05; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 14px; }
+        .hero { position: relative; min-height: 90vh; display: flex; align-items: center; overflow: hidden; background: #0e0e10; }
+        .hero-media { position: absolute; inset: -6%; z-index: 0; }
+        .hero-media img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 23s ease-in-out infinite alternate; will-change: transform; filter: contrast(1.1); }
+        @keyframes kenburns { from { transform: scale(1.04) translate(1.5%, 0); } to { transform: scale(1.15) translate(-1.5%, -1.5%); } }
+        .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(105deg, rgba(14,14,16,.95) 0%, rgba(14,14,16,.75) 45%, rgba(14,14,16,.45) 100%); }
+        .hero::after { content: ""; position: absolute; inset: 0; z-index: 2; background: linear-gradient(180deg, rgba(255,107,0,.1), transparent 40%, rgba(14,14,16,.9)); }
+        .grain { position: absolute; inset: 0; z-index: 3; opacity: .14; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E"); }
+        .hero-inner { position: relative; z-index: 4; padding: 120px 0 90px; max-width: 720px; }
+        .reveal-line { overflow: hidden; }
+        .reveal-line > * { display: block; transform: translateY(115%); animation: riseUp .9s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes riseUp { to { transform: translateY(0); } }
+        .d1 > * { animation-delay: .15s; } .d2 > * { animation-delay: .3s; } .d3 > * { animation-delay: .45s; }
+        .d4 > * { animation-delay: .6s; } .d5 > * { animation-delay: .75s; } .d6 > * { animation-delay: .9s; }
+        .kicker { color: #ff6b00; font-size: 12px; font-weight: bold; letter-spacing: .26em; text-transform: uppercase; margin-bottom: 12px; }
+        .hero h1 { font-size: clamp(38px, 7vw, 62px); font-weight: 900; line-height: 1.02; text-transform: uppercase; letter-spacing: -.01em; margin-bottom: 16px; color: #fff; }
         .hero h1 em { color: #ff6b00; font-style: normal; }
-        .hero p.lead { font-size: 16.5px; color: #9a9aa2; max-width: 560px; margin-bottom: 24px; }
-        .buyrow { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
-        .price { font-size: 40px; font-weight: 900; color: #fff; line-height: 1; }
-        .price small { display: block; font-size: 12px; color: #9a9aa2; font-weight: normal; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 5px; }
-        .cta { display: inline-block; background: #ff6b00; color: #141416; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; padding: 16px 38px; text-decoration: none; border: 2px solid #ff6b00; }
-        .cta:hover { background: #141416; color: #ff6b00; text-decoration: none; }
+        .hero p.lead { font-size: 17px; color: #b4b4bc; max-width: 560px; margin-bottom: 26px; }
+        .buyrow { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; }
+        .price { font-size: clamp(38px, 6vw, 48px); font-weight: 900; color: #fff; line-height: 1; }
+        .price small { display: block; font-size: 12px; color: #9a9aa2; font-weight: normal; letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
+        .cta { display: inline-block; background: #ff6b00; color: #141416; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: .1em; padding: 17px 42px; text-decoration: none; border: 2px solid #ff6b00; position: relative; overflow: hidden; transition: color .35s, transform .3s cubic-bezier(.34,1.56,.64,1); }
+        .cta::before { content: ""; position: absolute; inset: 0; background: #141416; transform: translateY(101%); transition: transform .4s cubic-bezier(.65,0,.35,1); z-index: -1; }
+        .cta:hover { color: #ff6b00; transform: translateY(-3px); text-decoration: none; }
+        .cta:hover::before { transform: translateY(0); }
+        .cta:active { transform: translateY(1px); }
 
-        .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #2e2e33; }
-        .fact { text-align: center; padding: 17px 6px; border-right: 1px solid #2e2e33; }
+        .marquee { background: #1c1c1f; border-top: 1px solid #2e2e33; border-bottom: 1px solid #2e2e33; overflow: hidden; padding: 10px 0; white-space: nowrap; }
+        .marquee-track { display: inline-block; animation: scrollX 26s linear infinite; }
+        .marquee-track span { font-size: 11.5px; font-weight: bold; letter-spacing: .3em; text-transform: uppercase; color: #ff6b00; padding: 0 26px; }
+        @keyframes scrollX { to { transform: translateX(-50%); } }
+
+        .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #2e2e33; background: #1c1c1f; }
+        .fact { text-align: center; padding: 20px 6px; border-right: 1px solid #2e2e33; position: relative; overflow: hidden; }
         .fact:last-child { border-right: none; }
-        .fact b { display: block; font-size: 20px; color: #ff6b00; font-weight: 900; }
-        .fact span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #9a9aa2; }
+        .fact::before { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 2px; background: #ff6b00; transition: left .5s; }
+        .fact:hover::before { left: 0; }
+        .fact b { display: block; font-size: 29px; color: #ff6b00; font-weight: 900; }
+        .fact span { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: #9a9aa2; }
 
-        section { padding: 40px 0; border-bottom: 1px solid #2e2e33; }
-        h2 { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; margin-bottom: 18px; }
+        .rv { opacity: 0; transform: translateY(46px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+        .rv.in { opacity: 1; transform: translateY(0); }
+        .rv-d1 { transition-delay: .12s; } .rv-d2 { transition-delay: .24s; } .rv-d3 { transition-delay: .36s; }
+
+        section { padding: 48px 0; border-bottom: 1px solid #2e2e33; }
+        h2 { font-size: clamp(21px, 4vw, 26px); font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: #fff; margin-bottom: 20px; }
         h2::before { content: "// "; color: #ff6b00; }
 
-        .modules { display: grid; gap: 8px; counter-reset: mod; }
-        .module { display: flex; align-items: center; gap: 14px; background: #1c1c1f; border-left: 3px solid #ff6b00; padding: 13px 16px; }
+        .modules { display: grid; gap: 8px; }
+        .module { display: flex; align-items: center; gap: 14px; background: #1c1c1f; border-left: 3px solid #2e2e33; padding: 14px 16px; transition: border-color .3s, transform .3s, background .3s; }
+        .module:hover { border-left-color: #ff6b00; transform: translateX(8px); background: #232327; }
         .module .name { flex: 1; font-weight: bold; font-size: 15px; color: #e8e8e8; }
-        .module .lessons { font-size: 12px; color: #9a9aa2; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-        .total { margin-top: 14px; font-size: 13.5px; font-weight: bold; color: #ff6b00; text-transform: uppercase; letter-spacing: 0.06em; }
+        .module:hover .name { color: #ff6b00; }
+        .module .lessons { font-size: 12px; color: #9a9aa2; text-transform: uppercase; letter-spacing: .07em; white-space: nowrap; }
+        .total { margin-top: 14px; font-size: 13.5px; font-weight: bold; color: #ff6b00; text-transform: uppercase; letter-spacing: .07em; }
 
-        .instructor .inner { display: flex; gap: 24px; align-items: flex-start; }
-        .avatar { width: 96px; height: 96px; background: #ff6b00; display: flex; align-items: center; justify-content: center; color: #141416; font-size: 30px; font-weight: 900; flex-shrink: 0; transform: rotate(-2deg); }
-        .instructor .role { color: #ff6b00; font-size: 11.5px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+        .instructor .inner { display: flex; gap: 26px; align-items: flex-start; }
+        .avatar { width: 100px; height: 100px; background: #ff6b00; display: flex; align-items: center; justify-content: center; color: #141416; font-size: 32px; font-weight: 900; flex-shrink: 0; transform: rotate(-2deg); box-shadow: 8px 8px 0 #2e2e33; transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s; }
+        .instructor .inner:hover .avatar { transform: rotate(2deg) scale(1.04); box-shadow: 12px 12px 0 #ff6b00; }
+        .instructor .role { color: #ff6b00; font-size: 11.5px; font-weight: bold; letter-spacing: .22em; text-transform: uppercase; margin-bottom: 4px; }
         .instructor h2 { margin-bottom: 6px; }
         .instructor .degree { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 9px; }
         .instructor p { color: #9a9aa2; font-size: 15px; }
 
-        .empty-reviews { background: #1c1c1f; border: 1px dashed #4a4a52; padding: 30px 22px; text-align: center; }
-        .empty-reviews .icon { font-size: 30px; color: #4a4a52; }
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+        .gitem { position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; background: linear-gradient(135deg, #2e2e33, #141416); clip-path: inset(0 100% 0 0); transition: clip-path 1s cubic-bezier(.16,1,.3,1); border: 1px solid #2e2e33; }
+        .gitem:nth-child(2) { transition-delay: .15s; } .gitem:nth-child(3) { transition-delay: .3s; }
+        .rv.in .gitem { clip-path: inset(0 0 0 0); }
+        .gitem img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(70%) contrast(1.1); transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s; }
+        .gitem:hover img { transform: scale(1.1); filter: grayscale(0%) contrast(1.05); }
+        .gitem::after { content: "VIEW"; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%) scale(.7); background: #ff6b00; color: #141416; font-size: 11px; font-weight: 900; letter-spacing: .15em; padding: 7px 16px; opacity: 0; transition: .35s cubic-bezier(.34,1.56,.64,1); }
+        .gitem:hover::after { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+        .empty-reviews { background: #1c1c1f; border: 1px dashed #4a4a52; padding: 36px 24px; text-align: center; position: relative; overflow: hidden; }
+        .empty-reviews::before { content: "☆"; position: absolute; font-size: 130px; color: rgba(255,107,0,.07); right: -14px; top: -34px; }
+        .empty-reviews .icon { font-size: 34px; color: #4a4a52; }
         .empty-reviews p { color: #9a9aa2; font-size: 15px; margin-top: 8px; }
         .empty-reviews b { color: #e8e8e8; }
 
-        .enroll-band { background: #ff6b00; color: #141416; text-align: center; padding: 36px 0; border-bottom: none; }
+        .enroll-band { background: #ff6b00; color: #141416; text-align: center; padding: 44px 0; border-bottom: none; position: relative; overflow: hidden; }
+        .enroll-band::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, rgba(20,20,22,.06) 0 14px, transparent 14px 28px); }
+        .enroll-band .wrap { position: relative; }
         .enroll-band h2 { color: #141416; }
         .enroll-band h2::before { color: #141416; }
-        .enroll-band .price { color: #141416; margin-bottom: 16px; }
+        .enroll-band .price { color: #141416; margin-bottom: 18px; }
         .enroll-band .price small { color: #5c2c00; }
-        .cta-dark { display: inline-block; background: #141416; color: #ff6b00; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; padding: 16px 38px; text-decoration: none; border: 2px solid #141416; }
-        .cta-dark:hover { background: transparent; color: #141416; text-decoration: none; }
+        .cta-dark { display: inline-block; background: #141416; color: #ff6b00; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: .1em; padding: 17px 42px; text-decoration: none; border: 2px solid #141416; transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .3s, color .3s; }
+        .cta-dark:hover { background: transparent; color: #141416; transform: translateY(-3px); text-decoration: none; }
 
-        footer { background: #0e0e10; color: #6a6a72; font-size: 12px; padding: 20px 0; text-align: center; text-transform: uppercase; letter-spacing: 0.08em; }
+        footer { background: #0e0e10; color: #6a6a72; font-size: 12px; padding: 22px 0; text-align: center; text-transform: uppercase; letter-spacing: .09em; }
         footer a { color: #9a9aa2; }
 
+        .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(14,14,16,.97); border-top: 2px solid #ff6b00; padding: 11px 0; transform: translateY(110%); transition: transform .5s cubic-bezier(.16,1,.3,1); backdrop-filter: blur(6px); }
+        .sticky-cta.show { transform: translateY(0); }
+        .sticky-cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+        .sticky-cta .sc-price { color: #ff6b00; font-size: 24px; font-weight: 900; }
+        .sticky-cta .sc-name { color: #9a9aa2; font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em; }
+        .sticky-cta .cta { padding: 11px 28px; font-size: 13.5px; }
+
+        .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(8,8,10,.96); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; opacity: 0; transition: opacity .35s; }
+        .lightbox.open { display: flex; }
+        .lightbox.vis { opacity: 1; }
+        .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; box-shadow: 0 30px 80px rgba(0,0,0,.7); transform: scale(.92); transition: transform .4s cubic-bezier(.16,1,.3,1); }
+        .lightbox.vis img { transform: scale(1); }
+
         @media (max-width: 640px) {
-            .hero h1 { font-size: 30px; }
             .facts { grid-template-columns: repeat(2, 1fr); }
             .fact:nth-child(2) { border-right: none; }
             .instructor .inner { flex-direction: column; align-items: center; text-align: center; }
             .topnav { display: none; }
+            .gallery { grid-template-columns: 1fr; }
+            .hero { min-height: 78vh; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            .rv { opacity: 1; transform: none; }
+            .gitem { clip-path: none; }
+            .reveal-line > * { transform: none; }
         }
     </style>
 </head>
 <body>
+    <div id="progress"></div>
+
     <div class="topbar">
         <div class="wrap">
             <a class="brand" href="#"><span class="logo">B</span> Brushstroke Studio</a>
             <nav class="topnav">
                 <a href="#program">Program</a>
                 <a href="#instructor">Instructor</a>
+                <a href="#gallery">Gallery</a>
                 <a href="#reviews">Reviews</a>
             </nav>
         </div>
     </div>
 
-    <header class="hero">
+    <header class="hero" id="hero">
+        <div class="hero-media" id="heroMedia"><img src="https://live.staticflickr.com/5269/5557919648_ba36c73845_b.jpg" alt=""></div>
+        <div class="grain"></div>
         <div class="wrap">
-            <p class="kicker">Professional Program · Oil Painting</p>
-            <h1>Professional Oil Painting <em>Program</em></h1>
-            <p class="lead">A rigorous, structured track for painters who want professional-grade technique — fundamentals through portfolio.</p>
-            <div class="buyrow">
-                <div class="price">$299 <small>One-time · Lifetime access</small></div>
-                <a class="cta" href="#enroll">Enroll Now</a>
+            <div class="hero-inner">
+                <div class="reveal-line d1"><p class="kicker">Professional Program · Oil Painting</p></div>
+                <div class="reveal-line d2"><h1>Professional Oil Painting <em>Program</em></h1></div>
+                <div class="reveal-line d3"><p class="lead">A rigorous, structured track for painters who want professional-grade technique — fundamentals through portfolio.</p></div>
+                <div class="reveal-line d4"><div class="buyrow"><div class="price">$299 <small>One-time · Lifetime access</small></div></div></div>
+                <div class="reveal-line d5"><div class="buyrow"><a class="cta" href="#enroll">Enroll Now</a></div></div>
             </div>
         </div>
     </header>
 
-    <div class="facts">
-        <div class="fact"><b>42</b><span>Lessons</span></div>
-        <div class="fact"><b>16h</b><span>Video</span></div>
-        <div class="fact"><b>5</b><span>Modules</span></div>
+    <div class="marquee"><div class="marquee-track">
+        <span>42 Lessons</span><span>//</span><span>16 Hours</span><span>//</span><span>Certificate Included</span><span>//</span><span>Lifetime Access</span><span>//</span><span>42 Lessons</span><span>//</span><span>16 Hours</span><span>//</span><span>Certificate Included</span><span>//</span><span>Lifetime Access</span><span>//</span>
+    </div></div>
+
+    <div class="facts" id="stats">
+        <div class="fact"><b class="count" data-count="42">0</b><span>Lessons</span></div>
+        <div class="fact"><b><span class="count" data-count="16">0</span>h</b><span>Video</span></div>
+        <div class="fact"><b class="count" data-count="5">0</b><span>Modules</span></div>
         <div class="fact"><b>∞</b><span>Access</span></div>
     </div>
 
     <section id="program">
         <div class="wrap">
-            <h2>Program Structure</h2>
+            <div class="rv"><h2>Program Structure</h2></div>
             <div class="modules">
-                <div class="module"><span class="name">1 · Foundations &amp; Studio Discipline</span><span class="lessons">8 lessons</span></div>
-                <div class="module"><span class="name">2 · Color Systems &amp; Value Control</span><span class="lessons">9 lessons</span></div>
-                <div class="module"><span class="name">3 · Advanced Brushwork &amp; Surfaces</span><span class="lessons">9 lessons</span></div>
-                <div class="module"><span class="name">4 · Figurative &amp; Landscape Practice</span><span class="lessons">10 lessons</span></div>
-                <div class="module"><span class="name">5 · Portfolio &amp; Professional Practice</span><span class="lessons">6 lessons</span></div>
+                <div class="module rv rv-d1"><span class="name">1 · Foundations &amp; Studio Discipline</span><span class="lessons">8 lessons</span></div>
+                <div class="module rv rv-d1"><span class="name">2 · Color Systems &amp; Value Control</span><span class="lessons">9 lessons</span></div>
+                <div class="module rv rv-d2"><span class="name">3 · Advanced Brushwork &amp; Surfaces</span><span class="lessons">9 lessons</span></div>
+                <div class="module rv rv-d2"><span class="name">4 · Figurative &amp; Landscape Practice</span><span class="lessons">10 lessons</span></div>
+                <div class="module rv rv-d3"><span class="name">5 · Portfolio &amp; Professional Practice</span><span class="lessons">6 lessons</span></div>
             </div>
-            <p class="total">42 lessons · 16 hours of video · Certificate on completion</p>
+            <p class="total rv">42 lessons · 16 hours of video · Certificate on completion</p>
         </div>
     </section>
 
     <section class="instructor" id="instructor">
         <div class="wrap">
-            <div class="inner">
+            <div class="inner rv">
                 <div class="avatar">DR</div>
                 <div>
                     <p class="role">Lead Instructor</p>
@@ -145,10 +221,21 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
         </div>
     </section>
 
+    <section id="gallery">
+        <div class="wrap">
+            <div class="rv"><h2>Techniques &amp; Subjects</h2></div>
+            <div class="gallery rv">
+                <div class="gitem"><img src="https://live.staticflickr.com/4123/4865022403_af3ff2a244_b.jpg" alt="" loading="lazy"></div>
+                <div class="gitem"><img src="https://live.staticflickr.com/4141/4887130771_dee6e82e49_b.jpg" alt="" loading="lazy"></div>
+                <div class="gitem"><img src="https://live.staticflickr.com/3743/11937919343_e4db63b95d_b.jpg" alt="" loading="lazy"></div>
+            </div>
+        </div>
+    </section>
+
     <section id="reviews">
         <div class="wrap">
-            <h2>Reviews</h2>
-            <div class="empty-reviews">
+            <div class="rv"><h2>Reviews</h2></div>
+            <div class="empty-reviews rv">
                 <div class="icon">☆</div>
                 <p><b>No reviews yet.</b></p>
                 <p>This is a new program — be the first student to leave a review after you complete it.</p>
@@ -158,14 +245,82 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
 
     <section class="enroll-band" id="enroll">
         <div class="wrap">
-            <h2>Enroll in the program</h2>
-            <div class="price">$299 <small>One-time payment · Lifetime access · Certificate included</small></div>
-            <a class="cta-dark" href="#">Enroll Now - $299</a>
+            <div class="rv">
+                <h2>Enroll in the program</h2>
+                <div class="price">$299 <small>One-time payment · Lifetime access · Certificate included</small></div>
+                <a class="cta-dark" href="#">Enroll Now - $299</a>
+            </div>
         </div>
     </section>
 
-    <footer>
-        © 2026 Brushstroke Studio · <a href="#">Terms</a> · <a href="#">Privacy</a>
-    </footer>
+    <footer>© 2026 Brushstroke Studio · <a href="#">Terms</a> · <a href="#">Privacy</a></footer>
+
+    <div class="sticky-cta" id="stickyCta">
+        <div class="wrap">
+            <div><div class="sc-price">$299</div><div class="sc-name">Professional Oil Painting Program</div></div>
+            <a class="cta" href="#enroll">Enroll Now</a>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox"><img src="" alt=""></div>
+
+    <script>
+        (function () {
+            var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var progress = document.getElementById('progress');
+            var hero = document.getElementById('hero');
+            var heroMedia = document.getElementById('heroMedia');
+            var sticky = document.getElementById('stickyCta');
+
+            function onScroll() {
+                var y = scrollY;
+                var h = document.documentElement.scrollHeight - innerHeight;
+                progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+                if (!reduce && heroMedia && y < innerHeight) heroMedia.style.transform = 'translateY(' + y * 0.35 + 'px)';
+                if (sticky) sticky.classList.toggle('show', y > hero.offsetHeight * 0.85);
+            }
+            addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            var io = new IntersectionObserver(function (es) {
+                es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+            }, { threshold: 0.18 });
+            document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+            var counted = false;
+            var statsEl = document.getElementById('stats');
+            var statsIO = new IntersectionObserver(function (es) {
+                if (!es[0].isIntersecting || counted) return;
+                counted = true;
+                document.querySelectorAll('.count').forEach(function (el) {
+                    var target = +el.dataset.count;
+                    if (reduce) { el.textContent = target; return; }
+                    var t0 = performance.now();
+                    (function tick(t) {
+                        var p = Math.min((t - t0) / 1400, 1);
+                        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                        if (p < 1) requestAnimationFrame(tick);
+                    })(t0);
+                });
+                statsIO.disconnect();
+            }, { threshold: 0.4 });
+            if (statsEl) statsIO.observe(statsEl);
+
+            var lb = document.getElementById('lightbox');
+            var lbImg = lb.querySelector('img');
+            document.querySelectorAll('.gitem').forEach(function (g) {
+                g.addEventListener('click', function () {
+                    lbImg.src = g.querySelector('img').src;
+                    lb.classList.add('open');
+                    requestAnimationFrame(function () { lb.classList.add('vis'); });
+                });
+            });
+            lb.addEventListener('click', function () {
+                lb.classList.remove('vis');
+                setTimeout(function () { lb.classList.remove('open'); }, 350);
+            });
+            addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.click(); });
+        })();
+    </script>
 </body>
 </html>
