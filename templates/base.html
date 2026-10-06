@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}AI Course Recommendation Study{% endblock %}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -14,16 +11,8 @@
         <div class="nav-container">
             <a href="{{ url_for('run_test') }}" class="nav-brand">AI Course Recommendation Study</a>
             <ul class="nav-links">
-                <li>
-                    <a href="{{ url_for('run_test') }}" class="{% if request.endpoint == 'run_test' %}active{% endif %}">
-                        <span class="nav-num">01</span> Run a Test
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('results') }}" class="{% if request.endpoint == 'results' %}active{% endif %}">
-                        <span class="nav-num">02</span> Results
-                    </a>
-                </li>
+                <li><a href="{{ url_for('run_test') }}" class="{% if request.endpoint == 'run_test' %}active{% endif %}">Run a Test</a></li>
+                <li><a href="{{ url_for('results') }}" class="{% if request.endpoint == 'results' %}active{% endif %}">Results</a></li>
             </ul>
         </div>
     </nav>
