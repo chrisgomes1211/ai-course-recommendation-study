@@ -457,14 +457,12 @@ def api_keys_check():
         return jsonify({"available": {p: sorted(ids) for p, ids in listed.items()}})
 
     models_out = []
-    probed = set()
     for m in cfg.get("models", []):
         name, prov = m["name"], m["provider"]
         entry = {"model": name, "provider": prov, "listed": None, "probe_ok": None, "probe_error": None}
         if prov in listed:
             entry["listed"] = name in listed[prov]
-        if providers.get(prov, {}).get("list_ok") and prov not in probed:
-            probed.add(prov)
+        if providers.get(prov, {}).get("list_ok") and entry["listed"]:
             try:
                 p = models_mod.get_provider(m, cfg.get("pricing", {}))
                 r = p.complete("Hi")
