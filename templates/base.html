@@ -9,18 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <script>
         (function () {
-            var themes = ['light', 'dark', 'win95'];
             var stored = null;
             try { stored = localStorage.getItem('acs-theme'); } catch (e) {}
-            var theme;
-            if (themes.indexOf(stored) !== -1) {
-                theme = stored;
-            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                theme = 'dark';
-            } else {
-                theme = 'light';
-            }
+            var theme = (stored === 'win95') ? 'win95' : 'atlantic';
+            var pref = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-pref', pref);
         })();
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
@@ -34,13 +28,40 @@
                     <li><a href="{{ url_for('run_test') }}" class="{% if request.endpoint == 'run_test' %}active{% endif %}">Run a Test</a></li>
                     <li><a href="{{ url_for('results') }}" class="{% if request.endpoint == 'results' %}active{% endif %}">Results</a></li>
                 </ul>
-                <button type="button" id="theme-btn" class="theme-btn" aria-label="Switch theme">
-                    <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="12" cy="12" r="4"></circle>
-                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-                    </svg>
-                    <span class="theme-label">Light</span>
-                </button>
+                <div class="theme-dd">
+                    <button type="button" id="theme-dd-btn" class="theme-dd-btn" aria-haspopup="true" aria-expanded="false" aria-controls="theme-dd-menu" aria-label="Switch theme">
+                        <svg class="theme-dd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                        </svg>
+                        <span class="theme-dd-label">Atlantic</span>
+                        <svg class="theme-dd-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+                    </button>
+                    <div class="theme-dd-menu" id="theme-dd-menu" role="menu" aria-label="Theme" hidden>
+                        <button type="button" class="dd-item" role="menuitemradio" data-theme-val="atlantic" aria-checked="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                            </svg>
+                            <span class="dd-text">
+                                <span>Atlantic</span>
+                                <span class="dd-hint">Follows your system light / dark</span>
+                            </span>
+                            <svg class="dd-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
+                        </button>
+                        <button type="button" class="dd-item" role="menuitemradio" data-theme-val="win95" aria-checked="false">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+                                <path d="M8 21h8M12 17v4"></path>
+                            </svg>
+                            <span class="dd-text">
+                                <span>Windows 95</span>
+                                <span class="dd-hint">Retro desktop mode</span>
+                            </span>
+                            <svg class="dd-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
