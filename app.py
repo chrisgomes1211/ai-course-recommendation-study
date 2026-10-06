@@ -453,6 +453,9 @@ def api_keys_check():
         except Exception as e:
             providers[prov] = {"key_set": True, "list_ok": False, "list_error": err_str(e)}
 
+    if request.args.get("list"):
+        return jsonify({"available": {p: sorted(ids) for p, ids in listed.items()}})
+
     models_out = []
     probed = set()
     for m in cfg.get("models", []):
