@@ -312,7 +312,43 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+const THEME_ORDER = ['light', 'dark', 'win95'];
+
+const THEME_ICONS = {
+    light: '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>',
+    dark: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>',
+    win95: '<rect x="3" y="4" width="18" height="13" rx="1"></rect><path d="M8 21h8M12 17v4"></path>'
+};
+
+const THEME_LABELS = { light: 'Light', dark: 'Dark', win95: 'Win95' };
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('acs-theme', theme); } catch (e) {}
+    updateThemeButton(theme);
+}
+
+function updateThemeButton(theme) {
+    const btn = document.getElementById('theme-btn');
+    if (!btn) return;
+    const icon = btn.querySelector('.theme-icon');
+    const label = btn.querySelector('.theme-label');
+    if (icon) icon.innerHTML = THEME_ICONS[theme] || THEME_ICONS.light;
+    if (label) label.textContent = THEME_LABELS[theme] || 'Light';
+}
+
+function cycleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length];
+    applyTheme(next);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    const themeBtn = document.getElementById('theme-btn');
+    if (themeBtn) {
+        updateThemeButton(document.documentElement.getAttribute('data-theme') || 'light');
+        themeBtn.addEventListener('click', cycleTheme);
+    }
     if (document.getElementById('stats-grid')) {
         loadDashboard();
     }
