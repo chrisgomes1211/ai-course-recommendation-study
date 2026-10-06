@@ -31,7 +31,7 @@ def _log_retry(retry_state):
 
 RETRY_KWARGS = dict(
     wait=_backoff,
-    stop=stop_after_attempt(7),
+    stop=stop_after_attempt(5),
     retry=retry_if_exception(_is_transient),
     reraise=True,
     before_sleep=_log_retry,
