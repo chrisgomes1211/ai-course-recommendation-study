@@ -14,73 +14,167 @@ EXPERIMENTAL FEATURES (palette_masters.html):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Palette Masters - The Complete Painter's Path</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #fafafa; }
-        .container { background: white; padding: 2rem; border-radius: 4px; }
-        h1 { color: #333; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
-        .price { background: #fff3cd; border: 1px solid #ffc107; padding: 1rem; border-radius: 4px; margin: 1rem 0; }
-        .section { margin: 1.5rem 0; }
-        .section h3 { color: #444; border-left: 3px solid #666; padding-left: 0.5rem; }
-        ul { padding-left: 1.5rem; }
-        li { margin: 0.5rem 0; }
-        .rating { color: #f39c12; font-size: 1.5rem; margin: 1rem 0; }
-        .instructor { margin: 2rem 0; }
-        .btn { display: inline-block; background: #28a745; color: white; padding: 1rem 2rem; border: none; border-radius: 4px; font-size: 1.1rem; cursor: pointer; text-decoration: none; }
-        .reviews-list { margin: 1rem 0; }
-        .review-item { background: white; padding: 1rem; border-radius: 4px; border: 1px solid #eee; margin: 0.5rem 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Avenir, "Segoe UI", "Helvetica Neue", sans-serif; line-height: 1.7; color: #3a2c35; background: #fff8f2; }
+        a { color: #e05263; }
+        .wrap { max-width: 820px; margin: 0 auto; padding: 0 22px; }
+
+        .brandbar { background: linear-gradient(90deg, #ff6b6b, #ffa94d, #ff8fab); padding: 16px 0; }
+        .brandbar .wrap { display: flex; justify-content: space-between; align-items: center; }
+        .brand { color: #fff; font-size: 20px; font-weight: 800; letter-spacing: -0.02em; text-decoration: none; text-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+        .brand .dot { color: #ffe66d; }
+        .price-chip { background: #fff; color: #e05263; font-weight: 800; font-size: 15px; padding: 7px 16px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+
+        .hero { background: linear-gradient(160deg, #ff6b6b 0%, #ffa94d 55%, #ff8fab 100%); color: #fff; padding: 50px 0 44px; text-align: center; }
+        .hero h1 { font-size: 38px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; letter-spacing: -0.03em; }
+        .hero .tag { font-size: 17px; opacity: 0.95; margin-bottom: 14px; }
+        .hero .stars { font-size: 21px; letter-spacing: 3px; color: #ffe66d; }
+        .hero .rating { font-size: 14.5px; margin-top: 6px; opacity: 0.95; }
+        .hero .price { font-size: 46px; font-weight: 900; margin-top: 18px; text-shadow: 0 2px 0 rgba(0,0,0,0.12); }
+        .hero .price small { font-size: 15px; font-weight: 600; display: block; opacity: 0.9; }
+        .cta { display: inline-block; background: #fff; color: #e05263; font-weight: 800; font-size: 16px; padding: 14px 40px; border-radius: 999px; text-decoration: none; margin-top: 20px; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+        .cta:hover { transform: translateY(-1px); text-decoration: none; }
+
+        section { padding: 34px 0; }
+        .blob-title { font-size: 26px; font-weight: 900; color: #e05263; margin-bottom: 12px; letter-spacing: -0.02em; }
+
+        .love-band { background: #fff; }
+        .love-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+        .love-card { background: linear-gradient(180deg, #fff, #fff4ea); border-radius: 16px; padding: 18px; box-shadow: 0 3px 12px rgba(224, 82, 99, 0.1); border: 1px solid #ffe3d6; }
+        .love-card .stars { color: #ff9f1c; font-size: 15px; }
+        .love-card p { font-size: 14.5px; font-style: italic; color: #6b5560; margin: 8px 0; }
+        .love-card cite { font-style: normal; font-size: 12px; font-weight: 700; color: #b8968e; }
+        .more-love { display: inline-block; margin-top: 14px; font-weight: 800; color: #e05263; }
+
+        .prose { background: #fff8f2; }
+        .prose p { font-size: 15.5px; color: #54424c; margin-bottom: 14px; }
+        .prose h3 { font-size: 19px; color: #ffa94d; margin: 20px 0 8px; font-weight: 800; }
+
+        .cta-mid { text-align: center; background: linear-gradient(90deg, #ff8fab, #ff6b6b); padding: 30px 0; color: #fff; }
+        .cta-mid .amount { font-size: 38px; font-weight: 900; }
+        .cta-mid a { display: inline-block; background: #fff; color: #e05263; font-weight: 800; padding: 12px 34px; border-radius: 999px; text-decoration: none; margin-top: 10px; }
+
+        .topics { background: #fff; }
+        .topics ul { list-style: none; }
+        .topics li { padding: 7px 0 7px 26px; position: relative; font-size: 15px; color: #54424c; border-bottom: 1px dashed #ffd9c4; }
+        .topics li::before { content: "◆"; position: absolute; left: 4px; color: #ff8fab; font-size: 12px; top: 9px; }
+        .topics h2 { font-size: 22px; font-weight: 800; color: #3a2c35; margin-bottom: 8px; }
+
+        .tipbox { background: #ffeef0; border-left: 4px solid #ff6b6b; border-radius: 0 12px 12px 0; padding: 16px 18px; margin: 18px 0; }
+        .tipbox b { color: #e05263; }
+
+        .host { text-align: center; padding: 30px 0; }
+        .host .avatar { width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(145deg, #ffa94d, #ff6b6b); margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: 900; }
+        .host p { font-size: 14.5px; color: #6b5560; max-width: 480px; margin: 6px auto 0; }
+
+        .faqish { background: #fff; }
+        .qa { background: #fff8f2; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+        .qa b { color: #e05263; display: block; margin-bottom: 3px; font-size: 15px; }
+
+        footer { background: #3a2c35; color: #b8968e; font-size: 12.5px; padding: 22px 0; text-align: center; }
+        footer a { color: #ffa94d; }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 28px; }
+            .brandbar .wrap { flex-direction: column; gap: 8px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>The Complete Painter's Path</h1>
-        <p style="font-size: 1.1em; color: #666;">Master oil painting from home with our proven system</p>
-        
-        <div class="price">
-            <strong>Investment:</strong> $199 one-time payment • Lifetime access • 30-day guarantee
+    <div class="brandbar">
+        <div class="wrap">
+            <a class="brand" href="#">Palette Masters<span class="dot">.</span></a>
+            <span class="price-chip">$199 one-time</span>
         </div>
-
-        <div class="rating">★★★★★ 4.7 (120 reviews)</div>
-
-        <div class="section">
-            <h3>What You'll Learn</h3>
-            <ul>
-                <li>Materials & Studio Setup (8 lessons)</li>
-                <li>Color Theory & Mixing (12 lessons)</li>
-                <li>Brushwork & Edge Control (10 lessons)</li>
-                <li>Still Life & Composition (15 lessons)</li>
-                <li>Portrait Painting (12 lessons)</li>
-                <li>Landscape & Plein Air (10 lessons)</li>
-                <li>Developing Your Style (8 lessons)</li>
-                <li>Professional Practices (6 lessons)</li>
-            </ul>
-            <p><strong>Total: 81 lessons • 24 hours • 50+ resources</strong></p>
-        </div>
-
-        <div class="section instructor">
-            <h3>Your Instructor</h3>
-            <p>Experienced Artist & Teacher</p>
-            <p>Has taught hundreds of students worldwide with amazing results</p>
-        </div>
-
-        <div class="section">
-            <h3>Student Reviews</h3>
-            <div class="reviews-list">
-                <div class="review-item">★★★★★ "Amazing course! Finally learned to paint properly." — S. Kim</div>
-                <div class="review-item">★★★★★ "Best art course I've taken. Incredible value." — D. Patel</div>
-                <div class="review-item">★★★★☆ "Great content, instructor could be more responsive." — L. Mueller</div>
-                <div class="review-item">★★★★★ "The curriculum is so well organized." — T. Brooks</div>
-            </div>
-            <p><a href="#">View all 120 reviews →</a></p>
-        </div>
-
-        <div class="section">
-            <h3>Frequently Asked Questions</h3>
-            <p><strong>Do I need prior experience?</strong> No, we start from the very beginning.</p>
-            <p><strong>What materials do I need?</strong> Supply list provided (approx. $150-200).</p>
-            <p><strong>Is there a community?</strong> Yes, private Facebook group with 1,500+ members.</p>
-            <p><strong>Can I download videos?</strong> Yes, all content is downloadable.</p>
-        </div>
-
-        <a href="#" class="btn">Enroll Now - $199</a>
     </div>
+
+    <header class="hero">
+        <div class="wrap">
+            <h1>The Complete Painter's Path</h1>
+            <p class="tag">A relaxed, joyful way to learn oil painting — at your own pace.</p>
+            <div class="stars">★★★★☆</div>
+            <p class="rating">4.7 out of 5 · 120 reviews from fellow painters</p>
+            <div class="price">$199 <small>one-time payment · lifetime access</small></div>
+            <a class="cta" href="#">Join the Path</a>
+        </div>
+    </header>
+
+    <section class="love-band">
+        <div class="wrap">
+            <div class="blob-title">Painters love this course ♥</div>
+            <div class="love-grid">
+                <div class="love-card"><div class="stars">★★★★★</div><p>"I painted every weekend for a month and my work transformed. The pace feels like painting with a friend."</p><cite>— Priya N.</cite></div>
+                <div class="love-card"><div class="stars">★★★★★</div><p>"No pressure, no gatekeeping. Just honest, generous teaching about color and joy."</p><cite>— Marco B.</cite></div>
+                <div class="love-card"><div class="stars">★★★★☆</div><p>"Beautifully filmed. I keep coming back to the plein air section again and again."</p><cite>— Lena K.</cite></div>
+            </div>
+            <a class="more-love" href="#">Read more of the 120 reviews →</a>
+        </div>
+    </section>
+
+    <section class="prose">
+        <div class="wrap">
+            <div class="blob-title">About this course</div>
+            <p>The Complete Painter's Path is a long, unhurried journey through oil painting — designed for people who want to fall in love with the medium rather than rush through it. There are no deadlines here, no grades, and no "correct" style to conform to. You paint when you can, as much as you want, and the course grows with you.</p>
+            <p>Over roughly 20 hours of video, you'll move through color, light, texture, composition and subject matter — but really, you'll be learning to see. We spend real time on the things most courses skip: how to mix a grey you actually like, how to leave a brushstroke alone, how to know when a painting is finished (and how to happily ruin one that isn't).</p>
+            <h3>What makes it different</h3>
+            <p>Most painting courses teach a method. This one teaches attention. Each section ends with a small, low-stakes invitation rather than an assignment — paint one object in three greys, or copy a passage from a painting you love, or simply sit with your materials for ten minutes. Nothing is graded. Everything is optional. Many students tell us the freedom is what kept them going when other courses felt like homework.</p>
+            <p>You'll also get occasional "studio letters" — short written notes on the practical life of a painter: setting up a workspace you'll actually use, buying materials without wasting money, finding time to paint alongside a full-time job, and dealing with the inner critic that tells you everyone else is better.</p>
+        </div>
+    </section>
+
+    <section class="cta-mid">
+        <div class="wrap">
+            <div class="amount">$199</div>
+            <p>One payment. Lifetime access. All future updates included.</p>
+            <a href="#">Get Instant Access</a>
+        </div>
+    </section>
+
+    <section class="topics">
+        <div class="wrap">
+            <h2>What you'll explore</h2>
+            <ul>
+                <li>Setting up a simple, cheap studio space that works</li>
+                <li>Oil paint basics — brushes, mediums, cleanup, drying times</li>
+                <li>Mixing color by eye, including the greys and neutrals</li>
+                <li>Values: why they matter more than hue</li>
+                <li>Still life as a daily practice</li>
+                <li>Edges — hard, soft, lost, and found</li>
+                <li>Painting from photographs without looking stiff</li>
+                <li>Plein air basics and coping with changing light</li>
+                <li>Composition ideas you can use immediately</li>
+                <li>Portraits and figures, loosely and without fear</li>
+                <li>Texture, impasto and scraping back</li>
+                <li>Knowing when to stop — and signing with confidence</li>
+                <li>Building a body of work over months, not days</li>
+                <li>Materials: what to buy, what to skip, what to save up for</li>
+                <li>Finding your own voice after all the tutorials</li>
+            </ul>
+            <div class="tipbox"><b>Studio letter #4:</b> Buy three colors before you buy thirty. A limited palette will teach you more in a month than a full rack ever will — and your color mixing will improve faster because you're forced to solve problems instead of squeezing out an answer.</div>
+        </div>
+    </section>
+
+    <section class="host">
+        <div class="wrap">
+            <div class="avatar">PM</div>
+            <div class="blob-title" style="font-size:20px;">Hosted by the Palette Masters team</div>
+            <p>A small collective of working painters who believe the best teaching feels like company in the studio. We publish a new lesson every few weeks and read every message from our students.</p>
+        </div>
+    </section>
+
+    <section class="faqish">
+        <div class="wrap">
+            <div class="blob-title" style="font-size:22px;">Good to know</div>
+            <div class="qa"><b>Do I need special materials?</b>Start with a small kit: one brush set, three or four colors, and a board to paint on. A full recommended list is inside, but you can begin for under $60.</div>
+            <div class="qa"><b>How long do I have access?</b>Forever, including every future lesson we add. No subscription, ever.</div>
+            <div class="qa"><b>I'm a complete beginner — is that okay?</b>That's exactly who this is for. Nothing assumes prior experience, and there's no such thing as falling behind when there are no deadlines.</div>
+            <div class="qa"><b>Is there feedback on my work?</b>There's a student gallery where you can share paintings if you'd like. The team highlights a few each month, but there's no obligation to post anything.</div>
+            <div class="qa"><b>What if it isn't for me?</b>Email us within 30 days and we'll refund you, no questions asked.</div>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 Palette Masters · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Say hello</a>
+    </footer>
 </body>
 </html>

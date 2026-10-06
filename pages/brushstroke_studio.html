@@ -14,77 +14,158 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brushstroke Studio - Professional Oil Painting Program</title>
     <style>
-        body { font-family: Georgia, serif; max-width: 850px; margin: 0 auto; padding: 20px; color: #333; }
-        .hero { text-align: center; padding: 60px 20px; background: #1a1a1a; color: white; border-radius: 12px; margin-bottom: 40px; }
-        .price { font-size: 2.5em; color: #f39c12; font-weight: bold; }
-        .rating { color: #f39c12; margin: 10px 0; }
-        .instructor { display: flex; gap: 30px; align-items: flex-start; margin: 40px 0; padding: 30px; background: #f9f9f9; border-radius: 8px; }
-        .instructor img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
-        .curriculum { columns: 2; column-gap: 40px; }
-        .curriculum h3 { break-inside: avoid; }
-        .curriculum ul { list-style: none; padding: 0; }
-        .curriculum li { padding: 8px 0; border-bottom: 1px solid #eee; }
-        .reviews { margin: 40px 0; }
-        .review { padding: 15px; border-left: 3px solid #f39c12; margin: 15px 0; background: #fefefe; }
-        .btn { display: block; width: 100%; max-width: 300px; margin: 40px auto; background: #1a1a1a; color: white; padding: 18px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 6px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Arial Narrow", Arial, Helvetica, sans-serif; line-height: 1.55; color: #e8e8e8; background: #141416; }
+        a { color: #ff6b00; }
+        .wrap { max-width: 840px; margin: 0 auto; padding: 0 22px; }
+
+        .topbar { background: #1c1c1f; border-bottom: 1px solid #2e2e33; position: sticky; top: 0; }
+        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding: 13px 0; }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: bold; font-size: 16px; letter-spacing: 0.06em; text-transform: uppercase; }
+        .logo { width: 30px; height: 30px; background: #ff6b00; display: flex; align-items: center; justify-content: center; color: #141416; font-weight: 900; font-size: 16px; transform: rotate(-4deg); }
+        .topnav { display: flex; gap: 18px; }
+        .topnav a { color: #9a9aa2; text-decoration: none; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; }
+        .topnav a:hover { color: #ff6b00; }
+
+        .hero { padding: 52px 0 44px; border-bottom: 1px solid #2e2e33; }
+        .kicker { color: #ff6b00; font-size: 12px; font-weight: bold; letter-spacing: 0.24em; text-transform: uppercase; margin-bottom: 12px; }
+        .hero h1 { font-size: 42px; font-weight: 900; line-height: 1.05; text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 14px; }
+        .hero h1 em { color: #ff6b00; font-style: normal; }
+        .hero p.lead { font-size: 16.5px; color: #9a9aa2; max-width: 560px; margin-bottom: 24px; }
+        .buyrow { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+        .price { font-size: 40px; font-weight: 900; color: #fff; line-height: 1; }
+        .price small { display: block; font-size: 12px; color: #9a9aa2; font-weight: normal; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 5px; }
+        .cta { display: inline-block; background: #ff6b00; color: #141416; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; padding: 16px 38px; text-decoration: none; border: 2px solid #ff6b00; }
+        .cta:hover { background: #141416; color: #ff6b00; text-decoration: none; }
+
+        .facts { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid #2e2e33; }
+        .fact { text-align: center; padding: 17px 6px; border-right: 1px solid #2e2e33; }
+        .fact:last-child { border-right: none; }
+        .fact b { display: block; font-size: 20px; color: #ff6b00; font-weight: 900; }
+        .fact span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #9a9aa2; }
+
+        section { padding: 40px 0; border-bottom: 1px solid #2e2e33; }
+        h2 { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; margin-bottom: 18px; }
+        h2::before { content: "// "; color: #ff6b00; }
+
+        .modules { display: grid; gap: 8px; counter-reset: mod; }
+        .module { display: flex; align-items: center; gap: 14px; background: #1c1c1f; border-left: 3px solid #ff6b00; padding: 13px 16px; }
+        .module .name { flex: 1; font-weight: bold; font-size: 15px; color: #e8e8e8; }
+        .module .lessons { font-size: 12px; color: #9a9aa2; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+        .total { margin-top: 14px; font-size: 13.5px; font-weight: bold; color: #ff6b00; text-transform: uppercase; letter-spacing: 0.06em; }
+
+        .instructor .inner { display: flex; gap: 24px; align-items: flex-start; }
+        .avatar { width: 96px; height: 96px; background: #ff6b00; display: flex; align-items: center; justify-content: center; color: #141416; font-size: 30px; font-weight: 900; flex-shrink: 0; transform: rotate(-2deg); }
+        .instructor .role { color: #ff6b00; font-size: 11.5px; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+        .instructor h2 { margin-bottom: 6px; }
+        .instructor .degree { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 9px; }
+        .instructor p { color: #9a9aa2; font-size: 15px; }
+
+        .empty-reviews { background: #1c1c1f; border: 1px dashed #4a4a52; padding: 30px 22px; text-align: center; }
+        .empty-reviews .icon { font-size: 30px; color: #4a4a52; }
+        .empty-reviews p { color: #9a9aa2; font-size: 15px; margin-top: 8px; }
+        .empty-reviews b { color: #e8e8e8; }
+
+        .enroll-band { background: #ff6b00; color: #141416; text-align: center; padding: 36px 0; border-bottom: none; }
+        .enroll-band h2 { color: #141416; }
+        .enroll-band h2::before { color: #141416; }
+        .enroll-band .price { color: #141416; margin-bottom: 16px; }
+        .enroll-band .price small { color: #5c2c00; }
+        .cta-dark { display: inline-block; background: #141416; color: #ff6b00; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 0.08em; padding: 16px 38px; text-decoration: none; border: 2px solid #141416; }
+        .cta-dark:hover { background: transparent; color: #141416; text-decoration: none; }
+
+        footer { background: #0e0e10; color: #6a6a72; font-size: 12px; padding: 20px 0; text-align: center; text-transform: uppercase; letter-spacing: 0.08em; }
+        footer a { color: #9a9aa2; }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 30px; }
+            .facts { grid-template-columns: repeat(2, 1fr); }
+            .fact:nth-child(2) { border-right: none; }
+            .instructor .inner { flex-direction: column; align-items: center; text-align: center; }
+            .topnav { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>Brushstroke Studio - Professional Oil Painting Program</h1>
-        <p>Master classical oil techniques with a world-class instructor</p>
-        <div class="rating">No reviews yet</div>
-        <div class="price">$299</div>
-        <p>Lifetime access • Downloadable resources • Private community</p>
-    </div>
-
-    <div class="instructor">
-        <img src="instructor.jpg" alt="Marcus Chen">
-        <div>
-            <h2>Marcus Chen — National Geographic Photographer / Painter</h2>
-            <p><strong>20+ years</strong> as professional artist. Winner of BP Portrait Award (2018, 2021). Exhibited at Royal Academy, National Portrait Gallery. Former Royal Academy Schools tutor. Leads painting expeditions to Tuscany, Provence, and the Scottish Highlands.</p>
+    <div class="topbar">
+        <div class="wrap">
+            <a class="brand" href="#"><span class="logo">B</span> Brushstroke Studio</a>
+            <nav class="topnav">
+                <a href="#program">Program</a>
+                <a href="#instructor">Instructor</a>
+                <a href="#reviews">Reviews</a>
+            </nav>
         </div>
     </div>
 
-    <section>
-        <h2>Course Curriculum</h2>
-        <div class="curriculum">
-            <div>
-                <h3>Foundations</h3>
-                <ul>
-                    <li>Materials & Studio Setup</li>
-                    <li>Color Theory & Mixing</li>
-                    <li>Drawing for Painters</li>
-                </ul>
-                <h3>Classical Techniques</h3>
-                <ul>
-                    <li>Grisaille & Underpainting</li>
-                    <li>Glazing & Scumbling</li>
-                    <li>Alla Prima</li>
-                </ul>
+    <header class="hero">
+        <div class="wrap">
+            <p class="kicker">Professional Program · Oil Painting</p>
+            <h1>Professional Oil Painting <em>Program</em></h1>
+            <p class="lead">A rigorous, structured track for painters who want professional-grade technique — fundamentals through portfolio.</p>
+            <div class="buyrow">
+                <div class="price">$299 <small>One-time · Lifetime access</small></div>
+                <a class="cta" href="#enroll">Enroll Now</a>
             </div>
-            <div>
-                <h3>Subjects</h3>
-                <ul>
-                    <li>Still Life</li>
-                    <li>Portrait</li>
-                    <li>Landscape</li>
-                </ul>
-                <h3>Professional Practice</h3>
-                <ul>
-                    <li>Studio Management</li>
-                    <li>Exhibition Prep</li>
-                    <li>Pricing & Sales</li>
-                </ul>
+        </div>
+    </header>
+
+    <div class="facts">
+        <div class="fact"><b>42</b><span>Lessons</span></div>
+        <div class="fact"><b>16h</b><span>Video</span></div>
+        <div class="fact"><b>5</b><span>Modules</span></div>
+        <div class="fact"><b>∞</b><span>Access</span></div>
+    </div>
+
+    <section id="program">
+        <div class="wrap">
+            <h2>Program Structure</h2>
+            <div class="modules">
+                <div class="module"><span class="name">1 · Foundations &amp; Studio Discipline</span><span class="lessons">8 lessons</span></div>
+                <div class="module"><span class="name">2 · Color Systems &amp; Value Control</span><span class="lessons">9 lessons</span></div>
+                <div class="module"><span class="name">3 · Advanced Brushwork &amp; Surfaces</span><span class="lessons">9 lessons</span></div>
+                <div class="module"><span class="name">4 · Figurative &amp; Landscape Practice</span><span class="lessons">10 lessons</span></div>
+                <div class="module"><span class="name">5 · Portfolio &amp; Professional Practice</span><span class="lessons">6 lessons</span></div>
+            </div>
+            <p class="total">42 lessons · 16 hours of video · Certificate on completion</p>
+        </div>
+    </section>
+
+    <section class="instructor" id="instructor">
+        <div class="wrap">
+            <div class="inner">
+                <div class="avatar">DR</div>
+                <div>
+                    <p class="role">Lead Instructor</p>
+                    <h2>Daniel Reyes</h2>
+                    <p class="degree">MFA, Slade School of Fine Art · Former Senior Lecturer, Chelsea College of Arts</p>
+                    <p>20 years of professional practice with commissions for public collections and three solo shows in London. Trained a generation of painters now working as gallery artists and illustrators.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="reviews">
-        <h2>Student Reviews</h2>
-        <p>No reviews yet — be the first to experience this program!</p>
+    <section id="reviews">
+        <div class="wrap">
+            <h2>Reviews</h2>
+            <div class="empty-reviews">
+                <div class="icon">☆</div>
+                <p><b>No reviews yet.</b></p>
+                <p>This is a new program — be the first student to leave a review after you complete it.</p>
+            </div>
+        </div>
     </section>
 
-    <a href="#" class="btn">Enroll Now - $299</a>
+    <section class="enroll-band" id="enroll">
+        <div class="wrap">
+            <h2>Enroll in the program</h2>
+            <div class="price">$299 <small>One-time payment · Lifetime access · Certificate included</small></div>
+            <a class="cta-dark" href="#">Enroll Now - $299</a>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 Brushstroke Studio · <a href="#">Terms</a> · <a href="#">Privacy</a>
+    </footer>
 </body>
 </html>

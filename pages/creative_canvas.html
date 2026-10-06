@@ -14,69 +14,146 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creative Canvas - Oil Painting for Everyone</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
-        .container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; text-align: center; }
-        .price { text-align: center; font-size: 1.5em; color: #666; margin: 20px 0; }
-        .rating { text-align: center; color: #f39c12; margin: 1rem 0; }
-        .instructor { text-align: center; margin: 30px 0; }
-        .section { margin: 1.5rem 0; }
-        .section h2 { color: #444; }
-        ul { padding-left: 1.5rem; }
-        li { margin: 0.5rem 0; }
-        .btn { display: block; width: 100%; background: #e74c3c; color: white; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 5px; font-size: 1.2em; }
-        .reviews-list { margin: 1rem 0; }
-        .review-item { background: white; padding: 1rem; border-radius: 4px; border: 1px solid #eee; margin: 0.5rem 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "Comic Sans MS", "Segoe Print", "Chalkboard SE", "Marker Felt", sans-serif; line-height: 1.7; color: #4a3f45; background: #fff6ef; }
+        a { color: #e06377; }
+        .wrap { max-width: 800px; margin: 0 auto; padding: 0 22px; }
+
+        header { background: linear-gradient(135deg, #ffd9e0, #ffe9d6 60%, #fff3c9); padding: 44px 0 38px; text-align: center; border-bottom: 4px dotted #ffb3c1; }
+        .logo-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 14px; }
+        .logo { width: 42px; height: 42px; background: #ff8fa3; border-radius: 14px 6px 14px 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 21px; transform: rotate(-6deg); }
+        .brandname { font-size: 21px; font-weight: bold; color: #d4536a; letter-spacing: 0.02em; }
+        header h1 { font-size: 34px; color: #d4536a; line-height: 1.2; margin-bottom: 8px; }
+        header .sub { font-size: 16.5px; color: #8a6f78; max-width: 500px; margin: 0 auto 14px; }
+        .price-chip { display: inline-block; background: #fff; border: 3px solid #ff8fa3; border-radius: 999px; padding: 9px 24px; font-size: 15.5px; font-weight: bold; color: #d4536a; box-shadow: 3px 3px 0 #ffd9e0; }
+        .cta { display: inline-block; background: #e06377; color: #fff; font-weight: bold; font-size: 16px; padding: 13px 36px; border-radius: 999px; text-decoration: none; margin-top: 16px; box-shadow: 0 4px 0 #b34a5c; }
+        .cta:hover { background: #ec788b; text-decoration: none; }
+
+        section { padding: 32px 0; }
+        .h-a { font-size: 27px; color: #d4536a; font-weight: bold; }
+        .h-b { font-size: 21px; color: #e8965a; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; }
+        .h-c { font-size: 18px; color: #8a6f78; font-weight: bold; }
+
+        .welcome p { font-size: 15.5px; margin-bottom: 13px; color: #5e5158; }
+        .welcome p:first-of-type::first-letter { font-size: 42px; font-weight: bold; color: #ff8fa3; float: left; line-height: 1; padding-right: 7px; }
+
+        .stars { color: #f4a259; letter-spacing: 2px; }
+        .review { background: #fff; border: 2px solid #ffd9e0; border-radius: 18px; padding: 15px 17px; margin-bottom: 11px; box-shadow: 3px 3px 0 #fff0e3; }
+        .review p { font-size: 14.5px; font-style: italic; color: #6b5c64; margin: 5px 0; }
+        .review cite { font-style: normal; font-size: 12.5px; color: #b3929e; font-weight: bold; }
+        .more { display: inline-block; font-weight: bold; color: #e06377; margin-top: 6px; }
+
+        .scatter { background: #fff; border-radius: 22px; padding: 22px; border: 2px dashed #ffc2a8; margin-bottom: 18px; }
+        .scatter ul { margin: 10px 0 0 4px; padding-left: 20px; }
+        .scatter li { font-size: 15px; padding: 4px 0; color: #5e5158; }
+        .scatter li::marker { color: #ff8fa3; }
+
+        .note { background: #fff3c9; border-left: 5px solid #f4a259; border-radius: 0 14px 14px 0; padding: 14px 17px; font-size: 14.5px; color: #6b5c4a; margin: 16px 0; }
+
+        .hostline { text-align: center; background: #ffe9d6; padding: 26px 0; }
+        .hostline .avatar { width: 68px; height: 68px; background: linear-gradient(145deg, #ff8fa3, #e06377); border-radius: 50%; margin: 0 auto 9px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 23px; font-weight: bold; }
+        .hostline p { font-size: 14.5px; color: #8a6f78; max-width: 460px; margin: 6px auto 0; }
+
+        .pricingband { background: #ff8fa3; text-align: center; padding: 32px 0; color: #fff; }
+        .pricingband .h-a { color: #fff; }
+        .pricingband p { color: #fff0f3; font-size: 15.5px; margin-bottom: 14px; }
+        .cta-light { display: inline-block; background: #fff; color: #d4536a; font-weight: bold; font-size: 16px; padding: 13px 34px; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 0 #d4536a; }
+        .cta-light:hover { background: #fff3c9; text-decoration: none; }
+
+        .qa { background: #fff; border-radius: 16px; padding: 14px 17px; margin-bottom: 10px; border: 1px solid #ffe0e6; }
+        .qa b { color: #d4536a; font-size: 15.5px; display: block; margin-bottom: 3px; }
+
+        footer { background: #4a3f45; color: #c4aeb7; font-size: 12.5px; padding: 20px 0; text-align: center; }
+        footer a { color: #ffb3c1; }
+
+        @media (max-width: 640px) {
+            header h1 { font-size: 26px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Oil Painting for Everyone</h1>
-        <p style="text-align: center; font-size: 1.1em; color: #666;">The simple, joyful way to learn oil painting at home</p>
-        
-        <div class="price">Contact for pricing</div>
-        
-        <div class="rating">★★★★☆ 3.8 (8 reviews)</div>
-        
-        <div class="section instructor">
-            <h3>Your Instructor</h3>
-            <p>Passionate Artist & Teacher</p>
-            <p>Loves helping beginners discover their creative potential</p>
+    <header>
+        <div class="wrap">
+            <div class="logo-row"><span class="logo">✿</span><span class="brandname">Creative Canvas</span></div>
+            <h1>Oil Painting for Everyone</h1>
+            <p class="sub">A warm, unhurried introduction to painting with oils — no experience needed, no wrong answers.</p>
+            <span class="price-chip">Contact us for current pricing</span><br>
+            <a class="cta" href="#pricing">Ask About Pricing</a>
         </div>
-        
-        <div class="section">
-            <h2>What You'll Learn</h2>
-            <ul>
-                <li>Module 1: Getting Started with Oils — materials, setup, safety</li>
-                <li>Module 2: Color Basics — mixing, temperature, limited palettes</li>
-                <li>Module 3: Simple Paintings — step-by-step still life projects</li>
-                <li>Module 4: Landscape Essentials — skies, trees, water, atmosphere</li>
-                <li>Module 5: Finding Your Style — experimentation, series work, personal voice</li>
-                <li>Module 6: Sharing Your Art — photographing, framing, online presence</li>
-            </ul>
+    </header>
+
+    <section class="welcome">
+        <div class="wrap">
+            <p>Welcome! If you've ever stood in front of a blank canvas and thought "I'd love to try this, but I wouldn't know where to start" — this little course was made for you. Oil painting has a reputation for being intimidating: the solvents, the mediums, the centuries of technique. We take all of that seriously, and then we take it apart gently, one small step at a time.</p>
+            <p>Over about 14 hours of video, we move through the basics without rushing: how to set up a workspace that doesn't take over your kitchen table, what those tubes of paint actually are, how colors mix (and why gray is the most useful color you'll ever learn), and how to finish a painting you're genuinely happy to hang on a wall. There are no prerequisites here except curiosity.</p>
+            <div class="note"><b>A note on pace:</b> Some people finish the whole course in a month; others take a year, dipping in and out around work and family. Both are completely fine. There are no deadlines and nothing expires — the course waits for you.</div>
         </div>
-        
-        <div class="section">
-            <h2>Student Reviews</h2>
-            <div class="reviews-list">
-                <div class="review-item">★★★★☆ "Fun and accessible. Great for total beginners." — A. Singh</div>
-                <div class="review-item">★★★★☆ "Finally understand how to mix colors!" — B. Lopez</div>
-                <div class="review-item">★★★☆☆ "Good content but instructor feedback is slow." — C. Park</div>
-                <div class="review-item">★★★☆☆ "Expected more advanced content." — D. Wilson</div>
+    </section>
+
+    <section>
+        <div class="wrap">
+            <div class="h-b">What students say</div>
+            <p style="font-size:14.5px; color:#8a6f78; margin:4px 0 12px;"><span class="stars">★★★☆☆</span> <b>3.8</b> average · 8 reviews</p>
+            <div class="review"><span class="stars">★★★★☆</span><p>"Really lovely and unintimidating. I'd tried a class before and felt out of place — here nobody makes you feel behind."</p><cite>— Hanna W.</cite></div>
+            <div class="review"><span class="stars">★★★★☆</span><p>"The color mixing section is worth the whole course. I finally understand what I'm doing when I squeeze paint onto the palette."</p><cite>— George P.</cite></div>
+            <div class="review"><span class="stars">★★★☆☆</span><p>"Good content, though I'd have liked more close-ups of the brushwork in the later lessons."</p><cite>— Amara J.</cite></div>
+            <a class="more" href="#">See all 8 reviews →</a>
+        </div>
+    </section>
+
+    <section>
+        <div class="wrap">
+            <div class="h-a">A few of the things you'll paint</div>
+            <div class="scatter">
+                <p style="font-size:15px; color:#5e5158;">We start small and stay friendly — single objects, simple scenes, the kind of subject you can set up on a windowsill:</p>
+                <ul>
+                    <li>A lemon, an apple, and a crumpled cloth (the classic still life)</li>
+                    <li>Mixing a whole painting from just three colors</li>
+                    <li>Skies — the fastest way to learn soft edges</li>
+                    <li>Your morning coffee, painted from life</li>
+                    <li>A simple landscape from a photograph you took</li>
+                    <li>Brushwork drills that feel more like doodling than practice</li>
+                    <li>Loose flowers without counting petals</li>
+                    <li>Knowing when a painting is done, and signing it</li>
+                </ul>
             </div>
-            <p><a href="#">View all 8 reviews →</a></p>
+            <div class="scatter">
+                <div class="h-c">About the materials</div>
+                <p style="font-size:15px; color:#5e5158;">You don't need much to begin: a small set of paints (we recommend starting with six tubes), two or three brushes, a palette, and something to paint on. A proper kit costs less than most textbooks. Inside the course there's a shopping list with three budget levels — "under $50", "the sensible middle", and "treat yourself" — so you can start where you are.</p>
+                <p style="font-size:15px; color:#5e5158;">On solvents: yes, they exist, and no, you don't need them to start. We show a low-odor, no-solvent setup you can use in a small apartment, plus how to ventilate properly if you'd rather work the traditional way.</p>
+            </div>
         </div>
-        
-        <div class="section">
-            <h2>Frequently Asked Questions</h2>
-            <p><strong>Do I need prior experience?</strong> Absolutely not! This is designed for complete beginners.</p>
-            <p><strong>Why is pricing hidden?</strong> We offer flexible payment plans. Contact us to find the right fit.</p>
-            <p><strong>What materials do I need?</strong> Basic starter kit (approx. $100-150). We'll guide you.</p>
-            <p><strong>Is there a community?</strong> Yes, private community forum with 300+ members.</p>
-            <p><strong>Can I download videos?</strong> Yes, all content is downloadable for offline viewing.</p>
+    </section>
+
+    <section class="hostline">
+        <div class="wrap">
+            <div class="avatar">CC</div>
+            <div class="h-b" style="font-size:18px;">Hosted by the Creative Canvas crew</div>
+            <p>We're a couple of painters who teach beginners because we remember what it felt like to be one. We answer every message, and we add a new lesson every couple of months.</p>
         </div>
-        
-        <a href="#" class="btn">Get Started - Contact Us for Price</a>
-    </div>
+    </section>
+
+    <section id="pricing">
+        <div class="wrap">
+            <div class="h-b">Pricing &amp; how it works</div>
+            <p style="font-size:15.5px; color:#5e5158; margin-bottom:12px;">Course pricing depends on where you are and whether there's a promotion running, so rather than publish a number that might be wrong, we'll always quote you the current price — usually within a few hours.</p>
+            <div class="qa"><b>How do I enroll?</b>Send us a note through the contact link and we'll reply with the current price and a sign-up link. Simple as that.</div>
+            <div class="qa"><b>Is it a subscription?</b>No. Whatever we quote is a one-time price, and you keep access to everything, including future lessons.</div>
+            <div class="qa"><b>What if I'm not sure it's for me?</b>There's a 30-day refund window — email us and we'll sort it out, no awkward questions.</div>
+            <div class="qa"><b>Do I get a certificate?</b>There's nothing to certify here really — it's a course for pleasure, not a qualification. You're welcome to share your finished paintings though!</div>
+        </div>
+    </section>
+
+    <section class="pricingband">
+        <div class="wrap">
+            <div class="h-a">Come and paint with us</div>
+            <p>Ask for today's price — we usually reply within a few hours.</p>
+            <a class="cta-light" href="#">Contact for Pricing</a>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 Creative Canvas · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Contact</a>
+    </footer>
 </body>
 </html>
