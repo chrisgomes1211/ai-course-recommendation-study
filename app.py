@@ -399,11 +399,23 @@ def api_features():
 
 @app.route("/api/keys-check")
 def api_keys_check():
-    """Verify provider keys and test every model in config.yaml with a minimal call."""
+    """Verify provider keys, list valid model IDs, and probe each provider once."""
     import src.models as models_mod
 
-    with open("config.yaml", "r") as f:
-        cfg = yaml.safe_load(f)
+    def err_str(e):
+        msg = str(e)
+        if e.__class__.__name__ == "RetryError":
+            try:
+                msg = str(e.last_attempt.exception())
+            except Exception:
+                pass
+        return msg[:300]
+
+    try:
+        with open("config.yaml", "r") as f:
+            cfg = yaml.safe_load(f)
+    except Exception as e:
+        return jsonify({"error": f"config: {err_str(e)}"}), 500
 
     provider_keys = {
         "openai": os.getenv("OPENAI_API_KEY"),
@@ -411,32 +423,61 @@ def api_keys_check():
         "google": os.getenv("GOOGLE_API_KEY"),
         "xai": os.getenv("XAI_API_KEY"),
     }
-    available = {k: bool(v) for k, v in provider_keys.items()}
 
-    results = []
-    for m in cfg.get("models", []):
-        name, provider = m["name"], m["provider"]
-        entry = {"model": name, "provider": provider, "ok": False, "error": None}
-        if not provider_keys.get(provider):
-            entry["error"] = f"no {provider} key configured"
-            results.append(entry)
+    def list_model_ids(provider, key):
+        if provider == "openai":
+            from openai import OpenAI
+            return {m.id for m in OpenAI(api_key=key).models.list()}
+        if provider == "anthropic":
+            from anthropic import Anthropic
+            return {m.id for m in Anthropic(api_key=key).models.list()}
+        if provider == "google":
+            import google.generativeai as genai
+            genai.configure(api_key=key)
+            return {m.name.removeprefix("models/") for m in genai.list_models()}
+        if provider == "xai":
+            from openai import OpenAI
+            return {m.id for m in OpenAI(api_key=key, base_url="https://api.x.ai/v1").models.list()}
+        return set()
+
+    providers = {}
+    listed = {}
+    for prov, key in provider_keys.items():
+        if not key:
+            providers[prov] = {"key_set": False, "list_ok": False, "list_error": None}
             continue
         try:
-            prov = models_mod.get_provider(m, cfg.get("pricing", {}))
-            resp = prov.complete("Hi")
-            entry["ok"] = True
-            entry["tokens"] = {"in": resp.input_tokens, "out": resp.output_tokens}
-            entry["cost_usd"] = round(resp.estimated_cost_usd, 6)
+            ids = list_model_ids(prov, key)
+            listed[prov] = ids
+            providers[prov] = {"key_set": True, "list_ok": True, "list_error": None, "models_available": len(ids)}
         except Exception as e:
-            entry["error"] = str(e)[:300]
-        results.append(entry)
+            providers[prov] = {"key_set": True, "list_ok": False, "list_error": err_str(e)}
 
+    models_out = []
+    probed = set()
+    for m in cfg.get("models", []):
+        name, prov = m["name"], m["provider"]
+        entry = {"model": name, "provider": prov, "listed": None, "probe_ok": None, "probe_error": None}
+        if prov in listed:
+            entry["listed"] = name in listed[prov]
+        if providers.get(prov, {}).get("list_ok") and prov not in probed:
+            probed.add(prov)
+            try:
+                p = models_mod.get_provider(m, cfg.get("pricing", {}))
+                r = p.complete("Hi")
+                entry["probe_ok"] = True
+                entry["probe_cost_usd"] = round(r.estimated_cost_usd, 6)
+            except Exception as e:
+                entry["probe_ok"] = False
+                entry["probe_error"] = err_str(e)
+        models_out.append(entry)
+
+    bad = [m for m in models_out if m["listed"] is False or m["probe_ok"] is False]
     return jsonify({
-        "keys": available,
+        "providers": providers,
+        "models": models_out,
+        "invalid": [f"{m['provider']}:{m['model']}" for m in bad],
         "budget_cap_usd": cfg.get("budget_cap_usd"),
-        "results": results,
-        "ok_count": sum(1 for r in results if r["ok"]),
-        "total": len(results),
     })
 
 @app.route("/page/<path:page_id>")
