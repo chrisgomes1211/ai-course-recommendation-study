@@ -25,13 +25,13 @@ models:
     tier: high
 
   # Google
-  - name: gemini-2.5-flash
+  - name: gemini-3.1-flash-lite
     provider: google
     tier: low
   - name: gemini-3.8-flash
     provider: google
     tier: low
-  - name: gemini-2.5-pro
+  - name: gemini-3.5-flash
     provider: google
     tier: high
   - name: gemini-3.1-pro-preview
@@ -63,9 +63,9 @@ pricing:
   claude-sonnet-4-6: {input: 3.00, output: 15.00}
 
   # Google (verified Oct 2026)
-  gemini-2.5-flash: {input: 0.30, output: 2.50}
+  gemini-3.1-flash-lite: {input: 0.25, output: 1.50}
   gemini-3.8-flash: {input: 0.75, output: 3.75}
-  gemini-2.5-pro: {input: 1.25, output: 10.00}
+  gemini-3.5-flash: {input: 1.50, output: 9.00}
   gemini-3.1-pro-preview: {input: 2.00, output: 12.00}
 
   # xAI
