@@ -406,9 +406,7 @@ def api_keys_check():
         return jsonify({"error": traceback.format_exc()[-2500:]}), 500
 
 def _keys_check_impl():
-    """Verify provider keys, list valid model IDs, and probe each provider once."""
-    import src.models as models_mod
-
+    """Verify provider keys and list valid model IDs; probe one model per request."""
     def err_str(e):
         msg = str(e)
         if e.__class__.__name__ == "RetryError":
@@ -447,6 +445,37 @@ def _keys_check_impl():
             return {m.id for m in OpenAI(api_key=key, base_url="https://api.x.ai/v1").models.list()}
         return set()
 
+    def probe_model(provider, model, key):
+        if provider == "openai":
+            from openai import OpenAI
+            r = OpenAI(api_key=key).chat.completions.create(
+                model=model, messages=[{"role": "user", "content": "Hi"}], max_completion_tokens=16)
+            u = r.usage
+            return {"tokens": {"in": u.prompt_tokens, "out": u.completion_tokens}}
+        if provider == "anthropic":
+            from anthropic import Anthropic
+            r = Anthropic(api_key=key).messages.create(
+                model=model, max_tokens=1, messages=[{"role": "user", "content": "Hi"}])
+            u = r.usage
+            return {"tokens": {"in": u.input_tokens, "out": u.output_tokens}}
+        if provider == "google":
+            import google.generativeai as genai
+            genai.configure(api_key=key)
+            r = genai.GenerativeModel(model).generate_content(
+                "Hi", generation_config={"max_output_tokens": 16})
+            if not getattr(r, "candidates", None):
+                raise RuntimeError(f"no candidates (blocked?): {getattr(r, 'prompt_feedback', 'unknown')}")
+            usage = getattr(r, "usage_metadata", None)
+            return {"finish": r.candidates[0].finish_reason,
+                    "tokens": {"in": getattr(usage, "prompt_token_count", None),
+                               "out": getattr(usage, "candidates_token_count", None)}}
+        if provider == "xai":
+            from openai import OpenAI
+            r = OpenAI(api_key=key, base_url="https://api.x.ai/v1").chat.completions.create(
+                model=model, messages=[{"role": "user", "content": "Hi"}], max_tokens=16)
+            return {"tokens": {"in": r.usage.prompt_tokens, "out": r.usage.completion_tokens}}
+        raise ValueError(f"unknown provider {provider}")
+
     providers = {}
     listed = {}
     for prov, key in provider_keys.items():
@@ -460,32 +489,38 @@ def _keys_check_impl():
         except Exception as e:
             providers[prov] = {"key_set": True, "list_ok": False, "list_error": err_str(e)}
 
+    probe_target = request.args.get("probe")
+    if probe_target:
+        prov, _, name = probe_target.partition(":")
+        key = provider_keys.get(prov)
+        if not key:
+            return jsonify({"probe_ok": False, "probe_error": f"no {prov} key"}), 200
+        if name not in [cm["name"] for cm in cfg.get("models", [])]:
+            return jsonify({"probe_ok": False, "probe_error": "model not in config.yaml"}), 200
+        try:
+            info = probe_model(prov, name, key)
+            return jsonify({"probe_ok": True, "model": name, "provider": prov, **info})
+        except Exception as e:
+            return jsonify({"probe_ok": False, "model": name, "provider": prov, "probe_error": err_str(e)})
+
     if request.args.get("list"):
         return jsonify({"available": {p: sorted(ids) for p, ids in listed.items()}})
 
     models_out = []
     for m in cfg.get("models", []):
         name, prov = m["name"], m["provider"]
-        entry = {"model": name, "provider": prov, "listed": None, "probe_ok": None, "probe_error": None}
+        entry = {"model": name, "provider": prov, "listed": None}
         if prov in listed:
             entry["listed"] = name in listed[prov]
-        if providers.get(prov, {}).get("list_ok") and entry["listed"]:
-            try:
-                p = models_mod.get_provider(m, cfg.get("pricing", {}))
-                r = p.complete("Hi")
-                entry["probe_ok"] = True
-                entry["probe_cost_usd"] = round(r.estimated_cost_usd, 6)
-            except Exception as e:
-                entry["probe_ok"] = False
-                entry["probe_error"] = err_str(e)
         models_out.append(entry)
 
-    bad = [m for m in models_out if m["listed"] is False or m["probe_ok"] is False]
+    bad = [m for m in models_out if m["listed"] is False]
     return jsonify({
         "providers": providers,
         "models": models_out,
-        "invalid": [f"{m['provider']}:{m['model']}" for m in bad],
+        "not_listed": [f"{m['provider']}:{m['model']}" for m in bad],
         "budget_cap_usd": cfg.get("budget_cap_usd"),
+        "note": "use ?probe=provider:model to live-test one model",
     })
 
 @app.route("/page/<path:page_id>")
