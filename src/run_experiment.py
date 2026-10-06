@@ -76,8 +76,14 @@ def append_result(row: Dict[str, Any]):
         writer.writerow(row)
 
 def build_page_html_block(pages: Dict[str, str]) -> str:
+    import random
+    import re
+    items = list(pages.items())
+    random.shuffle(items)
     blocks = []
-    for page_id, html in pages.items():
+    for page_id, html in items:
+        html = re.sub(r"<!--.*?-->", "", html, flags=re.DOTALL)
+        html = re.sub(r"\n{3,}", "\n\n", html)
         blocks.append(f"=== {page_id} ===\n{html}\n")
     return "\n".join(blocks)
 

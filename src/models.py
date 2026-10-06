@@ -63,16 +63,20 @@ class OpenAIProvider(ModelProvider):
         super().__init__(model_name, pricing)
         from openai import OpenAI
         self.client = OpenAI(api_key=api_key)
-    
+
     @retry(**RETRY_KWARGS)
     def complete(self, prompt: str) -> ModelResponse:
-        response = self.client.chat.completions.create(
-            model=self.model_name,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.1,
-            max_tokens=2000
-        )
-        text = response.choices[0].message.content
+        kwargs: Dict[str, Any] = {
+            "model": self.model_name,
+            "messages": [{"role": "user", "content": prompt}],
+        }
+        if self.model_name.startswith(("gpt-5", "gpt-6", "o1", "o3", "o4")):
+            kwargs["max_completion_tokens"] = 4000
+        else:
+            kwargs["temperature"] = 0.1
+            kwargs["max_tokens"] = 2000
+        response = self.client.chat.completions.create(**kwargs)
+        text = response.choices[0].message.content or ""
         input_tokens = response.usage.prompt_tokens
         output_tokens = response.usage.completion_tokens
         cost = self._calculate_cost(input_tokens, output_tokens)
