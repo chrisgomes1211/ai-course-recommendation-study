@@ -341,6 +341,30 @@ def run_test():
         model_groups=model_groups,
     )
 
+@app.route("/redesign")
+@app.route("/v2")
+def redesign():
+    config = load_config()
+    models = config["models"]
+    pages = load_pages()
+    features = load_features()
+    provider_names = {"openai": "OpenAI", "anthropic": "Anthropic", "google": "Google", "xai": "xAI"}
+    grouped = {}
+    for m in models:
+        grouped.setdefault(m.get("provider", ""), []).append(m)
+    model_groups = [
+        {"key": p, "label": provider_names.get(p, p.capitalize() or "Other"), "models": ms}
+        for p, ms in grouped.items()
+    ]
+    return render_template(
+        "redesign.html",
+        models=models,
+        pages=pages,
+        features=features,
+        budget=get_budget_cap(),
+        model_groups=model_groups,
+    )
+
 @app.route("/api/run-test", methods=["POST"])
 def api_run_test():
     data = request.get_json()
