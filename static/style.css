@@ -1830,6 +1830,83 @@ tbody tr:hover td.reason { color:var(--row-hover-color); font-style:normal; }
     .hero-layer { transform:none !important; }
 }
 
+/* ---------- Welcome bot (Run a Test hero) ---------- */
+
+.welcome-bot-wrap {
+    position:absolute;
+    top:30px;
+    right:44px;
+    width:230px;
+    z-index:2;
+    pointer-events:none;
+    animation:wb-rise .9s cubic-bezier(.16,1,.3,1) both, wb-float 6s 1s ease-in-out infinite;
+}
+
+.welcome-bot { width:100%; aspect-ratio:1; }
+.welcome-bot svg { width:100%; height:100%; display:block; }
+
+.welcome-bot-bubble {
+    position:absolute;
+    top:2px;
+    left:-34px;
+    z-index:1;
+    padding:7px 13px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--r-pill);
+    box-shadow:var(--shadow);
+    color:var(--ink);
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.01em;
+    animation:wb-pop .55s .5s cubic-bezier(.16,1,.3,1) both;
+}
+
+.welcome-bot-bubble::after {
+    content:"";
+    position:absolute;
+    right:18px;
+    bottom:-5px;
+    width:10px;
+    height:10px;
+    background:var(--surface);
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    transform:rotate(45deg);
+}
+
+:root[data-theme="win95"] .welcome-bot-bubble { border-radius:0; }
+:root[data-theme="win95"] .welcome-bot-wrap { display:none; }
+
+@keyframes wb-rise {
+    from { opacity:0; transform:translateY(26px); }
+    to { opacity:1; transform:translateY(0); }
+}
+
+@keyframes wb-float {
+    0%, 100% { transform:translateY(0); }
+    50% { transform:translateY(-9px); }
+}
+
+@keyframes wb-pop {
+    from { opacity:0; transform:scale(.55); }
+    to { opacity:1; transform:scale(1); }
+}
+
+@media (max-width:1180px) {
+    .welcome-bot-wrap { width:170px; right:26px; top:24px; }
+    .welcome-bot-bubble { left:-18px; font-size:11.5px; padding:6px 11px; }
+}
+
+@media (max-width:1040px) {
+    .welcome-bot-wrap { display:none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .welcome-bot-wrap,
+    .welcome-bot-bubble { animation:none; }
+}
+
 /* ---------- Atlantic polish ---------- */
 
 :root[data-theme="atlantic"] .page-header h1::after {

@@ -88,6 +88,10 @@
             <li><strong class="hero-stat" data-count="{{ budget|int }}" data-prefix="$">${{ budget|int }}</strong> budget cap</li>
         </ul>
     </div>
+    <div class="welcome-bot-wrap" aria-hidden="true">
+        <span class="welcome-bot-bubble">Welcome!</span>
+        <div class="welcome-bot" id="welcome-bot"></div>
+    </div>
 </section>
 
 <div class="card reveal reveal-1" id="single-run">
@@ -242,6 +246,26 @@
 {% endblock %}
 
 {% block scripts %}
+{# Welcome robot: "Robot Hello | Loop Animation" by AnEmotion Studio on LottieFiles (free license) #}
+<script src="{{ url_for('static', filename='lottie.min.js') }}"></script>
+<script>
+(function () {
+    const el = document.getElementById('welcome-bot');
+    if (!el || typeof lottie === 'undefined') return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const anim = lottie.loadAnimation({
+        container: el,
+        renderer: 'svg',
+        loop: !reduce,
+        autoplay: !reduce,
+        path: '{{ url_for("static", filename="welcome-bot.json") }}'
+    });
+    if (reduce) {
+        anim.addEventListener('DOMLoaded', () => anim.goToAndStop(1, true));
+    }
+    window.__welcomeBot = anim;
+})();
+</script>
 <script>
 let batchPollInterval = null;
 
