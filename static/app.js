@@ -314,17 +314,29 @@ function escapeHtml(text) {
 
 const THEME_ICONS = {
     atlantic: '<circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>',
-    win95: '<rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path>'
+    win95: '<rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path>',
+    studio: '<path d="M12 2l8 10-8 10-8-10z"></path>'
 };
 
-const THEME_LABELS = { atlantic: 'Atlantic', win95: 'Windows 95' };
+const THEME_LABELS = { atlantic: 'Atlantic', win95: 'Windows 95', studio: 'Studio' };
 
 function currentTheme() {
-    return document.documentElement.getAttribute('data-theme') === 'win95' ? 'win95' : 'atlantic';
+    const t = document.documentElement.getAttribute('data-theme');
+    return (t === 'win95' || t === 'studio') ? t : 'atlantic';
 }
 
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'studio') {
+        document.documentElement.setAttribute('data-pref', 'light');
+    } else if (theme === 'atlantic' && window.matchMedia) {
+        document.documentElement.setAttribute('data-pref', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    }
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.documentElement.classList.toggle('js-anim', theme !== 'win95' && !reduce);
+    if (theme !== 'atlantic') {
+        document.querySelectorAll('.hero-layer[data-depth]').forEach((layer) => { layer.style.transform = ''; });
+    }
     try { localStorage.setItem('acs-theme', theme); } catch (e) {}
     updateThemeUI();
 }
@@ -365,7 +377,7 @@ function initHeroParallax() {
     let ticking = false;
     const update = () => {
         ticking = false;
-        if (currentTheme() === 'win95') return;
+        if (currentTheme() !== 'atlantic') return;
         const y = window.scrollY || 0;
         if (y > hero.offsetTop + hero.offsetHeight) return;
         for (const layer of layers) {

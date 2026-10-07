@@ -124,11 +124,18 @@
         <div class="form-group">
             <label>Models to Include</label>
             <div id="model-checkboxes" class="checkbox-group">
-                {% for model in models %}
-                <label class="checkbox-label">
-                    <input type="checkbox" name="batch-models" value="{{ model.name }}" checked>
-                    <span>{{ model.name }} ({{ model.provider }}, {{ model.tier }})</span>
-                </label>
+                {% for group in model_groups %}
+                <div class="model-group" data-provider="{{ group.key }}">
+                    <span class="group-overline">{{ group.label }}</span>
+                    <div class="group-chips">
+                        {% for model in group.models %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="batch-models" value="{{ model.name }}" checked>
+                            <span>{{ model.name }}<span class="chip-meta"> ({{ model.provider }}, {{ model.tier }})</span></span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
                 {% endfor %}
             </div>
         </div>

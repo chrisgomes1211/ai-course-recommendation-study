@@ -11,8 +11,9 @@
         (function () {
             var stored = null;
             try { stored = localStorage.getItem('acs-theme'); } catch (e) {}
-            var theme = (stored === 'win95') ? 'win95' : 'atlantic';
+            var theme = (stored === 'win95' || stored === 'studio') ? stored : 'atlantic';
             var pref = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+            if (theme === 'studio') { pref = 'light'; }
             document.documentElement.setAttribute('data-theme', theme);
             document.documentElement.setAttribute('data-pref', pref);
             var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,6 +51,16 @@
                             <span class="dd-text">
                                 <span>Atlantic</span>
                                 <span class="dd-hint">Follows your system light / dark</span>
+                            </span>
+                            <svg class="dd-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
+                        </button>
+                        <button type="button" class="dd-item" role="menuitemradio" data-theme-val="studio" aria-checked="false">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 2l8 10-8 10-8-10z"></path>
+                            </svg>
+                            <span class="dd-text">
+                                <span>Studio</span>
+                                <span class="dd-hint">Modern research UI</span>
                             </span>
                             <svg class="dd-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
                         </button>
