@@ -1633,6 +1633,193 @@ tbody tr:hover td.reason { color:var(--row-hover-color); font-style:normal; }
 
 .view-page-link:hover { color:var(--accent-2); }
 
+/* ---------- Hero (parallax band) ---------- */
+
+.hero {
+    position:relative;
+    overflow:hidden;
+    margin-bottom:var(--spacing-lg);
+    border-radius:var(--r-lg);
+    border:1px solid var(--line);
+    background:linear-gradient(160deg,var(--surface) 0%,var(--sand) 100%);
+    box-shadow:var(--shadow-lg);
+    padding:54px 52px 46px;
+    min-height:360px;
+    display:flex;
+    align-items:center;
+}
+
+.hero-layers {
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+}
+
+.hero-layer {
+    position:absolute;
+    inset:-14% -4%;
+    will-change:transform;
+}
+
+.hero-layer-front { inset:-22% -6%; }
+
+.hero-svg { width:100%; height:100%; display:block; }
+
+.hero-content {
+    position:relative;
+    z-index:2;
+    max-width:600px;
+}
+
+.hero .page-header { margin-bottom:var(--spacing-md); }
+
+.hero-eyebrow {
+    font-family:var(--font-mono);
+    font-size:11px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    color:var(--accent);
+    margin-bottom:10px;
+}
+
+.hero-cta {
+    display:flex;
+    gap:var(--spacing-sm);
+    flex-wrap:wrap;
+    margin-bottom:var(--spacing-lg);
+}
+
+.hero-stats {
+    list-style:none;
+    display:flex;
+    gap:var(--spacing-lg);
+    flex-wrap:wrap;
+    font-size:12.5px;
+    color:var(--muted);
+    font-weight:600;
+}
+
+.hero-stats strong {
+    display:block;
+    font-family:var(--font-display);
+    font-size:26px;
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.15;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:-.01em;
+}
+
+/* hero SVG paint */
+
+.hd-grid { opacity:.55; }
+.hd-dot { fill:var(--muted); opacity:.30; }
+.hd-blob-a { fill:var(--accent); opacity:.08; }
+.hd-blob-b { fill:var(--ink-2); opacity:.07; }
+
+.h-card-body { fill:var(--surface); stroke:var(--line); stroke-width:1.5; opacity:.97; }
+.h-card-head { fill:var(--accent); }
+.h-card-head-b { fill:var(--ink-2); }
+.h-line-a { fill:var(--accent); opacity:.55; }
+.h-line-b { fill:var(--muted); opacity:.40; }
+.h-chip { fill:var(--accent); opacity:.85; }
+.h-chip-b { fill:var(--ink-2); opacity:.35; }
+
+.h-edge { fill:none; stroke:var(--accent); stroke-width:1.5; opacity:.5; }
+.h-edge-b { fill:none; stroke:var(--ink-2); stroke-width:1.2; opacity:.3; stroke-dasharray:4 6; }
+.h-node { fill:var(--muted); opacity:.6; }
+.h-node-a { fill:var(--accent); opacity:.85; }
+
+.h-arc { fill:none; stroke:var(--ink); stroke-width:2; opacity:.14; stroke-dasharray:10 14; }
+.h-ring { fill:none; stroke:var(--accent); stroke-width:2; opacity:.5; }
+.h-ring-b { fill:none; stroke:var(--muted); stroke-width:1.2; opacity:.4; stroke-dasharray:3 6; }
+.h-rose { fill:var(--accent); opacity:.75; }
+.h-hub { fill:var(--ink); opacity:.6; }
+
+/* hero motion */
+
+.hf-a { animation:heroFloatA 7s ease-in-out infinite alternate; }
+.hf-b { animation:heroFloatB 9s ease-in-out infinite alternate; animation-delay:-3s; }
+.hf-c { animation:heroFloatC 11s ease-in-out infinite alternate; animation-delay:-5s; }
+
+@keyframes heroFloatA { from { transform:translateY(-6px); } to { transform:translateY(8px); } }
+@keyframes heroFloatB { from { transform:translateY(7px); } to { transform:translateY(-8px); } }
+@keyframes heroFloatC { from { transform:translate(0,-5px); } to { transform:translate(5px,6px); } }
+
+.hero-compass {
+    animation:heroSpin 80s linear infinite;
+    transform-origin:center;
+    transform-box:fill-box;
+}
+
+@keyframes heroSpin { to { transform:rotate(360deg); } }
+
+.js-anim .hero-content > * {
+    animation:heroIn .7s cubic-bezier(.2,.7,.3,1) backwards;
+}
+
+.js-anim .hero-content > .page-header { animation-delay:.05s; }
+.js-anim .hero-content > .hero-cta { animation-delay:.18s; }
+.js-anim .hero-content > .hero-stats { animation-delay:.30s; }
+
+@keyframes heroIn {
+    from { opacity:0; transform:translateY(18px); }
+    to { opacity:1; transform:none; }
+}
+
+/* scroll reveals */
+
+.js-anim .reveal {
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.3,1);
+}
+
+.js-anim .reveal.is-visible { opacity:1; transform:none; }
+
+.js-anim .reveal-2 { transition-delay:.10s; }
+.js-anim .reveal-3 { transition-delay:.20s; }
+
+.js-anim .pages-grid .reveal:nth-child(2) { transition-delay:.06s; }
+.js-anim .pages-grid .reveal:nth-child(3) { transition-delay:.12s; }
+.js-anim .pages-grid .reveal:nth-child(4) { transition-delay:.18s; }
+.js-anim .pages-grid .reveal:nth-child(5) { transition-delay:.24s; }
+
+#single-run, #batch-run, #course-pages { scroll-margin-top:84px; }
+
+/* win95: static, plain header — no motion, no artwork */
+
+:root[data-theme="win95"] .hero {
+    padding:0;
+    min-height:0;
+    display:block;
+    border:none;
+    border-radius:0;
+    background:none;
+    box-shadow:none;
+}
+
+:root[data-theme="win95"] .hero-layers { display:none; }
+:root[data-theme="win95"] .hero-content { max-width:none; }
+:root[data-theme="win95"] .hero-eyebrow,
+:root[data-theme="win95"] .hero-cta,
+:root[data-theme="win95"] .hero-stats { display:none; }
+:root[data-theme="win95"] .hero .page-header { margin-bottom:var(--spacing-lg); }
+:root[data-theme="win95"] .hero-content > * { animation:none; }
+:root[data-theme="win95"] .reveal { opacity:1; transform:none; transition:none; }
+
+/* reduced motion: freeze everything */
+
+@media (prefers-reduced-motion: reduce) {
+    .js-anim .hero-content > *,
+    .hf-a, .hf-b, .hf-c,
+    .hero-compass { animation:none; }
+    .js-anim .reveal { opacity:1; transform:none; transition:none; }
+    .hero-layer { transform:none !important; }
+}
+
 /* ---------- Atlantic polish ---------- */
 
 :root:not([data-theme="win95"]) .page-header h1::after {
@@ -1787,4 +1974,10 @@ tbody tr:hover td.reason { color:var(--row-hover-color); font-style:normal; }
     .container { padding:var(--spacing-md) var(--spacing-sm); }
     .card-header h2 { font-size:13px; }
     :root[data-theme="win95"] .card-header h2 { font-size:11px; }
+    .hero { padding:34px 22px 30px; min-height:0; }
+    .hero-content { max-width:none; }
+    .hero-layer-front { display:none; }
+    .hero-stats { gap:var(--spacing-md); }
+    .hero-stats strong { font-size:22px; }
+    .hero-cta .btn { flex:1; min-width:150px; }
 }

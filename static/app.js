@@ -355,6 +355,72 @@ function setThemeMenu(open) {
     }
 }
 
+function initHeroParallax() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+    const layers = Array.prototype.slice.call(hero.querySelectorAll('.hero-layer[data-depth]'));
+    if (!layers.length) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let ticking = false;
+    const update = () => {
+        ticking = false;
+        if (currentTheme() === 'win95') return;
+        const y = window.scrollY || 0;
+        if (y > hero.offsetTop + hero.offsetHeight) return;
+        for (const layer of layers) {
+            const depth = parseFloat(layer.getAttribute('data-depth')) || 0;
+            layer.style.transform = 'translate3d(0,' + (y * depth).toFixed(1) + 'px,0)';
+        }
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+        }
+    }, { passive: true });
+
+    update();
+}
+
+function initReveals() {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => io.observe(el));
+}
+
+function animateHeroStats() {
+    if (!document.documentElement.classList.contains('js-anim')) return;
+    document.querySelectorAll('.hero-stat[data-count]').forEach(el => {
+        const target = parseInt(el.getAttribute('data-count'), 10);
+        if (isNaN(target)) return;
+        const prefix = el.getAttribute('data-prefix') || '';
+        const duration = 900;
+        const start = performance.now();
+        el.textContent = prefix + '0';
+        const step = (now) => {
+            const p = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = prefix + Math.round(target * eased);
+            if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const ddBtn = document.getElementById('theme-dd-btn');
     const ddMenu = document.getElementById('theme-dd-menu');
@@ -399,6 +465,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mq.addEventListener) mq.addEventListener('change', onPrefChange);
         else if (mq.addListener) mq.addListener(onPrefChange);
     }
+
+    initHeroParallax();
+    initReveals();
+    animateHeroStats();
 
     if (document.getElementById('stats-grid')) {
         loadDashboard();

@@ -3,12 +3,94 @@
 {% block title %}Run a Test - AI Course Recommendation Study{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>Run a Test</h1>
-    <p class="subtitle">Select an AI model and run a single recommendation + exit interview, or start a batch run</p>
-</div>
+<section class="hero" aria-label="Study overview">
+    <div class="hero-layers" aria-hidden="true">
+        <div class="hero-layer hero-layer-back" data-depth="0.15">
+            <svg class="hero-svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <pattern id="hero-dots" width="26" height="26" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1.6" class="hd-dot"></circle>
+                    </pattern>
+                </defs>
+                <rect width="1200" height="420" fill="url(#hero-dots)" class="hd-grid"></rect>
+                <circle cx="1060" cy="50" r="175" class="hd-blob-a"></circle>
+                <circle cx="170" cy="390" r="150" class="hd-blob-b"></circle>
+                <circle cx="660" cy="-50" r="115" class="hd-blob-a"></circle>
+            </svg>
+        </div>
+        <div class="hero-layer hero-layer-mid" data-depth="0.35">
+            <svg class="hero-svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">
+                <g class="hf-a">
+                    <g transform="translate(706,54)">
+                        <rect width="176" height="108" rx="12" class="h-card-body"></rect>
+                        <path d="M0 12 A12 12 0 0 1 12 0 h152 a12 12 0 0 1 12 12 v18 H0 Z" class="h-card-head"></path>
+                        <rect x="14" y="44" width="96" height="7" rx="3.5" class="h-line-a"></rect>
+                        <rect x="14" y="58" width="140" height="7" rx="3.5" class="h-line-b"></rect>
+                        <rect x="14" y="72" width="120" height="7" rx="3.5" class="h-line-b"></rect>
+                        <rect x="14" y="86" width="54" height="12" rx="6" class="h-chip"></rect>
+                        <rect x="76" y="86" width="64" height="12" rx="6" class="h-chip-b"></rect>
+                    </g>
+                </g>
+                <g class="hf-b">
+                    <g transform="translate(956,236) rotate(-7)">
+                        <rect width="150" height="92" rx="11" class="h-card-body"></rect>
+                        <path d="M0 11 A11 11 0 0 1 11 0 h128 a11 11 0 0 1 11 11 v15 H0 Z" class="h-card-head-b"></path>
+                        <rect x="12" y="40" width="80" height="6" rx="3" class="h-line-a"></rect>
+                        <rect x="12" y="52" width="116" height="6" rx="3" class="h-line-b"></rect>
+                        <rect x="12" y="64" width="96" height="6" rx="3" class="h-line-b"></rect>
+                        <rect x="12" y="74" width="46" height="10" rx="5" class="h-chip"></rect>
+                    </g>
+                </g>
+                <g class="hf-c">
+                    <g transform="translate(640,246)" class="h-graph">
+                        <path d="M18 96 L74 54 L138 78 L196 30 L258 62 L316 24" class="h-edge"></path>
+                        <path d="M74 54 L110 120 L196 30 L228 116 L316 24 L344 96" class="h-edge-b"></path>
+                        <circle cx="18" cy="96" r="6" class="h-node"></circle>
+                        <circle cx="74" cy="54" r="9" class="h-node-a"></circle>
+                        <circle cx="138" cy="78" r="5" class="h-node"></circle>
+                        <circle cx="196" cy="30" r="7" class="h-node-a"></circle>
+                        <circle cx="258" cy="62" r="5" class="h-node"></circle>
+                        <circle cx="316" cy="24" r="9" class="h-node-a"></circle>
+                        <circle cx="110" cy="120" r="5" class="h-node"></circle>
+                        <circle cx="228" cy="116" r="6" class="h-node"></circle>
+                        <circle cx="344" cy="96" r="5" class="h-node"></circle>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="hero-layer hero-layer-front" data-depth="0.55">
+            <svg class="hero-svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">
+                <path d="M-30 372 Q 300 296 640 396" class="h-arc"></path>
+                <g transform="translate(1092,92)">
+                    <g class="hero-compass">
+                        <circle r="52" class="h-ring"></circle>
+                        <circle r="38" class="h-ring-b"></circle>
+                        <path d="M0 -44 L9 -9 L44 0 L9 9 L0 44 L-9 9 L-44 0 L-9 -9 Z" class="h-rose"></path>
+                        <circle r="5" class="h-hub"></circle>
+                    </g>
+                </g>
+            </svg>
+        </div>
+    </div>
+    <div class="hero-content">
+        <div class="page-header">
+            <p class="hero-eyebrow">MSc Research Experiment</p>
+            <h1>Run a Test</h1>
+            <p class="subtitle">Select an AI model and run a single recommendation + exit interview, or start a batch run</p>
+        </div>
+        <div class="hero-cta">
+            <a href="#single-run" class="btn btn-primary">Run a single test</a>
+            <a href="{{ url_for('results') }}" class="btn">View results</a>
+        </div>
+        <ul class="hero-stats">
+            <li><strong class="hero-stat" data-count="{{ models|length }}">{{ models|length }}</strong> AI models</li>
+            <li><strong class="hero-stat" data-count="{{ pages|length }}">{{ pages|length }}</strong> course pages</li>
+            <li><strong class="hero-stat" data-count="{{ budget|int }}" data-prefix="$">${{ budget|int }}</strong> budget cap</li>
+        </ul>
+    </div>
+</section>
 
-<div class="card">
+<div class="card reveal reveal-1" id="single-run">
     <div class="card-header">
         <h2>Single Run Configuration</h2>
         <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
@@ -33,7 +115,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card reveal reveal-2" id="batch-run">
     <div class="card-header">
         <h2>Batch Run</h2>
         <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
@@ -85,7 +167,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card reveal reveal-3" id="course-pages">
     <div class="card-header">
         <h2>Course Pages</h2>
         <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
@@ -93,7 +175,7 @@
     <div class="card-body">
         <div class="pages-grid" id="pages-grid">
             {% for page_id, html in pages.items() %}
-            <div class="page-card">
+            <div class="page-card reveal">
                 <div class="page-card-header">
                     <div class="page-header-row">
                         <h3>{{ page_id }}</h3>

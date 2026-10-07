@@ -15,6 +15,10 @@
             var pref = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', theme);
             document.documentElement.setAttribute('data-pref', pref);
+            var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (theme !== 'win95' && !reduce) {
+                document.documentElement.classList.add('js-anim');
+            }
         })();
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">

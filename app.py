@@ -324,7 +324,7 @@ def run_test():
     models = config["models"]
     pages = load_pages()
     features = load_features()
-    return render_template("run_test.html", models=models, pages=pages, features=features)
+    return render_template("run_test.html", models=models, pages=pages, features=features, budget=get_budget_cap())
 
 @app.route("/api/run-test", methods=["POST"])
 def api_run_test():
