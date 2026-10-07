@@ -13,13 +13,13 @@
     <header class="v2-header">
         <div class="v2-header-inner">
             <a class="v2-brand" href="{{ url_for('redesign') }}">
-                <span class="v2-brand-badge">AI</span>
-                <span class="v2-brand-text">AI Course Recommendation Study</span>
+                <span class="v2-brand-mark">AI</span>
+                <span class="v2-brand-text">Course Recommendation Study</span>
             </a>
             <nav class="v2-nav" aria-label="Primary">
                 <a class="v2-nav-link is-active" href="{{ url_for('redesign') }}">Run a Test</a>
                 <a class="v2-nav-link" href="{{ url_for('results') }}">Results</a>
-                <a class="v2-nav-ghost" href="{{ url_for('run_test') }}">Classic UI</a>
+                <a class="v2-nav-link v2-nav-external" href="{{ url_for('run_test') }}">Classic UI</a>
             </nav>
         </div>
     </header>
@@ -28,11 +28,11 @@
         <section class="v2-hero">
             <div class="v2-hero-copy">
                 <p class="v2-overline">MSc Research Experiment</p>
-                <h1 class="v2-hero-title">Run a Test</h1>
-                <p class="v2-hero-sub">Select an AI model and run a single recommendation + exit interview, or start a batch run across every model and course page.</p>
+                <h1 class="v2-hero-title">Run a&nbsp;Test</h1>
+                <p class="v2-hero-sub">Choose an AI model and run a single recommendation with an exit interview — or launch a batch run across every model and course page.</p>
                 <div class="v2-hero-cta">
-                    <a href="#single-run" class="v2-btn v2-btn-primary">Run a single test</a>
-                    <a href="{{ url_for('results') }}" class="v2-btn v2-btn-secondary">View results</a>
+                    <a href="#single-run" class="v2-btn v2-btn-ink">Run a single test</a>
+                    <a href="{{ url_for('results') }}" class="v2-link-arrow">View results<span aria-hidden="true">&nbsp;&rarr;</span></a>
                 </div>
             </div>
             <aside class="v2-hero-stats" aria-label="Study overview">
@@ -51,20 +51,24 @@
             </aside>
         </section>
 
-        <section class="v2-panel v2-panel-primary" id="single-run">
-            <div class="v2-panel-bar">
-                <h2>Single Run Configuration</h2>
-                <span class="v2-panel-meta">Choice + exit interview</span>
-            </div>
-            <div class="v2-panel-body">
+        <div class="v2-rule"></div>
+
+        <section class="v2-section is-primary" id="single-run">
+            <header class="v2-section-head">
+                <span class="v2-section-index">01</span>
+                <div class="v2-section-titles">
+                    <h2 class="v2-section-title">Single run</h2>
+                    <p class="v2-section-desc">One model answers a choice task over five course pages, then completes a five-point exit interview.</p>
+                </div>
+            </header>
+            <div class="v2-card v2-card-primary">
                 <div class="v2-field">
-                    <label class="v2-label" for="model-select">AI Model</label>
+                    <label class="v2-label" for="model-select">AI model</label>
                     <select id="model-select" class="v2-select">
                         {% for model in models %}
                         <option value="{{ model.name }}">{{ model.name }} ({{ model.provider }}, {{ model.tier }})</option>
                         {% endfor %}
                     </select>
-                    <p class="v2-hint">Each run calls the selected model twice: once to pick a course page, once for the five-point exit interview.</p>
                 </div>
                 <div class="v2-actions">
                     <button id="run-btn" class="v2-btn v2-btn-primary" onclick="runTest()">
@@ -88,14 +92,17 @@
             </div>
         </section>
 
-        <section class="v2-panel" id="batch-run">
-            <div class="v2-panel-bar">
-                <h2>Batch Run</h2>
-                <span class="v2-panel-meta">Models × pages × runs</span>
-            </div>
-            <div class="v2-panel-body">
+        <section class="v2-section is-quiet" id="batch-run">
+            <header class="v2-section-head">
+                <span class="v2-section-index">02</span>
+                <div class="v2-section-titles">
+                    <h2 class="v2-section-title">Batch run</h2>
+                    <p class="v2-section-desc">For large-scale collection: selected models &times; course pages &times; runs.</p>
+                </div>
+            </header>
+            <div class="v2-card v2-card-quiet">
                 <div class="v2-field">
-                    <span class="v2-label">Models to Include</span>
+                    <span class="v2-label">Models to include</span>
                     <div id="model-checkboxes" class="v2-chip-groups">
                         {% for group in model_groups %}
                         <div class="v2-chip-group">
@@ -105,7 +112,6 @@
                                 <label class="v2-chip">
                                     <input type="checkbox" name="batch-models" value="{{ model.name }}" checked>
                                     <span>{{ model.name }}</span>
-                                    <span class="v2-chip-tier">{{ model.tier }}</span>
                                 </label>
                                 {% endfor %}
                             </div>
@@ -114,12 +120,12 @@
                     </div>
                 </div>
                 <div class="v2-field">
-                    <label class="v2-label" for="runs-per-model-page">Runs per Model per Page</label>
+                    <label class="v2-label" for="runs-per-model-page">Runs per model per page</label>
                     <input type="number" id="runs-per-model-page" class="v2-input" value="1" min="1" max="100">
-                    <p class="v2-hint">Each model runs this many times for every course page. Total runs = models × pages × runs.</p>
+                    <p class="v2-hint">Each model runs this many times for every course page. Total runs = models &times; pages &times; runs.</p>
                 </div>
                 <div class="v2-actions">
-                    <button id="batch-start-btn" class="v2-btn v2-btn-primary" onclick="startBatchRun()">
+                    <button id="batch-start-btn" class="v2-btn v2-btn-ink" onclick="startBatchRun()">
                         <span class="btn-text">Start Batch Run</span>
                         <span class="btn-loading" style="display:none;">
                             <span class="spinner"></span> Starting...
@@ -148,40 +154,41 @@
             </div>
         </section>
 
-        <section class="v2-panel" id="course-pages">
-            <div class="v2-panel-bar">
-                <h2>Course Pages</h2>
-                <span class="v2-panel-meta">{{ pages|length }} stimuli</span>
-            </div>
-            <div class="v2-panel-body">
-                <div class="v2-pages" id="pages-grid">
-                    {% for page_id, html in pages.items() %}
-                    <article class="v2-page-card">
-                        <div class="v2-page-preview">
-                            <iframe class="page-iframe" srcdoc="{{ html }}" title="{{ page_id }}"></iframe>
-                        </div>
-                        <div class="v2-page-body">
-                            <div class="v2-page-head">
-                                <div>
-                                    <h3 class="v2-page-title">{{ page_id|replace('.html','')|replace('_',' ')|title }}</h3>
-                                    <p class="v2-page-id">{{ page_id }}</p>
-                                </div>
-                                <a href="/page/{{ page_id }}" target="_blank" class="v2-btn v2-btn-ghost v2-btn-sm">View Page</a>
-                            </div>
-                            {% if features and page_id in features %}
-                            {% set f = features[page_id] %}
-                            <div class="v2-tags">
-                                {% if f.price %}<span class="feature-tag feature-price">{{ f.price.label }}</span>{% endif %}
-                                {% if f.reviews %}<span class="feature-tag feature-reviews">{{ f.reviews.label }}</span>{% endif %}
-                                {% if f.credentials %}<span class="feature-tag feature-credentials">{{ f.credentials.label }}</span>{% endif %}
-                                {% if f.description %}<span class="feature-tag feature-description">{{ f.description.label }}</span>{% endif %}
-                                {% if f.structure %}<span class="feature-tag feature-structure">{{ f.structure.label }}</span>{% endif %}
-                            </div>
-                            {% endif %}
-                        </div>
-                    </article>
-                    {% endfor %}
+        <section class="v2-section is-quiet" id="course-pages">
+            <header class="v2-section-head">
+                <span class="v2-section-index">03</span>
+                <div class="v2-section-titles">
+                    <h2 class="v2-section-title">Course pages</h2>
+                    <p class="v2-section-desc">Five experimental stimuli. Feature sets are deliberately manipulated across variants.</p>
                 </div>
+            </header>
+            <div class="v2-pages" id="pages-grid">
+                {% for page_id, html in pages.items() %}
+                <article class="v2-page-card">
+                    <div class="v2-page-preview">
+                        <iframe class="page-iframe" srcdoc="{{ html }}" title="{{ page_id }}"></iframe>
+                    </div>
+                    <div class="v2-page-body">
+                        <div class="v2-page-head">
+                            <div class="v2-page-heading">
+                                <h3 class="v2-page-title">{{ page_id|replace('.html','')|replace('_',' ')|title }}</h3>
+                                <p class="v2-page-id">{{ page_id }}</p>
+                            </div>
+                            <a href="/page/{{ page_id }}" target="_blank" class="v2-page-link">View<span aria-hidden="true">&nbsp;&rarr;</span></a>
+                        </div>
+                        {% if features and page_id in features %}
+                        {% set f = features[page_id] %}
+                        <div class="v2-tags">
+                            {% if f.price %}<span class="feature-tag feature-price">{{ f.price.label }}</span>{% endif %}
+                            {% if f.reviews %}<span class="feature-tag feature-reviews">{{ f.reviews.label }}</span>{% endif %}
+                            {% if f.credentials %}<span class="feature-tag feature-credentials">{{ f.credentials.label }}</span>{% endif %}
+                            {% if f.description %}<span class="feature-tag feature-description">{{ f.description.label }}</span>{% endif %}
+                            {% if f.structure %}<span class="feature-tag feature-structure">{{ f.structure.label }}</span>{% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
             </div>
         </section>
     </main>
