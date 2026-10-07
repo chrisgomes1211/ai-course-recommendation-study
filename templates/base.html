@@ -11,7 +11,7 @@
         (function () {
             var stored = null;
             try { stored = localStorage.getItem('acs-theme'); } catch (e) {}
-            var theme = (stored === 'win95' || stored === 'studio') ? stored : 'atlantic';
+            var theme = (stored === 'win95') ? stored : 'atlantic';
             var pref = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
             if (theme === 'studio') { pref = 'light'; }
             document.documentElement.setAttribute('data-theme', theme);
@@ -54,6 +54,7 @@
                             </span>
                             <svg class="dd-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
                         </button>
+                        <!-- Studio hidden pending supervisor review — restore by uncommenting
                         <button type="button" class="dd-item" role="menuitemradio" data-theme-val="studio" aria-checked="false">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M12 2l8 10-8 10-8-10z"></path>
@@ -64,6 +65,7 @@
                             </span>
                             <svg class="dd-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
                         </button>
+                        -->
                         <button type="button" class="dd-item" role="menuitemradio" data-theme-val="win95" aria-checked="false">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <rect x="2" y="3" width="20" height="14" rx="2"></rect>
