@@ -1,31 +1,13 @@
+# Final dataset model set: low tier only, ~2 per company (supervisor direction 2026-10-09)
+# Anthropic dropped 2026-10-10: only low-tier Haiku was 10x price outlier + account out of credit
 models:
   # OpenAI
-  - name: gpt-4o-mini
-    provider: openai
-    tier: low
-  - name: gpt-4o
-    provider: openai
-    tier: high
-  - name: gpt-4.1-mini
-    provider: openai
-    tier: low
-  - name: gpt-4.1
-    provider: openai
-    tier: high
   - name: gpt-6-luna
     provider: openai
     tier: low
-
-  # Anthropic
-  - name: claude-haiku-4-5-20251001
-    provider: anthropic
+  - name: gpt-4.1-mini
+    provider: openai
     tier: low
-  - name: claude-sonnet-4-5-20250929
-    provider: anthropic
-    tier: high
-  - name: claude-sonnet-4-6
-    provider: anthropic
-    tier: high
 
   # Google
   - name: gemini-3.1-flash-lite
@@ -34,50 +16,39 @@ models:
   - name: gemini-3.8-flash
     provider: google
     tier: low
-  - name: gemini-3.5-flash
-    provider: google
-    tier: high
-  - name: gemini-3.1-pro-preview
-    provider: google
-    tier: high
 
   # xAI
   - name: grok-3-mini
     provider: xai
     tier: low
-  - name: grok-3
-    provider: xai
-    tier: high
 
-runs_per_condition: 50
+  # Xiaomi
+  - name: mimo-v2.6-flash
+    provider: xiaomi
+    tier: low
+
+# 6 models x 5 pages x 34 runs = 1,020 rows
+runs_per_condition: 34
 budget_cap_usd: 100.0
 
 # USER MUST VERIFY against current provider pricing
 pricing:
   # OpenAI
-  gpt-4o-mini: {input: 0.15, output: 0.60}
-  gpt-4o: {input: 2.50, output: 10.00}
   gpt-4.1-mini: {input: 0.15, output: 0.60}
-  gpt-4.1: {input: 2.00, output: 8.00}
   # GPT-6 (verified Oct 2026)
   gpt-6-luna: {input: 0.10, output: 0.50}
-
-  # Anthropic (verified Oct 2026)
-  claude-haiku-4-5-20251001: {input: 1.00, output: 5.00}
-  claude-sonnet-4-5-20250929: {input: 3.00, output: 15.00}
-  claude-sonnet-4-6: {input: 3.00, output: 15.00}
 
   # Google (verified Oct 2026)
   gemini-3.1-flash-lite: {input: 0.25, output: 1.50}
   gemini-3.8-flash: {input: 0.75, output: 3.75}
-  gemini-3.5-flash: {input: 1.50, output: 9.00}
-  gemini-3.1-pro-preview: {input: 2.00, output: 12.00}
 
   # xAI
   grok-3-mini: {input: 0.30, output: 1.50}
-  grok-3: {input: 3.00, output: 15.00}
 
-# Token estimation assumptions for cost estimator
-avg_prompt_tokens: 3000
-avg_completion_tokens_choice: 50
-avg_completion_tokens_interview: 400
+  # Xiaomi (verified Oct 2026 from platform.xiaomimimo.com overseas pricing)
+  mimo-v2.6-flash: {input: 0.14, output: 0.28}
+
+# Token measurement assumptions for cost estimator (measured from pilot runs Oct 2026)
+avg_prompt_tokens: 42000
+avg_completion_tokens_choice: 840
+avg_completion_tokens_interview: 140

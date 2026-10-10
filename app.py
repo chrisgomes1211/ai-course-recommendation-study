@@ -18,8 +18,8 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from models import get_provider, parse_choice, parse_interview, ModelResponse, run_phase
 from run_experiment import (
-    load_config, load_pages, load_prompt, build_page_html_block,
-    append_result, CSV_HEADERS, RESULTS_FILE, RESULTS_DIR
+    load_config, load_pages, load_prompt, load_features, build_page_html_block,
+    append_result, CSV_HEADERS, RESULTS_FILE, RESULTS_DIR, perform_run
 )
 
 app = Flask(__name__)
@@ -32,13 +32,6 @@ def health():
         "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
         "google": bool(os.getenv("GOOGLE_API_KEY"))
     })
-
-def load_features() -> Dict[str, Any]:
-    features_path = Path("pages/features.yaml")
-    if features_path.exists():
-        with open(features_path, "r") as f:
-            return yaml.safe_load(f)
-    return {}
 
 def get_models_from_config() -> List[Dict[str, Any]]:
     config = load_config()
@@ -57,13 +50,13 @@ def get_current_total_cost() -> float:
                 total += float(row.get("choice_cost_usd", 0)) + float(row.get("interview_cost_usd", 0))
     return total
 
-def get_next_run_number(model_name: str, page_id: str) -> int:
+def get_next_run_number(model_name: str, condition_page: str) -> int:
     max_run = 0
     if RESULTS_FILE.exists():
         with open(RESULTS_FILE, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                if row["model"] == model_name and row["which_page_won"] == page_id:
+                if row["model"] == model_name and (row.get("condition_page") or "") == condition_page:
                     try:
                         run_num = int(row["run_number"])
                         if run_num > max_run:
@@ -72,7 +65,7 @@ def get_next_run_number(model_name: str, page_id: str) -> int:
                         pass
     return max_run + 1
 
-def run_single_experiment(model_name: str) -> Dict[str, Any]:
+def run_single_experiment(model_name: str, condition_page: str = "") -> Dict[str, Any]:
     config = load_config()
     models = config["models"]
     pricing = config["pricing"]
@@ -87,74 +80,40 @@ def run_single_experiment(model_name: str) -> Dict[str, Any]:
         return {"success": False, "error": f"Budget cap (${budget_cap:.2f}) reached"}
     
     pages = load_pages()
-    page_ids = list(pages.keys())
-    if not page_ids:
+    if not pages:
         return {"success": False, "error": "No pages found in pages/ directory"}
     
     buying_prompt_template = load_prompt("buying_question")
     interview_prompt_template = load_prompt("exit_interview")
-    page_html_block = build_page_html_block(pages)
     
-    try:
-        provider = get_provider(model_config, pricing)
-    except ValueError as e:
-        return {"success": False, "error": str(e)}
+    run_number = get_next_run_number(model_name, condition_page)
+    result = perform_run(
+        model_config, pricing, pages, load_features(),
+        buying_prompt_template, interview_prompt_template,
+        condition_page=condition_page, run_number=run_number,
+    )
+    if not result["success"]:
+        return {"success": False, "error": result["error"]}
     
-    choice_prompt = buying_prompt_template.format(page_html=page_html_block)
-    
-    try:
-        choice_resp, chosen_page = run_phase(provider, choice_prompt, lambda t: parse_choice(t, page_ids))
-    except Exception as e:
-        return {"success": False, "error": f"Choice phase failed: {e}"}
-    
-    interview_prompt = interview_prompt_template.format(choice=chosen_page)
-    
-    try:
-        interview_resp, interview_data = run_phase(provider, interview_prompt, parse_interview, attempts=10)
-    except Exception as e:
-        return {"success": False, "error": f"Interview phase failed: {e}"}
-    
-    run_number = get_next_run_number(model_name, chosen_page)
-    
-    row = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
-        "model": model_name,
-        "tier": model_config["tier"],
-        "run_number": run_number,
-        "which_page_won": chosen_page,
-        "q1_price": interview_data["q1_price"],
-        "q2_reviews": interview_data["q2_reviews"],
-        "q3_credentials": interview_data["q3_credentials"],
-        "q4_description": interview_data["q4_description"],
-        "q5_clarity": interview_data["q5_clarity"],
-        "q6_open": interview_data["q6_open"],
-        "choice_input_tokens": choice_resp.input_tokens,
-        "choice_output_tokens": choice_resp.output_tokens,
-        "choice_cost_usd": f"{choice_resp.estimated_cost_usd:.6f}",
-        "interview_input_tokens": interview_resp.input_tokens,
-        "interview_output_tokens": interview_resp.output_tokens,
-        "interview_cost_usd": f"{interview_resp.estimated_cost_usd:.6f}"
-    }
-    
+    row = result["row"]
     append_result(row)
-    
-    total_cost = choice_resp.estimated_cost_usd + interview_resp.estimated_cost_usd
     
     return {
         "success": True,
-        "chosen_page": chosen_page,
-        "interview_data": interview_data,
+        "chosen_page": result["chosen_page"],
+        "interview_data": {k: row[k] for k in ("q1_price", "q2_reviews", "q3_credentials",
+                                               "q4_description", "q5_clarity", "q6_open")},
         "choice_resp": {
-            "input_tokens": choice_resp.input_tokens,
-            "output_tokens": choice_resp.output_tokens,
-            "cost_usd": choice_resp.estimated_cost_usd
+            "input_tokens": row["choice_input_tokens"],
+            "output_tokens": row["choice_output_tokens"],
+            "cost_usd": float(row["choice_cost_usd"])
         },
         "interview_resp": {
-            "input_tokens": interview_resp.input_tokens,
-            "output_tokens": interview_resp.output_tokens,
-            "cost_usd": interview_resp.estimated_cost_usd
+            "input_tokens": row["interview_input_tokens"],
+            "output_tokens": row["interview_output_tokens"],
+            "cost_usd": float(row["interview_cost_usd"])
         },
-        "total_cost_usd": total_cost,
+        "total_cost_usd": result["total_cost_usd"],
         "run_number": run_number,
         "tier": model_config["tier"]
     }
@@ -301,8 +260,8 @@ def run_batch_experiment(model_names: List[str], runs_per_model_page: int) -> No
                     batch_state.stop()
                     return
                 
-                # Run single experiment
-                result = run_single_experiment(model_name)
+                # Run single experiment (condition_page ties the row to this slot for resume)
+                result = run_single_experiment(model_name, condition_page=page_id)
                 
                 completed += 1
                 new_cost = get_current_total_cost()
@@ -375,9 +334,28 @@ def api_run_test():
     result = run_single_experiment(model_name)
     return jsonify(result)
 
+DATASET_FILE = Path("static/dataset_results.csv")
+DATASET_LOGS = Path("static/dataset_logs.zip")
+
 @app.route("/results")
 def results():
-    return render_template("results.html")
+    dataset_rows = 0
+    if DATASET_FILE.exists():
+        with open(DATASET_FILE, "r") as f:
+            dataset_rows = max(sum(1 for _ in f) - 1, 0)
+    return render_template("results.html", has_dataset=DATASET_FILE.exists(), dataset_rows=dataset_rows)
+
+@app.route("/download-dataset")
+def download_dataset():
+    if DATASET_FILE.exists():
+        return send_file(DATASET_FILE, as_attachment=True, download_name="course_choice_dataset.csv")
+    return "Dataset not available yet", 404
+
+@app.route("/download-dataset-logs")
+def download_dataset_logs():
+    if DATASET_LOGS.exists():
+        return send_file(DATASET_LOGS, as_attachment=True, download_name="dataset_run_logs.zip")
+    return "Logs not available yet", 404
 
 @app.route("/api/results")
 def api_results():

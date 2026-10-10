@@ -271,18 +271,22 @@ function renderModelChart(modelCourseCounts) {
 function renderRecentRuns(runs) {
     const tbody = document.getElementById('runs-tbody');
     if (!runs || runs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="12" class="loading">No runs recorded yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="13" class="loading">No runs recorded yet.</td></tr>';
         return;
     }
 
     let html = '';
     for (const run of runs) {
-        const totalCost = (parseFloat(run.choice_cost_usd) + parseFloat(run.interview_cost_usd)).toFixed(6);
+        const totalCost = run.total_row_cost_usd
+            ? parseFloat(run.total_row_cost_usd).toFixed(6)
+            : (parseFloat(run.choice_cost_usd) + parseFloat(run.interview_cost_usd)).toFixed(6);
         const viewLink = `<a href="/page/${escapeHtml(run.which_page_won)}" target="_blank" class="view-page-link">${escapeHtml(run.which_page_won)}</a>`;
+        const provider = run.provider || '';
         html += `
             <tr>
                 <td>${formatTimestamp(run.timestamp)}</td>
                 <td>${escapeHtml(run.model)}</td>
+                <td>${escapeHtml(provider)}</td>
                 <td>${escapeHtml(run.tier)}</td>
                 <td>${run.run_number}</td>
                 <td>${viewLink}</td>
@@ -291,7 +295,7 @@ function renderRecentRuns(runs) {
                 <td>${run.q3_credentials}</td>
                 <td>${run.q4_description}</td>
                 <td>${run.q5_clarity}</td>
-                <td class="reason">${escapeHtml(run.q6_open)}</td>
+                <td class="reason" title="${escapeHtml(run.choice_reasoning || '')}">${escapeHtml(run.q6_open)}</td>
                 <td>$${totalCost}</td>
             </tr>
         `;

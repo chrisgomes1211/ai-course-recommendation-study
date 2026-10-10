@@ -718,6 +718,13 @@ body {
     gap:var(--spacing-md);
 }
 
+.header-actions {
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:var(--spacing-sm);
+}
+
 .page-header h1 {
     font-family:var(--h1-family);
     font-size:var(--h1-size);

@@ -6,7 +6,13 @@
 <div class="page-header">
     <div class="header-row">
         <h1>Results Dashboard</h1>
-        <a href="{{ url_for('download_csv') }}" class="btn btn-secondary">Download CSV</a>
+        <div class="header-actions">
+            {% if has_dataset %}
+            <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download Final Dataset (CSV)</a>
+            <a href="{{ url_for('download_dataset_logs') }}" class="btn btn-secondary">Download Run Logs</a>
+            {% endif %}
+            <a href="{{ url_for('download_csv') }}" class="btn btn-secondary">Download CSV</a>
+        </div>
     </div>
     <p class="subtitle">Overview of all recorded experiment runs</p>
 </div>
@@ -26,6 +32,12 @@
         <div class="stat-value" id="stat-models-used">—</div>
         <div class="stat-label">Models Tested</div>
     </div>
+    {% if has_dataset %}
+    <div class="stat-card">
+        <div class="stat-value">{{ dataset_rows }}</div>
+        <div class="stat-label">Final Dataset Rows</div>
+    </div>
+    {% endif %}
 </div>
 
 <div class="card">
@@ -64,6 +76,7 @@
                     <tr>
                         <th>Timestamp</th>
                         <th>Model</th>
+                        <th>Provider</th>
                         <th>Tier</th>
                         <th>Run #</th>
                         <th>Chosen Course</th>
@@ -77,7 +90,7 @@
                     </tr>
                 </thead>
                 <tbody id="runs-tbody">
-                    <tr><td colspan="12" class="loading">Loading...</td></tr>
+                    <tr><td colspan="13" class="loading">Loading...</td></tr>
                 </tbody>
             </table>
         </div>
