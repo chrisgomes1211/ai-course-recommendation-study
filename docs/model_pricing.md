@@ -2,14 +2,15 @@
 
 Prepared 9 Oct 2026, updated 10 Oct 2026. Prices per 1M tokens (USD), verified Oct 2026 from provider pricing pages.
 
-## Why these 6 models
+## Why these 7 models
 
 Supervisor guidance: low-tier models only, ~2 per company, max 8, compare price per API call first.
-Final set (10 Oct): **6 low-tier models** across **4 companies** (OpenAI ×2, Google ×2, xAI ×1, Xiaomi ×1).
+Final set (10 Oct): **7 low-tier models** across **5 companies** (OpenAI ×2, Google ×2, xAI ×1, Xiaomi ×1, DeepSeek ×1).
 
 Anthropic (claude-haiku-4-5) was dropped on 10 Oct: it was a 10× price outlier versus every other
 low-tier model, and the account ran out of credit mid-run. Its 19 completed rows remain in the
-dataset as bonus data. Xiaomi MiMo (mimo-v2.6-flash) was added to keep 6 models and 4 companies.
+dataset as bonus data. Xiaomi MiMo (mimo-v2.6-flash) and DeepSeek (deepseek-flash) were added
+to keep company diversity high and price per API call low.
 
 ## Price per API call
 
@@ -31,12 +32,14 @@ Measured token usage (from pilot rows in `results_backup/`):
 | gemini-3.8-flash | Google | 0.75 | 3.75 | $0.0352 | $35.20 |
 | grok-3-mini | xAI | 0.30 | 1.50 | $0.0141 | $14.10 |
 | mimo-v2.6-flash | Xiaomi | 0.14 | 0.28 | $0.0062 | $6.20 |
+| deepseek-flash | DeepSeek | 0.15 | 0.60 | $0.0069 | $6.90 |
 
 Per-run cost = (42,023 × input_price + 978 × output_price) / 1,000,000.
+DeepSeek uses off-peak rates (weekends are always off-peak; 50% discount).
 
 ## Dataset cost projection
 
-Design: 6 models × 5 course pages × 34 runs = **1,020 rows** (170 rows per model).
+Design: 7 models × 5 course pages × 34 runs = **1,190 rows** (170 rows per model).
 
 | Model | Rows | Est. cost |
 |---|---|---|
@@ -44,12 +47,14 @@ Design: 6 models × 5 course pages × 34 runs = **1,020 rows** (170 rows per mod
 | gpt-4.1-mini | 170 | $1.17 |
 | gemini-3.1-flash-lite | 170 | $2.04 |
 | gemini-3.8-flash | 170 | $5.98 |
-| grok-3-mini | 170 | $2.40 |
+| grok-3-mini | 152 | $2.14 |
 | mimo-v2.6-flash | 170 | $1.05 |
-| **Total** | **1,020** | **≈ $13.4** |
+| deepseek-flash | 170 | $1.17 |
+| **Total** | **1,172** | **≈ $14.4** |
 
-Budget cap: $100.00 → projected spend uses ~13% of cap.
-(Plus 19 bonus rows from claude-haiku-4-5 collected before the Anthropic account ran out of credit.)
+Budget cap: $100.00 → projected spend uses ~14% of cap.
+(Plus 19 bonus rows from claude-haiku-4-5 collected before the Anthropic account ran out of credit.
+grok-3-mini stopped at 152/170 when the xAI account ran out of credit; gap can be filled after a top-up.)
 
 ## Considered but excluded (low tier only)
 

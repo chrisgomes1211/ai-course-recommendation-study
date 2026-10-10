@@ -161,6 +161,26 @@ class XiaomiProvider(ModelProvider):
         cost = self._calculate_cost(input_tokens, output_tokens)
         return ModelResponse(text=text, input_tokens=input_tokens, output_tokens=output_tokens, estimated_cost_usd=cost)
 
+class DeepSeekProvider(ModelProvider):
+    def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]], api_key: str):
+        super().__init__(model_name, pricing)
+        from openai import OpenAI
+        self.client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+
+    @retry(**RETRY_KWARGS)
+    def complete(self, prompt: str) -> ModelResponse:
+        response = self.client.chat.completions.create(
+            model=self.model_name,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+            max_tokens=2000
+        )
+        text = response.choices[0].message.content
+        input_tokens = response.usage.prompt_tokens
+        output_tokens = response.usage.completion_tokens
+        cost = self._calculate_cost(input_tokens, output_tokens)
+        return ModelResponse(text=text, input_tokens=input_tokens, output_tokens=output_tokens, estimated_cost_usd=cost)
+
 def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, float]]) -> ModelProvider:
     provider_type = model_config["provider"]
     model_name = model_config["name"]
@@ -169,7 +189,8 @@ def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, floa
         "anthropic": "ANTHROPIC_API_KEY",
         "google": "GOOGLE_API_KEY",
         "xai": "XAI_API_KEY",
-        "xiaomi": "MIMO_API_KEY"
+        "xiaomi": "MIMO_API_KEY",
+        "deepseek": "DEEPSEEK_API_KEY"
     }
     api_key = os.getenv(api_key_env.get(provider_type, ""))
     if not api_key:
@@ -185,6 +206,8 @@ def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, floa
         return XAIProvider(model_name, pricing, api_key)
     elif provider_type == "xiaomi":
         return XiaomiProvider(model_name, pricing, api_key)
+    elif provider_type == "deepseek":
+        return DeepSeekProvider(model_name, pricing, api_key)
     else:
         raise ValueError(f"Unknown provider: {provider_type}")
 
