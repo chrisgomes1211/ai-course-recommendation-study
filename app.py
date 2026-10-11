@@ -308,6 +308,7 @@ def run_page_context() -> Dict[str, Any]:
         "features": features,
         "budget": get_budget_cap(),
         "model_groups": model_groups,
+        "total_runs": len(load_results_data()),
     }
 
 @app.route("/")
