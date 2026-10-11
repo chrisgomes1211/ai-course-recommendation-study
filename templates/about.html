@@ -1,78 +1,183 @@
-{% extends "base.html" %}
+{% extends "neon_base.html" %}
 
 {% block title %}About & Methodology — AI Course Recommendation Study{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <div class="header-row">
-        <h1>About & Methodology</h1>
+    <div class="page-header-row">
+        <div>
+            <h1>About & Methodology</h1>
+            <p class="subtitle">What this experiment asks, how it is run, and what the published dataset contains.</p>
+        </div>
         <div class="header-actions">
             <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download dataset</a>
             <a href="{{ url_for('results') }}" class="btn btn-secondary">View results</a>
         </div>
     </div>
-    <p class="subtitle">What this experiment asks, how it is run, and what the published dataset contains.</p>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        <h2>Research question</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
-    </div>
-    <div class="card-body">
-        <p style="margin-bottom:12px;">How do large language models choose between competing online course providers?</p>
-        <p style="margin-bottom:12px;">When a person asks an AI assistant to recommend an art course, the answer depends on which provider features the model attends to — price, reviews, credentials, description quality, or page structure. This MSc experiment treats each model as a decision-maker and measures, across many repeated runs:</p>
-        <ul style="margin-bottom:12px;padding-left:22px;">
-            <li style="margin-bottom:6px;"><strong>Which course provider wins</strong> when five deliberately different pages are shown side by side</li>
-            <li style="margin-bottom:6px;"><strong>What the model says drove its choice</strong> — a six-question exit interview covering price, reviews, credentials, description, clarity, and an open reason</li>
-            <li style="margin-bottom:6px;"><strong>What the answer costs</strong> — tokens, latency, and dollar cost per run, per model</li>
+<p class="section-label"><span>01 / Research question</span></p>
+<div class="card reveal">
+    <div class="card-body prose">
+        <p style="font-size:18px;color:var(--text);font-weight:600;margin-bottom:14px;">How do large language models choose between competing online course providers?</p>
+        <p>When a person asks an AI assistant to recommend an art course, the answer depends on which provider features the model attends to — price, reviews, credentials, description quality, or page structure. This MSc experiment treats each model as a decision-maker and measures, across many repeated runs:</p>
+        <ul>
+            <li><strong>Which course provider wins</strong> when five deliberately different pages are shown side by side</li>
+            <li><strong>What the model says drove its choice</strong> — a six-question exit interview covering price, reviews, credentials, description, clarity, and an open reason</li>
+            <li><strong>What the answer costs</strong> — tokens, latency, and dollar cost per run, per model</li>
         </ul>
         <p>The comparison is deliberately restricted to <strong>low-tier (cheap) models</strong>, because the practical question for consumers is what a cheap API call buys you.</p>
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        <h2>Method</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
-    </div>
+<p class="section-label"><span>02 / Method</span></p>
+<div class="card reveal">
     <div class="card-body">
-        <ol style="margin-bottom:12px;padding-left:22px;">
-            <li style="margin-bottom:6px;">The model receives all five course pages as full HTML in a single prompt and must pick exactly one provider.</li>
-            <li style="margin-bottom:6px;">Immediately after choosing, the same model answers a five-point Likert exit interview plus one open question about its choice.</li>
-            <li style="margin-bottom:6px;">Every run is appended to a CSV with 37 columns: model, provider, tier, condition page, run number, chosen page, page order, all six interview answers, the model's choice reasoning verbatim, token counts, dollar cost, latencies, attempt counts, and the winning page's feature values.</li>
-            <li style="margin-bottom:6px;">Runs are resumable — a crashed or interrupted collection continues from the first missing (model, page, run) slot instead of repeating completed work.</li>
-        </ol>
-        <p>Collection runs programmatically from <code>src/run_experiment.py</code> (no manual clicking), logs every invocation to <code>logs/</code>, and is hard-capped by a ${{ budget|int }} budget guard read from <code>config.yaml</code>.</p>
+        <svg class="method-flow" viewBox="0 0 1060 150" role="img" aria-label="Method pipeline: five course pages are sent with a choice prompt, the model picks one provider, answers a six-question exit interview, and everything is written to a CSV row.">
+            <defs>
+                <linearGradient id="flow-grad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#22d3ee"/>
+                    <stop offset="100%" stop-color="#a78bfa"/>
+                </linearGradient>
+                <marker id="flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                    <path d="M0 0 L10 5 L0 10 z" fill="rgba(34,211,238,0.7)"/>
+                </marker>
+            </defs>
+            <g font-family="Inter, sans-serif">
+                <g>
+                    <rect x="8" y="35" width="180" height="80" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(34,211,238,0.45)"/>
+                    <text x="98" y="70" text-anchor="middle" fill="#eef1f8" font-size="14" font-weight="600">5 course pages</text>
+                    <text x="98" y="92" text-anchor="middle" fill="#98a2b8" font-size="11.5">full HTML stimuli</text>
+                </g>
+                <line x1="192" y1="75" x2="230" y2="75" stroke="url(#flow-grad)" stroke-width="2" marker-end="url(#flow-arrow)"/>
+                <g>
+                    <rect x="236" y="35" width="180" height="80" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(167,139,250,0.45)"/>
+                    <text x="326" y="70" text-anchor="middle" fill="#eef1f8" font-size="14" font-weight="600">Choice prompt</text>
+                    <text x="326" y="92" text-anchor="middle" fill="#98a2b8" font-size="11.5">"pick exactly one"</text>
+                </g>
+                <line x1="420" y1="75" x2="458" y2="75" stroke="url(#flow-grad)" stroke-width="2" marker-end="url(#flow-arrow)"/>
+                <g>
+                    <rect x="464" y="35" width="180" height="80" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(244,114,182,0.45)"/>
+                    <text x="554" y="70" text-anchor="middle" fill="#eef1f8" font-size="14" font-weight="600">Model decides</text>
+                    <text x="554" y="92" text-anchor="middle" fill="#98a2b8" font-size="11.5">one provider wins</text>
+                </g>
+                <line x1="648" y1="75" x2="686" y2="75" stroke="url(#flow-grad)" stroke-width="2" marker-end="url(#flow-arrow)"/>
+                <g>
+                    <rect x="692" y="35" width="180" height="80" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(251,191,36,0.45)"/>
+                    <text x="782" y="70" text-anchor="middle" fill="#eef1f8" font-size="14" font-weight="600">Exit interview</text>
+                    <text x="782" y="92" text-anchor="middle" fill="#98a2b8" font-size="11.5">6 questions, same model</text>
+                </g>
+                <line x1="876" y1="75" x2="914" y2="75" stroke="url(#flow-grad)" stroke-width="2" marker-end="url(#flow-arrow)"/>
+                <g>
+                    <rect x="920" y="35" width="130" height="80" rx="14" fill="rgba(34,211,238,0.08)" stroke="rgba(34,211,238,0.55)"/>
+                    <text x="985" y="70" text-anchor="middle" fill="#eef1f8" font-size="14" font-weight="600">CSV row</text>
+                    <text x="985" y="92" text-anchor="middle" fill="#98a2b8" font-size="11.5">37 columns</text>
+                </g>
+            </g>
+        </svg>
+        <div class="prose" style="margin-top:16px;">
+            <ol>
+                <li>The model receives all five course pages as full HTML in a single prompt and must pick exactly one provider.</li>
+                <li>Immediately after choosing, the same model answers a five-point Likert exit interview plus one open question about its choice.</li>
+                <li>Every run is appended to a CSV with 37 columns: model, provider, tier, condition page, run number, chosen page, page order, all six interview answers, the model's choice reasoning verbatim, token counts, dollar cost, latencies, attempt counts, and the winning page's feature values.</li>
+                <li>Runs are resumable — a crashed or interrupted collection continues from the first missing (model, page, run) slot instead of repeating completed work.</li>
+            </ol>
+            <p>Collection runs programmatically from <code>src/run_experiment.py</code> (no manual clicking), logs every invocation to <code>logs/</code>, and is hard-capped by a ${{ budget|int }} budget guard read from <code>config.yaml</code>.</p>
+        </div>
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        <h2>Stimuli</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
-    </div>
+<p class="section-label"><span>03 / Stimuli</span></p>
+<div class="card reveal">
     <div class="card-body">
-        <p style="margin-bottom:12px;">Each of the five pages represents the same hypothetical art course provider with a different combination of five manipulated features, tagged and machine-readable via <code>pages/features.yaml</code>:</p>
-        <ul style="margin-bottom:12px;padding-left:22px;">
-            <li style="margin-bottom:6px;"><strong>Price</strong> — displayed price level and numeric value</li>
-            <li style="margin-bottom:6px;"><strong>Reviews</strong> — review count, rating, and trust level</li>
-            <li style="margin-bottom:6px;"><strong>Credentials</strong> — presence and detail of accreditation claims</li>
-            <li style="margin-bottom:6px;"><strong>Description</strong> — marketing copy depth</li>
-            <li style="margin-bottom:6px;"><strong>Structure</strong> — curriculum layout clarity</li>
-        </ul>
-        <p style="margin-bottom:12px;"><strong>Freeze rationale:</strong> the pages, prompts, and feature definitions were locked before the final dataset was collected so that every row in the published CSV is comparable — no stimulus changed mid-collection. Feature columns are joined back onto each row from <code>features.yaml</code>, so analyses can regress choice on features without re-parsing HTML.</p>
-        <p><a href="{{ url_for('run_test') }}">Preview all five pages on the Run a Test page &rarr;</a></p>
+        <div class="prose" style="margin-bottom:18px;">
+            <p>Each of the five pages represents the same hypothetical art course provider with a different combination of five manipulated features. Below are <strong>live previews of the actual stimuli</strong> (rendered from the frozen pages — open any full-size with the link):</p>
+        </div>
+        <div class="stimuli-grid">
+            {% set stimulus_pages = ['artistry_academy.html', 'canvas_color.html', 'palette_masters.html', 'brushstroke_studio.html', 'creative_canvas.html'] %}
+            {% for pid in stimulus_pages %}
+            <div class="stimulus-card">
+                <iframe src="/page/{{ pid }}" title="Stimulus preview: {{ pid }}" loading="lazy"></iframe>
+                <div class="stimulus-caption">
+                    <span>{{ pid }}</span>
+                    <a href="/page/{{ pid }}" target="_blank" rel="noopener">open ↗</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="prose" style="margin:26px 0 14px;">
+            <p><strong>Feature matrix</strong> — what each page manipulates (from <code>pages/features.yaml</code>):</p>
+        </div>
+        <div class="table-wrapper">
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Page</th><th>Price</th><th>Reviews</th><th>Credentials</th><th>Description</th><th>Structure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>artistry_academy</td>
+                        <td><span class="dot-full" title="$249 shown"></span></td>
+                        <td><span class="dot-full" title="many: 150, 4.9★"></span></td>
+                        <td><span class="dot-full" title="detailed"></span></td>
+                        <td><span class="dot-full" title="detailed"></span></td>
+                        <td><span class="dot-full" title="structured"></span></td>
+                    </tr>
+                    <tr>
+                        <td>canvas_color</td>
+                        <td><span class="dot-none" title="hidden"></span></td>
+                        <td><span class="dot-part" title="few: 15, 4.0★"></span></td>
+                        <td><span class="dot-full" title="detailed"></span></td>
+                        <td><span class="dot-part" title="short"></span></td>
+                        <td><span class="dot-full" title="structured"></span></td>
+                    </tr>
+                    <tr>
+                        <td>palette_masters</td>
+                        <td><span class="dot-full" title="$199 shown"></span></td>
+                        <td><span class="dot-full" title="many: 120, 4.7★"></span></td>
+                        <td><span class="dot-none" title="absent"></span></td>
+                        <td><span class="dot-full" title="detailed"></span></td>
+                        <td><span class="dot-none" title="unstructured"></span></td>
+                    </tr>
+                    <tr>
+                        <td>brushstroke_studio</td>
+                        <td><span class="dot-full" title="$299 shown"></span></td>
+                        <td><span class="dot-none" title="none"></span></td>
+                        <td><span class="dot-full" title="detailed"></span></td>
+                        <td><span class="dot-part" title="short"></span></td>
+                        <td><span class="dot-full" title="structured"></span></td>
+                    </tr>
+                    <tr>
+                        <td>creative_canvas</td>
+                        <td><span class="dot-none" title="hidden"></span></td>
+                        <td><span class="dot-part" title="few: 8, 3.8★"></span></td>
+                        <td><span class="dot-none" title="absent"></span></td>
+                        <td><span class="dot-full" title="detailed"></span></td>
+                        <td><span class="dot-none" title="unstructured"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="legend-row">
+            <span><span class="dot-full"></span> strong / present</span>
+            <span><span class="dot-part"></span> weak / partial</span>
+            <span><span class="dot-none"></span> absent / hidden</span>
+        </div>
+
+        <div class="prose" style="margin-top:22px;">
+            <p><strong>Freeze rationale:</strong> the pages, prompts, and feature definitions were locked before the final dataset was collected so that every row in the published CSV is comparable — no stimulus changed mid-collection. Feature columns are joined back onto each row from <code>features.yaml</code>, so analyses can regress choice on features without re-parsing HTML.</p>
+        </div>
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        <h2>Models</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
-    </div>
+<p class="section-label"><span>04 / Models</span></p>
+<div class="card reveal">
     <div class="card-body">
-        <p style="margin-bottom:12px;">Seven low-tier models from five companies, selected on price per API call:</p>
+        <div class="prose" style="margin-bottom:14px;">
+            <p>Seven low-tier models from five companies, selected on price per API call:</p>
+        </div>
         <div class="table-wrapper">
             <table>
                 <thead>
@@ -89,23 +194,24 @@
                 </tbody>
             </table>
         </div>
-        <p style="margin-top:12px;">Selection rules: low-tier models only, roughly two per company, maximum eight models, cheapest per-call pricing first. High-tier models (Claude Sonnet, GPT-5.6 Terra, Grok-3, Gemini 3.5 Flash) were excluded on price; Anthropic's Haiku — its only low-tier option — was dropped from collection when it proved a 10&times; price outlier, though its 19 completed rows are retained in the dataset. Full pricing rationale: <code>docs/model_pricing.md</code>.</p>
+        <div class="prose" style="margin-top:14px;">
+            <p>Selection rules: low-tier models only, roughly two per company, maximum eight models, cheapest per-call pricing first. High-tier models (Claude Sonnet, GPT-5.6 Terra, Grok-3, Gemini 3.5 Flash) were excluded on price; Anthropic's Haiku — its only low-tier option — was dropped from collection when it proved a 10&times; price outlier, though its 19 completed rows are retained in the dataset. Full pricing rationale: <code>docs/model_pricing.md</code>.</p>
+        </div>
     </div>
 </div>
 
-<div class="card">
-    <div class="card-header">
-        <h2>Dataset & integrity</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
-    </div>
+<p class="section-label"><span>05 / Dataset & integrity</span></p>
+<div class="card reveal">
     <div class="card-body">
-        <ul style="margin-bottom:12px;padding-left:22px;">
-            <li style="margin-bottom:6px;"><strong>course_choice_dataset.csv</strong> — the final dataset: every collected run, 37 columns, one row per (model, page, run).</li>
-            <li style="margin-bottom:6px;"><strong>dataset_run_logs.zip</strong> — the raw collection logs: per-run timestamps, costs, retries, and errors for every model block.</li>
-            <li style="margin-bottom:6px;"><strong>Live CSV</strong> — the operator's working <code>results.csv</code>, updated as new runs are recorded.</li>
-        </ul>
-        <p style="margin-bottom:16px;">Costs are computed from real provider usage tokens, not estimates. Every row carries its own token counts and dollar cost, so the total spend can be recomputed from the CSV alone. Budget guard: ${{ budget|int }} cap per config; the full collection ran well under it.</p>
-        <div class="header-actions">
+        <div class="prose">
+            <ul>
+                <li><strong>course_choice_dataset.csv</strong> — the final dataset: every collected run, 37 columns, one row per (model, page, run).</li>
+                <li><strong>dataset_run_logs.zip</strong> — the raw collection logs: per-run timestamps, costs, retries, and errors for every model block.</li>
+                <li><strong>Live CSV</strong> — the operator's working <code>results.csv</code>, updated as new runs are recorded.</li>
+            </ul>
+            <p>Costs are computed from real provider usage tokens, not estimates. Every row carries its own token counts and dollar cost, so the total spend can be recomputed from the CSV alone. Budget guard: ${{ budget|int }} cap per config; the full collection ran well under it.</p>
+        </div>
+        <div class="header-actions" style="margin-top:18px;">
             <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download final dataset (CSV)</a>
             <a href="{{ url_for('download_dataset_logs') }}" class="btn btn-secondary">Download run logs</a>
         </div>

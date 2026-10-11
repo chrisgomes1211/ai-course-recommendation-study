@@ -316,7 +316,7 @@ def index():
 
 @app.route("/run-test")
 def run_test():
-    return render_template("run_test.html", **run_page_context())
+    return render_template("run_neon.html", **run_page_context())
 
 @app.route("/redesign")
 @app.route("/v2")
@@ -325,7 +325,7 @@ def redesign():
 
 @app.route("/classic")
 def classic():
-    return redirect(url_for("run_test"))
+    return render_template("run_test.html", **run_page_context())
 
 @app.route("/api/run-test", methods=["POST"])
 def api_run_test():

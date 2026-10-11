@@ -350,7 +350,9 @@ function renderResults(data) {
 /* ----------------------------- Dashboard ----------------------------- */
 
 const PAGE_SIZE = 20;
-const CHART_COLORS = ['#0d9488', '#2563eb', '#7c3aed', '#d97706', '#64748b', '#e86a17'];
+const NEON_SKIN = document.documentElement.getAttribute('data-skin') === 'neon';
+const CHART_GRID = NEON_SKIN ? 'rgba(255,255,255,0.07)' : '#efeeea';
+const CHART_COLORS = ['#22d3ee', '#a78bfa', '#f472b6', '#fbbf24', '#34d399', '#60a5fa'];
 let overallChart = null;
 let modelChart = null;
 const dashboardState = { offset: 0, total: 0, loading: false };
@@ -452,7 +454,7 @@ function renderSummary(stats) {
 function chartDefaults() {
     if (typeof Chart === 'undefined') return;
     Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
-    Chart.defaults.color = '#5c5a55';
+    Chart.defaults.color = NEON_SKIN ? '#98a2b8' : '#5c5a55';
 }
 
 function renderOverallChart(courseCounts) {
@@ -485,7 +487,7 @@ function renderOverallChart(courseCounts) {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#efeeea' } },
+                x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: CHART_GRID } },
                 y: { grid: { display: false } }
             }
         }
@@ -536,7 +538,7 @@ function renderModelChart(modelCourseCounts) {
                 x: {
                     stacked: true, max: 100,
                     ticks: { callback: v => v + '%', precision: 0 },
-                    grid: { color: '#efeeea' }
+                    grid: { color: CHART_GRID }
                 },
                 y: { stacked: true, grid: { display: false } }
             }

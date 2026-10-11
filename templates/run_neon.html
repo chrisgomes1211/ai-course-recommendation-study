@@ -1,0 +1,210 @@
+{% extends "neon_base.html" %}
+
+{% block title %}Run a Test - AI Course Recommendation Study{% endblock %}
+
+{% block content %}
+<section class="hero" aria-label="Study overview">
+    <div class="hero-orb hero-orb-a" data-depth="0.08" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-b" data-depth="0.16" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb-c" data-depth="0.28" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+        <div class="hero-content">
+            <p class="hero-eyebrow">MSc Research Experiment</p>
+            <h1>Run a Test</h1>
+            <p class="hero-sub">Select an AI model and run a single recommendation + exit interview, or start a batch run across models and course pages.</p>
+            <div class="hero-cta">
+                <a href="#single-run" class="btn btn-primary">Run a single test</a>
+                <a href="{{ url_for('results') }}" class="btn btn-secondary">View results</a>
+                <a href="{{ url_for('about') }}" class="btn btn-ghost">Methodology</a>
+            </div>
+            <ul class="hero-stats">
+                <li><strong data-count="{{ models|length }}">{{ models|length }}</strong> AI models</li>
+                <li><strong data-count="{{ pages|length }}">{{ pages|length }}</strong> course pages</li>
+                <li><strong data-count="{{ budget|int }}" data-prefix="$">${{ budget|int }}</strong> budget cap</li>
+            </ul>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-ring hero-ring-1" data-depth="0.1" aria-hidden="true"></div>
+            <div class="hero-ring hero-ring-2" data-depth="0.2" aria-hidden="true"></div>
+            <div class="welcome-bot-wrap">
+                <span class="welcome-bot-bubble">Welcome!</span>
+                <div class="welcome-bot" id="welcome-bot"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<p class="section-label"><span>01 / Single run</span></p>
+<div class="card reveal" id="single-run">
+    <div class="card-header">
+        <h2>Single Run Configuration</h2>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="model-select">AI Model</label>
+            <select id="model-select" class="form-select">
+                {% for model in models %}
+                <option value="{{ model.name }}" data-provider="{{ model.provider }}" data-tier="{{ model.tier }}">
+                    {{ model.name }} ({{ model.provider }}, {{ model.tier }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button id="run-btn" class="btn btn-primary" onclick="runTest()">
+            <span class="btn-text">Run Test</span>
+            <span class="btn-loading" style="display:none;">
+                <span class="spinner"></span> Running...
+            </span>
+        </button>
+    </div>
+</div>
+
+<p class="section-label"><span>02 / Batch run</span></p>
+<div class="card reveal" id="batch-run">
+    <div class="card-header">
+        <h2>Batch Run</h2>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label>Models to Include</label>
+            <div id="model-checkboxes" class="checkbox-group">
+                {% for group in model_groups %}
+                <div class="model-group" data-provider="{{ group.key }}">
+                    <span class="group-overline">{{ group.label }}</span>
+                    <div class="group-chips">
+                        {% for model in group.models %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="batch-models" value="{{ model.name }}" checked>
+                            <span>{{ model.name }}<span class="chip-meta"> ({{ model.provider }}, {{ model.tier }})</span></span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="runs-per-model-page">Runs per Model per Page</label>
+            <input type="number" id="runs-per-model-page" class="form-select" value="1" min="1" max="100" style="max-width: 120px;">
+            <small class="form-hint">Each model will run this many times for each course page. Total runs = models × pages × runs.</small>
+        </div>
+        <div class="batch-actions">
+            <button id="batch-start-btn" class="btn btn-primary" onclick="startBatchRun()">
+                <span class="btn-text">Start Batch Run</span>
+                <span class="btn-loading" style="display:none;">
+                    <span class="spinner"></span> Starting...
+                </span>
+            </button>
+            <button id="batch-stop-btn" class="btn btn-secondary" onclick="stopBatchRun()" style="display: none;">
+                Stop Batch Run
+            </button>
+        </div>
+        <div id="batch-progress" class="batch-progress" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+            </div>
+            <div class="progress-info">
+                <span id="progress-text">0 / 0 completed</span>
+                <span id="progress-cost">Cost: $0.00</span>
+            </div>
+            <div class="progress-current" id="progress-current" style="display: none;">
+                Running: <span id="current-model"></span> on <span id="current-page"></span>
+            </div>
+            <div class="progress-errors" id="progress-errors" style="display: none;">
+                <strong>Recent errors:</strong>
+                <ul id="errors-list"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="section-label"><span>03 / Course pages</span></p>
+<div class="card reveal" id="course-pages">
+    <div class="card-header">
+        <h2>Course Pages</h2>
+    </div>
+    <div class="card-body">
+        <div class="pages-grid" id="pages-grid">
+            {% for page_id, html in pages.items() %}
+            <div class="page-card reveal">
+                <div class="page-card-header">
+                    <div class="page-header-row">
+                        <h3>{{ page_id }}</h3>
+                        <a href="/page/{{ page_id }}" target="_blank" class="btn btn-sm">View Page</a>
+                    </div>
+                </div>
+                {% if features and page_id in features %}
+                <div class="page-card-meta">
+                    <div class="feature-tags">
+                        {% set f = features[page_id] %}
+                        {% if f.price %}
+                        <span class="feature-tag feature-price">{{ f.price.label }}</span>
+                        {% endif %}
+                        {% if f.reviews %}
+                        <span class="feature-tag feature-reviews">{{ f.reviews.label }}</span>
+                        {% endif %}
+                        {% if f.credentials %}
+                        <span class="feature-tag feature-credentials">{{ f.credentials.label }}</span>
+                        {% endif %}
+                        {% if f.description %}
+                        <span class="feature-tag feature-description">{{ f.description.label }}</span>
+                        {% endif %}
+                        {% if f.structure %}
+                        <span class="feature-tag feature-structure">{{ f.structure.label }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="page-card-content">
+                    <iframe class="page-iframe" srcdoc="{{ html }}" title="{{ page_id }}"></iframe>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="card" id="results-panel" style="display: none;">
+    <div class="card-header">
+        <h2>Results</h2>
+    </div>
+    <div class="card-body">
+        <div id="results-content"></div>
+    </div>
+</div>
+
+<div class="card" id="error-panel" style="display: none;">
+    <div class="card-header error">
+        <h2>Error</h2>
+    </div>
+    <div class="card-body">
+        <p id="error-message" class="error-message"></p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Welcome robot: "Robot Hello | Loop Animation" by AnEmotion Studio on LottieFiles (free license) #}
+<script src="{{ url_for('static', filename='lottie.min.js') }}"></script>
+<script src="{{ url_for('static', filename='tour.js') }}"></script>
+<script>
+(function () {
+    const el = document.getElementById('welcome-bot');
+    if (!el || typeof lottie === 'undefined') return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const anim = lottie.loadAnimation({
+        container: el,
+        renderer: 'svg',
+        loop: !reduce,
+        autoplay: !reduce,
+        path: '{{ url_for("static", filename="welcome-bot.json") }}'
+    });
+    if (reduce) {
+        anim.addEventListener('DOMLoaded', () => anim.goToAndStop(1, true));
+    }
+    window.__welcomeBot = anim;
+})();
+</script>
+{% endblock %}

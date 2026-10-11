@@ -1,11 +1,14 @@
-{% extends "base.html" %}
+{% extends "neon_base.html" %}
 
 {% block title %}Results Dashboard - AI Course Recommendation Study{% endblock %}
 
 {% block content %}
 <div class="page-header">
-    <div class="header-row">
-        <h1>Results Dashboard</h1>
+    <div class="page-header-row">
+        <div>
+            <h1>Results Dashboard</h1>
+            <p class="subtitle">Overview of all recorded experiment runs — charts update live from the results API.</p>
+        </div>
         <div class="header-actions">
             {% if has_dataset %}
             <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download Final Dataset (CSV)</a>
@@ -14,7 +17,6 @@
             <a href="{{ url_for('download_csv') }}" class="btn btn-secondary">Download CSV</a>
         </div>
     </div>
-    <p class="subtitle">Overview of all recorded experiment runs</p>
 </div>
 
 <div class="card" id="dashboard-error" style="display:none;">
@@ -47,10 +49,9 @@
     {% endif %}
 </div>
 
-<div class="card">
+<div class="card reveal">
     <div class="card-header">
         <h2>Course Recommendations (Overall)</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
     </div>
     <div class="card-body">
         <div class="chart-container">
@@ -60,10 +61,9 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card reveal">
     <div class="card-header">
         <h2>Recommendations by Model</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
     </div>
     <div class="card-body">
         <div class="chart-container">
@@ -73,10 +73,9 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card reveal">
     <div class="card-header">
         <h2>Recent Runs</h2>
-        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
     </div>
     <div class="card-body">
         <div class="table-wrapper">
@@ -104,7 +103,7 @@
             </table>
         </div>
         <div id="load-more-wrap" style="display:none;justify-content:center;gap:12px;align-items:center;margin-top:16px;">
-            <span style="font-size:0.85rem;color:var(--muted);">Showing <span id="runs-shown-count">0</span> of <span id="runs-total-count">0</span> runs</span>
+            <span style="font-size:0.85rem;color:var(--faint);">Showing <span id="runs-shown-count">0</span> of <span id="runs-total-count">0</span> runs</span>
             <button type="button" id="load-more-btn" class="btn btn-secondary" onclick="loadMoreRuns()">Load more</button>
         </div>
     </div>
