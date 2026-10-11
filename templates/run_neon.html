@@ -18,8 +18,9 @@
                 <div class="banner-bg-scrim"></div>
             </div>
             <div class="welcome-bot-wrap">
-                <span class="welcome-bot-bubble">Welcome!</span>
+                <span class="welcome-bot-ring" aria-hidden="true"></span>
                 <div class="welcome-bot" id="welcome-bot"></div>
+                <span class="welcome-bot-bubble"><span class="welcome-bot-say" id="welcome-bot-say"></span><span class="welcome-bot-caret" aria-hidden="true"></span></span>
             </div>
 
             <p class="hero-laurel">
@@ -272,17 +273,59 @@
 (function () {
     const el = document.getElementById('welcome-bot');
     if (!el || typeof lottie === 'undefined') return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const anim = lottie.loadAnimation({
         container: el,
         renderer: 'svg',
         loop: !reduce,
-        autoplay: !reduce,
+        autoplay: false,
         path: '{{ url_for("static", filename="welcome-bot.json") }}'
     });
     if (reduce) {
-        anim.addEventListener('DOMLoaded', () => anim.goToAndStop(1, true));
+        anim.addEventListener('DOMLoaded', function () {
+            anim.goToAndStop(1, true);
+            var say = document.getElementById('welcome-bot-say');
+            if (say) say.textContent = 'Welcome! Pick a model below to begin.';
+        });
+        window.__welcomeBot = anim;
+        return;
     }
+
+    var LINES = [
+        "Hi! I'm your study guide.",
+        "Watch me pick an art course...",
+        "Choose a model below to begin.",
+        "I'll run the test, then interview the model."
+    ];
+    var sayEl = document.getElementById('welcome-bot-say');
+    var wrap = document.querySelector('.welcome-bot-wrap');
+    var lineIdx = 0;
+
+    function typeLine(text, done) {
+        var i = 0;
+        sayEl.textContent = '';
+        (function tick() {
+            sayEl.textContent = text.slice(0, ++i);
+            if (i < text.length) setTimeout(tick, 28);
+            else if (done) setTimeout(done, 2400);
+        })();
+    }
+
+    function cycleLines() {
+        typeLine(LINES[lineIdx % LINES.length], function () {
+            lineIdx++;
+            cycleLines();
+        });
+    }
+
+    anim.addEventListener('DOMLoaded', function () {
+        if (wrap) wrap.classList.add('bot-ready');
+        anim.play();
+        setTimeout(function () {
+            if (wrap) wrap.classList.add('bot-speaking');
+            cycleLines();
+        }, 650);
+    });
     window.__welcomeBot = anim;
 })();
 </script>

@@ -239,7 +239,7 @@ code {
     box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.03) inset,
         0 0 80px rgba(124, 92, 255, 0.18);
-    overflow: hidden;
+    overflow: visible;
 }
 
 /* content sits above the video layer */
@@ -255,6 +255,7 @@ code {
     z-index: 0;
     pointer-events: none;
     background: #0d0a16;
+    overflow: hidden;
 }
 
 .banner-bg-vid {
@@ -488,18 +489,19 @@ code {
     animation: heroRise 0.9s var(--ease-out) 1.78s both;
 }
 
-/* ---------------- welcome bot: corner accent of the frame ---------------- */
+/* ---------------- welcome bot: teacher mascot ---------------- */
 .welcome-bot-wrap {
     position: absolute;
-    top: -26px;
-    right: 26px;
+    top: -34px;
+    right: 34px;
     z-index: 2;
-    animation: heroRise 0.9s var(--ease-out) 1.9s both;
+    width: 188px;
+    height: 188px;
 }
 
 .welcome-bot {
-    width: 96px;
-    height: 96px;
+    width: 188px;
+    height: 188px;
     border-radius: 50%;
     background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04) 58%, transparent 72%), var(--surface);
     border: 1px solid var(--border-strong);
@@ -507,19 +509,89 @@ code {
     display: grid;
     place-items: center;
     cursor: pointer;
+    opacity: 0;
+    transform: translateY(-70px) scale(0.6);
 }
 
+/* entry: drop in with a springy settle, then float gently */
+.bot-ready .welcome-bot {
+    animation:
+        botDrop 0.9s cubic-bezier(.34, 1.56, .64, 1) both,
+        botFloat 4.2s ease-in-out 0.9s infinite;
+}
+
+@keyframes botDrop {
+    0% { opacity: 0; transform: translateY(-70px) scale(0.6); }
+    60% { opacity: 1; transform: translateY(8px) scale(1.06); }
+    80% { transform: translateY(-4px) scale(0.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes botFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30% { transform: translateY(-10px) rotate(-2deg); }
+    65% { transform: translateY(-4px) rotate(2deg); }
+}
+
+/* boot-up ring: dashed spinner while the lottie loads, fades once ready */
+.welcome-bot-ring {
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 2px dashed rgba(192, 132, 252, 0.55);
+    animation: neon-spin 5s linear infinite;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.bot-ready .welcome-bot-ring {
+    opacity: 0;
+    transform: scale(1.25);
+    pointer-events: none;
+}
+
+/* speech bubble: appears after landing, typewriter text + caret */
 .welcome-bot-bubble {
     position: absolute;
-    top: -10px;
-    left: -14px;
-    padding: 5px 11px;
-    border-radius: 999px 999px 999px 4px;
-    background: var(--grad);
-    color: #0a0a12;
-    font-size: 11.5px;
-    font-weight: 700;
-    box-shadow: 0 8px 22px rgba(168, 85, 247, 0.5);
+    top: -6px;
+    left: -58px;
+    transform: scale(0);
+    transform-origin: bottom right;
+    padding: 10px 14px;
+    border-radius: 14px 14px 4px 14px;
+    background: #16121f;
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    font-size: 12.5px;
+    line-height: 1.45;
+    max-width: 210px;
+    text-align: left;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 24px rgba(168, 85, 247, 0.25);
+    opacity: 0;
+}
+
+.bot-speaking .welcome-bot-bubble {
+    animation: bubblePop 0.45s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+@keyframes bubblePop {
+    0% { opacity: 0; transform: scale(0); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.welcome-bot-say { min-height: 1em; }
+
+.welcome-bot-caret {
+    display: inline-block;
+    width: 2px;
+    height: 0.95em;
+    margin-left: 2px;
+    vertical-align: -2px;
+    background: var(--violet);
+    animation: caretBlink 0.8s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+    50% { opacity: 0; }
 }
 
 /* ---------------- section rhythm ---------------- */
@@ -1207,7 +1279,9 @@ code {
 @media (max-width: 900px) {
     .hero-inner { grid-template-columns: 1fr; gap: 30px; }
     .hero-visual { min-height: 240px; order: -1; }
-    .welcome-bot { width: 150px; height: 150px; }
+    .welcome-bot-wrap { width: 140px; height: 140px; }
+    .welcome-bot { width: 140px; height: 140px; }
+    .welcome-bot-bubble { left: auto; right: -10px; top: -54px; max-width: 180px; }
     .hero-ring-1 { width: 230px; height: 230px; }
     .hero-ring-2 { width: 180px; height: 180px; }
 }
@@ -1257,7 +1331,7 @@ code {
 @media (prefers-reduced-motion: reduce) {
     .banner-bg-vid { display: none; }
     .hero-eyebrow, .hero-sub, .hero-cta, .hero-word, .hero-laurel,
-    .hero-cards-label, .hero-card, .hero-hint, .welcome-bot-wrap,
+    .hero-cards-label, .hero-card, .hero-hint, .welcome-bot-wrap, .welcome-bot,
     .hero h1, .sheen, .btn-primary, .neon-dots {
         animation: none !important;
         opacity: 1 !important;
@@ -1272,8 +1346,10 @@ code {
     .hero-card { width: 132px; height: 160px; }
     .hero-card-art { width: 72px; height: 72px; margin-bottom: 28px; }
     .hero-card-badge { font-size: 10.5px; padding: 5px 10px; }
-    .welcome-bot-wrap { top: -20px; right: 14px; }
-    .welcome-bot { width: 72px; height: 72px; }
+    .welcome-bot-wrap { top: -18px; right: 10px; width: 96px; height: 96px; }
+    .welcome-bot { width: 96px; height: 96px; }
+    .welcome-bot-bubble { left: -120px; top: 8px; max-width: 150px; font-size: 11.5px; }
+    .welcome-bot-ring { inset: -8px; }
     .hero-laurel { font-size: 12px; }
 }
 
