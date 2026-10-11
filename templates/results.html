@@ -53,8 +53,9 @@
         <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
     </div>
     <div class="card-body">
-        <div class="chart-container" id="overall-chart">
-            <p class="loading">Loading...</p>
+        <div class="chart-container">
+            <canvas id="overall-chart"></canvas>
+            <p class="loading" id="overall-empty" style="display:none;">No data yet.</p>
         </div>
     </div>
 </div>
@@ -65,8 +66,9 @@
         <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
     </div>
     <div class="card-body">
-        <div class="chart-container" id="model-chart">
-            <p class="loading">Loading...</p>
+        <div class="chart-container">
+            <canvas id="model-chart"></canvas>
+            <p class="loading" id="model-empty" style="display:none;">No data yet.</p>
         </div>
     </div>
 </div>

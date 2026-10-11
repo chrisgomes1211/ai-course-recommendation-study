@@ -1233,7 +1233,8 @@ input[type="number"].form-select {
 
 /* ---------- Charts ---------- */
 
-.chart-container { min-height:200px; }
+.chart-container { position:relative; height:320px; min-height:200px; }
+.chart-container canvas { display:block; width:100% !important; height:100% !important; }
 
 .chart-bar {
     display:flex;
