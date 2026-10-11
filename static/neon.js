@@ -72,10 +72,33 @@
         }
     }
 
+    /* ---------------- banner videos (play only when visible) ---------------- */
+    function initBannerVideos() {
+        var vids = document.querySelectorAll('.banner-bg-vid');
+        if (!vids.length) return;
+        if (reduce) return; /* CSS hides them; no playback */
+        var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                var v = e.target;
+                if (e.isIntersecting) {
+                    var pr = v.play();
+                    if (pr && pr.catch) pr.catch(function () {});
+                } else {
+                    v.pause();
+                }
+            });
+        }, { threshold: 0.15 }) : null;
+        vids.forEach(function (v) {
+            if (io) io.observe(v);
+            else { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        });
+    }
+
     function boot() {
         initParallax();
         initReveal();
         initTilt();
+        initBannerVideos();
     }
 
     if (document.readyState === 'loading') {

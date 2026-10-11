@@ -10,6 +10,13 @@
 
     <div class="hero-inner">
         <div class="hero-frame">
+            <div class="banner-bg" aria-hidden="true">
+                <video class="banner-bg-vid" muted loop playsinline preload="metadata"
+                       poster="{{ url_for('static', filename='media/hero_bg_meadow_poster.jpg') }}">
+                    <source src="{{ url_for('static', filename='media/hero_bg_meadow.mp4') }}" type="video/mp4">
+                </video>
+                <div class="banner-bg-scrim"></div>
+            </div>
             <div class="welcome-bot-wrap">
                 <span class="welcome-bot-bubble">Welcome!</span>
                 <div class="welcome-bot" id="welcome-bot"></div>
@@ -243,6 +250,13 @@
 </div>
 
 <section class="close-banner reveal" aria-label="Get started">
+    <div class="banner-bg" aria-hidden="true">
+        <video class="banner-bg-vid" muted loop playsinline preload="none"
+               poster="{{ url_for('static', filename='media/hero_bg_meadow_poster.jpg') }}">
+            <source src="{{ url_for('static', filename='media/hero_bg_meadow.mp4') }}" type="video/mp4">
+        </video>
+        <div class="banner-bg-scrim"></div>
+    </div>
     <h2 class="close-title">Your next insight is one run away.</h2>
     <a href="#single-run" class="btn btn-primary close-cta">Run a single test
         <svg class="cta-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
