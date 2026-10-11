@@ -1,93 +1,80 @@
-{% extends "v2_base.html" %}
+{% extends "base.html" %}
 
 {% block title %}About & Methodology — AI Course Recommendation Study{% endblock %}
 
 {% block content %}
-<section class="v2-hero v2-hero-compact">
-    <div class="v2-hero-copy">
-        <p class="v2-overline">About the study</p>
-        <h1 class="v2-hero-title">Methodology</h1>
-        <p class="v2-hero-sub">What this experiment asks, how it is run, and what the published dataset contains.</p>
-        <div class="v2-hero-cta">
-            <a href="{{ url_for('download_dataset') }}" class="v2-btn v2-btn-ink">Download dataset</a>
-            <a href="{{ url_for('results') }}" class="v2-link-arrow">View results<span aria-hidden="true">&nbsp;&rarr;</span></a>
+<div class="page-header">
+    <div class="header-row">
+        <h1>About & Methodology</h1>
+        <div class="header-actions">
+            <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download dataset</a>
+            <a href="{{ url_for('results') }}" class="btn btn-secondary">View results</a>
         </div>
     </div>
-</section>
+    <p class="subtitle">What this experiment asks, how it is run, and what the published dataset contains.</p>
+</div>
 
-<div class="v2-rule"></div>
-
-<section class="v2-section" id="question">
-    <header class="v2-section-head">
-        <span class="v2-section-index">01</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Research question</h2>
-            <p class="v2-section-desc">How do large language models choose between competing online course providers?</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-primary v2-prose">
-        <p>When a person asks an AI assistant to recommend an art course, the answer depends on which provider features the model attends to — price, reviews, credentials, description quality, or page structure. This MSc experiment treats each model as a decision-maker and measures, across many repeated runs:</p>
-        <ul>
-            <li><strong>Which course provider wins</strong> when five deliberately different pages are shown side by side</li>
-            <li><strong>What the model says drove its choice</strong> — a six-question exit interview covering price, reviews, credentials, description, clarity, and an open reason</li>
-            <li><strong>What the answer costs</strong> — tokens, latency, and dollar cost per run, per model</li>
+<div class="card">
+    <div class="card-header">
+        <h2>Research question</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <p style="margin-bottom:12px;">How do large language models choose between competing online course providers?</p>
+        <p style="margin-bottom:12px;">When a person asks an AI assistant to recommend an art course, the answer depends on which provider features the model attends to — price, reviews, credentials, description quality, or page structure. This MSc experiment treats each model as a decision-maker and measures, across many repeated runs:</p>
+        <ul style="margin-bottom:12px;padding-left:22px;">
+            <li style="margin-bottom:6px;"><strong>Which course provider wins</strong> when five deliberately different pages are shown side by side</li>
+            <li style="margin-bottom:6px;"><strong>What the model says drove its choice</strong> — a six-question exit interview covering price, reviews, credentials, description, clarity, and an open reason</li>
+            <li style="margin-bottom:6px;"><strong>What the answer costs</strong> — tokens, latency, and dollar cost per run, per model</li>
         </ul>
         <p>The comparison is deliberately restricted to <strong>low-tier (cheap) models</strong>, because the practical question for consumers is what a cheap API call buys you.</p>
     </div>
-</section>
+</div>
 
-<section class="v2-section is-quiet" id="method">
-    <header class="v2-section-head">
-        <span class="v2-section-index">02</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Method</h2>
-            <p class="v2-section-desc">A repeated choice experiment: models &times; course pages &times; runs, fully scripted.</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-quiet v2-prose">
-        <ol>
-            <li>The model receives all five course pages as full HTML in a single prompt and must pick exactly one provider.</li>
-            <li>Immediately after choosing, the same model answers a five-point Likert exit interview plus one open question about its choice.</li>
-            <li>Every run is appended to a CSV with 37 columns: model, provider, tier, condition page, run number, chosen page, page order, all six interview answers, the model's choice reasoning verbatim, token counts, dollar cost, latencies, attempt counts, and the winning page's feature values.</li>
-            <li>Runs are resumable — a crashed or interrupted collection continues from the first missing (model, page, run) slot instead of repeating completed work.</li>
+<div class="card">
+    <div class="card-header">
+        <h2>Method</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <ol style="margin-bottom:12px;padding-left:22px;">
+            <li style="margin-bottom:6px;">The model receives all five course pages as full HTML in a single prompt and must pick exactly one provider.</li>
+            <li style="margin-bottom:6px;">Immediately after choosing, the same model answers a five-point Likert exit interview plus one open question about its choice.</li>
+            <li style="margin-bottom:6px;">Every run is appended to a CSV with 37 columns: model, provider, tier, condition page, run number, chosen page, page order, all six interview answers, the model's choice reasoning verbatim, token counts, dollar cost, latencies, attempt counts, and the winning page's feature values.</li>
+            <li style="margin-bottom:6px;">Runs are resumable — a crashed or interrupted collection continues from the first missing (model, page, run) slot instead of repeating completed work.</li>
         </ol>
         <p>Collection runs programmatically from <code>src/run_experiment.py</code> (no manual clicking), logs every invocation to <code>logs/</code>, and is hard-capped by a ${{ budget|int }} budget guard read from <code>config.yaml</code>.</p>
     </div>
-</section>
+</div>
 
-<section class="v2-section is-quiet" id="stimuli">
-    <header class="v2-section-head">
-        <span class="v2-section-index">03</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Stimuli</h2>
-            <p class="v2-section-desc">Five course pages with manipulated feature sets — frozen for the dataset phase.</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-quiet v2-prose">
-        <p>Each of the five pages represents the same hypothetical art course provider with a different combination of five manipulated features, tagged and machine-readable via <code>pages/features.yaml</code>:</p>
-        <ul>
-            <li><strong>Price</strong> — displayed price level and numeric value</li>
-            <li><strong>Reviews</strong> — review count, rating, and trust level</li>
-            <li><strong>Credentials</strong> — presence and detail of accreditation claims</li>
-            <li><strong>Description</strong> — marketing copy depth</li>
-            <li><strong>Structure</strong> — curriculum layout clarity</li>
+<div class="card">
+    <div class="card-header">
+        <h2>Stimuli</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <p style="margin-bottom:12px;">Each of the five pages represents the same hypothetical art course provider with a different combination of five manipulated features, tagged and machine-readable via <code>pages/features.yaml</code>:</p>
+        <ul style="margin-bottom:12px;padding-left:22px;">
+            <li style="margin-bottom:6px;"><strong>Price</strong> — displayed price level and numeric value</li>
+            <li style="margin-bottom:6px;"><strong>Reviews</strong> — review count, rating, and trust level</li>
+            <li style="margin-bottom:6px;"><strong>Credentials</strong> — presence and detail of accreditation claims</li>
+            <li style="margin-bottom:6px;"><strong>Description</strong> — marketing copy depth</li>
+            <li style="margin-bottom:6px;"><strong>Structure</strong> — curriculum layout clarity</li>
         </ul>
-        <p><strong>Freeze rationale:</strong> the pages, prompts, and feature definitions were locked before the final dataset was collected so that every row in the published CSV is comparable — no stimulus changed mid-collection. Feature columns are joined back onto each row from <code>features.yaml</code>, so analyses can regress choice on features without re-parsing HTML.</p>
+        <p style="margin-bottom:12px;"><strong>Freeze rationale:</strong> the pages, prompts, and feature definitions were locked before the final dataset was collected so that every row in the published CSV is comparable — no stimulus changed mid-collection. Feature columns are joined back onto each row from <code>features.yaml</code>, so analyses can regress choice on features without re-parsing HTML.</p>
         <p><a href="{{ url_for('run_test') }}">Preview all five pages on the Run a Test page &rarr;</a></p>
     </div>
-</section>
+</div>
 
-<section class="v2-section is-quiet" id="models">
-    <header class="v2-section-head">
-        <span class="v2-section-index">04</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Models</h2>
-            <p class="v2-section-desc">Seven low-tier models from five companies, selected on price per API call.</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-quiet">
-        <div class="table-wrapper v2-table-wrap">
-            <table class="v2-table">
+<div class="card">
+    <div class="card-header">
+        <h2>Models</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <p style="margin-bottom:12px;">Seven low-tier models from five companies, selected on price per API call:</p>
+        <div class="table-wrapper">
+            <table>
                 <thead>
                     <tr><th>Model</th><th>Company</th><th>$/1M input</th><th>$/1M output</th><th>~Cost / run</th></tr>
                 </thead>
@@ -102,32 +89,26 @@
                 </tbody>
             </table>
         </div>
-        <div class="v2-prose">
-            <p>Selection rules: low-tier models only, roughly two per company, maximum eight models, cheapest per-call pricing first. High-tier models (Claude Sonnet, GPT-5.6 Terra, Grok-3, Gemini 3.5 Flash) were excluded on price; Anthropic's Haiku — its only low-tier option — was dropped from collection when it proved a 10&times; price outlier, though its 19 completed rows are retained in the dataset. Full pricing rationale: <code>docs/model_pricing.md</code>.</p>
-        </div>
+        <p style="margin-top:12px;">Selection rules: low-tier models only, roughly two per company, maximum eight models, cheapest per-call pricing first. High-tier models (Claude Sonnet, GPT-5.6 Terra, Grok-3, Gemini 3.5 Flash) were excluded on price; Anthropic's Haiku — its only low-tier option — was dropped from collection when it proved a 10&times; price outlier, though its 19 completed rows are retained in the dataset. Full pricing rationale: <code>docs/model_pricing.md</code>.</p>
     </div>
-</section>
+</div>
 
-<section class="v2-section is-quiet" id="dataset">
-    <header class="v2-section-head">
-        <span class="v2-section-index">05</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Dataset & integrity</h2>
-            <p class="v2-section-desc">What you can download, and how to verify it.</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-quiet v2-prose">
-        <ul>
-            <li><strong>course_choice_dataset.csv</strong> — the final dataset: every collected run, 37 columns, one row per (model, page, run).</li>
-            <li><strong>dataset_run_logs.zip</strong> — the raw collection logs: per-run timestamps, costs, retries, and errors for every model block.</li>
-            <li><strong>Live CSV</strong> — the operator's working <code>results.csv</code>, updated as new runs are recorded.</li>
+<div class="card">
+    <div class="card-header">
+        <h2>Dataset & integrity</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <ul style="margin-bottom:12px;padding-left:22px;">
+            <li style="margin-bottom:6px;"><strong>course_choice_dataset.csv</strong> — the final dataset: every collected run, 37 columns, one row per (model, page, run).</li>
+            <li style="margin-bottom:6px;"><strong>dataset_run_logs.zip</strong> — the raw collection logs: per-run timestamps, costs, retries, and errors for every model block.</li>
+            <li style="margin-bottom:6px;"><strong>Live CSV</strong> — the operator's working <code>results.csv</code>, updated as new runs are recorded.</li>
         </ul>
-        <p>Costs are computed from real provider usage tokens, not estimates. Every row carries its own token counts and dollar cost, so the total spend can be recomputed from the CSV alone. Budget guard: ${{ budget|int }} cap per config; the full collection ran well under it.</p>
-        <div class="v2-actions">
-            <a href="{{ url_for('download_dataset') }}" class="v2-btn v2-btn-primary">Download final dataset (CSV)</a>
-            <a href="{{ url_for('download_dataset_logs') }}" class="v2-btn v2-btn-secondary">Download run logs</a>
-            <a href="{{ url_for('about') }}#question" class="v2-btn v2-btn-secondary">Back to top</a>
+        <p style="margin-bottom:16px;">Costs are computed from real provider usage tokens, not estimates. Every row carries its own token counts and dollar cost, so the total spend can be recomputed from the CSV alone. Budget guard: ${{ budget|int }} cap per config; the full collection ran well under it.</p>
+        <div class="header-actions">
+            <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download final dataset (CSV)</a>
+            <a href="{{ url_for('download_dataset_logs') }}" class="btn btn-secondary">Download run logs</a>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}

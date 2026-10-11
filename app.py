@@ -316,16 +316,16 @@ def index():
 
 @app.route("/run-test")
 def run_test():
-    return render_template("redesign.html", **run_page_context())
+    return render_template("run_test.html", **run_page_context())
 
 @app.route("/redesign")
 @app.route("/v2")
 def redesign():
-    return redirect(url_for("run_test"))
+    return render_template("redesign.html", **run_page_context())
 
 @app.route("/classic")
 def classic():
-    return render_template("run_test.html", **run_page_context())
+    return redirect(url_for("run_test"))
 
 @app.route("/api/run-test", methods=["POST"])
 def api_run_test():

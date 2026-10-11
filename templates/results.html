@@ -1,107 +1,84 @@
-{% extends "v2_base.html" %}
+{% extends "base.html" %}
 
-{% block title %}Results Dashboard — AI Course Recommendation Study{% endblock %}
+{% block title %}Results Dashboard - AI Course Recommendation Study{% endblock %}
 
 {% block content %}
-<section class="v2-hero v2-hero-compact">
-    <div class="v2-hero-copy">
-        <p class="v2-overline">The data</p>
-        <h1 class="v2-hero-title">Results</h1>
-        <p class="v2-hero-sub">Overview of all recorded experiment runs — live from the operator's CSV, plus the published final dataset.</p>
-        <div class="v2-hero-cta">
+<div class="page-header">
+    <div class="header-row">
+        <h1>Results Dashboard</h1>
+        <div class="header-actions">
             {% if has_dataset %}
-            <a href="{{ url_for('download_dataset') }}" class="v2-btn v2-btn-ink">Download final dataset</a>
+            <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download Final Dataset (CSV)</a>
+            <a href="{{ url_for('download_dataset_logs') }}" class="btn btn-secondary">Download Run Logs</a>
             {% endif %}
-            <a href="{{ url_for('about') }}" class="v2-link-arrow">Methodology<span aria-hidden="true">&nbsp;&rarr;</span></a>
+            <a href="{{ url_for('download_csv') }}" class="btn btn-secondary">Download CSV</a>
         </div>
     </div>
-    <aside class="v2-hero-stats" aria-label="Dataset overview">
-        {% if has_dataset %}
-        <div class="v2-stat">
-            <strong class="v2-stat-value">{{ dataset_rows }}</strong>
-            <span class="v2-stat-label">Dataset rows</span>
-        </div>
-        {% endif %}
-        <div class="v2-stat">
-            <strong class="v2-stat-value">37</strong>
-            <span class="v2-stat-label">Columns</span>
-        </div>
-        <div class="v2-stat">
-            <strong class="v2-stat-value">5</strong>
-            <span class="v2-stat-label">Companies</span>
-        </div>
-    </aside>
-</section>
+    <p class="subtitle">Overview of all recorded experiment runs</p>
+</div>
 
-<div class="v2-rule"></div>
-
-<div class="results-summary-line v2-summary" id="summary-line" style="display: none;"></div>
-
-<div class="v2-stats-grid" id="stats-grid">
-    <div class="v2-stat-card">
-        <div class="v2-stat-value" id="stat-total-runs">—</div>
-        <div class="v2-stat-label">Total Runs</div>
+<div class="card" id="dashboard-error" style="display:none;">
+    <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+        <p id="dashboard-error-text" class="error-message" style="margin:0;"></p>
+        <button type="button" class="btn btn-primary" onclick="loadDashboard()">Retry</button>
     </div>
-    <div class="v2-stat-card">
-        <div class="v2-stat-value" id="stat-total-cost">—</div>
-        <div class="v2-stat-label">Total Cost (USD)</div>
+</div>
+
+<div class="results-summary-line" id="summary-line" style="display: none;"></div>
+
+<div class="stats-grid" id="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value" id="stat-total-runs">—</div>
+        <div class="stat-label">Total Runs</div>
     </div>
-    <div class="v2-stat-card">
-        <div class="v2-stat-value" id="stat-models-used">—</div>
-        <div class="v2-stat-label">Models Tested</div>
+    <div class="stat-card">
+        <div class="stat-value" id="stat-total-cost">—</div>
+        <div class="stat-label">Total Cost (USD)</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value" id="stat-models-used">—</div>
+        <div class="stat-label">Models Tested</div>
     </div>
     {% if has_dataset %}
-    <div class="v2-stat-card">
-        <div class="v2-stat-value">{{ dataset_rows }}</div>
-        <div class="v2-stat-label">Final Dataset Rows</div>
+    <div class="stat-card">
+        <div class="stat-value">{{ dataset_rows }}</div>
+        <div class="stat-label">Final Dataset Rows</div>
     </div>
     {% endif %}
 </div>
 
-<div id="dashboard-error" class="v2-card v2-card-quiet dash-error" style="display:none;">
-    <p id="dashboard-error-text" class="error-message"></p>
-    <button type="button" class="v2-btn v2-btn-secondary" onclick="loadDashboard()">Retry</button>
+<div class="card">
+    <div class="card-header">
+        <h2>Course Recommendations (Overall)</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <div class="chart-container" id="overall-chart">
+            <p class="loading">Loading...</p>
+        </div>
+    </div>
 </div>
 
-<section class="v2-section" id="chart-section-1">
-    <header class="v2-section-head">
-        <span class="v2-section-index">01</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Course recommendations (overall)</h2>
-            <p class="v2-section-desc">How often each course provider was chosen across all runs.</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-primary">
-        <div class="v2-chart-wrap"><canvas id="overall-chart" aria-label="Overall course choice chart" role="img"></canvas></div>
-        <p class="v2-chart-empty" id="overall-empty" style="display:none;">No data yet. Run some tests first.</p>
+<div class="card">
+    <div class="card-header">
+        <h2>Recommendations by Model</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
     </div>
-</section>
-
-<section class="v2-section is-quiet" id="chart-section-2">
-    <header class="v2-section-head">
-        <span class="v2-section-index">02</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Recommendations by model</h2>
-            <p class="v2-section-desc">Choice distribution within each model — stacked to 100% per model.</p>
+    <div class="card-body">
+        <div class="chart-container" id="model-chart">
+            <p class="loading">Loading...</p>
         </div>
-    </header>
-    <div class="v2-card v2-card-quiet">
-        <div class="v2-chart-wrap v2-chart-wrap-tall"><canvas id="model-chart" aria-label="Per-model course choice chart" role="img"></canvas></div>
-        <p class="v2-chart-empty" id="model-empty" style="display:none;">No data yet.</p>
     </div>
-</section>
+</div>
 
-<section class="v2-section is-quiet" id="recent-section">
-    <header class="v2-section-head">
-        <span class="v2-section-index">03</span>
-        <div class="v2-section-titles">
-            <h2 class="v2-section-title">Recent runs</h2>
-            <p class="v2-section-desc">Newest first — <span id="runs-shown-count">0</span> of <span id="runs-total-count">0</span> shown.</p>
-        </div>
-    </header>
-    <div class="v2-card v2-card-quiet">
-        <div class="table-wrapper v2-table-wrap">
-            <table class="v2-table" id="runs-table">
+<div class="card">
+    <div class="card-header">
+        <h2>Recent Runs</h2>
+        <span class="win-btns"><span class="win-btn">—</span><span class="win-btn">□</span><span class="win-btn">✕</span></span>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper">
+            <table id="runs-table">
                 <thead>
                     <tr>
                         <th>Timestamp</th>
@@ -124,11 +101,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="v2-actions" id="load-more-wrap" style="display:none;">
-            <button type="button" id="load-more-btn" class="v2-btn v2-btn-secondary" onclick="loadMoreRuns()">Load more</button>
+        <div id="load-more-wrap" style="display:none;justify-content:center;gap:12px;align-items:center;margin-top:16px;">
+            <span style="font-size:0.85rem;color:var(--muted);">Showing <span id="runs-shown-count">0</span> of <span id="runs-total-count">0</span> runs</span>
+            <button type="button" id="load-more-btn" class="btn btn-secondary" onclick="loadMoreRuns()">Load more</button>
         </div>
     </div>
-</section>
+</div>
 {% endblock %}
 
 {% block scripts %}
