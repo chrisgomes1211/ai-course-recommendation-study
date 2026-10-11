@@ -1245,3 +1245,36 @@ code {
     .welcome-bot { width: 72px; height: 72px; }
     .hero-laurel { font-size: 12px; }
 }
+
+/* ---------------- closing banner (wowmade homeClose) ---------------- */
+.close-banner {
+    position: relative;
+    text-align: center;
+    padding: clamp(56px, 9vh, 100px) 24px clamp(64px, 10vh, 110px);
+    margin-top: 56px;
+}
+
+.close-banner::before {
+    content: '';
+    position: absolute;
+    inset: 10% 15% 0;
+    z-index: -1;
+    background: radial-gradient(60% 70% at 50% 100%, rgba(168, 85, 247, 0.22), transparent 70%);
+    pointer-events: none;
+}
+
+.close-title {
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 0 0 26px;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    text-shadow: 0 0 40px rgba(168, 85, 247, 0.45);
+}
+
+.close-cta {
+    border-radius: 100px;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 700;
+}
