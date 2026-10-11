@@ -30,7 +30,10 @@ def health():
         "status": "ok",
         "openai": bool(os.getenv("OPENAI_API_KEY")),
         "anthropic": bool(os.getenv("ANTHROPIC_API_KEY")),
-        "google": bool(os.getenv("GOOGLE_API_KEY"))
+        "google": bool(os.getenv("GOOGLE_API_KEY")),
+        "xai": bool(os.getenv("XAI_API_KEY")),
+        "xiaomi": bool(os.getenv("MIMO_API_KEY")),
+        "deepseek": bool(os.getenv("DEEPSEEK_API_KEY"))
     })
 
 def get_models_from_config() -> List[Dict[str, Any]]:
@@ -273,56 +276,51 @@ def run_batch_experiment(model_names: List[str], runs_per_model_page: int) -> No
     
     batch_state.stop()
 
+PROVIDER_NAMES = {
+    "openai": "OpenAI",
+    "anthropic": "Anthropic",
+    "google": "Google",
+    "xai": "xAI",
+    "xiaomi": "Xiaomi",
+    "deepseek": "DeepSeek",
+}
+
+def run_page_context() -> Dict[str, Any]:
+    config = load_config()
+    models = config["models"]
+    pages = load_pages()
+    features = load_features()
+    grouped = {}
+    for m in models:
+        grouped.setdefault(m.get("provider", ""), []).append(m)
+    model_groups = [
+        {"key": p, "label": PROVIDER_NAMES.get(p, p.capitalize() or "Other"), "models": ms}
+        for p, ms in grouped.items()
+    ]
+    return {
+        "models": models,
+        "pages": pages,
+        "features": features,
+        "budget": get_budget_cap(),
+        "model_groups": model_groups,
+    }
+
 @app.route("/")
 def index():
     return redirect(url_for("run_test"))
 
 @app.route("/run-test")
 def run_test():
-    config = load_config()
-    models = config["models"]
-    pages = load_pages()
-    features = load_features()
-    provider_names = {"openai": "OpenAI", "anthropic": "Anthropic", "google": "Google", "xai": "xAI"}
-    grouped = {}
-    for m in models:
-        grouped.setdefault(m.get("provider", ""), []).append(m)
-    model_groups = [
-        {"key": p, "label": provider_names.get(p, p.capitalize() or "Other"), "models": ms}
-        for p, ms in grouped.items()
-    ]
-    return render_template(
-        "run_test.html",
-        models=models,
-        pages=pages,
-        features=features,
-        budget=get_budget_cap(),
-        model_groups=model_groups,
-    )
+    return render_template("redesign.html", **run_page_context())
 
 @app.route("/redesign")
 @app.route("/v2")
 def redesign():
-    config = load_config()
-    models = config["models"]
-    pages = load_pages()
-    features = load_features()
-    provider_names = {"openai": "OpenAI", "anthropic": "Anthropic", "google": "Google", "xai": "xAI"}
-    grouped = {}
-    for m in models:
-        grouped.setdefault(m.get("provider", ""), []).append(m)
-    model_groups = [
-        {"key": p, "label": provider_names.get(p, p.capitalize() or "Other"), "models": ms}
-        for p, ms in grouped.items()
-    ]
-    return render_template(
-        "redesign.html",
-        models=models,
-        pages=pages,
-        features=features,
-        budget=get_budget_cap(),
-        model_groups=model_groups,
-    )
+    return redirect(url_for("run_test"))
+
+@app.route("/classic")
+def classic():
+    return render_template("run_test.html", **run_page_context())
 
 @app.route("/api/run-test", methods=["POST"])
 def api_run_test():
@@ -336,6 +334,10 @@ def api_run_test():
 
 DATASET_FILE = Path("static/dataset_results.csv")
 DATASET_LOGS = Path("static/dataset_logs.zip")
+
+@app.route("/about")
+def about():
+    return render_template("about.html", budget=get_budget_cap())
 
 @app.route("/results")
 def results():
@@ -360,10 +362,18 @@ def download_dataset_logs():
 @app.route("/api/results")
 def api_results():
     stats = get_stats()
-    recent_runs = load_results_data()[:20]
+    try:
+        limit = max(1, min(int(request.args.get("limit", 20)), 200))
+        offset = max(0, int(request.args.get("offset", 0)))
+    except ValueError:
+        limit, offset = 20, 0
+    all_runs = load_results_data()
     return jsonify({
         "stats": stats,
-        "recent_runs": recent_runs
+        "recent_runs": all_runs[offset:offset + limit],
+        "total_runs": len(all_runs),
+        "offset": offset,
+        "limit": limit,
     })
 
 @app.route("/download-csv")
@@ -442,9 +452,20 @@ def _keys_check_impl():
         "anthropic": os.getenv("ANTHROPIC_API_KEY"),
         "google": os.getenv("GOOGLE_API_KEY"),
         "xai": os.getenv("XAI_API_KEY"),
+        "xiaomi": os.getenv("MIMO_API_KEY"),
+        "deepseek": os.getenv("DEEPSEEK_API_KEY"),
+    }
+
+    OPENAI_COMPAT_BASE = {
+        "xai": "https://api.x.ai/v1",
+        "xiaomi": "https://token-plan-ams.xiaomimimo.com/v1",
+        "deepseek": "https://api.deepseek.com",
     }
 
     def list_model_ids(provider, key):
+        if provider in OPENAI_COMPAT_BASE:
+            from openai import OpenAI
+            return {m.id for m in OpenAI(api_key=key, base_url=OPENAI_COMPAT_BASE[provider]).models.list()}
         if provider == "openai":
             from openai import OpenAI
             return {m.id for m in OpenAI(api_key=key).models.list()}
@@ -455,9 +476,6 @@ def _keys_check_impl():
             import google.generativeai as genai
             genai.configure(api_key=key)
             return {m.name.removeprefix("models/") for m in genai.list_models()}
-        if provider == "xai":
-            from openai import OpenAI
-            return {m.id for m in OpenAI(api_key=key, base_url="https://api.x.ai/v1").models.list()}
         return set()
 
     def probe_model(provider, model, key):
@@ -484,9 +502,9 @@ def _keys_check_impl():
             return {"finish": r.candidates[0].finish_reason,
                     "tokens": {"in": getattr(usage, "prompt_token_count", None),
                                "out": getattr(usage, "candidates_token_count", None)}}
-        if provider == "xai":
+        if provider in OPENAI_COMPAT_BASE:
             from openai import OpenAI
-            r = OpenAI(api_key=key, base_url="https://api.x.ai/v1").chat.completions.create(
+            r = OpenAI(api_key=key, base_url=OPENAI_COMPAT_BASE[provider]).chat.completions.create(
                 model=model, messages=[{"role": "user", "content": "Hi"}], max_tokens=16)
             return {"tokens": {"in": r.usage.prompt_tokens, "out": r.usage.completion_tokens}}
         raise ValueError(f"unknown provider {provider}")
@@ -512,7 +530,6 @@ def _keys_check_impl():
             return jsonify({"probe_ok": False, "probe_error": f"no {prov} key"}), 200
         if prov in listed and name not in listed[prov]:
             return jsonify({"probe_ok": False, "probe_error": "model not available for this key"}), 200
-            return jsonify({"probe_ok": False, "probe_error": "model not in config.yaml"}), 200
         try:
             info = probe_model(prov, name, key)
             return jsonify({"probe_ok": True, "model": name, "provider": prov, **info})
@@ -541,11 +558,12 @@ def _keys_check_impl():
 
 @app.route("/page/<path:page_id>")
 def view_page(page_id):
-    """Serve the raw HTML page for viewing in a new tab."""
-    page_path = Path("pages") / page_id
-    if not page_path.exists():
+    """Serve a stimulus HTML page for viewing in a new tab (html files in pages/ only)."""
+    pages_dir = (Path("pages") / page_id).resolve()
+    pages_root = Path("pages").resolve()
+    if pages_dir.suffix != ".html" or not str(pages_dir).startswith(str(pages_root) + "/") or not pages_dir.is_file():
         return "Page not found", 404
-    return page_path.read_text(encoding="utf-8"), 200, {"Content-Type": "text/html"}
+    return pages_dir.read_text(encoding="utf-8"), 200, {"Content-Type": "text/html"}
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))

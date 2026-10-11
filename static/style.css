@@ -2487,3 +2487,36 @@ tbody tr:hover td.reason { color:var(--row-hover-color); font-style:normal; }
     :root[data-theme="studio"] .stat-value { font-size:24px; }
     :root[data-theme="studio"] .page-card-content { height:360px; }
 }
+
+/* ---------- Toasts (shared with app.js; v2 pages style via redesign.css) ---------- */
+.toast-root {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 12000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: min(380px, calc(100vw - 32px));
+    pointer-events: none;
+}
+.toast {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(13, 18, 38, .22);
+    padding: 12px 14px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .25s ease, transform .25s ease;
+}
+.toast.is-on { opacity: 1; transform: none; }
+.toast-error { border-left-color: #b42318; color: #b42318; }
+.toast-success { border-left-color: var(--accent); }
+@media (max-width: 680px) {
+    .toast-root { left: 16px; right: 16px; bottom: 16px; max-width: none; }
+}

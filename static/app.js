@@ -1,3 +1,51 @@
+/* ------------------------------------------------------------------
+   Shared client logic: run test, batch run, dashboard, theme, toasts
+   ------------------------------------------------------------------ */
+
+const RUN_TIMEOUT_MS = 180000;   // a full run is 2 provider calls; retries can take minutes
+const API_TIMEOUT_MS = 30000;    // status / start / stop calls
+
+async function fetchWithTimeout(url, opts = {}, timeoutMs = API_TIMEOUT_MS) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        return await fetch(url, Object.assign({}, opts, { signal: controller.signal }));
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+function showToast(message, type = 'info', durationMs = 5000) {
+    let root = document.getElementById('toast-root');
+    if (!root) {
+        root = document.createElement('div');
+        root.id = 'toast-root';
+        root.className = 'toast-root';
+        root.setAttribute('aria-live', 'polite');
+        document.body.appendChild(root);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-' + type;
+    toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+    toast.textContent = message;
+    root.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('is-on'));
+    setTimeout(() => {
+        toast.classList.remove('is-on');
+        setTimeout(() => toast.remove(), 300);
+    }, durationMs);
+    return toast;
+}
+
+function timeoutError(timeoutMs) {
+    const err = new Error(
+        'Request timed out after ' + Math.round(timeoutMs / 1000) +
+        ' seconds. The run may still finish on the server — check the Results page before retrying.'
+    );
+    err.isTimeout = true;
+    return err;
+}
+
 async function runTest() {
     const modelSelect = document.getElementById('model-select');
     const modelName = modelSelect.value;
@@ -5,22 +53,21 @@ async function runTest() {
     const btnText = runBtn.querySelector('.btn-text');
     const btnLoading = runBtn.querySelector('.btn-loading');
     const resultsPanel = document.getElementById('results-panel');
-    const resultsContent = document.getElementById('results-content');
     const errorPanel = document.getElementById('error-panel');
     const errorMessage = document.getElementById('error-message');
 
     runBtn.disabled = true;
     btnText.style.display = 'none';
     btnLoading.style.display = 'inline-flex';
-    resultsPanel.style.display = 'none';
-    errorPanel.style.display = 'none';
+    if (resultsPanel) resultsPanel.style.display = 'none';
+    if (errorPanel) errorPanel.style.display = 'none';
 
     try {
-        const response = await fetch('/api/run-test', {
+        const response = await fetchWithTimeout('/api/run-test', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ model: modelName })
-        });
+        }, RUN_TIMEOUT_MS);
 
         const data = await response.json();
 
@@ -29,13 +76,18 @@ async function runTest() {
         }
 
         renderResults(data);
-        resultsPanel.style.display = 'block';
-        errorPanel.style.display = 'none';
+        if (resultsPanel) resultsPanel.style.display = 'block';
+        if (errorPanel) errorPanel.style.display = 'none';
+        showToast('Run #' + data.run_number + ' complete — ' + data.chosen_page, 'success', 4000);
 
     } catch (err) {
-        errorMessage.textContent = err.message;
-        errorPanel.style.display = 'block';
-        resultsPanel.style.display = 'none';
+        const message = (err && err.name === 'AbortError')
+            ? timeoutError(RUN_TIMEOUT_MS).message
+            : (err.message || 'Unknown error');
+        if (errorMessage) errorMessage.textContent = message;
+        if (errorPanel) errorPanel.style.display = 'block';
+        if (resultsPanel) resultsPanel.style.display = 'none';
+        showToast(message, 'error', 8000);
     } finally {
         runBtn.disabled = false;
         btnText.style.display = 'inline';
@@ -43,12 +95,138 @@ async function runTest() {
     }
 }
 
+/* ----------------------------- Batch run ----------------------------- */
+
+let batchPollInterval = null;
+
+async function startBatchRun() {
+    const checkboxes = document.querySelectorAll('input[name="batch-models"]:checked');
+    const models = Array.from(checkboxes).map(cb => cb.value);
+    const runsPerModelPage = parseInt(document.getElementById('runs-per-model-page').value) || 1;
+
+    if (models.length === 0) {
+        showToast('Select at least one model for the batch run.', 'error');
+        return;
+    }
+
+    const startBtn = document.getElementById('batch-start-btn');
+    const stopBtn = document.getElementById('batch-stop-btn');
+    const progressDiv = document.getElementById('batch-progress');
+    const progressCurrent = document.getElementById('progress-current');
+    const progressErrors = document.getElementById('progress-errors');
+
+    startBtn.disabled = true;
+    startBtn.querySelector('.btn-text').style.display = 'none';
+    startBtn.querySelector('.btn-loading').style.display = 'inline-flex';
+    if (stopBtn) stopBtn.style.display = 'inline-flex';
+    if (progressDiv) progressDiv.style.display = 'block';
+    if (progressCurrent) progressCurrent.style.display = 'block';
+    if (progressErrors) progressErrors.style.display = 'none';
+
+    try {
+        const response = await fetchWithTimeout('/api/batch-start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ models, runs_per_model_page: runsPerModelPage })
+        }, API_TIMEOUT_MS);
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.error || 'Failed to start batch run');
+        }
+
+        showToast('Batch run started — ' + models.length + ' model(s) × runs.', 'success', 4000);
+        batchPollInterval = setInterval(pollBatchStatus, 2000);
+
+    } catch (err) {
+        const message = (err && err.name === 'AbortError')
+            ? 'Could not reach the server to start the batch run. Refresh and try again.'
+            : (err.message || 'Failed to start batch run');
+        showToast(message, 'error', 8000);
+        resetBatchUI();
+    }
+}
+
+function stopBatchRun() {
+    fetchWithTimeout('/api/batch-stop', { method: 'POST' }, API_TIMEOUT_MS)
+        .then(() => {
+            if (batchPollInterval) clearInterval(batchPollInterval);
+            resetBatchUI();
+            showToast('Batch run stopped.', 'info');
+        })
+        .catch(() => showToast('Could not reach the server to stop the batch run.', 'error'));
+}
+
+function resetBatchUI() {
+    const startBtn = document.getElementById('batch-start-btn');
+    const stopBtn = document.getElementById('batch-stop-btn');
+    const progressDiv = document.getElementById('batch-progress');
+
+    if (startBtn) {
+        startBtn.disabled = false;
+        startBtn.querySelector('.btn-text').style.display = 'inline';
+        startBtn.querySelector('.btn-loading').style.display = 'none';
+    }
+    if (stopBtn) stopBtn.style.display = 'none';
+    if (progressDiv) progressDiv.style.display = 'none';
+
+    if (batchPollInterval) {
+        clearInterval(batchPollInterval);
+        batchPollInterval = null;
+    }
+}
+
+async function pollBatchStatus() {
+    try {
+        const response = await fetchWithTimeout('/api/batch-status', {}, API_TIMEOUT_MS);
+        const status = await response.json();
+
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const progressCost = document.getElementById('progress-cost');
+        const progressCurrent = document.getElementById('progress-current');
+        const currentModel = document.getElementById('current-model');
+        const currentPage = document.getElementById('current-page');
+        const progressErrors = document.getElementById('progress-errors');
+        const errorsList = document.getElementById('errors-list');
+
+        const pct = status.total > 0 ? (status.completed / status.total) * 100 : 0;
+        if (progressFill) progressFill.style.width = pct + '%';
+        if (progressText) progressText.textContent = `${status.completed} / ${status.total} completed`;
+        if (progressCost) progressCost.textContent = `Cost: $${status.current_cost.toFixed(4)}`;
+
+        if (status.current_model && currentModel && currentPage) {
+            currentModel.textContent = status.current_model;
+            currentPage.textContent = status.current_page;
+        }
+
+        if (status.errors && status.errors.length > 0 && progressErrors && errorsList) {
+            progressErrors.style.display = 'block';
+            errorsList.innerHTML = status.errors.map(e => `<li>${escapeHtml(e)}</li>`).join('');
+        }
+
+        if (!status.running) {
+            if (batchPollInterval) clearInterval(batchPollInterval);
+            batchPollInterval = null;
+            resetBatchUI();
+            showToast('Batch run finished.', 'success', 4000);
+            if (document.getElementById('stats-grid')) loadDashboard();
+        }
+
+    } catch (err) {
+        console.error('Failed to poll batch status:', err);
+    }
+}
+
+/* ----------------------------- Run results ----------------------------- */
+
 let featuresCache = null;
 
 async function loadFeatures() {
     if (featuresCache) return featuresCache;
     try {
-        const response = await fetch('/api/features');
+        const response = await fetchWithTimeout('/api/features', {}, API_TIMEOUT_MS);
         featuresCache = await response.json();
         return featuresCache;
     } catch (err) {
@@ -60,16 +238,16 @@ async function loadFeatures() {
 function renderWinnerFeatures(pageId, features) {
     const f = features[pageId];
     if (!f) return '';
-    
+
     let tags = [];
     if (f.price) tags.push(`<span class="feature-tag feature-price">${f.price.label}</span>`);
     if (f.reviews) tags.push(`<span class="feature-tag feature-reviews">${f.reviews.label}</span>`);
     if (f.credentials) tags.push(`<span class="feature-tag feature-credentials">${f.credentials.label}</span>`);
     if (f.description) tags.push(`<span class="feature-tag feature-description">${f.description.label}</span>`);
     if (f.structure) tags.push(`<span class="feature-tag feature-structure">${f.structure.label}</span>`);
-    
+
     if (tags.length === 0) return '';
-    
+
     return `
         <div class="winner-features">
             <h4>Winning Page Features</h4>
@@ -85,11 +263,10 @@ function renderResults(data) {
     const interviewResp = data.interview_resp;
     const totalCost = data.total_cost_usd;
 
-    // Load features and render with winner features
     loadFeatures().then(features => {
         const winnerFeaturesHtml = renderWinnerFeatures(data.chosen_page, features);
         const viewPageLink = `<a href="/page/${escapeHtml(data.chosen_page)}" target="_blank" class="view-page-link">View Page →</a>`;
-        
+
         container.innerHTML = `
             <div class="results-summary">
                 <div class="result-item">
@@ -98,11 +275,11 @@ function renderResults(data) {
                 </div>
                 <div class="result-item">
                     <span class="result-label">Model</span>
-                    <span class="result-value">${document.getElementById('model-select').value}</span>
+                    <span class="result-value">${escapeHtml(document.getElementById('model-select').value)}</span>
                 </div>
                 <div class="result-item">
                     <span class="result-label">Tier</span>
-                    <span class="result-value">${data.tier}</span>
+                    <span class="result-value">${escapeHtml(data.tier)}</span>
                 </div>
                 <div class="result-item">
                     <span class="result-label">Run Number</span>
@@ -163,29 +340,87 @@ function renderResults(data) {
                 </div>
             </div>
 
-            <p style="margin-top: var(--spacing-md); font-size: 0.85rem; color: var(--color-text-muted);">
+            <p class="result-saved">
                 Saved to results/results.csv (run #${data.run_number} for this model + course combination)
             </p>
         `;
     });
 }
 
+/* ----------------------------- Dashboard ----------------------------- */
+
+const PAGE_SIZE = 20;
+const CHART_COLORS = ['#0d9488', '#2563eb', '#7c3aed', '#d97706', '#64748b', '#e86a17'];
+let overallChart = null;
+let modelChart = null;
+const dashboardState = { offset: 0, total: 0, loading: false };
+
+function setDashboardError(message) {
+    const box = document.getElementById('dashboard-error');
+    const text = document.getElementById('dashboard-error-text');
+    if (!box || !text) return;
+    if (message) {
+        text.textContent = message;
+        box.style.display = 'flex';
+    } else {
+        box.style.display = 'none';
+    }
+}
+
 async function loadDashboard() {
+    setDashboardError(null);
     try {
-        const response = await fetch('/api/results');
+        const response = await fetchWithTimeout('/api/results', {}, API_TIMEOUT_MS);
+        if (!response.ok) throw new Error('Server returned ' + response.status);
         const data = await response.json();
         renderStats(data.stats);
         renderSummary(data.stats);
         renderOverallChart(data.stats.course_counts);
         renderModelChart(data.stats.model_course_counts);
-        renderRecentRuns(data.recent_runs);
+        dashboardState.total = data.total_runs || data.recent_runs.length;
+        dashboardState.offset = data.recent_runs.length;
+        renderRecentRuns(data.recent_runs, false);
+        updateRunsCount(data.recent_runs.length);
     } catch (err) {
         console.error('Failed to load dashboard:', err);
+        setDashboardError('Could not load results: ' + (err.message || 'network error'));
     }
 }
 
+async function loadMoreRuns() {
+    if (dashboardState.loading) return;
+    dashboardState.loading = true;
+    const btn = document.getElementById('load-more-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Loading…'; }
+    try {
+        const url = `/api/results?offset=${dashboardState.offset}&limit=${PAGE_SIZE}`;
+        const response = await fetchWithTimeout(url, {}, API_TIMEOUT_MS);
+        if (!response.ok) throw new Error('Server returned ' + response.status);
+        const data = await response.json();
+        renderRecentRuns(data.recent_runs, true);
+        dashboardState.offset += data.recent_runs.length;
+        updateRunsCount(dashboardState.offset);
+    } catch (err) {
+        showToast('Could not load more runs: ' + (err.message || 'network error'), 'error');
+    } finally {
+        dashboardState.loading = false;
+        if (btn) { btn.disabled = false; btn.textContent = 'Load more'; }
+    }
+}
+
+function updateRunsCount(shown) {
+    const shownEl = document.getElementById('runs-shown-count');
+    const totalEl = document.getElementById('runs-total-count');
+    if (shownEl) shownEl.textContent = shown;
+    if (totalEl) totalEl.textContent = dashboardState.total;
+    const wrap = document.getElementById('load-more-wrap');
+    if (wrap) wrap.style.display = shown < dashboardState.total ? 'flex' : 'none';
+}
+
 function renderStats(stats) {
-    document.getElementById('stat-total-runs').textContent = stats.total_runs;
+    const runsEl = document.getElementById('stat-total-runs');
+    if (!runsEl) return;
+    runsEl.textContent = stats.total_runs;
     document.getElementById('stat-total-cost').textContent = '$' + stats.total_cost.toFixed(2);
     document.getElementById('stat-models-used').textContent = stats.models_used.length;
 }
@@ -193,12 +428,12 @@ function renderStats(stats) {
 function renderSummary(stats) {
     const summaryEl = document.getElementById('summary-line');
     if (!summaryEl) return;
-    
+
     if (!stats.course_counts || Object.keys(stats.course_counts).length === 0) {
         summaryEl.style.display = 'none';
         return;
     }
-    
+
     const total = Object.values(stats.course_counts).reduce((a, b) => a + b, 0);
     let topCourse = '';
     let topCount = 0;
@@ -209,69 +444,112 @@ function renderSummary(stats) {
         }
     }
     const pct = total > 0 ? ((topCount / total) * 100).toFixed(1) : 0;
-    
+
     summaryEl.innerHTML = `Across <strong>${total}</strong> runs, <strong>${escapeHtml(topCourse)}</strong> was chosen most often (<strong>${pct}%</strong> of recommendations)`;
     summaryEl.style.display = 'block';
 }
 
+function chartDefaults() {
+    if (typeof Chart === 'undefined') return;
+    Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+    Chart.defaults.color = '#5c5a55';
+}
+
 function renderOverallChart(courseCounts) {
-    const container = document.getElementById('overall-chart');
-    if (!courseCounts || Object.keys(courseCounts).length === 0) {
-        container.innerHTML = '<p class="loading">No data yet. Run some tests first.</p>';
-        return;
-    }
+    const canvas = document.getElementById('overall-chart');
+    const empty = document.getElementById('overall-empty');
+    if (!canvas || typeof Chart === 'undefined') return;
+    const hasData = courseCounts && Object.keys(courseCounts).length > 0;
+    if (empty) empty.style.display = hasData ? 'none' : 'block';
+    canvas.style.display = hasData ? 'block' : 'none';
+    if (!hasData) return;
 
-    const total = Object.values(courseCounts).reduce((a, b) => a + b, 0);
-    const maxCount = Math.max(...Object.values(courseCounts));
-
-    let html = '';
-    for (const [course, count] of Object.entries(courseCounts)) {
-        const pct = (count / maxCount) * 100;
-        html += `
-            <div class="chart-bar">
-                <span class="chart-bar-label">${escapeHtml(course)}</span>
-                <div class="chart-bar-track">
-                    <div class="chart-bar-fill" style="width: ${pct}%"></div>
-                </div>
-                <span class="chart-bar-value">${count}</span>
-            </div>
-        `;
-    }
-    container.innerHTML = html;
+    chartDefaults();
+    const entries = Object.entries(courseCounts).sort((a, b) => b[1] - a[1]);
+    if (overallChart) overallChart.destroy();
+    overallChart = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: entries.map(e => e[0]),
+            datasets: [{
+                label: 'Times chosen',
+                data: entries.map(e => e[1]),
+                backgroundColor: entries.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+                borderRadius: 6,
+                barThickness: 22
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#efeeea' } },
+                y: { grid: { display: false } }
+            }
+        }
+    });
 }
 
 function renderModelChart(modelCourseCounts) {
-    const container = document.getElementById('model-chart');
-    if (!modelCourseCounts || Object.keys(modelCourseCounts).length === 0) {
-        container.innerHTML = '<p class="loading">No data yet.</p>';
-        return;
-    }
+    const canvas = document.getElementById('model-chart');
+    const empty = document.getElementById('model-empty');
+    if (!canvas || typeof Chart === 'undefined') return;
+    const hasData = modelCourseCounts && Object.keys(modelCourseCounts).length > 0;
+    if (empty) empty.style.display = hasData ? 'none' : 'block';
+    canvas.style.display = hasData ? 'block' : 'none';
+    if (!hasData) return;
 
-    let html = '';
-    for (const [model, courses] of Object.entries(modelCourseCounts)) {
-        html += `<div class="model-chart-group"><div class="model-chart-title">${escapeHtml(model)}</div>`;
-        const maxCount = Math.max(...Object.values(courses));
-        for (const [course, count] of Object.entries(courses)) {
-            const pct = (count / maxCount) * 100;
-            html += `
-                <div class="chart-bar">
-                    <span class="chart-bar-label">${escapeHtml(course)}</span>
-                    <div class="chart-bar-track">
-                        <div class="chart-bar-fill" style="width: ${pct}%"></div>
-                    </div>
-                    <span class="chart-bar-value">${count}</span>
-                </div>
-            `;
+    chartDefaults();
+    const models = Object.keys(modelCourseCounts).sort();
+    const courses = [...new Set(models.flatMap(m => Object.keys(modelCourseCounts[m])))];
+
+    const datasets = courses.map((course, i) => ({
+        label: course,
+        data: models.map(m => {
+            const counts = modelCourseCounts[m];
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            return total > 0 ? Math.round(((counts[course] || 0) / total) * 1000) / 10 : 0;
+        }),
+        backgroundColor: CHART_COLORS[i % CHART_COLORS.length],
+        borderWidth: 0
+    }));
+
+    if (modelChart) modelChart.destroy();
+    modelChart = new Chart(canvas, {
+        type: 'bar',
+        data: { labels: models, datasets },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, boxHeight: 12, usePointStyle: true, padding: 16 } },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => `${ctx.dataset.label}: ${ctx.parsed.x}% of ${ctx.label} runs`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true, max: 100,
+                    ticks: { callback: v => v + '%', precision: 0 },
+                    grid: { color: '#efeeea' }
+                },
+                y: { stacked: true, grid: { display: false } }
+            }
         }
-        html += '</div>';
-    }
-    container.innerHTML = html;
+    });
 }
 
-function renderRecentRuns(runs) {
+function renderRecentRuns(runs, append) {
     const tbody = document.getElementById('runs-tbody');
+    if (!tbody) return;
+    if (!append) tbody.innerHTML = '';
     if (!runs || runs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="13" class="loading">No runs recorded yet.</td></tr>';
+        if (!append) tbody.innerHTML = '<tr><td colspan="13" class="loading">No runs recorded yet.</td></tr>';
         return;
     }
 
@@ -300,7 +578,8 @@ function renderRecentRuns(runs) {
             </tr>
         `;
     }
-    tbody.innerHTML = html;
+    if (append) tbody.insertAdjacentHTML('beforeend', html);
+    else tbody.innerHTML = html;
 }
 
 function formatTimestamp(iso) {
@@ -315,6 +594,8 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+
+/* ----------------------------- Theme (classic UI) ----------------------------- */
 
 const THEME_ICONS = {
     atlantic: '<circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>',

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MSc research experiment studying how large language models recommend art courses — run tests, explore results, and download the dataset.">
+    <meta name="theme-color" content="#e86a17">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}AI Course Recommendation Study{% endblock %}">
+    <meta property="og:description" content="MSc experiment: how do AI models choose between art course providers? 7 models, 5 course pages, 1,191 recorded runs.">
+    <title>{% block title %}AI Course Recommendation Study{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='apple-touch-icon-180.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='redesign.css') }}">
+</head>
+<body>
+    <header class="v2-header">
+        <div class="v2-header-inner">
+            <a class="v2-brand" href="{{ url_for('run_test') }}">
+                <span class="v2-brand-mark"><img src="{{ url_for('static', filename='logo.svg') }}" alt="" width="24" height="24"></span>
+                <span class="v2-brand-text">Course Recommendation Study</span>
+            </a>
+            <nav class="v2-nav" aria-label="Primary">
+                <a class="v2-nav-link {% if request.endpoint in ('run_test', 'redesign') %}is-active{% endif %}" href="{{ url_for('run_test') }}">Run a Test</a>
+                <a class="v2-nav-link {% if request.endpoint == 'results' %}is-active{% endif %}" href="{{ url_for('results') }}">Results</a>
+                <a class="v2-nav-link {% if request.endpoint == 'about' %}is-active{% endif %}" href="{{ url_for('about') }}">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="v2-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="v2-footer">
+        <div class="v2-footer-inner">
+            <p>MSc Research Experiment — Local Web Interface</p>
+            <p class="v2-footer-links">
+                <a href="{{ url_for('about') }}">Methodology</a>
+                <a href="{{ url_for('results') }}">Results</a>
+                <a href="{{ url_for('classic') }}">Classic UI</a>
+            </p>
+        </div>
+    </footer>
+
+    <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

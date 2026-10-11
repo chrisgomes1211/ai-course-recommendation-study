@@ -36,6 +36,7 @@
                 <ul class="nav-links">
                     <li><a href="{{ url_for('run_test') }}" class="{% if request.endpoint == 'run_test' %}active{% endif %}">Run a Test</a></li>
                     <li><a href="{{ url_for('results') }}" class="{% if request.endpoint == 'results' %}active{% endif %}">Results</a></li>
+                    <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
                 </ul>
                 <div class="theme-dd">
                     <button type="button" id="theme-dd-btn" class="theme-dd-btn" aria-haspopup="true" aria-expanded="false" aria-controls="theme-dd-menu" aria-label="Switch theme">

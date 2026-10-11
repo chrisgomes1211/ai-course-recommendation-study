@@ -7,8 +7,8 @@
 
     var STEPS = [
         {
-            spot: '.hero',
-            anchor: '.welcome-bot-wrap',
+            spot: '.v2-hero, .hero',
+            anchor: '.v2-hero-robot, .welcome-bot-wrap',
             pos: 'left',
             text: "Hi! I'm your guide to the AI Course Recommendation Study \u2014 an MSc experiment testing how AI models recommend art courses. Want a quick tour?"
         },
@@ -146,7 +146,7 @@
         if (pos === 'left') {
             x = r.left - w - 16;
             y = r.top + 4;
-            var sub = document.querySelector('.hero .subtitle');
+            var sub = document.querySelector('.v2-hero-sub, .hero .subtitle');
             if (sub) {
                 var sr = sub.getBoundingClientRect();
                 if (sr.width > 0 && y < sr.bottom + 10) y = sr.bottom + 10;
@@ -249,7 +249,7 @@
         }, 360);
     }
 
-    var wrap = document.querySelector('.welcome-bot-wrap');
+    var wrap = document.querySelector('.welcome-bot-wrap, .v2-hero-robot');
     if (wrap) {
         wrap.style.pointerEvents = 'auto';
         wrap.style.cursor = 'pointer';
@@ -264,7 +264,7 @@
     }
 
     setTimeout(function () {
-        if (!seen() && !win95() && document.querySelector('.hero')) start();
+        if (!seen() && !win95() && document.querySelector('.hero, .v2-hero')) start();
     }, START_DELAY);
 
     window.__tour = { start: start, end: end, isActive: function () { return active; } };
