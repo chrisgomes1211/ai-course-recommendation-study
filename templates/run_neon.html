@@ -350,6 +350,62 @@
         setTimeout(function () { wrap.classList.remove('bot-nod'); }, 600);
     }
 
+    /* ---------------- Bella's voice (Web Speech API) ---------------- */
+    var voice = null;
+    function pickVoice() {
+        if (!window.speechSynthesis) return;
+        var vs = speechSynthesis.getVoices() || [];
+        /* prefer a female English voice */
+        var prefs = ['female', 'samantha', 'zira', 'aria', 'jenny', 'google us english', 'google uk english female', 'karen', 'moira', 'tessa', 'virginia'];
+        for (var i = 0; i < prefs.length && !voice; i++) {
+            for (var j = 0; j < vs.length; j++) {
+                var v = vs[j];
+                var name = (v.name || '').toLowerCase();
+                if (name.indexOf(prefs[i]) !== -1 && /^en/i.test(v.lang || '')) { voice = v; break; }
+            }
+        }
+        if (!voice) {
+            for (var k = 0; k < vs.length; k++) {
+                if (/^en/i.test(vs[k].lang || '')) { voice = vs[k]; break; }
+            }
+        }
+    }
+    if (window.speechSynthesis) {
+        pickVoice();
+        speechSynthesis.onvoiceschanged = pickVoice;
+    }
+
+    function speak(text) {
+        if (muted || !window.speechSynthesis) return;
+        try {
+            speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance(text);
+            if (voice) u.voice = voice;
+            u.rate = 1.02;
+            u.pitch = 1.15;
+            u.volume = 1;
+            speechSynthesis.speak(u);
+        } catch (e) { /* audio blocked; bubble text still works */ }
+    }
+
+    function stopSpeaking() {
+        if (window.speechSynthesis) { try { speechSynthesis.cancel(); } catch (e) {} }
+    }
+
+    /* some browsers only allow speech after a user gesture — unlock on first interaction */
+    function unlockVoice() {
+        if (!window.speechSynthesis) return;
+        try {
+            var u = new SpeechSynthesisUtterance(' ');
+            u.volume = 0;
+            speechSynthesis.speak(u);
+        } catch (e) {}
+        document.removeEventListener('pointerdown', unlockVoice);
+        document.removeEventListener('keydown', unlockVoice);
+    }
+    document.addEventListener('pointerdown', unlockVoice);
+    document.addEventListener('keydown', unlockVoice);
+
     function typeLine(text, done) {
         if (muted) { if (done) done(); return; }
         var i = 0;
@@ -369,6 +425,7 @@
         if (muted) { if (done) setTimeout(done, 300); return; }
         nod();
         if (opts && opts.wave) waveOnce();
+        speak(text);
         setTimeout(function () {
             typeLine(text, done);
         }, opts && opts.delay != null ? opts.delay : 260);
@@ -444,6 +501,7 @@
             if (iconOn) iconOn.style.display = muted ? 'none' : '';
             if (iconOff) iconOff.style.display = muted ? '' : 'none';
             if (muteLabel) muteLabel.textContent = muted ? 'Unmute me' : 'Mute me';
+            if (muted) stopSpeaking();
             if (!muted && sayEl) sayEl.textContent = '';
         });
     }
