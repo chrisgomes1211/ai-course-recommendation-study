@@ -249,10 +249,7 @@ code {
 }
 
 /* keep Bella anchored in the corner (don't let the rule above flatten her) */
-.hero-frame > .welcome-bot-wrap {
-    position: absolute;
-    z-index: 3;
-}
+
 
 /* ---------------- video banner backdrop (wowmade heroBg) ---------------- */
 .banner-bg {
@@ -413,15 +410,14 @@ code {
     width: 168px;
     height: 198px;
     border-radius: 18px;
-    border: 1px solid var(--border-strong);
-    background: linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
-    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    background: #ffffff;
     text-decoration: none;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
+    box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.75);
     transition: transform 0.3s var(--ease-out), box-shadow 0.3s, border-color 0.3s;
 }
 
@@ -432,8 +428,8 @@ code {
 .hero-card:hover {
     z-index: 5;
     transform: translateY(-8px) rotate(0deg) scale(1.05);
-    border-color: rgba(192, 132, 252, 0.55);
-    box-shadow: 0 34px 74px -18px rgba(124, 92, 255, 0.65);
+    border-color: rgba(168, 85, 247, 0.6);
+    box-shadow: 0 34px 74px -16px rgba(124, 92, 255, 0.75);
 }
 
 .hero-card-art {
@@ -469,8 +465,8 @@ code {
     padding: 6px 13px;
     border-radius: 999px;
     background: #16121f;
-    border: 1px solid var(--border-strong);
-    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
     font-family: var(--font-mono);
     font-size: 11.5px;
     font-weight: 600;
@@ -503,14 +499,24 @@ code {
 }
 
 /* ---------------- welcome bot: teacher mascot ---------------- */
+/* Bella is a fixed scroll companion: she docks at stations down the
+   page (hero banner -> alongside content -> closing banner) */
 .welcome-bot-wrap {
-    position: absolute;
-    top: -34px;
-    right: 34px;
-    z-index: 2;
+    position: fixed;
+    top: 88px;
+    right: 40px;
+    z-index: 90;
     width: 188px;
     height: 188px;
+    transition: top 0.9s var(--ease-out), right 0.9s var(--ease-out), transform 0.9s var(--ease-out);
 }
+
+/* beat the `.hero-frame > *` relative rule — she must stay viewport-fixed */
+.hero-frame > .welcome-bot-wrap { position: fixed; }
+
+.bot-dock-hero { top: 88px; right: 40px; transform: scale(1); }
+.bot-dock-mid { top: 50vh; right: 18px; transform: scale(0.72); }
+.bot-dock-close { top: 66vh; right: 40px; transform: scale(1); }
 
 .welcome-bot {
     position: relative;
@@ -607,29 +613,6 @@ code {
 
 .welcome-bot-wrap.bot-muted .welcome-bot-bubble {
     display: none;
-}
-
-/* teacher pacing: Bella wanders the whole banner like she's walking
-   the classroom — applied on the wrap so it never fights the inner
-   drop/float/nod transforms */
-.welcome-bot-wrap.bot-ready {
-    animation: botWander 30s ease-in-out 2.8s infinite;
-}
-
-@keyframes botWander {
-    0% { transform: translate(0, 0); }
-    10% { transform: translate(-12vw, 34px); }
-    22% { transform: translate(-30vw, 8px); }
-    34% { transform: translate(-46vw, 48px); }
-    46% { transform: translate(-28vw, 78px); }
-    58% { transform: translate(-8vw, 38px); }
-    70% { transform: translate(-38vw, 18px); }
-    82% { transform: translate(-18vw, 60px); }
-    92% { transform: translate(-5vw, 22px); }
-    100% { transform: translate(0, 0); }
-}
-    30% { transform: translateY(-10px) rotate(-2deg); }
-    65% { transform: translateY(-4px) rotate(2deg); }
 }
 
 /* boot-up ring: dashed spinner while the lottie loads, fades once ready */
@@ -1450,6 +1433,9 @@ code {
     .welcome-bot-wrap { width: 140px; height: 140px; }
     .welcome-bot { width: 140px; height: 140px; }
     .welcome-bot-bubble { left: auto; right: -10px; top: -54px; max-width: 180px; }
+    .bot-dock-hero { top: 80px; right: 20px; }
+    .bot-dock-mid { right: 10px; }
+    .bot-dock-close { right: 20px; }
     .hero-ring-1 { width: 230px; height: 230px; }
     .hero-ring-2 { width: 180px; height: 180px; }
 }
@@ -1501,7 +1487,8 @@ code {
     .welcome-bot-ring, .welcome-bot-boot { display: none; }
     .hero-eyebrow, .hero-sub, .hero-cta, .hero-word, .hero-laurel,
     .hero-cards-label, .hero-card, .hero-hint, .welcome-bot-wrap, .welcome-bot,
-    .hero h1, .sheen, .btn-primary, .neon-dots, .welcome-bot-wrap.bot-ready {
+    .hero h1, .sheen, .btn-primary, .neon-dots {
+    transition: none !important;
         animation: none !important;
         opacity: 1 !important;
         filter: none !important;
@@ -1517,7 +1504,6 @@ code {
     .hero-card-badge { font-size: 10.5px; padding: 5px 10px; }
     .welcome-bot-wrap { top: -18px; right: 10px; width: 96px; height: 96px; }
     .welcome-bot-mute { bottom: -40px; font-size: 10px; padding: 5px 10px; }
-    .welcome-bot-wrap.bot-ready { animation-name: botWanderMobile; }
     .welcome-bot { width: 96px; height: 96px; }
     .welcome-bot-bubble { left: -120px; top: 8px; max-width: 150px; font-size: 11.5px; }
     .welcome-bot-ring { inset: -8px; }
@@ -1558,12 +1544,4 @@ code {
     padding: 15px 30px;
     font-size: 1rem;
     font-weight: 700;
-}
-
-@keyframes botWanderMobile {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(-28vw, 26px); }
-    50% { transform: translate(-52vw, 8px); }
-    75% { transform: translate(-22vw, 38px); }
-    100% { transform: translate(0, 0); }
 }

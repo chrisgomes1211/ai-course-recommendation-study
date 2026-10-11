@@ -94,11 +94,43 @@
         });
     }
 
+    /* ---------------- Bella scroll docking ---------------- */
+    /* Bella is position:fixed; as the user scrolls she hops between
+       stations: hero banner -> alongside content -> closing banner */
+    function initBotDock() {
+        var wrap = document.querySelector('.welcome-bot-wrap');
+        if (!wrap) return;
+        var hero = document.querySelector('.hero');
+        var close = document.querySelector('.close-banner');
+        var current = '';
+
+        function dockFor(rect, vh) {
+            /* a banner "owns" Bella when it covers the mid-viewport line */
+            return rect.top <= vh * 0.55 && rect.bottom >= vh * 0.35;
+        }
+
+        function update() {
+            var vh = window.innerHeight;
+            var station = 'mid';
+            if (hero && dockFor(hero.getBoundingClientRect(), vh)) station = 'hero';
+            else if (close && dockFor(close.getBoundingClientRect(), vh)) station = 'close';
+            if (station === current) return;
+            current = station;
+            wrap.classList.remove('bot-dock-hero', 'bot-dock-mid', 'bot-dock-close');
+            wrap.classList.add('bot-dock-' + station);
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        update();
+    }
+
     function boot() {
         initParallax();
         initReveal();
         initTilt();
         initBannerVideos();
+        initBotDock();
     }
 
     if (document.readyState === 'loading') {
