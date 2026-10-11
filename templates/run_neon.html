@@ -25,6 +25,11 @@
                     <span class="welcome-bot-boot-track"><span class="welcome-bot-boot-fill" id="welcome-bot-boot-fill"></span></span>
                 </div>
                 <span class="welcome-bot-bubble"><span class="welcome-bot-say" id="welcome-bot-say"></span><span class="welcome-bot-caret" aria-hidden="true"></span></span>
+                <button type="button" class="welcome-bot-mute" id="welcome-bot-mute" aria-pressed="false" aria-label="Mute Bella">
+                    <svg class="mute-icon-on" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg>
+                    <svg class="mute-icon-off" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></svg>
+                    <span class="mute-label">Mute me</span>
+                </button>
             </div>
 
             <p class="hero-laurel">
@@ -280,8 +285,10 @@
     var sayEl = document.getElementById('welcome-bot-say');
     var bootEl = document.getElementById('welcome-bot-boot');
     var fillEl = document.getElementById('welcome-bot-boot-fill');
+    var muteBtn = document.getElementById('welcome-bot-mute');
     if (!el || typeof lottie === 'undefined') return;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var muted = false;
 
     var anim = lottie.loadAnimation({
         container: el,
@@ -295,8 +302,9 @@
     if (reduce) {
         anim.addEventListener('DOMLoaded', function () {
             anim.goToAndStop(1, true);
-            if (wrap) wrap.classList.add('bot-ready', 'bot-speaking');
+            if (wrap) wrap.classList.add('bot-ready', 'bot-speaking', 'bot-introduced');
             if (sayEl) sayEl.textContent = "Hi! I'm Bella, your study guide. Pick a model below to begin.";
+            if (muteBtn) muteBtn.style.display = 'none';
         });
         return;
     }
@@ -343,9 +351,11 @@
     }
 
     function typeLine(text, done) {
+        if (muted) { if (done) done(); return; }
         var i = 0;
         sayEl.textContent = '';
         (function tick() {
+            if (muted) return;
             if (i >= text.length) { if (done) setTimeout(done, 420); return; }
             var ch = text.charAt(i++);
             sayEl.textContent += ch;
@@ -356,6 +366,7 @@
     }
 
     function sayBeat(text, opts, done) {
+        if (muted) { if (done) setTimeout(done, 300); return; }
         nod();
         if (opts && opts.wave) waveOnce();
         setTimeout(function () {
@@ -368,7 +379,8 @@
         { text: 'Hi there!', wave: true, delay: 200, hold: 900 },
         { text: "I'm Bella, your study guide for this experiment.", delay: 300, hold: 800 },
         { text: "I'll watch you test which art course the AI models pick.", delay: 350, hold: 800 },
-        { text: "Pick a model below and hit Run — I'll walk you through it!", delay: 350, hold: 1600 }
+        { text: "Pick a model below and hit Run — I'll walk you through it!", delay: 350, hold: 900 },
+        { text: 'Bored of me? Hit "Mute me" anytime.', delay: 300, hold: 1200 }
     ];
 
     var TIPS = [
@@ -404,9 +416,10 @@
     /* Phase 4: idle teacher — float is CSS; wave + rotating tips here */
     function idleTeacher() {
         if (!wrap) return;
-        wrap.classList.add('bot-idle');
+        wrap.classList.add('bot-idle', 'bot-introduced');
         (function loopTips() {
             setTimeout(function () {
+                if (muted) { loopTips(); return; }
                 waveOnce();
                 setTimeout(function () {
                     sayBeat(TIPS[tipIdx % TIPS.length], { delay: 120, wave: false }, function () {
@@ -416,6 +429,23 @@
                 }, 1800);
             }, 6000 + Math.random() * 3000);
         })();
+    }
+
+    /* mute: stop talking, hide bubble, keep the float going */
+    if (muteBtn) {
+        var iconOn = muteBtn.querySelector('.mute-icon-on');
+        var iconOff = muteBtn.querySelector('.mute-icon-off');
+        var muteLabel = muteBtn.querySelector('.mute-label');
+        muteBtn.addEventListener('click', function () {
+            muted = !muted;
+            muteBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+            muteBtn.setAttribute('aria-label', muted ? 'Unmute Bella' : 'Mute Bella');
+            if (wrap) wrap.classList.toggle('bot-muted', muted);
+            if (iconOn) iconOn.style.display = muted ? 'none' : '';
+            if (iconOff) iconOff.style.display = muted ? '' : 'none';
+            if (muteLabel) muteLabel.textContent = muted ? 'Unmute me' : 'Mute me';
+            if (!muted && sayEl) sayEl.textContent = '';
+        });
     }
 
     anim.addEventListener('DOMLoaded', function () {

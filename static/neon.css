@@ -275,11 +275,14 @@ code {
 .banner-bg-scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.18) 45%, rgba(0, 0, 0, 0.72) 100%);
+    background:
+        radial-gradient(90% 85% at 50% 45%, rgba(10, 10, 18, 0.55) 0%, rgba(10, 10, 18, 0.25) 55%, transparent 80%),
+        linear-gradient(rgba(10, 10, 18, 0.78) 0%, rgba(10, 10, 18, 0.45) 40%, rgba(10, 10, 18, 0.55) 70%, rgba(10, 10, 18, 0.85) 100%);
 }
 
 /* ---------------- laurel social proof (wowmade) ---------------- */
 .hero-laurel {
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9), 0 0 4px rgba(0, 0, 0, 0.8);
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -305,8 +308,9 @@ code {
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--violet);
+    color: #d8b4fe;
     margin: 0 0 14px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95), 0 0 16px rgba(168, 85, 247, 0.5);
 }
 
 .hero h1 {
@@ -375,10 +379,11 @@ code {
 .hero-cta { animation: heroRise 0.9s var(--ease-out) 1.62s both; }
 
 .hero-sub {
-    color: var(--muted);
+    color: #c8c8d8;
     font-size: 17px;
     max-width: 52ch;
     margin: 0 auto 8px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95), 0 0 4px rgba(0, 0, 0, 0.85);
 }
 
 /* ---------------- "I want to run:" card deck (wowmade) ---------------- */
@@ -388,8 +393,9 @@ code {
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--faint);
+    color: #b0b0c4;
     margin: 22px 0 16px;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95);
     animation: heroRise 0.9s var(--ease-out) 0.95s both;
 }
 
@@ -490,8 +496,9 @@ code {
 .hero-hint {
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--faint);
+    color: #a8a8be;
     margin: 16px 0 0;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95);
     animation: heroRise 0.9s var(--ease-out) 1.78s both;
 }
 
@@ -551,6 +558,55 @@ code {
     35% { transform: translateY(10px) rotate(3deg) scale(1.03); }
     70% { transform: translateY(-4px) rotate(-1.5deg); }
     100% { transform: translateY(0) rotate(0); }
+}
+
+/* mute toggle: sits under Bella, she suggests it when she introduces herself */
+.welcome-bot-mute {
+    position: absolute;
+    left: 50%;
+    bottom: -78px;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: rgba(16, 12, 26, 0.88);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, color 0.2s, border-color 0.2s, background 0.2s;
+    z-index: 4;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-bot-mute:hover {
+    color: var(--text);
+    border-color: rgba(192, 132, 252, 0.6);
+}
+
+/* show it once Bella has introduced herself */
+.welcome-bot-wrap.bot-introduced .welcome-bot-mute {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* muted state */
+.welcome-bot-wrap.bot-muted .welcome-bot-mute {
+    color: var(--red);
+    border-color: rgba(251, 113, 133, 0.5);
+    background: rgba(40, 12, 20, 0.9);
+}
+
+.welcome-bot-wrap.bot-muted .welcome-bot-bubble {
+    display: none;
 }
 
 /* teacher pacing: Bella wanders the whole banner like she's walking
@@ -1460,6 +1516,7 @@ code {
     .hero-card-art { width: 72px; height: 72px; margin-bottom: 28px; }
     .hero-card-badge { font-size: 10.5px; padding: 5px 10px; }
     .welcome-bot-wrap { top: -18px; right: 10px; width: 96px; height: 96px; }
+    .welcome-bot-mute { bottom: -40px; font-size: 10px; padding: 5px 10px; }
     .welcome-bot-wrap.bot-ready { animation-name: botWanderMobile; }
     .welcome-bot { width: 96px; height: 96px; }
     .welcome-bot-bubble { left: -120px; top: 8px; max-width: 150px; font-size: 11.5px; }
