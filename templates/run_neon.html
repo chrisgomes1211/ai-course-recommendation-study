@@ -11,7 +11,11 @@
     <div class="hero-inner">
         <div class="hero-content">
             <p class="hero-eyebrow">MSc Research Experiment</p>
-            <h1>Run a Test</h1>
+            <h1>
+                <span class="hero-word" style="--i:0">Run</span>
+                <span class="hero-word" style="--i:1">a</span>
+                <span class="hero-word" style="--i:2">Test</span>
+            </h1>
             <p class="hero-sub">Select an AI model and run a single recommendation + exit interview, or start a batch run across models and course pages.</p>
             <div class="hero-cta">
                 <a href="#single-run" class="btn btn-primary">Run a single test</a>
@@ -128,7 +132,7 @@
     <div class="card-body">
         <div class="pages-grid" id="pages-grid">
             {% for page_id, html in pages.items() %}
-            <div class="page-card reveal">
+            <div class="page-card reveal tilt">
                 <div class="page-card-header">
                     <div class="page-header-row">
                         <h3>{{ page_id }}</h3>

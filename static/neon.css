@@ -3,29 +3,33 @@
    ============================================================ */
 
 :root {
-    --bg: #05060f;
-    --bg-2: #080b1a;
-    --surface: rgba(255, 255, 255, 0.045);
+    --bg: #0a0a12;
+    --bg-2: #0c0a18;
+    --surface: rgba(255, 255, 255, 0.04);
     --surface-2: rgba(255, 255, 255, 0.07);
     --border: rgba(255, 255, 255, 0.09);
     --border-strong: rgba(255, 255, 255, 0.16);
-    --text: #eef1f8;
-    --muted: #98a2b8;
-    --faint: #5d6478;
-    --cyan: #22d3ee;
-    --violet: #a78bfa;
-    --pink: #f472b6;
+    --text: #f4f4fa;
+    --muted: #9a9ab0;
+    --faint: #5d5d75;
+    --cyan: #a855f7;
+    --violet: #c084fc;
+    --pink: #d946ef;
     --amber: #fbbf24;
     --green: #34d399;
+    --lime: #d9ee52;
+    --lime-ink: #1c2405;
     --red: #fb7185;
-    --grad: linear-gradient(120deg, #22d3ee 0%, #a78bfa 55%, #f472b6 110%);
+    --grad: linear-gradient(120deg, #7c5cff 0%, #a855f7 50%, #d946ef 110%);
+    --grad-lime: linear-gradient(135deg, #e6f877, #d9ee52 55%, #bcd934);
     --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    --radius: 18px;
-    --radius-sm: 12px;
-    --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
-    --glow-cyan: 0 0 44px rgba(34, 211, 238, 0.16);
-    --glow-violet: 0 0 44px rgba(167, 139, 250, 0.16);
+    --radius: 20px;
+    --radius-sm: 14px;
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    --glow-violet: 0 0 44px rgba(168, 85, 247, 0.2);
+    --glow-lime: 0 10px 40px -8px rgba(190, 220, 60, 0.55);
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -66,9 +70,9 @@ code {
     inset: 0;
     z-index: -2;
     background:
-        radial-gradient(1200px 700px at 75% -10%, rgba(167, 139, 250, 0.13), transparent 60%),
-        radial-gradient(1000px 600px at 10% 15%, rgba(34, 211, 238, 0.10), transparent 55%),
-        radial-gradient(900px 900px at 50% 110%, rgba(244, 114, 182, 0.08), transparent 60%),
+        radial-gradient(40% 40% at 78% 18%, rgba(168, 85, 247, 0.28), transparent 70%),
+        radial-gradient(38% 38% at 20% 30%, rgba(124, 92, 255, 0.22), transparent 70%),
+        radial-gradient(50% 40% at 60% 100%, rgba(217, 70, 239, 0.14), transparent 70%),
         var(--bg);
 }
 
@@ -77,18 +81,35 @@ code {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
     background-size: 44px 44px;
     mask-image: radial-gradient(1100px 700px at 50% 0%, #000 20%, transparent 75%);
     -webkit-mask-image: radial-gradient(1100px 700px at 50% 0%, #000 20%, transparent 75%);
 }
 
-#neon-particles {
+/* CSS-only drifting particle field (wowmade-style; replaces the canvas) */
+.neon-dots {
     position: fixed;
-    inset: 0;
+    inset: -50% 0;
     z-index: -1;
     pointer-events: none;
+    opacity: 0.5;
+    background-image:
+        radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1.5px 1.5px at 68% 12%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 40% 40%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1.5px 1.5px at 85% 55%, rgba(200, 180, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1.5px 1.5px at 55% 82%, rgba(210, 190, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 92% 88%, rgba(255,255,255,0.45), transparent);
+    background-size: 100% 60%;
+    animation: dotsDrift 40s linear infinite;
+}
+
+@keyframes dotsDrift {
+    0% { transform: translateY(0); }
+    to { transform: translateY(-8%); }
 }
 
 /* ---------------- nav ---------------- */
@@ -192,9 +213,9 @@ code {
     pointer-events: none;
     will-change: transform;
 }
-.hero-orb-a { width: 420px; height: 420px; top: -140px; right: -80px; background: rgba(167, 139, 250, 0.35); }
-.hero-orb-b { width: 340px; height: 340px; bottom: -120px; left: -100px; background: rgba(34, 211, 238, 0.28); }
-.hero-orb-c { width: 220px; height: 220px; top: 30%; left: 42%; background: rgba(244, 114, 182, 0.16); }
+.hero-orb-a { width: 420px; height: 420px; top: -140px; right: -80px; background: rgba(168, 85, 247, 0.32); }
+.hero-orb-b { width: 340px; height: 340px; bottom: -120px; left: -100px; background: rgba(124, 92, 255, 0.28); }
+.hero-orb-c { width: 220px; height: 220px; top: 30%; left: 42%; background: rgba(217, 70, 239, 0.18); }
 
 .hero-inner {
     position: relative;
@@ -210,19 +231,65 @@ code {
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--cyan);
+    color: var(--violet);
     margin: 0 0 14px;
 }
 
 .hero h1 {
     font-size: clamp(38px, 6vw, 62px);
     margin: 0 0 16px;
-    background: var(--grad);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 0 26px rgba(34, 211, 238, 0.18));
+    color: var(--text);
+    letter-spacing: -0.03em;
+    text-shadow: 0 0 36px rgba(168, 85, 247, 0.6), 0 2px 18px rgba(0, 0, 0, 0.7);
+    animation: heroTitleGlow 6s ease-in-out 2.2s infinite;
 }
+
+@keyframes heroTitleGlow {
+    0%, 100% { text-shadow: 0 0 36px rgba(168, 85, 247, 0.6), 0 2px 18px rgba(0, 0, 0, 0.7); }
+    50% { text-shadow: 0 0 56px rgba(196, 130, 255, 0.85), 0 0 24px rgba(217, 238, 82, 0.18), 0 2px 18px rgba(0, 0, 0, 0.7); }
+}
+
+/* wowmade-style per-word blur-up rise: markup emits <span class="hero-word" style="--i:N"> */
+.hero-word {
+    white-space: pre;
+    display: inline-block;
+    animation: heroWordIn 0.9s var(--ease-out) both;
+    animation-delay: calc(0.32s + var(--i, 0) * 75ms);
+}
+
+@keyframes heroWordIn {
+    0% { opacity: 0; filter: blur(10px); transform: translateY(0.45em); }
+    to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes heroRise {
+    0% { opacity: 0; filter: blur(10px); transform: translateY(18px); }
+    to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes heroPillIn {
+    0% { opacity: 0; filter: blur(8px); transform: translateY(14px) rotate(-6deg) scale(0.94); }
+    to { opacity: 1; filter: blur(0); transform: translateY(0) rotate(-2deg) scale(1); }
+}
+
+@keyframes heroDealA {
+    0% { opacity: 0; transform: rotate(-14deg) translateY(48px); }
+    to { opacity: 1; transform: rotate(-4deg) translateY(6px); }
+}
+
+@keyframes heroDealB {
+    0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+    to { opacity: 1; transform: translateY(-4px) scale(1.05); }
+}
+
+@keyframes heroDealC {
+    0% { opacity: 0; transform: rotate(14deg) translateY(48px); }
+    to { opacity: 1; transform: rotate(4deg) translateY(6px); }
+}
+
+.hero-eyebrow { animation: heroPillIn 0.8s var(--ease-out) 0.18s both; }
+.hero-sub { animation: heroRise 0.9s var(--ease-out) 0.8s both; }
+.hero-cta { animation: heroRise 0.9s var(--ease-out) 1.45s both; }
 
 .hero-sub {
     color: var(--muted);
@@ -235,24 +302,48 @@ code {
 
 .hero-stats {
     display: flex;
-    gap: 12px;
+    gap: 0;
     flex-wrap: wrap;
     list-style: none;
     margin: 0;
     padding: 0;
+    justify-content: center;
+    align-items: flex-end;
+    padding-top: 10px;
 }
 
 .hero-stats li {
     display: flex;
     align-items: baseline;
     gap: 7px;
-    padding: 9px 15px;
-    border-radius: 999px;
+    padding: 12px 18px;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--border);
-    background: var(--surface);
+    background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     backdrop-filter: blur(8px);
     color: var(--muted);
     font-size: 13px;
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+
+.hero-stats li + li { margin-left: -10px; }
+
+.hero-stats li:nth-child(1) { z-index: 1; transform-origin: bottom; animation: 0.85s var(--ease-out) 1.05s both heroDealA; }
+.hero-stats li:nth-child(2) { z-index: 3; animation: 0.85s var(--ease-out) 1.17s both heroDealB; }
+.hero-stats li:nth-child(3) { z-index: 2; transform-origin: bottom; animation: 0.85s var(--ease-out) 1.29s both heroDealC; }
+
+.hero-stats li:hover {
+    z-index: 5;
+    transform: translateY(-6px) rotate(0) scale(1.05);
+    box-shadow: 0 34px 74px -18px rgba(124, 92, 255, 0.65);
+}
+
+.hero-stats strong {
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .hero-stats strong {
@@ -325,6 +416,24 @@ code {
     text-transform: uppercase;
     color: var(--faint);
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* mistral-inspired pixel-block prefix */
+.section-label span::before {
+    content: '';
+    width: 21px;
+    height: 9px;
+    flex-shrink: 0;
+    background:
+        linear-gradient(var(--cyan), var(--cyan)) 0 0 / 3px 3px no-repeat,
+        linear-gradient(var(--violet), var(--violet)) 3px 0 / 6px 3px no-repeat,
+        linear-gradient(var(--pink), var(--pink)) 9px 3px / 9px 3px no-repeat,
+        linear-gradient(var(--pink), var(--pink)) 3px 6px / 9px 3px no-repeat,
+        linear-gradient(var(--cyan), var(--cyan)) 12px 6px / 3px 3px no-repeat,
+        linear-gradient(var(--violet), var(--violet)) 15px 0 / 3px 3px no-repeat;
 }
 
 .section-label::after {
@@ -400,13 +509,36 @@ code {
 .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
 .btn-primary {
-    background: var(--grad);
+    background: var(--grad-lime);
     border: none;
-    color: #04131a;
-    font-weight: 600;
-    box-shadow: var(--glow-cyan);
+    color: var(--lime-ink);
+    font-weight: 700;
+    animation: ctaGlow 3s ease-in-out infinite;
+    box-shadow: var(--glow-lime), inset 0 1px rgba(255, 255, 255, 0.5);
 }
-.btn-primary:hover { background: var(--grad); box-shadow: 0 0 54px rgba(34, 211, 238, 0.3); }
+.btn-primary:hover {
+    background: var(--grad-lime);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 50px -8px rgba(190, 220, 60, 0.75), inset 0 1px rgba(255, 255, 255, 0.55);
+}
+.btn-primary:hover svg, .btn-primary:hover { /* arrow nudge handled per-element */ }
+
+@keyframes ctaGlow {
+    0%, 100% { box-shadow: 0 10px 40px -8px rgba(190, 220, 60, 0.5), inset 0 1px rgba(255, 255, 255, 0.5); }
+    50% { box-shadow: 0 12px 46px -6px rgba(217, 238, 82, 0.7), inset 0 1px rgba(255, 255, 255, 0.55); }
+}
+
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(28, 36, 5, 0.3);
+    border-top-color: var(--lime-ink);
+    border-radius: 50%;
+    animation: neon-spin 0.7s linear infinite;
+    display: inline-block;
+}
+
+.btn-secondary .spinner, .btn-ghost .spinner { border-color: rgba(255, 255, 255, 0.25); border-top-color: var(--text); }
 
 .btn-secondary { background: transparent; }
 
@@ -973,4 +1105,37 @@ code {
     .card, .page-card, .btn, .stimulus-card { transition: none; }
     .tour-card, .tour-card.is-on, .tour-overlay, .tour-overlay.is-on { transition: none; }
     [data-depth] { transform: none !important; }
+}
+
+/* ---------------- gradient sheen (200% sweep) ---------------- */
+.sheen {
+    background: linear-gradient(100deg, #7c5cff, #d946ef 50%, #7c5cff) 0 0 / 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: sheenSweep 3.5s linear infinite;
+}
+
+@keyframes sheenSweep {
+    to { background-position: -200% 0; }
+}
+
+/* ---------------- 3D tilt cards (amix threejs learning, CSS-only depth) ---------------- */
+.tilt {
+    transform-style: preserve-3d;
+    perspective: 800px;
+    will-change: transform;
+    transition: transform 0.25s var(--ease-out), box-shadow 0.25s ease;
+}
+
+/* ---------------- reduced motion: freeze entrance ---------------- */
+@media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow, .hero-sub, .hero-cta, .hero-word,
+    .hero-stats li:nth-child(1), .hero-stats li:nth-child(2), .hero-stats li:nth-child(3),
+    .hero h1, .sheen, .btn-primary, .neon-dots {
+        animation: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        transform: none !important;
+    }
 }

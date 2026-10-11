@@ -352,7 +352,7 @@ function renderResults(data) {
 const PAGE_SIZE = 20;
 const NEON_SKIN = document.documentElement.getAttribute('data-skin') === 'neon';
 const CHART_GRID = NEON_SKIN ? 'rgba(255,255,255,0.07)' : '#efeeea';
-const CHART_COLORS = ['#22d3ee', '#a78bfa', '#f472b6', '#fbbf24', '#34d399', '#60a5fa'];
+const CHART_COLORS = ['#a855f7', '#d946ef', '#7c5cff', '#d9ee52', '#34d399', '#60a5fa'];
 let overallChart = null;
 let modelChart = null;
 const dashboardState = { offset: 0, total: 0, loading: false };
