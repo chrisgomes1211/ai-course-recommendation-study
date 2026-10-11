@@ -123,8 +123,13 @@ def run_single_experiment(model_name: str, condition_page: str = "") -> Dict[str
 
 def load_results_data() -> List[Dict[str, Any]]:
     results = []
-    if RESULTS_FILE.exists():
-        with open(RESULTS_FILE, "r") as f:
+    # Live runs file; fall back to the delivered snapshot (gitignored results.csv
+    # is absent on fresh deploys, e.g. Render) so the dashboard still shows data.
+    source = RESULTS_FILE
+    if (not source.exists() or source.stat().st_size == 0) and DATASET_FILE.exists():
+        source = DATASET_FILE
+    if source.exists():
+        with open(source, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 results.append(row)
