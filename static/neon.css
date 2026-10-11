@@ -529,6 +529,22 @@ code {
 
 @keyframes botFloat {
     0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-14px) rotate(-2.5deg); }
+    55% { transform: translateY(-5px) rotate(2deg); }
+    80% { transform: translateY(-10px) rotate(-1deg); }
+}
+
+/* teacher nod: quick forward dip, restartable via class toggle */
+.welcome-bot-wrap.bot-nod .welcome-bot {
+    animation: botNod 0.55s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+@keyframes botNod {
+    0% { transform: translateY(0) rotate(0); }
+    35% { transform: translateY(10px) rotate(3deg) scale(1.03); }
+    70% { transform: translateY(-4px) rotate(-1.5deg); }
+    100% { transform: translateY(0) rotate(0); }
+}
     30% { transform: translateY(-10px) rotate(-2deg); }
     65% { transform: translateY(-4px) rotate(2deg); }
 }
@@ -543,10 +559,63 @@ code {
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.bot-ready .welcome-bot-ring {
+.bot-ready .welcome-bot-ring,
+.boot-done .welcome-bot-ring {
     opacity: 0;
     transform: scale(1.25);
     pointer-events: none;
+}
+
+/* ---------------- boot bar: "Powering on…" ---------------- */
+.welcome-bot-boot {
+    position: absolute;
+    left: 50%;
+    bottom: -34px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    width: 170px;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.welcome-bot-boot.boot-done {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+    pointer-events: none;
+}
+
+.welcome-bot-boot-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--violet);
+    animation: bootPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes bootPulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+}
+
+.welcome-bot-boot-track {
+    display: block;
+    width: 100%;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.welcome-bot-boot-fill {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: var(--grad-lime);
+    box-shadow: 0 0 12px rgba(190, 220, 60, 0.6);
 }
 
 /* speech bubble: appears after landing, typewriter text + caret */

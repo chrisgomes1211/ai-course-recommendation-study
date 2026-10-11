@@ -20,6 +20,10 @@
             <div class="welcome-bot-wrap">
                 <span class="welcome-bot-ring" aria-hidden="true"></span>
                 <div class="welcome-bot" id="welcome-bot"></div>
+                <div class="welcome-bot-boot" id="welcome-bot-boot" aria-hidden="true">
+                    <span class="welcome-bot-boot-label">Powering on…</span>
+                    <span class="welcome-bot-boot-track"><span class="welcome-bot-boot-fill" id="welcome-bot-boot-fill"></span></span>
+                </div>
                 <span class="welcome-bot-bubble"><span class="welcome-bot-say" id="welcome-bot-say"></span><span class="welcome-bot-caret" aria-hidden="true"></span></span>
             </div>
 
@@ -271,62 +275,155 @@
 <script src="{{ url_for('static', filename='tour.js') }}"></script>
 <script>
 (function () {
-    const el = document.getElementById('welcome-bot');
+    var el = document.getElementById('welcome-bot');
+    var wrap = document.querySelector('.welcome-bot-wrap');
+    var sayEl = document.getElementById('welcome-bot-say');
+    var bootEl = document.getElementById('welcome-bot-boot');
+    var fillEl = document.getElementById('welcome-bot-boot-fill');
     if (!el || typeof lottie === 'undefined') return;
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const anim = lottie.loadAnimation({
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var anim = lottie.loadAnimation({
         container: el,
         renderer: 'svg',
-        loop: !reduce,
+        loop: false,
         autoplay: false,
         path: '{{ url_for("static", filename="welcome-bot.json") }}'
     });
+    window.__welcomeBot = anim;
+
     if (reduce) {
         anim.addEventListener('DOMLoaded', function () {
             anim.goToAndStop(1, true);
-            var say = document.getElementById('welcome-bot-say');
-            if (say) say.textContent = 'Welcome! Pick a model below to begin.';
+            if (wrap) wrap.classList.add('bot-ready', 'bot-speaking');
+            if (sayEl) sayEl.textContent = "Hi! I'm Bella, your study guide. Pick a model below to begin.";
         });
-        window.__welcomeBot = anim;
         return;
     }
 
-    var LINES = [
-        "Hi! I'm your study guide.",
-        "Watch me pick an art course...",
-        "Choose a model below to begin.",
-        "I'll run the test, then interview the model."
-    ];
-    var sayEl = document.getElementById('welcome-bot-say');
-    var wrap = document.querySelector('.welcome-bot-wrap');
-    var lineIdx = 0;
+    /* ---------------- Bella intro timeline ---------------- */
+    var loaded = false;
+    var seqStarted = false;
+
+    /* Phase 1: fake but eased boot progress while the lottie loads */
+    var BOOT_MS = 2000;
+    var bootStart = performance.now();
+    function bootTick(now) {
+        var p = Math.min(1, (now - bootStart) / BOOT_MS);
+        var eased = 1 - Math.pow(1 - p, 3);
+        if (fillEl) fillEl.style.width = (eased * 100).toFixed(1) + '%';
+        if (p < 1) { requestAnimationFrame(bootTick); return; }
+        if (loaded) startSequence();
+        /* else: wait for DOMLoaded, then start immediately */
+    }
+    requestAnimationFrame(bootTick);
+
+    function waveOnce() {
+        /* arm-wave occupies frames 0-100 of the 301-frame loop */
+        anim.loop = false;
+        anim.goToAndPlay(0, true);
+    }
+
+    function waveLoop(seconds) {
+        /* keep re-playing the wave segment for a while */
+        var until = performance.now() + seconds * 1000;
+        (function rep() {
+            if (performance.now() > until) return;
+            anim.goToAndPlay(0, true);
+            setTimeout(rep, 1700);
+        })();
+    }
+
+    function nod() {
+        if (!wrap) return;
+        wrap.classList.remove('bot-nod');
+        void wrap.offsetWidth; /* restart animation */
+        wrap.classList.add('bot-nod');
+        setTimeout(function () { wrap.classList.remove('bot-nod'); }, 600);
+    }
 
     function typeLine(text, done) {
         var i = 0;
         sayEl.textContent = '';
         (function tick() {
-            sayEl.textContent = text.slice(0, ++i);
-            if (i < text.length) setTimeout(tick, 28);
-            else if (done) setTimeout(done, 2400);
+            if (i >= text.length) { if (done) setTimeout(done, 420); return; }
+            var ch = text.charAt(i++);
+            sayEl.textContent += ch;
+            /* speech-like rhythm: pause a beat after sentence punctuation */
+            var delay = (ch === '.' || ch === '!' || ch === '?') ? 220 : 34;
+            setTimeout(tick, delay);
         })();
     }
 
-    function cycleLines() {
-        typeLine(LINES[lineIdx % LINES.length], function () {
-            lineIdx++;
-            cycleLines();
-        });
+    function sayBeat(text, opts, done) {
+        nod();
+        if (opts && opts.wave) waveOnce();
+        setTimeout(function () {
+            typeLine(text, done);
+        }, opts && opts.delay != null ? opts.delay : 260);
+    }
+
+    /* Phase 3: scripted human-style introduction */
+    var INTRO = [
+        { text: 'Hi there!', wave: true, delay: 200, hold: 900 },
+        { text: "I'm Bella, your study guide for this experiment.", delay: 300, hold: 800 },
+        { text: "I'll watch you test which art course the AI models pick.", delay: 350, hold: 800 },
+        { text: "Pick a model below and hit Run — I'll walk you through it!", delay: 350, hold: 1600 }
+    ];
+
+    var TIPS = [
+        'Try a batch run to compare models!',
+        'The Results page shows what won and why.',
+        'Hover the course cards to peek at each page.',
+        'The full dataset CSV is free to download.'
+    ];
+    var tipIdx = 0;
+
+    function startSequence() {
+        if (seqStarted) return;
+        seqStarted = true;
+
+        /* Phase 2: boot UI out, Bella drops in waving */
+        if (bootEl) bootEl.classList.add('boot-done');
+        if (wrap) wrap.classList.add('bot-ready');
+        waveLoop(4.5); /* wave through the drop-in + first beats */
+
+        setTimeout(function () {
+            if (wrap) wrap.classList.add('bot-speaking');
+            var i = 0;
+            (function nextBeat() {
+                if (i >= INTRO.length) { idleTeacher(); return; }
+                var beat = INTRO[i++];
+                sayBeat(beat.text, beat, function () {
+                    setTimeout(nextBeat, beat.hold || 700);
+                });
+            })();
+        }, 950); /* let the drop-in land first */
+    }
+
+    /* Phase 4: idle teacher — float is CSS; wave + rotating tips here */
+    function idleTeacher() {
+        if (!wrap) return;
+        wrap.classList.add('bot-idle');
+        (function loopTips() {
+            setTimeout(function () {
+                waveOnce();
+                setTimeout(function () {
+                    sayBeat(TIPS[tipIdx % TIPS.length], { delay: 120, wave: false }, function () {
+                        tipIdx++;
+                        loopTips();
+                    });
+                }, 1800);
+            }, 6000 + Math.random() * 3000);
+        })();
     }
 
     anim.addEventListener('DOMLoaded', function () {
-        if (wrap) wrap.classList.add('bot-ready');
-        anim.play();
-        setTimeout(function () {
-            if (wrap) wrap.classList.add('bot-speaking');
-            cycleLines();
-        }, 650);
+        loaded = true;
+        var elapsed = performance.now() - bootStart;
+        if (elapsed >= BOOT_MS) startSequence();
+        /* else: bootTick will call startSequence when the bar fills */
     });
-    window.__welcomeBot = anim;
 })();
 </script>
 {% endblock %}
