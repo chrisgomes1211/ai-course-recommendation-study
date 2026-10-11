@@ -222,10 +222,10 @@ code {
 
 .hero-inner {
     position: relative;
-    max-width: 1280px;
-    margin: 0 auto;
+    max-width: none;
+    margin: 0;
     text-align: center;
-    padding: 0 clamp(12px, 3vw, 28px);
+    padding: 0;
 }
 
 /* wowmade-style banner frame: hairline border + violet bloom */
@@ -233,8 +233,8 @@ code {
     position: relative;
     border-top: 1px solid rgba(192, 132, 252, 0.4);
     border-bottom: 1px solid rgba(192, 132, 252, 0.4);
-    border-radius: 24px;
-    padding: clamp(56px, 8vw, 96px) clamp(24px, 5vw, 56px) clamp(48px, 6vw, 72px);
+    border-radius: 0;
+    padding: clamp(56px, 8vw, 96px) clamp(20px, 5vw, 56px) clamp(48px, 6vw, 72px);
     background: rgba(10, 10, 18, 0.25);
     box-shadow:
         0 0 0 1px rgba(255, 255, 255, 0.03) inset,
