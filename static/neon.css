@@ -506,8 +506,8 @@ code {
     top: 88px;
     right: 40px;
     z-index: 90;
-    width: 188px;
-    height: 188px;
+    width: 280px;
+    height: 280px;
     will-change: transform;
 }
 
@@ -516,8 +516,8 @@ code {
 
 .welcome-bot {
     position: relative;
-    width: 188px;
-    height: 188px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
     background: none;
     border: none;
@@ -566,7 +566,7 @@ code {
 .welcome-bot-mute {
     position: absolute;
     left: 50%;
-    bottom: -78px;
+    bottom: -96px;
     transform: translateX(-50%);
     display: inline-flex;
     align-items: center;
@@ -614,7 +614,7 @@ code {
 /* boot-up ring: dashed spinner while the lottie loads, fades once ready */
 .welcome-bot-ring {
     position: absolute;
-    inset: -18px;
+    inset: -26px;
     border-radius: 50%;
     border: 3px dashed rgba(192, 132, 252, 0.85);
     box-shadow: 0 0 24px rgba(168, 85, 247, 0.45), inset 0 0 18px rgba(168, 85, 247, 0.2);
@@ -643,13 +643,13 @@ code {
 .welcome-bot-boot {
     position: absolute;
     left: 50%;
-    bottom: -46px;
+    bottom: -64px;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    width: 190px;
+    width: 230px;
     padding: 10px 14px;
     border-radius: 12px;
     background: rgba(16, 12, 26, 0.85);
@@ -699,8 +699,8 @@ code {
 /* speech bubble: appears after landing, typewriter text + caret */
 .welcome-bot-bubble {
     position: absolute;
-    top: -6px;
-    left: -58px;
+    top: 4px;
+    left: -72px;
     transform: scale(0);
     transform-origin: bottom right;
     padding: 10px 14px;
@@ -1426,8 +1426,8 @@ code {
 @media (max-width: 900px) {
     .hero-inner { grid-template-columns: 1fr; gap: 30px; }
     .hero-visual { min-height: 240px; order: -1; }
-    .welcome-bot-wrap { width: 140px; height: 140px; }
-    .welcome-bot { width: 140px; height: 140px; }
+    .welcome-bot-wrap { width: 200px; height: 200px; }
+    .welcome-bot { width: 200px; height: 200px; }
     .welcome-bot-bubble { left: auto; right: -10px; top: -54px; max-width: 180px; }
     .hero-ring-1 { width: 230px; height: 230px; }
     .hero-ring-2 { width: 180px; height: 180px; }
@@ -1495,9 +1495,9 @@ code {
     .hero-card { width: 132px; height: 160px; }
     .hero-card-art { width: 72px; height: 72px; margin-bottom: 28px; }
     .hero-card-badge { font-size: 10.5px; padding: 5px 10px; }
-    .welcome-bot-wrap { top: -18px; right: 10px; width: 96px; height: 96px; }
-    .welcome-bot-mute { bottom: -40px; font-size: 10px; padding: 5px 10px; }
-    .welcome-bot { width: 96px; height: 96px; }
+    .welcome-bot-wrap { width: 150px; height: 150px; }
+    .welcome-bot-mute { bottom: -52px; font-size: 10px; padding: 5px 10px; }
+    .welcome-bot { width: 150px; height: 150px; }
     .welcome-bot-bubble { left: -120px; top: 8px; max-width: 150px; font-size: 11.5px; }
     .welcome-bot-ring { inset: -8px; }
     .hero-laurel { font-size: 12px; }

@@ -111,8 +111,8 @@
             var vw = window.innerWidth, vh = window.innerHeight;
             if (vw < 680) {
                 /* mobile: she stays in the bottom-right corner, gentle drift */
-                var mx = vw - (wrap.offsetWidth || 110) - 10;
-                var my = vh - (wrap.offsetHeight || 110) - 70;
+                var mx = vw - (wrap.offsetWidth || 150) - 10;
+                var my = vh - (wrap.offsetHeight || 150) - 80;
                 return [
                     { x: mx, y: my, s: 1 },
                     { x: mx - 14, y: my - 20, s: 1 },
@@ -121,17 +121,17 @@
                     { x: mx, y: my, s: 1 }
                 ];
             }
-            var w = wrap.offsetWidth || 188;
-            var h = wrap.offsetHeight || 188;
+            var w = wrap.offsetWidth || 280;
+            var h = wrap.offsetHeight || 280;
             return [
                 /* hero: top-right */
                 { x: vw - w - 44, y: 92, s: 1 },
                 /* leaves hero, walks to the left edge */
-                { x: 40, y: vh * 0.52, s: 0.78 },
+                { x: 40, y: vh * 0.52, s: 0.9 },
                 /* crosses back to the right while reading content */
-                { x: vw - w - 24, y: vh * 0.5, s: 0.72 },
+                { x: vw - w - 24, y: vh * 0.5, s: 0.85 },
                 /* back to the left */
-                { x: 48, y: vh * 0.46, s: 0.8 },
+                { x: 48, y: vh * 0.46, s: 0.9 },
                 /* closes out beside the final banner */
                 { x: vw - w - 44, y: vh * 0.55, s: 1 }
             ];
