@@ -273,8 +273,8 @@ code {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(90% 85% at 50% 45%, rgba(10, 10, 18, 0.55) 0%, rgba(10, 10, 18, 0.25) 55%, transparent 80%),
-        linear-gradient(rgba(10, 10, 18, 0.78) 0%, rgba(10, 10, 18, 0.45) 40%, rgba(10, 10, 18, 0.55) 70%, rgba(10, 10, 18, 0.85) 100%);
+        radial-gradient(90% 85% at 50% 45%, rgba(10, 10, 18, 0.32) 0%, rgba(10, 10, 18, 0.12) 55%, transparent 80%),
+        linear-gradient(rgba(10, 10, 18, 0.55) 0%, rgba(10, 10, 18, 0.22) 40%, rgba(10, 10, 18, 0.3) 70%, rgba(10, 10, 18, 0.62) 100%);
 }
 
 /* ---------------- laurel social proof (wowmade) ---------------- */
@@ -286,7 +286,7 @@ code {
     margin: 0 0 18px;
     font-size: 13px;
     color: var(--muted);
-    animation: heroRise 0.9s var(--ease-out) 0.05s both;
+    animation: heroRise 1.4s var(--ease-out) 0.1s both;
 }
 
 .hero-laurel-branch { color: var(--faint); flex-shrink: 0; }
@@ -329,8 +329,8 @@ code {
 .hero-word {
     white-space: pre;
     display: inline-block;
-    animation: heroWordIn 0.9s var(--ease-out) both;
-    animation-delay: calc(0.32s + var(--i, 0) * 75ms);
+    animation: heroWordIn 1.4s var(--ease-out) both;
+    animation-delay: calc(0.5s + var(--i, 0) * 130ms);
 }
 
 /* accent words: wowmade's gradient headline highlights */
@@ -371,9 +371,9 @@ code {
     to { opacity: 1; transform: rotate(4deg) translateY(6px); }
 }
 
-.hero-eyebrow { animation: heroPillIn 0.8s var(--ease-out) 0.18s both; }
-.hero-sub { animation: heroRise 0.9s var(--ease-out) 0.8s both; }
-.hero-cta { animation: heroRise 0.9s var(--ease-out) 1.62s both; }
+.hero-eyebrow { animation: heroPillIn 1.2s var(--ease-out) 0.3s both; }
+.hero-sub { animation: heroRise 1.3s var(--ease-out) 1.4s both; }
+.hero-cta { animation: heroRise 1.3s var(--ease-out) 2.7s both; }
 
 .hero-sub {
     color: #c8c8d8;
@@ -393,7 +393,7 @@ code {
     color: #b0b0c4;
     margin: 22px 0 16px;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95);
-    animation: heroRise 0.9s var(--ease-out) 0.95s both;
+    animation: heroRise 1.3s var(--ease-out) 1.9s both;
 }
 
 .hero-cards {
@@ -421,9 +421,9 @@ code {
     transition: transform 0.3s var(--ease-out), box-shadow 0.3s, border-color 0.3s;
 }
 
-.hero-card:nth-child(1) { z-index: 1; transform-origin: bottom; animation: 0.85s var(--ease-out) 1.05s both heroDealA; }
-.hero-card:nth-child(2) { z-index: 3; animation: 0.85s var(--ease-out) 1.17s both heroDealB; }
-.hero-card:nth-child(3) { z-index: 2; transform-origin: bottom; animation: 0.85s var(--ease-out) 1.29s both heroDealC; }
+.hero-card:nth-child(1) { z-index: 1; transform-origin: bottom; animation: 1.3s var(--ease-out) 2.1s both heroDealA; }
+.hero-card:nth-child(2) { z-index: 3; animation: 1.3s var(--ease-out) 2.3s both heroDealB; }
+.hero-card:nth-child(3) { z-index: 2; transform-origin: bottom; animation: 1.3s var(--ease-out) 2.5s both heroDealC; }
 
 .hero-card:hover {
     z-index: 5;
@@ -495,7 +495,7 @@ code {
     color: #a8a8be;
     margin: 16px 0 0;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.95);
-    animation: heroRise 0.9s var(--ease-out) 1.78s both;
+    animation: heroRise 1.3s var(--ease-out) 3.0s both;
 }
 
 /* ---------------- welcome bot: teacher mascot ---------------- */
