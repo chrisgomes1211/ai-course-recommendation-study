@@ -499,8 +499,8 @@ code {
 }
 
 /* ---------------- welcome bot: teacher mascot ---------------- */
-/* Bella is a fixed scroll companion: she docks at stations down the
-   page (hero banner -> alongside content -> closing banner) */
+/* Bella is a fixed scroll companion: JS drives her along a zig-zag
+   path across the viewport as you scroll (transform only, 60fps) */
 .welcome-bot-wrap {
     position: fixed;
     top: 88px;
@@ -508,24 +508,20 @@ code {
     z-index: 90;
     width: 188px;
     height: 188px;
-    transition: top 0.9s var(--ease-out), right 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    will-change: transform;
 }
 
 /* beat the `.hero-frame > *` relative rule — she must stay viewport-fixed */
 .hero-frame > .welcome-bot-wrap { position: fixed; }
-
-.bot-dock-hero { top: 88px; right: 40px; transform: scale(1); }
-.bot-dock-mid { top: 50vh; right: 18px; transform: scale(0.72); }
-.bot-dock-close { top: 66vh; right: 40px; transform: scale(1); }
 
 .welcome-bot {
     position: relative;
     width: 188px;
     height: 188px;
     border-radius: 50%;
-    background: radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04) 58%, transparent 72%), var(--surface);
-    border: 1px solid var(--border-strong);
-    box-shadow: var(--glow-violet), var(--shadow);
+    background: none;
+    border: none;
+    box-shadow: none;
     display: grid;
     place-items: center;
     cursor: pointer;
@@ -630,7 +626,7 @@ code {
 .welcome-bot-wrap:not(.bot-ready) .welcome-bot::after {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: 6px;
     border-radius: 50%;
     border: 1px dashed rgba(192, 132, 252, 0.35);
     animation: bootPulse 1.4s ease-in-out infinite;
@@ -1433,9 +1429,6 @@ code {
     .welcome-bot-wrap { width: 140px; height: 140px; }
     .welcome-bot { width: 140px; height: 140px; }
     .welcome-bot-bubble { left: auto; right: -10px; top: -54px; max-width: 180px; }
-    .bot-dock-hero { top: 80px; right: 20px; }
-    .bot-dock-mid { right: 10px; }
-    .bot-dock-close { right: 20px; }
     .hero-ring-1 { width: 230px; height: 230px; }
     .hero-ring-2 { width: 180px; height: 180px; }
 }

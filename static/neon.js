@@ -94,35 +94,94 @@
         });
     }
 
-    /* ---------------- Bella scroll docking ---------------- */
-    /* Bella is position:fixed; as the user scrolls she hops between
-       stations: hero banner -> alongside content -> closing banner */
-    function initBotDock() {
+    /* ---------------- Bella path-following ---------------- */
+    /* She's position:fixed and transform-driven: as you scroll she
+       walks a zig-zag across the whole viewport (right hero -> left
+       -> right -> left -> right at the close banner), always trailing
+       a little behind your scroll for a lifelike follow, plus a tiny
+       idle sway so she's never frozen in place. */
+    function initBotFollow() {
         var wrap = document.querySelector('.welcome-bot-wrap');
-        if (!wrap) return;
-        var hero = document.querySelector('.hero');
-        var close = document.querySelector('.close-banner');
-        var current = '';
+        if (!wrap || reduce) return;
 
-        function dockFor(rect, vh) {
-            /* a banner "owns" Bella when it covers the mid-viewport line */
-            return rect.top <= vh * 0.55 && rect.bottom >= vh * 0.35;
+        var cur = null;
+        var startTop = null, startRight = null;
+
+        function waypoints() {
+            var vw = window.innerWidth, vh = window.innerHeight;
+            if (vw < 680) {
+                /* mobile: she stays in the bottom-right corner, gentle drift */
+                var mx = vw - (wrap.offsetWidth || 110) - 10;
+                var my = vh - (wrap.offsetHeight || 110) - 70;
+                return [
+                    { x: mx, y: my, s: 1 },
+                    { x: mx - 14, y: my - 20, s: 1 },
+                    { x: mx, y: my, s: 1 },
+                    { x: mx - 14, y: my - 16, s: 1 },
+                    { x: mx, y: my, s: 1 }
+                ];
+            }
+            var w = wrap.offsetWidth || 188;
+            var h = wrap.offsetHeight || 188;
+            return [
+                /* hero: top-right */
+                { x: vw - w - 44, y: 92, s: 1 },
+                /* leaves hero, walks to the left edge */
+                { x: 40, y: vh * 0.52, s: 0.78 },
+                /* crosses back to the right while reading content */
+                { x: vw - w - 24, y: vh * 0.5, s: 0.72 },
+                /* back to the left */
+                { x: 48, y: vh * 0.46, s: 0.8 },
+                /* closes out beside the final banner */
+                { x: vw - w - 44, y: vh * 0.55, s: 1 }
+            ];
         }
 
-        function update() {
-            var vh = window.innerHeight;
-            var station = 'mid';
-            if (hero && dockFor(hero.getBoundingClientRect(), vh)) station = 'hero';
-            else if (close && dockFor(close.getBoundingClientRect(), vh)) station = 'close';
-            if (station === current) return;
-            current = station;
-            wrap.classList.remove('bot-dock-hero', 'bot-dock-mid', 'bot-dock-close');
-            wrap.classList.add('bot-dock-' + station);
+        function pathAt(p, pts) {
+            var seg = (pts.length - 1) * p;
+            var i = Math.min(pts.length - 2, Math.floor(seg));
+            var t = seg - i;
+            /* smoothstep for gentle ease at each waypoint */
+            t = t * t * (3 - 2 * t);
+            var a = pts[i], b = pts[i + 1];
+            return {
+                x: a.x + (b.x - a.x) * t,
+                y: a.y + (b.y - a.y) * t,
+                s: a.s + (b.s - a.s) * t
+            };
         }
 
-        window.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update);
-        update();
+        function progress() {
+            var max = document.documentElement.scrollHeight - window.innerHeight;
+            if (max <= 0) return 0;
+            var p = window.scrollY / max;
+            return p < 0 ? 0 : p > 1 ? 1 : p;
+        }
+
+        function frame(now) {
+            if (startTop === null) {
+                /* switch from right/top positioning to transform in one step */
+                var r = wrap.getBoundingClientRect();
+                startTop = r.top;
+                startRight = window.innerWidth - r.right;
+                wrap.style.top = '0px';
+                wrap.style.right = 'auto';
+                wrap.style.left = '0px';
+                cur = { x: r.left, y: r.top, s: 1 };
+            }
+            var tgt = pathAt(progress(), waypoints());
+            /* idle sway: always moving a little, even when you aren't */
+            tgt.x += Math.sin(now / 1100) * 7;
+            tgt.y += Math.cos(now / 1400) * 5;
+            /* trailing lerp — she follows rather than snaps */
+            cur.x += (tgt.x - cur.x) * 0.09;
+            cur.y += (tgt.y - cur.y) * 0.09;
+            cur.s += (tgt.s - cur.s) * 0.06;
+            wrap.style.transform =
+                'translate3d(' + cur.x.toFixed(1) + 'px,' + cur.y.toFixed(1) + 'px,0) scale(' + cur.s.toFixed(3) + ')';
+            window.requestAnimationFrame(frame);
+        }
+        window.requestAnimationFrame(frame);
     }
 
     function boot() {
@@ -130,7 +189,7 @@
         initReveal();
         initTilt();
         initBannerVideos();
-        initBotDock();
+        initBotFollow();
     }
 
     if (document.readyState === 'loading') {
