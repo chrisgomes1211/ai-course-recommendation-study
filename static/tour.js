@@ -104,12 +104,18 @@
         });
 
         if (typeof lottie !== 'undefined') {
+            /* On the neon page Bella already loaded this animation —
+               reuse her decoded data instead of fetching/parsing a
+               second copy of welcome-bot.json (that double-load made
+               it look like the robot was "loading again"). */
+            var shared = window.__welcomeBot && window.__welcomeBot.animationData;
             lottieAnim = lottie.loadAnimation({
                 container: robotEl,
                 renderer: 'svg',
                 loop: true,
                 autoplay: true,
-                path: '/static/welcome-bot.json'
+                animationData: shared ? JSON.parse(JSON.stringify(shared)) : undefined,
+                path: shared ? undefined : '/static/welcome-bot.json'
             });
         } else {
             robotEl.style.display = 'none';
@@ -264,6 +270,10 @@
     }
 
     setTimeout(function () {
+        /* Bella is the guide on the neon page — don't auto-start a
+           second guide on top of her boot sequence. Click her instead. */
+        var bella = document.querySelector('.welcome-bot-wrap');
+        if (bella) return;
         if (!seen() && !win95() && document.querySelector('.hero, .v2-hero')) start();
     }, START_DELAY);
 
