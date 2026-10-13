@@ -4,6 +4,7 @@
    look (glass, gradient type, spinning badge, float cards)
    without touching layout or any controlled cue text.
    Tokens (--acc, --acc2, --card, ...) set per page inline.
+   Version: round-2 (2026-10-13)
    ============================================================ */
 
 :root {
