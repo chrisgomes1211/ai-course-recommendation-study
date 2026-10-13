@@ -148,6 +148,8 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             .reveal-line > * { transform: none; }
         }
     </style>
+    <link rel="stylesheet" href="/static/course/course-redesign.css">
+    <style>:root{--acc:#0e7c7b;--acc2:#3aa6b0;--hero:#0b3f47;--soft:#f4fafb;--card:rgba(255,255,255,.78);--card-brd:rgba(14,124,123,.1)}</style>
 </head>
 <body>
     <div id="progress"></div>
@@ -167,6 +169,14 @@ EXPERIMENTAL FEATURES (canvas_color.html):
     <header class="hero" id="hero">
         <div class="hero-media" id="heroMedia"><img src="https://live.staticflickr.com/65535/5636521838_cf23429555_b.jpg" alt=""></div>
         <div class="grain"></div>
+        <div class="hero-fx" aria-hidden="true"></div>
+        <div class="spin-badge" aria-hidden="true">
+            <div class="spin-ring"><svg viewBox="0 0 120 120"><defs><path id="spin-path" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#spin-path">GET STARTED · ENROLL TODAY · </textPath></text></svg></div>
+            <span class="spin-core">↗</span>
+        </div>
+        <div class="float-card fc-1" aria-hidden="true"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"><span class="fc-t">Oil Painting</span><span class="fc-s">Studio quality</span></div>
+        <div class="float-card fc-2" aria-hidden="true"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"><span class="fc-t">Online Course</span><span class="fc-s">Learn anywhere</span></div>
+        
         <div class="hero-inner">
             <div class="reveal-line d1"><span class="badge">Online Course</span></div>
             <div class="reveal-line d2"><h1>Oil Painting Foundations</h1></div>
@@ -317,5 +327,6 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.click(); });
         })();
     </script>
+    <script src="/static/course/course.js"></script>
 </body>
 </html>

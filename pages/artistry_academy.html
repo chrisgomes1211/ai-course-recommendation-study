@@ -173,6 +173,8 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             .reveal-line > * { transform: none; }
         }
     </style>
+    <link rel="stylesheet" href="/static/course/course-redesign.css">
+    <style>:root{--acc:#c9a227;--acc2:#e0b83a;--hero:#16213e;--soft:#faf7f0;--card:rgba(255,255,255,.82);--card-brd:rgba(22,33,62,.08)}</style>
 </head>
 <body>
     <div id="progress"></div>
@@ -193,6 +195,14 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
     <header class="hero" id="hero">
         <div class="hero-media" id="heroMedia"><img src="https://live.staticflickr.com/1795/42212626780_63edc1f1a3_b.jpg" alt=""></div>
         <div class="grain"></div>
+        <div class="hero-fx" aria-hidden="true"></div>
+        <div class="spin-badge" aria-hidden="true">
+            <div class="spin-ring"><svg viewBox="0 0 120 120"><defs><path id="spin-path" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#spin-path">GET STARTED · ENROLL TODAY · </textPath></text></svg></div>
+            <span class="spin-core">↗</span>
+        </div>
+        <div class="float-card fc-1" aria-hidden="true"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"><span class="fc-t">Oil Painting</span><span class="fc-s">Studio quality</span></div>
+        <div class="float-card fc-2" aria-hidden="true"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"><span class="fc-t">Online Course</span><span class="fc-s">Learn anywhere</span></div>
+        
         <div class="hero-inner">
             <div class="reveal-line d1"><span class="eyebrow">Online Course · Oil Painting</span></div>
             <div class="reveal-line d2"><h1>Complete Oil Painting <em>Mastery</em></h1></div>
@@ -371,5 +381,6 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             });
         })();
     </script>
+    <script src="/static/course/course.js"></script>
 </body>
 </html>
