@@ -37,14 +37,47 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="neon-footer">
-        <p>MSc Research Experiment — <a href="{{ url_for('classic') }}">Classic UI</a></p>
+    <footer class="hwf-root" id="hwf-footer" data-wordmark="ai study">
+        <canvas aria-hidden="true"></canvas>
+        <span class="hwf-sr">ai study</span>
+        <div class="hwf-top">
+            <div class="hwf-brand">
+                <strong>AI Course Recommendation Study</strong>
+                <span>MSc Research Experiment</span>
+            </div>
+            <nav class="hwf-col" aria-label="Study">
+                <h3>Study</h3>
+                <ul>
+                    <li><a href="{{ url_for('run_test') }}">Run a Test</a></li>
+                    <li><a href="{{ url_for('results') }}">Results</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </nav>
+            <nav class="hwf-col" aria-label="UI">
+                <h3>UI</h3>
+                <ul>
+                    <li><a href="{{ url_for('run_test') }}">Neon</a></li>
+                    <li><a href="{{ url_for('classic') }}">Classic</a></li>
+                </ul>
+            </nav>
+            <nav class="hwf-col" aria-label="Dataset">
+                <h3>Dataset</h3>
+                <ul>
+                    <li><a href="{{ url_for('download_csv') }}">Download CSV</a></li>
+                    <li><a href="{{ url_for('download_dataset_logs') }}">Run Logs</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="hwf-rule">
+            <button type="button" class="hwf-up">Back to top &#8593;</button>
+        </div>
     </footer>
 
     <div id="toast-root" class="toast-root" aria-live="polite"></div>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
     <script src="{{ url_for('static', filename='neon.js') }}"></script>
+    <script src="{{ url_for('static', filename='halftone-footer.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
