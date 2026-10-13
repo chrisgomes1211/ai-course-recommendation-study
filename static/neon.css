@@ -1793,3 +1793,78 @@ body.dash-ready .stat-value .skel { display: none; }
 @media (prefers-reduced-motion: reduce) {
     .hwf-col a, .hwf-up { transition: none; }
 }
+
+
+/* ---------------- tilted grid band (21st port) ---------------- */
+
+.tgh {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    height: clamp(320px, 48vh, 480px);
+    overflow: hidden;
+    container-type: size;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.tgh-band {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+.tgh-band > div { position: absolute; }
+.tgh-s {
+    position: absolute;
+    top: 0;
+    overflow: hidden;
+    background: var(--surface-2);
+    backface-visibility: hidden;
+}
+.tgh-s-first { border-radius: 8px 0 0 8px; }
+.tgh-s-last { border-radius: 0 8px 8px 0; }
+.tgh-s img {
+    position: absolute;
+    top: 0;
+    max-width: none;
+    object-fit: cover;
+}
+.tgh-overlay {
+    position: relative;
+    z-index: 2;
+    background: radial-gradient(ellipse 55% 70% at 50% 50%, rgba(10, 10, 18, 0.88) 0%, rgba(10, 10, 18, 0.55) 55%, transparent 80%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    height: 100%;
+    text-align: center;
+    padding: 24px;
+    pointer-events: none;
+}
+.tgh-kicker {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--violet);
+}
+.tgh-overlay h2 {
+    margin: 0;
+    font-size: clamp(26px, 4.5vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    text-shadow: 0 2px 24px rgba(10, 10, 18, 0.9);
+}
+.tgh-overlay .tgh-sub {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 14px;
+    color: var(--muted);
+    text-shadow: 0 1px 14px rgba(10, 10, 18, 0.9);
+}

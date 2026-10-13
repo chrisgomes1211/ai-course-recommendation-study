@@ -2,6 +2,10 @@
 
 {% block title %}About & Methodology — AI Course Recommendation Study{% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='tilted-grid.js') }}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="page-header">
     <div class="page-header-row">
@@ -13,6 +17,26 @@
             <a href="{{ url_for('download_dataset') }}" class="btn btn-primary">Download dataset</a>
             <a href="{{ url_for('results') }}" class="btn btn-secondary">View results</a>
         </div>
+    </div>
+</div>
+
+
+<div class="tgh" id="stimuli-band" data-tgh
+     data-tile-height="30" data-speed="3.5" data-aspect="1.6"
+     data-gap="6" data-axis="52" data-curve="80" data-fade="12">
+    <script type="application/json" class="tgh-images">
+    [
+        {"src": "/static/media/stimuli/artistry_academy.jpg", "alt": "Artistry Academy course page"},
+        {"src": "/static/media/stimuli/brushstroke_studio.jpg", "alt": "Brushstroke Studio course page"},
+        {"src": "/static/media/stimuli/canvas_color.jpg", "alt": "Canvas & Color course page"},
+        {"src": "/static/media/stimuli/creative_canvas.jpg", "alt": "Creative Canvas course page"},
+        {"src": "/static/media/stimuli/palette_masters.jpg", "alt": "Palette Masters course page"}
+    ]
+    </script>
+    <div class="tgh-overlay">
+        <p class="tgh-kicker">The five stimuli</p>
+        <h2>Same course. Five different pitches.<br>The models pick one.</h2>
+        <p class="tgh-sub">Live previews of the frozen stimulus pages stream past on a curve — each varies price signals, reviews, credentials, description length, or layout clarity.</p>
     </div>
 </div>
 
