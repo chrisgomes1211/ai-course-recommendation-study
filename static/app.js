@@ -386,6 +386,8 @@ async function loadDashboard() {
     } catch (err) {
         console.error('Failed to load dashboard:', err);
         setDashboardError('Could not load results: ' + (err.message || 'network error'));
+    } finally {
+        document.body.classList.add('dash-ready');
     }
 }
 
