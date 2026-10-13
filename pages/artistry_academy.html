@@ -13,305 +13,618 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artistry Academy - Complete Oil Painting Mastery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --ft: 250px;
+            --gray: #e4e4e4;
+            --soft: #f0f2f4;
+            --ink: #0a0a0a;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Georgia, 'Times New Roman', serif; line-height: 1.65; color: #1c1c1c; background: #faf7f0; overflow-x: hidden; }
-        a { color: #1a2744; }
-        .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
-        img { display: block; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Roboto', Helvetica, Arial, sans-serif;
+            font-weight: 300;
+            color: var(--ink);
+            background: #fff;
+            overflow-x: clip;
+            line-height: 1.6;
+        }
+        img { display: block; max-width: 100%; }
+        a { color: inherit; text-decoration: none; }
+        section { scroll-margin-top: 70px; }
 
-        /* progress bar */
-        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, #c9a227, #e0b83a); z-index: 999; transition: width .1s linear; }
+        /* loader */
+        #pl { position: fixed; inset: 0; background: #fff; z-index: 400; display: flex; align-items: center; justify-content: center; transition: opacity .7s ease, visibility .7s; }
+        #pl.gone { opacity: 0; visibility: hidden; }
+        #pl span { font-size: 11px; letter-spacing: .4em; text-transform: uppercase; color: #999; }
 
-        /* topbar */
-        .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
-        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 16px; }
-        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .logo { width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e0b83a, #c9a227 60%, #9a7a17); display: flex; align-items: center; justify-content: center; color: #16213e; font-weight: bold; font-size: 17px; border: 1px solid #e0b83a; }
-        .brand-name { color: #fff; font-size: 17px; letter-spacing: 0.04em; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
-        .brand-name span { color: #c9a227; }
-        .topnav { display: flex; gap: 20px; }
-        .topnav a { color: #e8e3d5; text-decoration: none; font-size: 13.5px; font-family: Verdana, sans-serif; position: relative; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
-        .topnav a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1.5px; background: #e0b83a; transform: scaleX(0); transform-origin: right; transition: transform .35s cubic-bezier(.65,0,.35,1); }
-        .topnav a:hover::after { transform: scaleX(1); transform-origin: left; }
+        /* progress */
+        #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--ink); z-index: 399; transition: width .1s linear; }
 
-        /* hero */
-        .hero { position: relative; min-height: 92vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #16213e; }
-        .hero-media { position: absolute; inset: -6%; z-index: 0; }
-        .hero-media img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 22s ease-in-out infinite alternate; will-change: transform; }
-        @keyframes kenburns { from { transform: scale(1) translate(0,0); } to { transform: scale(1.12) translate(-1.5%, -1.5%); } }
-        .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(22,33,62,.86) 0%, rgba(22,33,62,.62) 45%, rgba(22,33,62,.92) 100%); }
-        .hero::after { content: ""; position: absolute; inset: 0; z-index: 2; background: radial-gradient(ellipse at center, transparent 45%, rgba(10,15,30,.55) 100%); pointer-events: none; }
-        .grain { position: absolute; inset: 0; z-index: 3; opacity: .10; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E"); }
-        .hero-inner { position: relative; z-index: 4; padding: 120px 22px 80px; max-width: 780px; }
-        .reveal-line { overflow: hidden; }
-        .reveal-line > * { display: block; transform: translateY(115%); animation: riseUp .9s cubic-bezier(.16,1,.3,1) forwards; }
-        @keyframes riseUp { to { transform: translateY(0); } }
-        .d1 > * { animation-delay: .15s; } .d2 > * { animation-delay: .3s; } .d3 > * { animation-delay: .45s; }
-        .d4 > * { animation-delay: .6s; } .d5 > * { animation-delay: .75s; } .d6 > * { animation-delay: .9s; }
-        .eyebrow { display: inline-block; font-family: Verdana, sans-serif; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: #e0b83a; border: 1px solid rgba(224,184,58,.6); padding: 6px 16px; opacity: 0; animation: fadeIn .8s ease 1.05s forwards; }
-        @keyframes fadeIn { to { opacity: 1; } }
-        .hero h1 { font-size: clamp(34px, 6vw, 56px); font-weight: normal; line-height: 1.12; color: #fff; margin: 18px 0 14px; }
-        .hero h1 em { font-style: italic; color: #e0b83a; }
-        .hero .stars { color: #e0b83a; font-size: 20px; letter-spacing: 4px; }
-        .hero .rating-line { font-family: Verdana, sans-serif; font-size: 13px; color: #d8d3c5; margin: 8px 0 24px; }
-        .hero .rating-line strong { color: #fff; }
-        .price { font-size: clamp(40px, 7vw, 54px); font-weight: bold; color: #e0b83a; line-height: 1; }
-        .price-terms { font-family: Verdana, sans-serif; font-size: 12px; color: #b8b2a3; margin: 8px 0 28px; }
-        .cta { display: inline-block; background: linear-gradient(180deg, #e0b83a, #c9a227); color: #16213e; font-family: Verdana, sans-serif; font-weight: bold; font-size: 15px; padding: 16px 48px; text-decoration: none; border: 1px solid #9a7a17; box-shadow: 0 4px 0 #9a7a17, 0 12px 32px rgba(224,184,58,.28); letter-spacing: .03em; transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s; }
-        .cta:hover { transform: translateY(-3px); box-shadow: 0 7px 0 #9a7a17, 0 18px 40px rgba(224,184,58,.4); text-decoration: none; }
-        .cta:active { transform: translateY(1px); box-shadow: 0 2px 0 #9a7a17; }
-        .guarantee { font-family: Verdana, sans-serif; font-size: 11.5px; color: #b8b2a3; margin-top: 16px; opacity: 0; animation: fadeIn .8s ease 1.2s forwards; }
-        .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 5; color: #e0b83a; font-size: 18px; animation: bob 1.6s ease-in-out infinite; }
-        @keyframes bob { 0%,100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
+        /* header — mix-blend-difference fixed bar (pilato) */
+        .hd {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 22px 34px;
+            mix-blend-mode: difference; color: #fff;
+            pointer-events: none;
+        }
+        .hd a, .hd button { pointer-events: auto; }
+        .hd-nav { display: flex; gap: 26px; }
+        .nlink {
+            position: relative; font-size: 11px; font-weight: 400;
+            letter-spacing: .18em; text-transform: uppercase; padding: 4px 0;
+        }
+        .nlink::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+            background: currentColor; transform: translateX(-112%);
+            transition: transform .6s cubic-bezier(.25,1,.3,1);
+        }
+        .nlink:hover::after { transform: translateX(0); }
+        .hd-brand {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 10px;
+            font-size: 12px; letter-spacing: .34em; text-transform: uppercase; font-weight: 400;
+        }
+        .hd-brand .logo {
+            width: 30px; height: 30px; border: 1px solid #fff; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; letter-spacing: 0;
+        }
+        .hd-cta {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 400;
+            border: 1px solid #fff; border-radius: 999px; padding: 10px 22px;
+            transition: background .5s, color .5s;
+        }
+        .hd-cta:hover { background: #fff; color: #000; }
+        .hd-cta svg { width: 12px; height: 12px; }
+        .hd-burger { display: none; background: none; border: none; color: #fff; cursor: pointer; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; }
+
+        /* mobile menu */
+        .mmenu {
+            position: fixed; inset: 0; z-index: 200; background: rgba(255,255,255,.96);
+            backdrop-filter: blur(14px);
+            display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 40px;
+            opacity: 0; visibility: hidden; transition: opacity .5s, visibility .5s;
+        }
+        .mmenu.open { opacity: 1; visibility: visible; }
+        .mmenu a { font-size: clamp(30px, 8vw, 44px); font-weight: 300; letter-spacing: -.02em; padding: 6px 0; }
+        .mmenu .mm-close { position: absolute; top: 24px; right: 28px; background: none; border: none; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; cursor: pointer; }
+
+        /* page content above fixed footer */
+        #page { position: relative; z-index: 2; background: #fff; margin-bottom: var(--ft); }
+
+        /* ── intro: 280vh scroll, sticky cinematic hero (pilato c-intro) ── */
+        .intro { position: relative; height: 280vh; }
+        .intro-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #0a0a0a; }
+        .intro-bg { position: absolute; inset: -8%; }
+        .intro-bg img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+        .intro-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.55) 100%); }
+        .intro-media {
+            position: absolute; top: 50%; width: clamp(120px, 16vw, 240px); aspect-ratio: 3/4;
+            overflow: hidden; opacity: 0; will-change: transform, opacity;
+        }
+        .intro-media img { width: 100%; height: 100%; object-fit: cover; }
+        .im-l1 { left: 4vw; transform: translate(-60px, -50%); }
+        .im-l2 { left: 22vw; top: 68%; transform: translate(-40px, -50%) scale(.85); width: clamp(90px, 10vw, 150px); }
+        .im-r1 { right: 4vw; transform: translate(60px, -50%); }
+        .im-r2 { right: 22vw; top: 30%; transform: translate(40px, -50%) scale(.85); width: clamp(90px, 10vw, 150px); }
+        .intro-content {
+            position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
+            padding: 0 34px 9vh; color: #fff; text-align: center;
+            will-change: transform, opacity;
+        }
+        .eyebrow {
+            display: inline-block; font-size: 10px; font-weight: 400;
+            letter-spacing: .34em; text-transform: uppercase; color: rgba(255,255,255,.85);
+            border: 1px solid rgba(255,255,255,.45); border-radius: 999px; padding: 7px 18px; margin-bottom: 26px;
+        }
+        .intro h1 {
+            font-size: clamp(40px, 8.5vw, 118px);
+            font-weight: 300; line-height: .98; letter-spacing: -.03em;
+            margin-bottom: 26px;
+        }
+        .intro h1 em { font-style: italic; font-weight: 300; }
+        .stars { letter-spacing: 6px; font-size: 15px; }
+        .rating-line { font-size: 13px; font-weight: 400; letter-spacing: .08em; color: rgba(255,255,255,.85); margin-top: 8px; }
+        .rating-line strong { font-weight: 500; color: #fff; }
+        .price { font-size: clamp(34px, 5vw, 56px); font-weight: 300; letter-spacing: -.02em; margin-top: 28px; line-height: 1; }
+        .price-terms { font-size: 12px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-top: 10px; }
+        .btn-pill {
+            display: inline-flex; align-items: center; gap: 12px; margin-top: 30px;
+            background: #fff; color: #000; border: 1px solid #fff; border-radius: 999px;
+            font-family: inherit; font-size: 12px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+            padding: 17px 42px; cursor: pointer;
+            transition: background .6s cubic-bezier(.25,1,.3,1), color .6s cubic-bezier(.25,1,.3,1);
+        }
+        .btn-pill:hover { background: transparent; color: #fff; }
+        .btn-pill svg { width: 13px; height: 13px; }
+        .guarantee { font-size: 11px; font-weight: 400; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-top: 20px; }
+        .scroll-hint {
+            position: absolute; bottom: 30px; right: 34px; z-index: 3; color: #fff; font-size: 13px;
+            animation: bob 1.8s ease-in-out infinite;
+        }
+        @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 
         /* marquee */
-        .marquee { background: #16213e; border-top: 1px solid rgba(224,184,58,.4); border-bottom: 1px solid rgba(224,184,58,.4); overflow: hidden; padding: 11px 0; white-space: nowrap; }
-        .marquee-track { display: inline-block; animation: scrollX 26s linear infinite; }
-        .marquee-track span { font-family: Verdana, sans-serif; font-size: 11.5px; letter-spacing: .28em; text-transform: uppercase; color: #e0b83a; padding: 0 26px; }
+        .marquee { background: #fff; border-bottom: 1px solid #e8e8e8; overflow: hidden; padding: 13px 0; white-space: nowrap; }
+        .marquee-track { display: inline-block; animation: scrollX 30s linear infinite; }
+        .marquee-track span { font-size: 10.5px; font-weight: 400; letter-spacing: .3em; text-transform: uppercase; color: #777; padding: 0 26px; }
         @keyframes scrollX { to { transform: translateX(-50%); } }
 
         /* stats */
-        .stats { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-bottom: 1px solid #e4ddcc; }
-        .stat { text-align: center; padding: 22px 8px; border-right: 1px solid #e4ddcc; }
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-bottom: 1px solid #e8e8e8; }
+        .stat { text-align: center; padding: 44px 8px; border-right: 1px solid #e8e8e8; }
         .stat:last-child { border-right: none; }
-        .stat b { display: block; font-size: 30px; color: #1a2744; line-height: 1.1; }
-        .stat span { font-family: Verdana, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; color: #7a7568; }
+        .stat b { display: block; font-size: clamp(30px, 4vw, 48px); font-weight: 300; letter-spacing: -.03em; line-height: 1.1; }
+        .stat span { font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: #888; }
 
-        /* reveal on scroll */
-        .rv { opacity: 0; transform: translateY(46px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-        .rv.in { opacity: 1; transform: translateY(0); }
-        .rv-d1 { transition-delay: .12s; } .rv-d2 { transition-delay: .24s; } .rv-d3 { transition-delay: .36s; }
+        /* manifesto — word reveal (pilato c-testoAnimato) */
+        .manifesto { padding: 20vh 8vw; background: #fff; }
+        .split {
+            font-size: clamp(26px, 4.6vw, 64px); font-weight: 300; line-height: 1.18; letter-spacing: -.02em;
+            max-width: 1100px;
+        }
+        .split span { display: inline-block; opacity: .12; transform: translateY(.35em); transition: opacity .9s cubic-bezier(.25,1,.3,1), transform .9s cubic-bezier(.25,1,.3,1); }
+        .split.in span { opacity: 1; transform: none; }
+        .split u { text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
 
-        section { padding: 56px 0; }
-        .sec-label { font-family: Verdana, sans-serif; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: #c9a227; margin-bottom: 6px; }
-        h2 { font-size: clamp(24px, 4vw, 32px); font-weight: normal; color: #16213e; margin-bottom: 24px; }
-        h2::after { content: ""; display: block; width: 54px; height: 2px; background: #c9a227; margin-top: 10px; transition: width .8s cubic-bezier(.16,1,.3,1) .2s; }
-        .rv.in h2::after, .rv h2::after { width: 54px; }
+        /* curriculum — sticky stacked figures (pilato c-gamma) */
+        .range { position: relative; background: #fff; padding-top: 10vh; }
+        .range-head { padding: 0 34px 6vh; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+        .sec-label { font-size: 10.5px; font-weight: 400; letter-spacing: .3em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+        .range-head h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 300; letter-spacing: -.02em; }
+        .ghost {
+            position: sticky; top: 34vh; z-index: 0;
+            font-size: clamp(36px, 14vw, 260px); font-weight: 300; letter-spacing: -.04em; line-height: 1;
+            color: var(--gray); text-align: center; pointer-events: none;
+            margin-bottom: -0.55em; user-select: none; white-space: nowrap;
+        }
+        .stack { position: relative; z-index: 1; padding: 4vh 34px 10vh; max-width: 1100px; margin: 0 auto; }
+        .sfig {
+            position: sticky;
+            top: calc(12vh + var(--i) * 14px);
+            height: min(62vh, 560px);
+            background: #101010; color: #fff;
+            margin-bottom: 5vh;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 34px 38px;
+            box-shadow: 0 30px 70px rgba(0,0,0,.25);
+        }
+        .sfig .fnum { font-size: clamp(48px, 9vw, 120px); font-weight: 300; letter-spacing: -.04em; line-height: 1; color: rgba(255,255,255,.22); }
+        .sfig .fmeta { display: flex; flex-direction: column; gap: 6px; }
+        .sfig .fmod { font-size: 11px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+        .sfig .fname { font-size: clamp(20px, 3vw, 36px); font-weight: 300; letter-spacing: -.01em; line-height: 1.15; }
+        .sfig .flessons { font-size: 11px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.6); white-space: nowrap; }
+        .total-line { font-size: 12px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: #555; border-top: 1px solid #e8e8e8; padding-top: 22px; }
 
-        .modules { display: grid; gap: 10px; }
-        .module { display: flex; align-items: baseline; gap: 14px; background: #fff; border: 1px solid #e4ddcc; padding: 14px 16px; transition: transform .3s, box-shadow .3s, border-color .3s; }
-        .module:hover { transform: translateX(8px); border-color: #c9a227; box-shadow: -6px 0 0 #c9a227; }
-        .module .num { font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: #c9a227; min-width: 62px; letter-spacing: .06em; }
-        .module .name { flex: 1; color: #1c1c1c; }
-        .module .lessons { font-family: Verdana, sans-serif; font-size: 11.5px; color: #7a7568; white-space: nowrap; }
-        .total-line { margin-top: 16px; font-family: Verdana, sans-serif; font-size: 13px; color: #16213e; font-weight: bold; background: #f3eedd; border-left: 3px solid #c9a227; padding: 12px 14px; }
+        /* instructor */
+        .instructor { background: var(--soft); padding: 14vh 34px; }
+        .instructor .inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center; }
+        .instructor h2 { font-size: clamp(30px, 4.4vw, 54px); font-weight: 300; letter-spacing: -.025em; line-height: 1.1; margin-bottom: 10px; }
+        .degree { font-size: 12px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #666; margin-bottom: 22px; }
+        .instructor p.bio { font-size: 16px; font-weight: 300; color: #444; max-width: 56ch; }
+        .avatar {
+            width: 64px; height: 64px; border-radius: 50%; border: 1px solid #bbb;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; font-weight: 400; letter-spacing: .1em; margin-bottom: 26px; background: #fff;
+        }
+        .instructor .shot { overflow: hidden; aspect-ratio: 4/5; }
+        .instructor .shot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: transform 1.4s cubic-bezier(.25,1,.3,1), filter .8s; }
+        .instructor:hover .shot img { transform: scale(1.05); filter: grayscale(0); }
 
-        .instructor { background: #fff; border-top: 1px solid #e4ddcc; border-bottom: 1px solid #e4ddcc; }
-        .instructor .inner { display: flex; gap: 26px; align-items: flex-start; }
-        .avatar { width: 110px; height: 110px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(145deg, #1f3055, #16213e); border: 3px solid #c9a227; display: flex; align-items: center; justify-content: center; color: #e0b83a; font-size: 34px; }
-        .instructor h2 { margin-bottom: 4px; }
-        .instructor .degree { font-family: Verdana, sans-serif; font-size: 12.5px; font-weight: bold; color: #c9a227; margin-bottom: 10px; }
-        .instructor p { color: #4a463c; font-size: 15px; }
+        /* gallery slider */
+        .gallery { padding: 14vh 0 12vh; background: #fff; }
+        .g-head { padding: 0 34px 6vh; }
+        .g-head h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 300; letter-spacing: -.02em; }
+        .slider-wrap { position: relative; }
+        .strack {
+            display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory;
+            padding: 0 34px 26px; scrollbar-width: none; cursor: grab;
+        }
+        .strack::-webkit-scrollbar { display: none; }
+        .strack.dragging { cursor: grabbing; scroll-snap-type: none; }
+        .scard {
+            position: relative; flex: 0 0 clamp(260px, 38vw, 520px); aspect-ratio: 4/3;
+            scroll-snap-align: start; overflow: hidden; background: #111; cursor: zoom-in;
+        }
+        .scard img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.25,1,.3,1); }
+        .scard:hover img { transform: scale(1.06); }
+        .sdots { display: flex; gap: 8px; justify-content: center; padding: 8px 0 0; }
+        .sdot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid #999; background: none; cursor: pointer; padding: 0; transition: background .3s, border-color .3s; }
+        .sdot.on { background: var(--ink); border-color: var(--ink); }
 
-        /* gallery */
-        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .gitem { position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; background: linear-gradient(135deg, #1f3055, #16213e); clip-path: inset(0 0 100% 0); transition: clip-path 1s cubic-bezier(.16,1,.3,1); }
-        .gitem:nth-child(2) { transition-delay: .15s; } .gitem:nth-child(3) { transition-delay: .3s; }
-        .rv.in .gitem { clip-path: inset(0 0 0 0); }
-        .gitem img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(35%) contrast(1.05); transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s; }
-        .gitem:hover img { transform: scale(1.09); filter: grayscale(0); }
-        .gitem::after { content: "⤢"; position: absolute; right: 10px; bottom: 8px; color: #fff; font-size: 16px; background: rgba(22,33,62,.75); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateY(8px); transition: .3s; }
-        .gitem:hover::after { opacity: 1; transform: translateY(0); }
+        /* reviews slider */
+        .reviews { padding: 12vh 0; background: var(--soft); position: relative; }
+        .r-head { padding: 0 34px 6vh; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+        .r-head h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 300; letter-spacing: -.02em; }
+        .rcard {
+            position: relative; flex: 0 0 clamp(270px, 34vw, 440px); min-height: 300px;
+            scroll-snap-align: start; background: #fff; padding: 34px 32px;
+            display: flex; flex-direction: column; justify-content: space-between; gap: 26px;
+        }
+        .rcard blockquote { font-size: clamp(16px, 1.8vw, 21px); font-weight: 300; line-height: 1.45; letter-spacing: -.01em; }
+        .rcard cite { font-style: normal; font-size: 11px; font-weight: 400; letter-spacing: .2em; text-transform: uppercase; color: #888; }
+        .rcard .stars { font-size: 13px; }
+        .all-reviews {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 11px; font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+            border-bottom: 1px solid var(--ink); padding-bottom: 4px;
+        }
+        .all-reviews svg { width: 13px; height: 13px; transition: transform .5s; }
+        .all-reviews:hover svg { transform: translateX(5px); }
 
-        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-        .review { background: #fff; border: 1px solid #e4ddcc; padding: 17px; transition: transform .3s, box-shadow .3s; }
-        .review:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(22,33,62,.12); }
-        .review .stars { color: #c9a227; font-size: 14px; letter-spacing: 1px; }
-        .review blockquote { font-style: italic; color: #3d3a32; margin: 8px 0 10px; font-size: 14.5px; }
-        .review cite { font-family: Verdana, sans-serif; font-style: normal; font-size: 11.5px; color: #7a7568; text-transform: uppercase; letter-spacing: .06em; }
-        .all-reviews { display: inline-block; margin-top: 16px; font-family: Verdana, sans-serif; font-size: 13px; color: #1a2744; font-weight: bold; border-bottom: 2px solid #c9a227; text-decoration: none; padding-bottom: 2px; transition: border-color .3s; }
-        .all-reviews:hover { border-color: #1a2744; }
-
-        /* faq accordion */
-        .faq details { background: #fff; border: 1px solid #e4ddcc; margin-bottom: 10px; overflow: hidden; }
-        .faq summary { cursor: pointer; padding: 15px 18px; font-weight: bold; color: #16213e; font-size: 15.5px; list-style: none; position: relative; transition: background .3s; }
+        /* faq */
+        .faq-sec { padding: 14vh 34px; background: #fff; }
+        .faq-sec .inner { max-width: 900px; margin: 0 auto; }
+        .faq-sec h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 300; letter-spacing: -.02em; margin-bottom: 6vh; }
+        .faq details { border-top: 1px solid #e0e0e0; }
+        .faq details:last-child { border-bottom: 1px solid #e0e0e0; }
+        .faq summary {
+            cursor: pointer; list-style: none; padding: 26px 40px 26px 0; position: relative;
+            font-size: clamp(16px, 2vw, 21px); font-weight: 400; letter-spacing: -.01em;
+            transition: opacity .3s;
+        }
         .faq summary::-webkit-details-marker { display: none; }
-        .faq summary::after { content: "+"; position: absolute; right: 18px; color: #c9a227; font-size: 20px; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+        .faq summary::after {
+            content: ''; position: absolute; right: 4px; top: 50%; width: 14px; height: 14px;
+            background: linear-gradient(var(--ink), var(--ink)) center/100% 1px no-repeat,
+                        linear-gradient(var(--ink), var(--ink)) center/1px 100% no-repeat;
+            transition: transform .4s cubic-bezier(.25,1,.3,1);
+        }
         .faq details[open] summary::after { transform: rotate(135deg); }
-        .faq summary:hover { background: #f8f4e8; }
-        .faq .a { padding: 0 18px 16px; color: #4a463c; font-size: 14.5px; animation: fadeSlide .4s ease; }
-        @keyframes fadeSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        .faq summary:hover { opacity: .55; }
+        .faq .a { padding: 0 0 26px; color: #555; font-size: 15.5px; font-weight: 300; max-width: 62ch; }
 
-        .enroll-band { background: linear-gradient(150deg, #16213e, #1f3055); text-align: center; padding: 56px 0; position: relative; overflow: hidden; }
-        .enroll-band::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(224,184,58,.14), transparent 45%), radial-gradient(circle at 80% 80%, rgba(224,184,58,.1), transparent 45%); }
-        .enroll-band .wrap { position: relative; }
-        .enroll-band h2 { color: #fff; }
-        .enroll-band h2::after { margin-left: auto; margin-right: auto; }
-        .enroll-band .price { font-size: clamp(34px, 6vw, 44px); }
+        /* fullscreen CTA (pilato c-bg-fullscreen-cta) */
+        .cta-full { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; color: #fff; }
+        .cta-full .bg { position: absolute; inset: 0; }
+        .cta-full .bg img { width: 100%; height: 100%; object-fit: cover; }
+        .cta-full .bg::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,.45); }
+        .cta-full .inner { position: relative; z-index: 2; padding: 80px 30px; }
+        .cta-full h2 { font-size: clamp(36px, 7vw, 96px); font-weight: 300; letter-spacing: -.03em; line-height: 1.02; margin-bottom: 22px; }
+        .cta-full .price { margin-top: 0; }
+        .btn-outline {
+            display: inline-flex; align-items: center; gap: 12px; margin-top: 34px;
+            background: transparent; color: #fff; border: 1px solid #fff; border-radius: 999px;
+            font-family: inherit; font-size: 12px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase;
+            padding: 17px 42px; cursor: pointer;
+            transition: background .6s cubic-bezier(.25,1,.3,1), color .6s cubic-bezier(.25,1,.3,1);
+        }
+        .btn-outline:hover { background: #fff; color: #000; }
+        .btn-outline svg { width: 13px; height: 13px; }
 
-        footer { background: #0f1730; color: #8a8578; font-family: Verdana, sans-serif; font-size: 11.5px; padding: 22px 0; text-align: center; }
-        footer a { color: #b8b2a3; }
+        /* footer — fixed reveal (pilato) */
+        .ft {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 1;
+            height: var(--ft); background: #0a0a0a; color: #fff;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+            padding-bottom: 70px;
+        }
+        .ft-brand { display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: .34em; text-transform: uppercase; }
+        .ft-brand .logo { width: 34px; height: 34px; border: 1px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; letter-spacing: 0; }
+        .ft-links { display: flex; gap: 10px; font-size: 11px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.65); }
+        .ft-links a { transition: color .3s; }
+        .ft-links a:hover { color: #fff; }
+        .ft-copy { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.4); }
 
-        /* sticky cta */
-        .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(15,23,48,.97); border-top: 2px solid #c9a227; padding: 11px 0; transform: translateY(110%); transition: transform .5s cubic-bezier(.16,1,.3,1); backdrop-filter: blur(6px); }
+        /* sticky cta bar */
+        .sticky-cta {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 150;
+            background: rgba(255,255,255,.94); backdrop-filter: blur(10px);
+            border-top: 1px solid #e4e4e4; padding: 14px 34px;
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            transform: translateY(110%); transition: transform .6s cubic-bezier(.25,1,.3,1);
+        }
         .sticky-cta.show { transform: translateY(0); }
-        .sticky-cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-        .sticky-cta .sc-price { color: #e0b83a; font-size: 22px; font-weight: bold; }
-        .sticky-cta .sc-name { color: #b8b2a3; font-family: Verdana, sans-serif; font-size: 11.5px; }
-        .sticky-cta .cta { padding: 11px 30px; font-size: 13.5px; box-shadow: 0 3px 0 #9a7a17; }
+        .sc-price { font-size: 20px; font-weight: 300; letter-spacing: -.01em; }
+        .sc-name { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: #888; }
+        .sticky-cta .btn-pill { margin-top: 0; background: #0a0a0a; color: #fff; border-color: #0a0a0a; padding: 12px 28px; font-size: 11px; }
+        .sticky-cta .btn-pill:hover { background: #fff; color: #000; border-color: #0a0a0a; }
 
         /* lightbox */
-        .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(8,12,25,.94); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; opacity: 0; transition: opacity .35s; }
+        .lightbox { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.94); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; opacity: 0; transition: opacity .35s; }
         .lightbox.open { display: flex; }
         .lightbox.vis { opacity: 1; }
-        .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; box-shadow: 0 30px 80px rgba(0,0,0,.6); transform: scale(.92); transition: transform .4s cubic-bezier(.16,1,.3,1); }
+        .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; transform: scale(.94); transition: transform .45s cubic-bezier(.25,1,.3,1); }
         .lightbox.vis img { transform: scale(1); }
 
-        @media (max-width: 640px) {
+        @media (max-width: 900px) {
+            .instructor .inner { grid-template-columns: 1fr; gap: 40px; }
+            .sfig .fname { max-width: 100%; }
+        }
+        @media (max-width: 768px) {
+            :root { --ft: 200px; }
+            .hd { padding: 18px 20px; }
+            .hd-nav, .hd-cta { display: none; }
+            .hd-burger { display: block; margin-left: auto; }
+            .hd-brand { position: static; transform: none; }
+            .intro { height: auto; }
+            .intro-sticky { position: relative; height: 100svh; }
+            .intro-media { display: none; }
+            .intro-content { padding: 0 20px 12vh; }
             .stats { grid-template-columns: repeat(2, 1fr); }
             .stat:nth-child(2) { border-right: none; }
-            .instructor .inner { flex-direction: column; align-items: center; text-align: center; }
-            .topnav { display: none; }
-            .gallery { grid-template-columns: 1fr; }
-            .hero { min-height: 78vh; }
+            .stat:nth-child(-n+2) { border-bottom: 1px solid #e8e8e8; }
+            .manifesto { padding: 14vh 20px; }
+            .range-head, .stack, .g-head, .r-head, .faq-sec { padding-left: 20px; padding-right: 20px; }
+            .strack { padding-left: 20px; padding-right: 20px; }
+            .sfig { top: calc(10vh + var(--i) * 10px); padding: 24px; height: min(56vh, 460px); }
+            .ghost { top: 28vh; }
+            .instructor { padding: 10vh 20px; }
+            .sticky-cta { padding: 12px 20px; }
+            .sc-name { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-            .rv { opacity: 1; transform: none; }
-            .gitem { clip-path: none; }
-            .reveal-line > * { transform: none; }
+            html { scroll-behavior: auto; }
+            .split span { opacity: 1; transform: none; }
+            .intro { height: auto; }
+            .intro-sticky { position: relative; }
         }
     </style>
-    <link rel="stylesheet" href="/static/course/course-redesign.css">
-    <style>:root{--acc:#c9a227;--acc2:#e0b83a;--hero:#16213e;--soft:#faf7f0;--card:rgba(255,255,255,.82);--card-brd:rgba(22,33,62,.08)}</style>
 </head>
 <body>
+    <div id="pl"><span>A</span></div>
     <div id="progress"></div>
 
-    <div class="topbar">
-        <div class="wrap">
-            <a class="brand" href="#"><span class="logo">A</span><span class="brand-name">Artistry <span>Academy</span></span></a>
-            <nav class="topnav">
-                <a href="#curriculum">Curriculum</a>
-                <a href="#instructor">Instructor</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#reviews">Reviews</a>
-                <a href="#faq">FAQ</a>
-            </nav>
-        </div>
-    </div>
-
-    <header class="hero" id="hero">
-        <div class="hero-media" id="heroMedia"><img src="https://live.staticflickr.com/1795/42212626780_63edc1f1a3_b.jpg" alt=""></div>
-        <div class="grain"></div>
-        <div class="hero-fx" aria-hidden="true"></div>
-        <div class="spin-badge" aria-hidden="true">
-            <div class="spin-ring"><svg viewBox="0 0 120 120"><defs><path id="spin-path" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#spin-path">GET STARTED · ENROLL TODAY · </textPath></text></svg></div>
-            <span class="spin-core">↗</span>
-        </div>
-        <div class="float-card fc-1" aria-hidden="true"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"><span class="fc-t">Oil Painting</span><span class="fc-s">Studio quality</span></div>
-        <div class="float-card fc-2" aria-hidden="true"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"><span class="fc-t">Online Course</span><span class="fc-s">Learn anywhere</span></div>
-        
-        <div class="hero-inner">
-            <div class="reveal-line d1"><span class="eyebrow">Online Course · Oil Painting</span></div>
-            <div class="reveal-line d2"><h1>Complete Oil Painting <em>Mastery</em></h1></div>
-            <div class="reveal-line d3"><div class="stars">★★★★★</div></div>
-            <div class="reveal-line d4"><p class="rating-line"><strong>4.9</strong> average rating · <strong>150</strong> reviews</p></div>
-            <div class="reveal-line d5"><div><div class="price">$249</div><p class="price-terms">One-time payment · Lifetime access</p></div></div>
-            <div class="reveal-line d6"><div><a class="cta magnetic" href="#enroll">Enroll Now</a></div></div>
-            <p class="guarantee">30-day money-back guarantee · No subscription required</p>
-        </div>
-        <div class="scroll-hint">▾</div>
+    <header class="hd">
+        <nav class="hd-nav">
+            <a class="nlink" href="#curriculum">Curriculum</a>
+            <a class="nlink" href="#instructor">Instructor</a>
+            <a class="nlink" href="#gallery">Gallery</a>
+            <a class="nlink" href="#reviews">Reviews</a>
+            <a class="nlink" href="#faq">FAQ</a>
+        </nav>
+        <a class="hd-brand" href="#"><span class="logo">A</span><span>Artistry</span><span>Academy</span></a>
+        <a class="hd-cta" href="#enroll">Get Access
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <button class="hd-burger" id="burger" aria-label="Open menu">Menu</button>
     </header>
 
-    <div class="marquee"><div class="marquee-track">
-        <span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span><span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span>
-    </div></div>
-
-    <div class="stats" id="stats">
-        <div class="stat"><b class="count" data-count="81">0</b><span>Lessons</span></div>
-        <div class="stat"><b><span class="count" data-count="24">0</span>h</b><span>Video</span></div>
-        <div class="stat"><b class="count" data-count="8">0</b><span>Modules</span></div>
-        <div class="stat"><b>∞</b><span>Lifetime Access</span></div>
+    <div class="mmenu" id="mmenu">
+        <button class="mm-close" id="mmClose" aria-label="Close menu">Close</button>
+        <a href="#curriculum">Curriculum</a>
+        <a href="#instructor">Instructor</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
+        <a href="#enroll">Get Access</a>
     </div>
 
-    <section id="curriculum">
-        <div class="wrap">
-            <div class="rv"><p class="sec-label">Curriculum</p><h2>Eight modules, in order</h2></div>
-            <div class="modules">
-                <div class="module rv rv-d1"><span class="num">Module 1</span><span class="name">Materials &amp; Studio Setup</span><span class="lessons">8 lessons</span></div>
-                <div class="module rv rv-d1"><span class="num">Module 2</span><span class="name">Color Theory &amp; Mixing Mastery</span><span class="lessons">12 lessons</span></div>
-                <div class="module rv rv-d2"><span class="num">Module 3</span><span class="name">Brushwork Techniques &amp; Edge Control</span><span class="lessons">10 lessons</span></div>
-                <div class="module rv rv-d2"><span class="num">Module 4</span><span class="name">Still Life &amp; Composition Fundamentals</span><span class="lessons">15 lessons</span></div>
-                <div class="module rv rv-d3"><span class="num">Module 5</span><span class="name">Portrait Painting in Oils</span><span class="lessons">12 lessons</span></div>
-                <div class="module rv rv-d3"><span class="num">Module 6</span><span class="name">Landscape &amp; Plein Air Painting</span><span class="lessons">10 lessons</span></div>
-                <div class="module rv rv-d3"><span class="num">Module 7</span><span class="name">Developing Your Artistic Voice</span><span class="lessons">8 lessons</span></div>
-                <div class="module rv rv-d3"><span class="num">Module 8</span><span class="name">Professional Practices for Artists</span><span class="lessons">6 lessons</span></div>
+    <main id="page">
+        <!-- cinematic sticky intro -->
+        <section class="intro" id="intro">
+            <div class="intro-sticky">
+                <div class="intro-bg" id="introBg"><img src="https://live.staticflickr.com/1795/42212626780_63edc1f1a3_b.jpg" alt=""></div>
+                <div class="intro-media im-l1" id="imL1"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"></div>
+                <div class="intro-media im-l2" id="imL2"><img src="https://live.staticflickr.com/3773/13108402563_8c4588cd12_b.jpg" alt="" loading="lazy"></div>
+                <div class="intro-media im-r1" id="imR1"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"></div>
+                <div class="intro-media im-r2" id="imR2"><img src="https://live.staticflickr.com/2742/4435959199_b96ac33aab_b.jpg" alt="" loading="lazy"></div>
+                <div class="intro-content" id="introContent">
+                    <div class="eyebrow">Online Course · Oil Painting</div>
+                    <h1>Complete Oil Painting <em>Mastery</em></h1>
+                    <div class="stars">★★★★★</div>
+                    <p class="rating-line"><strong>4.9</strong> average rating · <strong>150</strong> reviews</p>
+                    <div class="price">$249</div>
+                    <p class="price-terms">One-time payment · Lifetime access</p>
+                    <a class="btn-pill" href="#enroll">Enroll Now
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
+                    <p class="guarantee">30-day money-back guarantee · No subscription required</p>
+                </div>
+                <div class="scroll-hint">▾</div>
             </div>
-            <p class="total-line rv">Total: 81 lessons · 24 hours of video · 50+ downloadable resources</p>
-        </div>
-    </section>
+        </section>
 
-    <section class="instructor" id="instructor">
-        <div class="wrap">
-            <div class="inner rv">
-                <div class="avatar">EV</div>
+        <div class="marquee"><div class="marquee-track">
+            <span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span><span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span>
+        </div></div>
+
+        <div class="stats" id="stats">
+            <div class="stat"><b class="count" data-count="81">0</b><span>Lessons</span></div>
+            <div class="stat"><b><span class="count" data-count="24">0</span>h</b><span>Video</span></div>
+            <div class="stat"><b class="count" data-count="8">0</b><span>Modules</span></div>
+            <div class="stat"><b>∞</b><span>Lifetime Access</span></div>
+        </div>
+
+        <!-- word-reveal manifesto -->
+        <section class="manifesto">
+            <p class="split" id="splitText">Studio-grade oil painting <u>instruction</u> — from first brushstroke to professional practice.</p>
+        </section>
+
+        <!-- curriculum: giant ghost title + sticky stacked modules -->
+        <section class="range" id="curriculum">
+            <div class="range-head">
                 <div>
+                    <p class="sec-label">Curriculum</p>
+                    <h2>Eight modules, in order</h2>
+                </div>
+            </div>
+            <div class="ghost" aria-hidden="true">CURRICULUM</div>
+            <div class="stack">
+                <div class="sfig" style="--i:0">
+                    <div class="fnum">01</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 1</div>
+                        <div class="fname">Materials &amp; Studio Setup</div>
+                        <div class="flessons">8 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:1">
+                    <div class="fnum">02</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 2</div>
+                        <div class="fname">Color Theory &amp; Mixing Mastery</div>
+                        <div class="flessons">12 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:2">
+                    <div class="fnum">03</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 3</div>
+                        <div class="fname">Brushwork Techniques &amp; Edge Control</div>
+                        <div class="flessons">10 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:3">
+                    <div class="fnum">04</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 4</div>
+                        <div class="fname">Still Life &amp; Composition Fundamentals</div>
+                        <div class="flessons">15 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:4">
+                    <div class="fnum">05</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 5</div>
+                        <div class="fname">Portrait Painting in Oils</div>
+                        <div class="flessons">12 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:5">
+                    <div class="fnum">06</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 6</div>
+                        <div class="fname">Landscape &amp; Plein Air Painting</div>
+                        <div class="flessons">10 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:6">
+                    <div class="fnum">07</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 7</div>
+                        <div class="fname">Developing Your Artistic Voice</div>
+                        <div class="flessons">8 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:7">
+                    <div class="fnum">08</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 8</div>
+                        <div class="fname">Professional Practices for Artists</div>
+                        <div class="flessons">6 lessons</div>
+                    </div>
+                </div>
+                <p class="total-line">Total: 81 lessons · 24 hours of video · 50+ downloadable resources</p>
+            </div>
+        </section>
+
+        <!-- instructor -->
+        <section class="instructor" id="instructor">
+            <div class="inner">
+                <div>
+                    <div class="avatar">EV</div>
                     <p class="sec-label">Your Instructor</p>
                     <h2>Professor Elena Vasquez</h2>
                     <p class="degree">MFA, Yale University School of Art</p>
-                    <p>15+ years teaching at Rhode Island School of Design and Parsons. Exhibited at MoMA, Whitney Museum, and Gagosian Gallery. Author of "Contemporary Oil Techniques" (Phaidon, 2019). Recipient of the Pollock-Krasner Foundation Grant and Guggenheim Fellowship.</p>
+                    <p class="bio">15+ years teaching at Rhode Island School of Design and Parsons. Exhibited at MoMA, Whitney Museum, and Gagosian Gallery. Author of "Contemporary Oil Techniques" (Phaidon, 2019). Recipient of the Pollock-Krasner Foundation Grant and Guggenheim Fellowship.</p>
+                </div>
+                <div class="shot"><img src="https://live.staticflickr.com/3773/13108402563_8c4588cd12_b.jpg" alt="" loading="lazy"></div>
+            </div>
+        </section>
+
+        <!-- gallery slider -->
+        <section class="gallery" id="gallery">
+            <div class="g-head">
+                <p class="sec-label">In the studio</p>
+                <h2>What you'll learn to paint</h2>
+            </div>
+            <div class="slider-wrap" data-slider>
+                <div class="strack" id="gTrack">
+                    <div class="scard gitem"><img src="https://live.staticflickr.com/3773/13108402563_8c4588cd12_b.jpg" alt="" loading="lazy"></div>
+                    <div class="scard gitem"><img src="https://live.staticflickr.com/8142/29178835570_1d3462bc4c_b.jpg" alt="" loading="lazy"></div>
+                    <div class="scard gitem"><img src="https://live.staticflickr.com/2742/4435959199_b96ac33aab_b.jpg" alt="" loading="lazy"></div>
+                </div>
+                <div class="sdots" id="gDots"></div>
+            </div>
+        </section>
+
+        <!-- reviews slider -->
+        <section class="reviews" id="reviews">
+            <div class="r-head">
+                <div>
+                    <p class="sec-label">Student Reviews</p>
+                    <h2>What 150 students say</h2>
+                </div>
+                <a class="all-reviews" href="#">View all 150 reviews →</a>
+            </div>
+            <div class="slider-wrap" data-slider>
+                <div class="strack" id="rTrack">
+                    <div class="rcard">
+                        <div class="stars">★★★★★</div>
+                        <blockquote>"Transformed my painting completely. Elena's teaching is clear and encouraging."</blockquote>
+                        <cite>— M. Chen</cite>
+                    </div>
+                    <div class="rcard">
+                        <div class="stars">★★★★★</div>
+                        <blockquote>"Best investment in my art career. The curriculum is comprehensive."</blockquote>
+                        <cite>— J. Rodriguez</cite>
+                    </div>
+                    <div class="rcard">
+                        <div class="stars">★★★★★</div>
+                        <blockquote>"Finally understand color mixing! The exercises are brilliant."</blockquote>
+                        <cite>— K. Thompson</cite>
+                    </div>
+                    <div class="rcard">
+                        <div class="stars">★★★★☆</div>
+                        <blockquote>"Great content, wish there were more live sessions."</blockquote>
+                        <cite>— A. Park</cite>
+                    </div>
+                    <div class="rcard">
+                        <div class="stars">★★★★★</div>
+                        <blockquote>"Professional quality instruction at a fraction of art school cost."</blockquote>
+                        <cite>— R. Williams</cite>
+                    </div>
+                </div>
+                <div class="sdots" id="rDots"></div>
+            </div>
+        </section>
+
+        <!-- faq -->
+        <section class="faq-sec" id="faq">
+            <div class="inner">
+                <p class="sec-label">FAQ</p>
+                <h2>Frequently asked questions</h2>
+                <div class="faq">
+                    <details open><summary>Do I need prior experience?</summary><div class="a">No, this course starts from absolute basics.</div></details>
+                    <details><summary>What materials do I need?</summary><div class="a">A detailed supply list is provided in Module 1 (approx. $150–200).</div></details>
+                    <details><summary>Is there a community?</summary><div class="a">Yes, private Discord with 2,000+ students and weekly critique sessions.</div></details>
+                    <details><summary>Can I download videos?</summary><div class="a">Yes, all content is downloadable for offline viewing.</div></details>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="gallery">
-        <div class="wrap">
-            <div class="rv"><p class="sec-label">In the studio</p><h2>What you'll learn to paint</h2></div>
-            <div class="gallery rv">
-                <div class="gitem"><img src="https://live.staticflickr.com/3773/13108402563_8c4588cd12_b.jpg" alt="" loading="lazy"></div>
-                <div class="gitem"><img src="https://live.staticflickr.com/8142/29178835570_1d3462bc4c_b.jpg" alt="" loading="lazy"></div>
-                <div class="gitem"><img src="https://live.staticflickr.com/2742/4435959199_b96ac33aab_b.jpg" alt="" loading="lazy"></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="reviews">
-        <div class="wrap">
-            <div class="rv"><p class="sec-label">Student Reviews</p><h2>What 150 students say</h2></div>
-            <div class="reviews-grid">
-                <div class="review rv rv-d1"><div class="stars">★★★★★</div><blockquote>"Transformed my painting completely. Elena's teaching is clear and encouraging."</blockquote><cite>— M. Chen</cite></div>
-                <div class="review rv rv-d2"><div class="stars">★★★★★</div><blockquote>"Best investment in my art career. The curriculum is comprehensive."</blockquote><cite>— J. Rodriguez</cite></div>
-                <div class="review rv rv-d3"><div class="stars">★★★★★</div><blockquote>"Finally understand color mixing! The exercises are brilliant."</blockquote><cite>— K. Thompson</cite></div>
-                <div class="review rv rv-d1"><div class="stars">★★★★☆</div><blockquote>"Great content, wish there were more live sessions."</blockquote><cite>— A. Park</cite></div>
-                <div class="review rv rv-d2"><div class="stars">★★★★★</div><blockquote>"Professional quality instruction at a fraction of art school cost."</blockquote><cite>— R. Williams</cite></div>
-            </div>
-            <div class="rv"><a class="all-reviews" href="#">View all 150 reviews →</a></div>
-        </div>
-    </section>
-
-    <section id="faq" style="background:#fff; border-top:1px solid #e4ddcc; border-bottom:1px solid #e4ddcc;">
-        <div class="wrap">
-            <div class="rv"><p class="sec-label">FAQ</p><h2>Frequently asked questions</h2></div>
-            <div class="faq">
-                <details class="rv" open><summary>Do I need prior experience?</summary><div class="a">No, this course starts from absolute basics.</div></details>
-                <details class="rv"><summary>What materials do I need?</summary><div class="a">A detailed supply list is provided in Module 1 (approx. $150–200).</div></details>
-                <details class="rv"><summary>Is there a community?</summary><div class="a">Yes, private Discord with 2,000+ students and weekly critique sessions.</div></details>
-                <details class="rv"><summary>Can I download videos?</summary><div class="a">Yes, all content is downloadable for offline viewing.</div></details>
-            </div>
-        </div>
-    </section>
-
-    <section class="enroll-band" id="enroll">
-        <div class="wrap">
-            <div class="rv">
+        <!-- fullscreen enroll CTA -->
+        <section class="cta-full" id="enroll">
+            <div class="bg"><img src="https://live.staticflickr.com/8142/29178835570_1d3462bc4c_b.jpg" alt="" loading="lazy"></div>
+            <div class="inner">
                 <h2>Start painting today</h2>
                 <div class="price">$249</div>
                 <p class="price-terms">One-time payment · Lifetime access · 30-day money-back guarantee</p>
-                <a class="cta magnetic" href="#">Enroll Now - $249</a>
+                <button class="btn-outline">Enroll Now - $249
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <footer>© 2026 Artistry Academy · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Contact</a></footer>
+    <footer class="ft">
+        <div class="ft-brand"><span class="logo">A</span><span>Artistry</span><span>Academy</span></div>
+        <div class="ft-links"><a href="#">Terms</a><span>·</span><a href="#">Privacy</a><span>·</span><a href="#">Contact</a></div>
+        <div class="ft-copy">© 2026 Artistry Academy ·</div>
+    </footer>
 
     <div class="sticky-cta" id="stickyCta">
-        <div class="wrap">
-            <div><div class="sc-price">$249</div><div class="sc-name">Complete Oil Painting Mastery · Lifetime access</div></div>
-            <a class="cta" href="#enroll">Enroll Now</a>
-        </div>
+        <div><div class="sc-price">$249</div><div class="sc-name">Complete Oil Painting Mastery · Lifetime access</div></div>
+        <a class="btn-pill" href="#enroll">Enroll Now</a>
     </div>
 
     <div class="lightbox" id="lightbox"><img src="" alt=""></div>
@@ -319,26 +632,100 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
     <script>
         (function () {
             var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // loader
+            addEventListener('load', function () {
+                document.getElementById('pl').classList.add('gone');
+            });
+            setTimeout(function () { document.getElementById('pl').classList.add('gone'); }, 1800);
+
+            // progress bar
             var progress = document.getElementById('progress');
-            var hero = document.getElementById('hero');
-            var heroMedia = document.getElementById('heroMedia');
+
+            // mobile menu
+            var mmenu = document.getElementById('mmenu');
+            document.getElementById('burger').addEventListener('click', function () { mmenu.classList.add('open'); });
+            document.getElementById('mmClose').addEventListener('click', function () { mmenu.classList.remove('open'); });
+            mmenu.querySelectorAll('a').forEach(function (a) {
+                a.addEventListener('click', function () { mmenu.classList.remove('open'); });
+            });
+
+            // sticky intro scroll (pilato-style progress-driven)
+            var intro = document.getElementById('intro');
+            var introBg = document.getElementById('introBg');
+            var introContent = document.getElementById('introContent');
+            var medias = [
+                { el: document.getElementById('imL1'), x: -1, y: -50 },
+                { el: document.getElementById('imL2'), x: -1, y: -50 },
+                { el: document.getElementById('imR1'), x: 1, y: -50 },
+                { el: document.getElementById('imR2'), x: 1, y: -50 }
+            ];
             var sticky = document.getElementById('stickyCta');
+
+            function clamp01(v) { return Math.min(1, Math.max(0, v)); }
 
             function onScroll() {
                 var y = scrollY;
-                var h = document.documentElement.scrollHeight - innerHeight;
-                progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
-                if (!reduce && heroMedia && y < innerHeight) heroMedia.style.transform = 'translateY(' + y * 0.35 + 'px)';
-                if (sticky) sticky.classList.toggle('show', y > hero.offsetHeight * 0.85);
+                var docH = document.documentElement.scrollHeight - innerHeight;
+                progress.style.width = (docH > 0 ? (y / docH) * 100 : 0) + '%';
+
+                if (!reduce && intro) {
+                    var total = intro.offsetHeight - innerHeight;
+                    var p = total > 0 ? clamp01(-intro.getBoundingClientRect().top / total) : 0;
+                    if (introBg) introBg.style.transform = 'scale(' + (1.18 - 0.18 * p) + ') translateY(' + (p * -4) + '%)';
+                    var mp = clamp01((p - 0.08) / 0.35);
+                    medias.forEach(function (m, i) {
+                        if (!m.el) return;
+                        var local = clamp01(mp * 1.25 - i * 0.08);
+                        m.el.style.opacity = local;
+                        m.el.style.transform = 'translate(' + (m.x * 60 * (1 - local)) + 'px, -50%) scale(' + (0.85 + 0.15 * local) + ')';
+                    });
+                    if (introContent) {
+                        var fade = clamp01((p - 0.72) / 0.28);
+                        introContent.style.opacity = 1 - fade * 0.85;
+                        introContent.style.transform = 'translateY(' + (fade * -50) + 'px)';
+                    }
+                }
+
+                if (sticky) sticky.classList.toggle('show', y > innerHeight * 1.4);
             }
             addEventListener('scroll', onScroll, { passive: true });
             onScroll();
 
-            var io = new IntersectionObserver(function (es) {
-                es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-            }, { threshold: 0.18 });
-            document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+            // word reveal
+            var split = document.getElementById('splitText');
+            if (split) {
+                var html = split.innerHTML;
+                var tmp = document.createElement('div');
+                tmp.innerHTML = html;
+                var out = '';
+                var wi = 0;
+                function walk(node) {
+                    for (var i = 0; i < node.childNodes.length; i++) {
+                        var n = node.childNodes[i];
+                        if (n.nodeType === 3) {
+                            n.textContent.split(/(\s+)/).forEach(function (w) {
+                                if (!w.trim()) { out += w; return; }
+                                out += '<span style="transition-delay:' + (wi * 0.055).toFixed(2) + 's">' + w + '</span>';
+                                wi++;
+                            });
+                        } else if (n.nodeType === 1) {
+                            var tag = n.tagName.toLowerCase();
+                            out += '<' + tag + (n.tagName === 'U' ? '' : '') + '>';
+                            walk(n);
+                            out += '</' + tag + '>';
+                        }
+                    }
+                }
+                walk(tmp);
+                split.innerHTML = out;
+                var sio = new IntersectionObserver(function (es) {
+                    if (es[0].isIntersecting) { split.classList.add('in'); sio.disconnect(); }
+                }, { threshold: 0.4 });
+                sio.observe(split);
+            }
 
+            // stats count-up
             var counted = false;
             var statsIO = new IntersectionObserver(function (es) {
                 if (!es[0].isIntersecting || counted) return;
@@ -357,6 +744,39 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             }, { threshold: 0.4 });
             statsIO.observe(document.getElementById('stats'));
 
+            // sliders: dots + drag
+            document.querySelectorAll('[data-slider]').forEach(function (wrap) {
+                var track = wrap.querySelector('.strack');
+                var dotsBox = wrap.querySelector('.sdots');
+                var cards = track.children;
+                for (var i = 0; i < cards.length; i++) {
+                    var d = document.createElement('button');
+                    d.className = 'sdot' + (i === 0 ? ' on' : '');
+                    d.setAttribute('aria-label', 'Slide ' + (i + 1));
+                    (function (idx) {
+                        d.addEventListener('click', function () {
+                            cards[idx].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', inline: 'start', block: 'nearest' });
+                        });
+                    })(i);
+                    dotsBox.appendChild(d);
+                }
+                track.addEventListener('scroll', function () {
+                    var idx = Math.round(track.scrollLeft / (cards[0].offsetWidth + 18));
+                    dotsBox.querySelectorAll('.sdot').forEach(function (d2, j) { d2.classList.toggle('on', j === idx); });
+                }, { passive: true });
+
+                var down = false, sx = 0, sl = 0;
+                track.addEventListener('pointerdown', function (e) {
+                    down = true; sx = e.clientX; sl = track.scrollLeft; track.classList.add('dragging');
+                });
+                addEventListener('pointermove', function (e) {
+                    if (!down) return;
+                    track.scrollLeft = sl - (e.clientX - sx);
+                });
+                addEventListener('pointerup', function () { down = false; track.classList.remove('dragging'); });
+            });
+
+            // lightbox
             var lb = document.getElementById('lightbox');
             var lbImg = lb.querySelector('img');
             document.querySelectorAll('.gitem').forEach(function (g) {
@@ -371,16 +791,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                 setTimeout(function () { lb.classList.remove('open'); }, 350);
             });
             addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.click(); });
-
-            if (!reduce) document.querySelectorAll('.magnetic').forEach(function (btn) {
-                btn.addEventListener('mousemove', function (e) {
-                    var r = btn.getBoundingClientRect();
-                    btn.style.transform = 'translate(' + ((e.clientX - r.left - r.width / 2) * 0.12) + 'px,' + ((e.clientY - r.top - r.height / 2) * 0.18 - 3) + 'px)';
-                });
-                btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-            });
         })();
     </script>
-    <script src="/static/course/course.js"></script>
 </body>
 </html>
