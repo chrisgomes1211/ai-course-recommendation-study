@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI Course Recommendation Study favicon">
+  <defs>
+    <linearGradient id="border" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c084fc"/>
+      <stop offset="0.55" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#d946ef"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#171228"/>
+      <stop offset="1" stop-color="#0a0a12"/>
+    </linearGradient>
+    <radialGradient id="eye" cx="0.4" cy="0.35" r="0.8">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e6dcff"/>
+    </radialGradient>
+    <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+      <feGaussianBlur stdDeviation="1.8" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="1.5" y="1.5" width="61" height="61" rx="16" fill="url(#face)" stroke="url(#border)" stroke-width="3"/>
+
+  <path d="M32 17 V11.5" stroke="#c084fc" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="8.5" r="3.6" fill="#d9ee52" filter="url(#glow)"/>
+
+  <ellipse cx="23.5" cy="34" rx="5" ry="6.6" fill="url(#eye)" filter="url(#glow)"/>
+  <ellipse cx="40.5" cy="34" rx="5" ry="6.6" fill="url(#eye)" filter="url(#glow)"/>
+
+  <path d="M25 45.5 Q32 51.5 39 45.5" fill="none" stroke="#d9ee52" stroke-width="3.2" stroke-linecap="round" filter="url(#glow)"/>
+</svg>

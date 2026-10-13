@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI Course Recommendation Study favicon (small)">
+  <defs>
+    <linearGradient id="border" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c084fc"/>
+      <stop offset="0.55" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#d946ef"/>
+    </linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1b1530"/>
+      <stop offset="1" stop-color="#0d0b18"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="3" y="3" width="58" height="58" rx="15" fill="url(#face)" stroke="url(#border)" stroke-width="5"/>
+
+  <path d="M32 16 V11" stroke="#c084fc" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="32" cy="8" r="5" fill="#d9ee52"/>
+
+  <circle cx="22" cy="34" r="6.5" fill="#ffffff"/>
+  <circle cx="42" cy="34" r="6.5" fill="#ffffff"/>
+
+  <path d="M24 47 Q32 53 40 47" fill="none" stroke="#d9ee52" stroke-width="5" stroke-linecap="round"/>
+</svg>
