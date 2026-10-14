@@ -361,10 +361,34 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             addEventListener('scroll', onScroll, { passive: true });
             onScroll();
 
-            var io = new IntersectionObserver(function (es) {
-                es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-            }, { threshold: 0.15 });
-            document.querySelectorAll('.wipe').forEach(function (el) { io.observe(el); });
+            // NOTE: cannot use IntersectionObserver here — clip-path: inset(0 100% 0 0)
+            // zeroes the visual rect, so the ratio never reaches threshold 0.15 and
+            // elements never reveal. getBoundingClientRect() returns the layout rect,
+            // which clip-path does not affect, so reveal from scroll instead.
+            var wipes = [].slice.call(document.querySelectorAll('.wipe'));
+            var wipeQueued = false;
+            function revealWipes() {
+                wipeQueued = false;
+                var vh = innerHeight;
+                for (var i = wipes.length - 1; i >= 0; i--) {
+                    if (wipes[i].getBoundingClientRect().top < vh * 0.9) {
+                        wipes[i].classList.add('in');
+                        wipes.splice(i, 1);
+                    }
+                }
+                if (!wipes.length) {
+                    removeEventListener('scroll', queueWipes);
+                    removeEventListener('resize', queueWipes);
+                }
+            }
+            function queueWipes() {
+                if (wipeQueued) return;
+                wipeQueued = true;
+                requestAnimationFrame(revealWipes);
+            }
+            addEventListener('scroll', queueWipes, { passive: true });
+            addEventListener('resize', queueWipes, { passive: true });
+            revealWipes();
 
             // sidebar active state
             var links = document.querySelectorAll('.s-link');
