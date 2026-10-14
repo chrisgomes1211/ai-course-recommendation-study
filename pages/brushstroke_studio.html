@@ -13,9 +13,9 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brushstroke Studio - Professional Oil Painting Program</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/course-favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/course-favicon-16.png">
-    <link rel="apple-touch-icon" href="/static/course-touch-icon-180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/fav-brushstroke-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/fav-brushstroke-16.png">
+    <link rel="apple-touch-icon" href="/static/fav-brushstroke-180.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -120,7 +120,7 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
 
         /* techniques gallery strip */
         .techniques { padding: 0 0 120px; }
-        .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 40px; }
+        .strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 40px; }
         .strip figure { position: relative; overflow: hidden; aspect-ratio: 3/4; background: var(--bg-2); }
         .strip img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(.35) contrast(1.05); transition: filter .6s, transform .8s cubic-bezier(.25,1,.3,1); }
         .strip figure:hover img { filter: none; transform: scale(1.06); }
@@ -159,7 +159,7 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
             .stat { border-bottom: 1px solid var(--line); }
             .stat:nth-child(2n) { border-right: none; }
             .inst-grid { grid-template-columns: 1fr; }
-            .strip { grid-template-columns: 1fr 1fr; }
+            .strip { grid-template-columns: 1fr 1fr 1fr; }
             .row { flex-direction: column; gap: 8px; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -255,6 +255,8 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
             <figure class="br br-d1"><img src="https://live.staticflickr.com/4100/4930762816_ebcc3a230e_b.jpg" alt="" loading="lazy"></figure>
             <figure class="br br-d2"><img src="https://live.staticflickr.com/3743/11937919343_e4db63b95d_b.jpg" alt="" loading="lazy"></figure>
             <figure class="br br-d3"><img src="https://live.staticflickr.com/4193/33875205864_bc84c6b5ab_b.jpg" alt="" loading="lazy"></figure>
+            <figure class="br"><img src="https://live.staticflickr.com/1047/5124343603_a3e5f63f17_b.jpg" alt="" loading="lazy"></figure>
+            <figure class="br br-d1"><img src="https://live.staticflickr.com/4081/4807647551_c7cb5eaece_b.jpg" alt="" loading="lazy"></figure>
         </div>
     </section>
 

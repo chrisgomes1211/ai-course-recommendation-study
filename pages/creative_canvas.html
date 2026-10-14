@@ -13,9 +13,9 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Creative Canvas - Oil Painting for Everyone</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/course-favicon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/course-favicon-16.png">
-    <link rel="apple-touch-icon" href="/static/course-touch-icon-180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/fav-creative-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/fav-creative-16.png">
+    <link rel="apple-touch-icon" href="/static/fav-creative-180.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -130,6 +130,17 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
         .p-item:hover { transform: translateY(-4px) rotate(.5deg); background: #fffdf9; }
         .intro { color: var(--soft); font-size: 16px; margin-bottom: 8px; }
 
+        /* bento gallery */
+        .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+        .bento figure { border-radius: 24px; overflow: hidden; box-shadow: 0 14px 34px rgba(61,52,68,.1); transition: transform .45s cubic-bezier(.2,1.3,.35,1), box-shadow .45s; }
+        .bento figure:hover { transform: translateY(-8px) rotate(-1.2deg); box-shadow: 0 24px 50px rgba(61,52,68,.16); }
+        .bento img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4/3; transition: transform .7s cubic-bezier(.25,1,.3,1); }
+        .bento figure:hover img { transform: scale(1.07); }
+        .bento .b-tall { grid-row: span 2; }
+        .bento .b-tall img { aspect-ratio: 3/5; }
+        .bento .b-wide { grid-column: span 2; }
+        .bento .b-wide img { aspect-ratio: 8/3; }
+
         /* team */
         .team { display: flex; gap: 26px; align-items: center; margin-top: 24px; }
         .avatar { width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, var(--lav), var(--coral)); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Fredoka', sans-serif; font-size: 22px; flex-shrink: 0; }
@@ -168,6 +179,10 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
             .hero { padding-top: 120px; }
             .chip { display: none; }
             .reviews-grid { grid-template-columns: 1fr; }
+            .bento { grid-template-columns: 1fr 1fr; }
+            .bento .b-wide { grid-column: span 2; }
+            .bento .b-tall { grid-row: span 1; }
+            .bento .b-tall img { aspect-ratio: 4/3; }
             .team { flex-direction: column; align-items: flex-start; }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -187,6 +202,7 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
         <nav class="hd-nav">
             <a href="#about">About</a>
             <a href="#reviews">Reviews</a>
+            <a href="#gallery">Gallery</a>
             <a href="#paint">What you'll paint</a>
             <a href="#faq">FAQ</a>
         </nav>
@@ -198,6 +214,7 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
         <button class="mm-close" id="mmClose" aria-label="Close menu">Close</button>
         <a href="#about">About</a>
         <a href="#reviews">Reviews</a>
+        <a href="#gallery">Gallery</a>
         <a href="#paint">What you'll paint</a>
         <a href="#faq">FAQ</a>
         <a href="#enroll">Ask About Pricing</a>
@@ -269,6 +286,18 @@ EXPERIMENTAL FEATURES (creative_canvas.html):
             <div class="p-item">Brushwork drills that feel more like doodling than practice</div>
             <div class="p-item">Loose flowers without counting petals</div>
             <div class="p-item">Knowing when a painting is done, and signing it</div>
+        </div>
+    </section>
+
+    <section class="blk wrap" id="gallery">
+        <div class="rv"><span class="kicker">From our students</span><h2>Look what everyone's painting</h2></div>
+        <div class="bento rv">
+            <figure class="b-tall"><img src="https://live.staticflickr.com/1047/5124343603_a3e5f63f17_b.jpg" alt="" loading="lazy"></figure>
+            <figure class="b-wide"><img src="https://live.staticflickr.com/3027/3012125403_64cbf03eeb_b.jpg" alt="" loading="lazy"></figure>
+            <figure><img src="https://live.staticflickr.com/1160/1389829842_0a658f2840_b.jpg" alt="" loading="lazy"></figure>
+            <figure><img src="https://live.staticflickr.com/4081/4807647551_c7cb5eaece_b.jpg" alt="" loading="lazy"></figure>
+            <figure><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"></figure>
+            <figure class="b-wide"><img src="https://live.staticflickr.com/3743/11937919343_e4db63b95d_b.jpg" alt="" loading="lazy"></figure>
         </div>
     </section>
 
