@@ -195,7 +195,16 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             display: flex; flex-direction: column; justify-content: space-between;
             padding: 34px 38px;
             box-shadow: 0 30px 70px rgba(0,0,0,.25);
+            overflow: hidden;
         }
+        .sfig .fimg { position: absolute; inset: 0; z-index: 0; }
+        .sfig .fimg img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s cubic-bezier(.25,1,.3,1); }
+        .sfig .fimg::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(16,16,16,.96) 0%, rgba(16,16,16,.82) 52%, rgba(16,16,16,.42) 100%);
+        }
+        .sfig:hover .fimg img { transform: scale(1.05); }
+        .sfig .fnum, .sfig .fmeta { position: relative; z-index: 1; }
         .sfig .fnum { font-size: clamp(48px, 9vw, 120px); font-weight: 300; letter-spacing: -.04em; line-height: 1; color: rgba(255,255,255,.22); }
         .sfig .fmeta { display: flex; flex-direction: column; gap: 6px; }
         .sfig .fmod { font-size: 11px; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; color: rgba(255,255,255,.55); }
@@ -355,6 +364,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             .range-head, .stack, .g-head, .r-head, .faq-sec { padding-left: 20px; padding-right: 20px; }
             .strack { padding-left: 20px; padding-right: 20px; }
             .sfig { top: calc(10vh + var(--i) * 10px); padding: 24px; height: min(56vh, 460px); }
+            .sfig .fimg::after { background: linear-gradient(180deg, rgba(16,16,16,.7) 0%, rgba(16,16,16,.5) 35%, rgba(16,16,16,.92) 100%); }
             .ghost { top: 28vh; }
             .instructor { padding: 10vh 20px; }
             .sticky-cta { padding: 12px 20px; }
@@ -450,6 +460,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             <div class="ghost" aria-hidden="true">CURRICULUM</div>
             <div class="stack">
                 <div class="sfig" style="--i:0">
+                    <div class="fimg"><img src="https://live.staticflickr.com/1047/5124343603_a3e5f63f17_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">01</div>
                     <div class="fmeta">
                         <div class="fmod">Module 1</div>
@@ -458,6 +469,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:1">
+                    <div class="fimg"><img src="https://live.staticflickr.com/3027/3012125403_64cbf03eeb_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">02</div>
                     <div class="fmeta">
                         <div class="fmod">Module 2</div>
@@ -466,6 +478,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:2">
+                    <div class="fimg"><img src="https://live.staticflickr.com/5269/5557919648_ba36c73845_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">03</div>
                     <div class="fmeta">
                         <div class="fmod">Module 3</div>
@@ -474,6 +487,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:3">
+                    <div class="fimg"><img src="https://live.staticflickr.com/1160/1389829842_0a658f2840_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">04</div>
                     <div class="fmeta">
                         <div class="fmod">Module 4</div>
@@ -482,6 +496,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:4">
+                    <div class="fimg"><img src="https://live.staticflickr.com/3743/11937919343_e4db63b95d_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">05</div>
                     <div class="fmeta">
                         <div class="fmod">Module 5</div>
@@ -490,6 +505,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:5">
+                    <div class="fimg"><img src="https://live.staticflickr.com/4100/4930762816_ebcc3a230e_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">06</div>
                     <div class="fmeta">
                         <div class="fmod">Module 6</div>
@@ -498,6 +514,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:6">
+                    <div class="fimg"><img src="https://live.staticflickr.com/4193/33875205864_bc84c6b5ab_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">07</div>
                     <div class="fmeta">
                         <div class="fmod">Module 7</div>
@@ -506,6 +523,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                     </div>
                 </div>
                 <div class="sfig" style="--i:7">
+                    <div class="fimg"><img src="https://live.staticflickr.com/65535/5636521838_cf23429555_b.jpg" alt="" loading="lazy"></div>
                     <div class="fnum">08</div>
                     <div class="fmeta">
                         <div class="fmod">Module 8</div>
