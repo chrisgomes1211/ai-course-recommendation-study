@@ -13,177 +13,239 @@ EXPERIMENTAL FEATURES (canvas_color.html):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas &amp; Color - Oil Painting Foundations</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/course-favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/course-favicon-16.png">
+    <link rel="apple-touch-icon" href="/static/course-touch-icon-180.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --teal-deep: #0b3f47;
+            --teal: #0e7c7b;
+            --teal-bright: #3aa6b0;
+            --mist: #f2f8f9;
+            --line: #d7e8eb;
+            --ink: #17323a;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.6; color: #22333b; background: #f4fafb; overflow-x: hidden; }
-        a { color: #0e7c7b; }
-        .wrap { max-width: 860px; margin: 0 auto; padding: 0 22px; }
-        img { display: block; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: var(--ink); background: var(--mist); overflow-x: clip; }
+        img { display: block; max-width: 100%; }
+        a { color: inherit; text-decoration: none; }
+        section { scroll-margin-top: 80px; }
 
-        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, #0e7c7b, #3aa6b0); z-index: 999; transition: width .1s linear; }
+        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--teal), var(--teal-bright)); z-index: 300; transition: width .1s linear; }
 
-        .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 20; }
-        .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
-        .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; font-weight: 700; font-size: 16px; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
-        .logo { width: 30px; height: 30px; background: linear-gradient(135deg, #0e7c7b, #3aa6b0); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; box-shadow: 0 4px 14px rgba(14,124,123,.5); }
-        .topnav { display: flex; gap: 18px; }
-        .topnav a { color: #eafafb; text-decoration: none; font-size: 13.5px; position: relative; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
-        .topnav a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 2px; background: #fff; transform: scaleX(0); transform-origin: right; transition: transform .35s cubic-bezier(.65,0,.35,1); }
+        /* topbar — solid, sits above split hero */
+        .topbar {
+            position: absolute; top: 0; left: 0; right: 0; z-index: 50;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 34px; color: #fff;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; letter-spacing: .02em; }
+        .logo { width: 34px; height: 34px; background: linear-gradient(135deg, var(--teal), var(--teal-bright)); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+        .topnav { display: flex; gap: 24px; }
+        .topnav a { position: relative; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; padding: 4px 0; }
+        .topnav a::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1.5px; background: #fff; transform: scaleX(0); transform-origin: right; transition: transform .45s cubic-bezier(.25,1,.3,1); }
         .topnav a:hover::after { transform: scaleX(1); transform-origin: left; }
+        .top-cta { font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; background: #fff; color: var(--teal-deep); border-radius: 999px; padding: 11px 24px; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+        .top-cta:hover { transform: scale(1.05); }
+        .burger { display: none; background: none; border: none; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; }
 
-        .hero { position: relative; min-height: 88vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #0b3f47; }
-        .hero-media { position: absolute; inset: -6%; z-index: 0; }
-        .hero-media img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 24s ease-in-out infinite alternate; will-change: transform; }
-        @keyframes kenburns { from { transform: scale(1.02) translate(1%, 1%); } to { transform: scale(1.14) translate(-1%, -1.5%); } }
-        .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(11,63,71,.88) 0%, rgba(14,124,123,.55) 50%, rgba(11,63,71,.94) 100%); }
-        .grain { position: absolute; inset: 0; z-index: 2; opacity: .09; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E"); }
-        .hero-inner { position: relative; z-index: 3; padding: 110px 22px 70px; max-width: 720px; }
-        .reveal-line { overflow: hidden; }
-        .reveal-line > * { display: block; transform: translateY(115%); animation: riseUp .9s cubic-bezier(.16,1,.3,1) forwards; }
-        @keyframes riseUp { to { transform: translateY(0); } }
-        .d1 > * { animation-delay: .15s; } .d2 > * { animation-delay: .3s; } .d3 > * { animation-delay: .45s; }
-        .d4 > * { animation-delay: .6s; } .d5 > * { animation-delay: .75s; } .d6 > * { animation-delay: .9s; }
-        .badge { display: inline-block; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.45); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; padding: 6px 15px; border-radius: 999px; backdrop-filter: blur(4px); }
-        .hero h1 { font-size: clamp(32px, 6vw, 52px); font-weight: 800; color: #fff; line-height: 1.14; margin: 16px 0 10px; letter-spacing: -.02em; }
-        .hero p.sub { font-size: 17px; color: #d7f1f3; max-width: 520px; margin: 0 auto 18px; }
-        .rating { font-size: 14.5px; color: #d7f1f3; margin-bottom: 24px; }
-        .rating .stars { color: #ffd166; font-size: 18px; letter-spacing: 2px; }
-        .rating strong { color: #fff; }
-        .pricing-box { display: inline-block; background: rgba(255,255,255,.14); border: 2px dashed rgba(255,255,255,.6); border-radius: 12px; padding: 14px 32px; backdrop-filter: blur(4px); }
-        .pricing-box .label { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: #bfe9ec; font-weight: 700; }
-        .pricing-box .value { font-size: 19px; font-weight: 800; color: #fff; }
-        .cta { display: inline-block; background: #fff; color: #0b4a52; font-weight: 800; font-size: 15px; padding: 15px 38px; border-radius: 999px; text-decoration: none; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,.28); transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
-        .cta:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 18px 44px rgba(0,0,0,.36); text-decoration: none; }
-        .cta:active { transform: translateY(0) scale(.99); }
+        /* mobile menu */
+        .mmenu { position: fixed; inset: 0; z-index: 200; background: rgba(11,63,71,.97); backdrop-filter: blur(12px); display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 40px; opacity: 0; visibility: hidden; transition: opacity .45s, visibility .45s; }
+        .mmenu.open { opacity: 1; visibility: visible; }
+        .mmenu a { color: #fff; font-size: clamp(28px, 8vw, 40px); font-weight: 800; letter-spacing: -.02em; }
+        .mmenu .mm-close { position: absolute; top: 24px; right: 28px; background: none; border: none; color: #fff; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; }
 
-        .marquee { background: #0b3f47; overflow: hidden; padding: 10px 0; white-space: nowrap; border-bottom: 1px solid rgba(255,255,255,.12); }
-        .marquee-track { display: inline-block; animation: scrollX 28s linear infinite; }
-        .marquee-track span { font-size: 11.5px; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; color: #7fd4d6; padding: 0 24px; }
+        /* ── split hero: image left, solid teal panel right (text always legible) ── */
+        .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+        .hero-visual { position: relative; overflow: hidden; background: var(--teal-deep); }
+        .hero-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: slowzoom 26s ease-in-out infinite alternate; will-change: transform; }
+        @keyframes slowzoom { from { transform: scale(1.04); } to { transform: scale(1.16) translate(-1.5%, -1%); } }
+        .hero-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 60%, rgba(11,63,71,.35) 100%); }
+        .hero-panel { position: relative; background: var(--teal-deep); color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 120px clamp(30px, 5vw, 80px) 70px; }
+        .hero-panel::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(58,166,176,.28), transparent 55%); pointer-events: none; }
+        .hero-panel > * { position: relative; }
+        .rise { overflow: hidden; }
+        .rise > * { display: block; transform: translateY(110%); animation: riseIn .95s cubic-bezier(.16,1,.3,1) forwards; }
+        @keyframes riseIn { to { transform: translateY(0); } }
+        .d1 > * { animation-delay: .12s; } .d2 > * { animation-delay: .26s; } .d3 > * { animation-delay: .4s; }
+        .d4 > * { animation-delay: .54s; } .d5 > * { animation-delay: .68s; } .d6 > * { animation-delay: .82s; }
+        .badge { display: inline-block; align-self: flex-start; font-size: 10.5px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.1); backdrop-filter: blur(4px); border-radius: 999px; padding: 7px 16px; }
+        .hero h1 { font-size: clamp(34px, 4.6vw, 62px); font-weight: 800; line-height: 1.06; letter-spacing: -.025em; margin: 22px 0 14px; }
+        .hero .sub { font-size: clamp(15px, 1.4vw, 18px); color: #c8e7e9; max-width: 46ch; margin-bottom: 22px; }
+        .rating { font-size: 14px; font-weight: 500; color: #c8e7e9; }
+        .rating .stars { color: #ffd166; letter-spacing: 3px; font-size: 16px; }
+        .rating strong { color: #fff; font-weight: 800; }
+        .pricing-box { display: inline-block; align-self: flex-start; margin-top: 26px; border: 2px dashed rgba(255,255,255,.65); border-radius: 12px; padding: 14px 28px; background: rgba(255,255,255,.07); backdrop-filter: blur(4px); }
+        .pricing-box .label { font-size: 10px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: #9fd4d8; }
+        .pricing-box .value { font-size: 18px; font-weight: 800; color: #fff; margin-top: 2px; }
+        .btn-pill { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; margin-top: 26px; background: #fff; color: var(--teal-deep); font-family: inherit; font-size: 12.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; border: 1px solid #fff; border-radius: 999px; padding: 16px 38px; cursor: pointer; transition: background .45s, color .45s, transform .35s; }
+        .btn-pill:hover { background: transparent; color: #fff; transform: translateY(-2px); }
+        .btn-pill svg { width: 13px; height: 13px; }
+
+        /* marquee */
+        .marquee { background: var(--teal-deep); border-top: 1px solid rgba(255,255,255,.1); overflow: hidden; padding: 12px 0; white-space: nowrap; }
+        .marquee-track { display: inline-block; animation: scrollX 30s linear infinite; }
+        .marquee-track span { font-size: 10.5px; font-weight: 800; letter-spacing: .28em; text-transform: uppercase; color: #7fd4d6; padding: 0 24px; }
         @keyframes scrollX { to { transform: translateX(-50%); } }
 
-        .facts { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-bottom: 1px solid #d9ecef; }
-        .fact { text-align: center; padding: 20px 6px; border-right: 1px solid #ecf5f7; }
+        /* facts */
+        .facts { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-bottom: 1px solid var(--line); }
+        .fact { text-align: center; padding: 40px 8px; border-right: 1px solid var(--line); }
         .fact:last-child { border-right: none; }
-        .fact b { display: block; font-size: 27px; color: #0e7c7b; }
-        .fact span { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #7d99a1; }
+        .fact b { display: block; font-size: clamp(28px, 3.6vw, 44px); font-weight: 800; color: var(--teal); letter-spacing: -.02em; line-height: 1.1; }
+        .fact span { font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #7d99a1; }
 
-        .rv { opacity: 0; transform: translateY(44px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-        .rv.in { opacity: 1; transform: translateY(0); }
-        .rv-d1 { transition-delay: .12s; } .rv-d2 { transition-delay: .24s; } .rv-d3 { transition-delay: .36s; }
+        /* body layout with sticky sidebar index */
+        .body-grid { display: grid; grid-template-columns: 220px 1fr; max-width: 1240px; margin: 0 auto; }
+        .sidebar { position: sticky; top: 0; align-self: start; height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 0 20px 0 34px; }
+        .s-link { display: flex; align-items: baseline; gap: 12px; padding: 12px 0; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #9db4ba; transition: color .35s; position: relative; }
+        .s-link .s-num { font-size: 10px; font-weight: 800; color: #c3d6da; transition: color .35s; }
+        .s-link::before { content: ''; position: absolute; left: -34px; top: 50%; width: 0; height: 2px; background: var(--teal); transition: width .4s cubic-bezier(.25,1,.3,1); }
+        .s-link.active { color: var(--ink); }
+        .s-link.active .s-num { color: var(--teal); }
+        .s-link.active::before { width: 24px; }
+        .content { padding: 90px clamp(24px, 4vw, 70px) 90px 30px; min-width: 0; }
 
-        section { padding: 48px 0; }
-        h2 { font-size: clamp(22px, 4vw, 28px); font-weight: 800; color: #17323a; margin-bottom: 18px; letter-spacing: -.01em; }
-        h2::after { content: ""; display: block; width: 48px; height: 3px; background: #0e7c7b; margin-top: 9px; border-radius: 2px; }
+        /* wipe reveal */
+        .wipe { clip-path: inset(0 100% 0 0); transition: clip-path 1.1s cubic-bezier(.25,1,.3,1); }
+        .wipe.in { clip-path: inset(0 0 0 0); }
+        .wipe-d1 { transition-delay: .1s; } .wipe-d2 { transition-delay: .22s; } .wipe-d3 { transition-delay: .34s; }
 
-        .modules { display: grid; gap: 9px; }
-        .module { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #d9ecef; border-radius: 10px; padding: 12px 15px; transition: transform .3s, box-shadow .3s, border-color .3s; }
-        .module:hover { transform: translateY(-3px); border-color: #0e7c7b; box-shadow: 0 12px 26px rgba(14,124,123,.14); }
-        .module .num { background: #e7f6f8; color: #0e7c7b; font-weight: 800; font-size: 13px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .3s, color .3s, transform .3s; }
-        .module:hover .num { background: #0e7c7b; color: #fff; transform: rotate(-12deg) scale(1.08); }
-        .module .name { flex: 1; font-weight: 600; font-size: 14.5px; }
-        .module .lessons { font-size: 12px; color: #7d99a1; white-space: nowrap; }
-        .total { margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #0e7c7b; }
+        .sec-label { font-size: 10.5px; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+        h2 { font-size: clamp(26px, 3.4vw, 40px); font-weight: 800; letter-spacing: -.02em; color: var(--ink); margin-bottom: 30px; }
+        h2::after { content: ''; display: block; width: 52px; height: 3px; background: var(--teal); margin-top: 12px; border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .9s cubic-bezier(.25,1,.3,1) .25s; }
+        .in h2::after, h2.in::after { transform: scaleX(1); }
 
-        .instructor { background: #fff; border-top: 1px solid #d9ecef; border-bottom: 1px solid #d9ecef; }
-        .instructor .inner { display: flex; gap: 24px; align-items: flex-start; }
-        .avatar { width: 96px; height: 96px; border-radius: 16px; background: linear-gradient(145deg, #0e7c7b, #3aa6b0); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 30px; font-weight: 700; flex-shrink: 0; box-shadow: 0 12px 30px rgba(14,124,123,.35); }
-        .instructor .role { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #0e7c7b; margin-bottom: 3px; }
-        .instructor h2 { margin-bottom: 6px; }
-        .instructor .degree { font-size: 13px; font-weight: 700; color: #0e7c7b; margin-bottom: 8px; }
-        .instructor p { color: #5b7480; font-size: 14.5px; }
+        /* curriculum rows */
+        .modules { display: grid; gap: 10px; }
+        .module { display: flex; align-items: center; gap: 16px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; transition: transform .35s, box-shadow .35s, border-color .35s; }
+        .module:hover { transform: translateX(8px); border-color: var(--teal-bright); box-shadow: 0 14px 30px rgba(14,124,123,.12); }
+        .module .num { background: #e2f2f3; color: var(--teal); font-weight: 800; font-size: 13.5px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .35s, color .35s, transform .35s; }
+        .module:hover .num { background: var(--teal); color: #fff; transform: rotate(-10deg) scale(1.06); }
+        .module .name { flex: 1; font-weight: 600; font-size: 15px; }
+        .module .lessons { font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #7d99a1; white-space: nowrap; }
+        .total { margin-top: 18px; font-size: 13px; font-weight: 800; letter-spacing: .06em; color: var(--teal); }
 
-        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .gitem { position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; border-radius: 12px; background: linear-gradient(135deg, #0e7c7b, #0b3f47); clip-path: inset(0 0 100% 0); transition: clip-path 1s cubic-bezier(.16,1,.3,1); }
-        .gitem:nth-child(2) { transition-delay: .15s; } .gitem:nth-child(3) { transition-delay: .3s; }
-        .rv.in .gitem { clip-path: inset(0 0 0 0); }
-        .gitem img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.7); transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s; }
-        .gitem:hover img { transform: scale(1.1); filter: saturate(1.15); }
+        /* instructor */
+        .instructor-card { display: flex; gap: 26px; align-items: flex-start; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 32px; }
+        .avatar { width: 88px; height: 88px; border-radius: 18px; background: linear-gradient(145deg, var(--teal), var(--teal-bright)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26px; font-weight: 800; flex-shrink: 0; }
+        .instructor-card .role { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .16em; color: var(--teal); margin-bottom: 4px; }
+        .instructor-card h2 { margin-bottom: 6px; font-size: clamp(22px, 2.6vw, 30px); }
+        .instructor-card h2::after { display: none; }
+        .instructor-card .degree { font-size: 13px; font-weight: 800; color: var(--teal); margin-bottom: 10px; }
+        .instructor-card p { color: #5b7480; font-size: 14.5px; max-width: 62ch; }
 
-        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 11px; }
-        .review { background: #fff; border: 1px solid #d9ecef; border-radius: 12px; padding: 16px; transition: transform .3s, box-shadow .3s; }
-        .review:hover { transform: translateY(-5px); box-shadow: 0 16px 34px rgba(23,50,58,.1); }
-        .review .stars { color: #f5a623; font-size: 14px; }
-        .review p { font-size: 14px; color: #44606a; font-style: italic; margin: 7px 0 9px; }
-        .review cite { font-style: normal; font-size: 12px; color: #7d99a1; font-weight: 700; }
-        .all-reviews { display: inline-block; margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #0e7c7b; border-bottom: 2px solid #3aa6b0; text-decoration: none; padding-bottom: 2px; transition: border-color .3s; }
-        .all-reviews:hover { border-color: #0e7c7b; }
+        /* gallery */
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .gitem { position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; border-radius: 14px; background: var(--teal-deep); }
+        .gitem img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.75); transition: transform .9s cubic-bezier(.25,1,.3,1), filter .5s; }
+        .gitem:hover img { transform: scale(1.08); filter: saturate(1.15); }
 
-        .enroll-band { background: linear-gradient(140deg, #0b3f47, #0e7c7b); text-align: center; padding: 52px 0; color: #fff; position: relative; overflow: hidden; }
-        .enroll-band::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 15% 25%, rgba(255,255,255,.12), transparent 42%), radial-gradient(circle at 85% 75%, rgba(255,255,255,.1), transparent 42%); }
-        .enroll-band .wrap { position: relative; }
-        .enroll-band h2 { color: #fff; }
-        .enroll-band h2::after { background: #fff; margin-left: auto; margin-right: auto; }
-        .enroll-band p { color: #c5e8e8; margin-bottom: 18px; font-size: 15.5px; }
-        .cta-light { display: inline-block; background: #fff; color: #0e7c7b; font-weight: 800; font-size: 15.5px; padding: 15px 38px; border-radius: 999px; text-decoration: none; box-shadow: 0 12px 32px rgba(0,0,0,.25); transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
-        .cta-light:hover { transform: translateY(-4px) scale(1.03); text-decoration: none; box-shadow: 0 20px 46px rgba(0,0,0,.32); }
+        /* reviews */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+        .review { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px; transition: transform .35s, box-shadow .35s; }
+        .review:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(23,50,58,.1); }
+        .review .stars { color: #f5a623; font-size: 14px; letter-spacing: 2px; }
+        .review p { font-size: 14.5px; color: #44606a; font-style: italic; margin: 10px 0 12px; }
+        .review cite { font-style: normal; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #7d99a1; }
+        .all-reviews { display: inline-block; margin-top: 18px; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); border-bottom: 2px solid var(--teal-bright); padding-bottom: 3px; transition: border-color .3s; }
+        .all-reviews:hover { border-color: var(--teal-deep); }
 
-        footer { background: #17323a; color: #7d99a1; font-size: 12px; padding: 20px 0; text-align: center; }
+        .blk { margin-bottom: 110px; }
+        .blk:last-child { margin-bottom: 0; }
+
+        /* enroll band */
+        .enroll-band { background: linear-gradient(140deg, var(--teal-deep), var(--teal)); text-align: center; padding: 100px 30px; color: #fff; position: relative; overflow: hidden; }
+        .enroll-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 18% 28%, rgba(255,255,255,.12), transparent 45%), radial-gradient(circle at 82% 72%, rgba(255,255,255,.1), transparent 45%); }
+        .enroll-band .inner { position: relative; }
+        .enroll-band h2 { color: #fff; font-size: clamp(32px, 5vw, 56px); }
+        .enroll-band h2::after { background: #fff; margin-left: auto; margin-right: auto; transform: scaleX(1); }
+        .enroll-band p { color: #c5e8e8; font-size: 16px; margin-bottom: 28px; }
+
+        footer { background: #122e35; color: #7d99a1; font-size: 12px; padding: 24px 0; text-align: center; }
         footer a { color: #9fc5cb; }
 
-        .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: rgba(23,50,58,.97); border-top: 2px solid #3aa6b0; padding: 11px 0; transform: translateY(110%); transition: transform .5s cubic-bezier(.16,1,.3,1); backdrop-filter: blur(6px); }
+        /* sticky cta */
+        .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 150; background: rgba(255,255,255,.96); backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 13px 34px; display: flex; align-items: center; justify-content: space-between; gap: 14px; transform: translateY(110%); transition: transform .55s cubic-bezier(.25,1,.3,1); }
         .sticky-cta.show { transform: translateY(0); }
-        .sticky-cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-        .sticky-cta .sc-name { color: #c5e8e8; font-size: 13.5px; font-weight: 700; }
-        .sticky-cta .sc-sub { color: #7d99a1; font-size: 11.5px; }
-        .sticky-cta .cta { margin-top: 0; padding: 11px 26px; font-size: 13.5px; }
+        .sc-name { font-size: 14px; font-weight: 800; color: var(--ink); }
+        .sc-sub { font-size: 11.5px; font-weight: 600; letter-spacing: .06em; color: #7d99a1; }
+        .sticky-cta .btn-pill { margin-top: 0; background: var(--teal-deep); color: #fff; border-color: var(--teal-deep); padding: 11px 26px; font-size: 11px; }
+        .sticky-cta .btn-pill:hover { background: #fff; color: var(--teal-deep); }
 
-        .lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(6,26,30,.95); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; opacity: 0; transition: opacity .35s; }
+        /* lightbox */
+        .lightbox { position: fixed; inset: 0; z-index: 300; background: rgba(6,26,30,.95); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; opacity: 0; transition: opacity .35s; }
         .lightbox.open { display: flex; }
         .lightbox.vis { opacity: 1; }
-        .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; border-radius: 8px; box-shadow: 0 30px 80px rgba(0,0,0,.6); transform: scale(.92); transition: transform .4s cubic-bezier(.16,1,.3,1); }
+        .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; border-radius: 10px; transform: scale(.93); transition: transform .45s cubic-bezier(.25,1,.3,1); }
         .lightbox.vis img { transform: scale(1); }
 
-        @media (max-width: 640px) {
+        @media (max-width: 960px) {
+            .hero { grid-template-columns: 1fr; min-height: auto; }
+            .hero-visual { height: 42vh; min-height: 260px; }
+            .hero-panel { padding: 60px 26px 70px; min-height: 58vh; }
+            .topbar { padding: 16px 20px; }
+            .brand { flex-shrink: 0; white-space: nowrap; font-size: 14px; }
+            .topnav, .top-cta { display: none; }
+            .burger { display: block; flex-shrink: 0; margin-left: auto; }
+            .body-grid { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .content { padding: 70px 22px; }
             .facts { grid-template-columns: repeat(2, 1fr); }
             .fact:nth-child(2) { border-right: none; }
-            .instructor .inner { flex-direction: column; align-items: center; text-align: center; }
-            .topnav { display: none; }
+            .fact:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+            .instructor-card { flex-direction: column; }
             .gallery { grid-template-columns: 1fr; }
-            .hero { min-height: 76vh; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-            .rv { opacity: 1; transform: none; }
-            .gitem { clip-path: none; }
-            .reveal-line > * { transform: none; }
+            html { scroll-behavior: auto; }
+            .rise > * { transform: none; }
+            .wipe { clip-path: none; }
+            h2::after { transform: scaleX(1); }
         }
     </style>
-    <link rel="stylesheet" href="/static/course/course-redesign.css">
-    <style>:root{--acc:#0e7c7b;--acc2:#3aa6b0;--hero:#0b3f47;--soft:#f4fafb;--card:rgba(255,255,255,.78);--card-brd:rgba(14,124,123,.1)}</style>
 </head>
 <body>
     <div id="progress"></div>
 
     <div class="topbar">
-        <div class="wrap">
-            <a class="brand" href="#"><span class="logo">C</span> Canvas &amp; Color</a>
-            <nav class="topnav">
-                <a href="#curriculum">Curriculum</a>
-                <a href="#instructor">Instructor</a>
-                <a href="#gallery">Gallery</a>
-                <a href="#reviews">Reviews</a>
-            </nav>
-        </div>
+        <a class="brand" href="#"><span class="logo">C</span> Canvas &amp; Color</a>
+        <nav class="topnav">
+            <a href="#curriculum">Curriculum</a>
+            <a href="#instructor">Instructor</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#reviews">Reviews</a>
+        </nav>
+        <a class="top-cta" href="#enroll">Request Pricing</a>
+        <button class="burger" id="burger" aria-label="Open menu">Menu</button>
     </div>
 
+    <div class="mmenu" id="mmenu">
+        <button class="mm-close" id="mmClose" aria-label="Close menu">Close</button>
+        <a href="#curriculum">Curriculum</a>
+        <a href="#instructor">Instructor</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#enroll">Request Pricing</a>
+    </div>
+
+    <!-- split hero: image | solid panel -->
     <header class="hero" id="hero">
-        <div class="hero-media" id="heroMedia"><img src="https://live.staticflickr.com/65535/5636521838_cf23429555_b.jpg" alt=""></div>
-        <div class="grain"></div>
-        <div class="hero-fx" aria-hidden="true"></div>
-        <div class="spin-badge" aria-hidden="true">
-            <div class="spin-ring"><svg viewBox="0 0 120 120"><defs><path id="spin-path" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#spin-path">GET STARTED · ENROLL TODAY · </textPath></text></svg></div>
-            <span class="spin-core">↗</span>
-        </div>
-        <div class="float-card fc-1" aria-hidden="true"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"><span class="fc-t">Oil Painting</span><span class="fc-s">Studio quality</span></div>
-        <div class="float-card fc-2" aria-hidden="true"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"><span class="fc-t">Online Course</span><span class="fc-s">Learn anywhere</span></div>
-        
-        <div class="hero-inner">
-            <div class="reveal-line d1"><span class="badge">Online Course</span></div>
-            <div class="reveal-line d2"><h1>Oil Painting Foundations</h1></div>
-            <div class="reveal-line d3"><p class="sub">A structured, beginner-friendly path from your first sketch to finished paintings.</p></div>
-            <div class="reveal-line d4"><p class="rating"><span class="stars">★★★★☆</span> &nbsp;<strong>4.0</strong> · 15 reviews</p></div>
-            <div class="reveal-line d5"><div class="pricing-box"><div class="label">Pricing</div><div class="value">Contact us for pricing</div></div></div>
-            <div class="reveal-line d6"><div><a class="cta" href="#enroll">Request Pricing</a></div></div>
+        <div class="hero-visual"><img src="https://live.staticflickr.com/65535/5636521838_cf23429555_b.jpg" alt=""></div>
+        <div class="hero-panel">
+            <div class="rise d1"><span class="badge">Online Course</span></div>
+            <div class="rise d2"><h1>Oil Painting Foundations</h1></div>
+            <div class="rise d3"><p class="sub">A structured, beginner-friendly path from your first sketch to finished paintings.</p></div>
+            <div class="rise d4"><p class="rating"><span class="stars">★★★★☆</span> &nbsp;<strong>4.0</strong> · 15 reviews</p></div>
+            <div class="rise d5"><div class="pricing-box"><div class="label">Pricing</div><div class="value">Contact us for pricing</div></div></div>
+            <div class="rise d6"><a class="btn-pill" href="#enroll">Request Pricing
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a></div>
         </div>
     </header>
 
@@ -198,74 +260,75 @@ EXPERIMENTAL FEATURES (canvas_color.html):
         <div class="fact"><b>∞</b><span>Access</span></div>
     </div>
 
-    <section id="curriculum">
-        <div class="wrap">
-            <div class="rv"><h2>Curriculum</h2></div>
-            <div class="modules">
-                <div class="module rv rv-d1"><span class="num">1</span><span class="name">Getting Started with Oils</span><span class="lessons">5 lessons</span></div>
-                <div class="module rv rv-d1"><span class="num">2</span><span class="name">Brushes, Palettes &amp; Mixing</span><span class="lessons">6 lessons</span></div>
-                <div class="module rv rv-d2"><span class="num">3</span><span class="name">Light, Shadow &amp; Form</span><span class="lessons">7 lessons</span></div>
-                <div class="module rv rv-d2"><span class="num">4</span><span class="name">Still Life Projects</span><span class="lessons">7 lessons</span></div>
-                <div class="module rv rv-d3"><span class="num">5</span><span class="name">Color in Practice</span><span class="lessons">6 lessons</span></div>
-                <div class="module rv rv-d3"><span class="num">6</span><span class="name">Finishing &amp; Varnishing</span><span class="lessons">5 lessons</span></div>
-            </div>
-            <p class="total rv">36 lessons · 12 hours of video</p>
-        </div>
-    </section>
+    <div class="body-grid">
+        <aside class="sidebar" aria-hidden="true">
+            <a class="s-link" href="#curriculum" data-sec="curriculum"><span class="s-num">01</span> Curriculum</a>
+            <a class="s-link" href="#instructor" data-sec="instructor"><span class="s-num">02</span> Instructor</a>
+            <a class="s-link" href="#gallery" data-sec="gallery"><span class="s-num">03</span> Gallery</a>
+            <a class="s-link" href="#reviews" data-sec="reviews"><span class="s-num">04</span> Reviews</a>
+        </aside>
 
-    <section class="instructor" id="instructor">
-        <div class="wrap">
-            <div class="inner rv">
-                <div class="avatar">TH</div>
-                <div>
-                    <p class="role">Your Instructor</p>
-                    <h2>Tomás Herrera</h2>
-                    <p class="degree">MFA, Rhode Island School of Design</p>
-                    <p>Painter and educator with 12 years of studio teaching experience. Former faculty at the Maryland Institute College of Art. His work is held in private collections across Europe and North America.</p>
+        <main class="content">
+            <section class="blk" id="curriculum">
+                <div class="wipe"><p class="sec-label">Structured path</p><h2>Curriculum</h2></div>
+                <div class="modules">
+                    <div class="module wipe wipe-d1"><span class="num">1</span><span class="name">Getting Started with Oils</span><span class="lessons">5 lessons</span></div>
+                    <div class="module wipe wipe-d1"><span class="num">2</span><span class="name">Brushes, Palettes &amp; Mixing</span><span class="lessons">6 lessons</span></div>
+                    <div class="module wipe wipe-d2"><span class="num">3</span><span class="name">Light, Shadow &amp; Form</span><span class="lessons">7 lessons</span></div>
+                    <div class="module wipe wipe-d2"><span class="num">4</span><span class="name">Still Life Projects</span><span class="lessons">7 lessons</span></div>
+                    <div class="module wipe wipe-d3"><span class="num">5</span><span class="name">Color in Practice</span><span class="lessons">6 lessons</span></div>
+                    <div class="module wipe wipe-d3"><span class="num">6</span><span class="name">Finishing &amp; Varnishing</span><span class="lessons">5 lessons</span></div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <p class="total wipe">36 lessons · 12 hours of video</p>
+            </section>
 
-    <section id="gallery">
-        <div class="wrap">
-            <div class="rv"><h2>What you'll paint</h2></div>
-            <div class="gallery rv">
-                <div class="gitem"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"></div>
-                <div class="gitem"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"></div>
-                <div class="gitem"><img src="https://live.staticflickr.com/4100/4930762816_ebcc3a230e_b.jpg" alt="" loading="lazy"></div>
-            </div>
-        </div>
-    </section>
+            <section class="blk" id="instructor">
+                <div class="wipe"><div class="instructor-card">
+                    <div class="avatar">TH</div>
+                    <div>
+                        <p class="role">Your Instructor</p>
+                        <h2>Tomás Herrera</h2>
+                        <p class="degree">MFA, Rhode Island School of Design</p>
+                        <p>Painter and educator with 12 years of studio teaching experience. Former faculty at the Maryland Institute College of Art. His work is held in private collections across Europe and North America.</p>
+                    </div>
+                </div></div>
+            </section>
 
-    <section id="reviews">
-        <div class="wrap">
-            <div class="rv"><h2>Student reviews</h2></div>
-            <div class="reviews-grid">
-                <div class="review rv rv-d1"><div class="stars">★★★★☆</div><p>"Clear and well paced. The color mixing module alone was worth it."</p><cite>— D. Okafor</cite></div>
-                <div class="review rv rv-d2"><div class="stars">★★★★☆</div><p>"Good foundations course. Would like more advanced modules."</p><cite>— S. Lindqvist</cite></div>
-            </div>
-            <div class="rv"><a class="all-reviews" href="#">View all 15 reviews →</a></div>
-        </div>
-    </section>
+            <section class="blk" id="gallery">
+                <div class="wipe"><p class="sec-label">Studio</p><h2>What you'll paint</h2></div>
+                <div class="gallery">
+                    <div class="gitem wipe wipe-d1"><img src="https://live.staticflickr.com/1277/834550845_ac32c76bc4_b.jpg" alt="" loading="lazy"></div>
+                    <div class="gitem wipe wipe-d2"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"></div>
+                    <div class="gitem wipe wipe-d3"><img src="https://live.staticflickr.com/4100/4930762816_ebcc3a230e_b.jpg" alt="" loading="lazy"></div>
+                </div>
+            </section>
+
+            <section class="blk" id="reviews">
+                <div class="wipe"><p class="sec-label">Students</p><h2>Student reviews</h2></div>
+                <div class="reviews-grid">
+                    <div class="review wipe wipe-d1"><div class="stars">★★★★☆</div><p>"Clear and well paced. The color mixing module alone was worth it."</p><cite>— D. Okafor</cite></div>
+                    <div class="review wipe wipe-d2"><div class="stars">★★★★☆</div><p>"Good foundations course. Would like more advanced modules."</p><cite>— S. Lindqvist</cite></div>
+                </div>
+                <div class="wipe"><a class="all-reviews" href="#">View all 15 reviews →</a></div>
+            </section>
+        </main>
+    </div>
 
     <section class="enroll-band" id="enroll">
-        <div class="wrap">
-            <div class="rv">
-                <h2>Ready to start?</h2>
-                <p>Get in touch for course pricing and start dates.</p>
-                <a class="cta-light" href="#">Contact for Pricing</a>
-            </div>
+        <div class="inner">
+            <h2>Ready to start?</h2>
+            <p>Get in touch for course pricing and start dates.</p>
+            <button class="btn-pill" style="background:#fff;color:#0b3f47;border-color:#fff;">Contact for Pricing
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
         </div>
     </section>
 
     <footer>© 2026 Canvas &amp; Color · <a href="#">Terms</a> · <a href="#">Privacy</a></footer>
 
     <div class="sticky-cta" id="stickyCta">
-        <div class="wrap">
-            <div><div class="sc-name">Oil Painting Foundations</div><div class="sc-sub">Contact us for pricing</div></div>
-            <a class="cta" href="#enroll">Request Pricing</a>
-        </div>
+        <div><div class="sc-name">Oil Painting Foundations</div><div class="sc-sub">Contact us for pricing</div></div>
+        <a class="btn-pill" href="#enroll">Request Pricing</a>
     </div>
 
     <div class="lightbox" id="lightbox"><img src="" alt=""></div>
@@ -275,23 +338,37 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
             var progress = document.getElementById('progress');
             var hero = document.getElementById('hero');
-            var heroMedia = document.getElementById('heroMedia');
             var sticky = document.getElementById('stickyCta');
+
+            var mmenu = document.getElementById('mmenu');
+            document.getElementById('burger').addEventListener('click', function () { mmenu.classList.add('open'); });
+            document.getElementById('mmClose').addEventListener('click', function () { mmenu.classList.remove('open'); });
+            mmenu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { mmenu.classList.remove('open'); }); });
 
             function onScroll() {
                 var y = scrollY;
                 var h = document.documentElement.scrollHeight - innerHeight;
                 progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
-                if (!reduce && heroMedia && y < innerHeight) heroMedia.style.transform = 'translateY(' + y * 0.35 + 'px)';
-                if (sticky) sticky.classList.toggle('show', y > hero.offsetHeight * 0.85);
+                if (sticky) sticky.classList.toggle('show', y > hero.offsetHeight * 0.8);
             }
             addEventListener('scroll', onScroll, { passive: true });
             onScroll();
 
             var io = new IntersectionObserver(function (es) {
                 es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-            }, { threshold: 0.18 });
-            document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.wipe').forEach(function (el) { io.observe(el); });
+
+            // sidebar active state
+            var links = document.querySelectorAll('.s-link');
+            var secs = ['curriculum', 'instructor', 'gallery', 'reviews'].map(function (id) { return document.getElementById(id); });
+            var sio = new IntersectionObserver(function (es) {
+                es.forEach(function (e) {
+                    if (!e.isIntersecting) return;
+                    links.forEach(function (l) { l.classList.toggle('active', l.dataset.sec === e.target.id); });
+                });
+            }, { rootMargin: '-40% 0px -50% 0px' });
+            secs.forEach(function (s) { if (s) sio.observe(s); });
 
             var counted = false;
             var statsIO = new IntersectionObserver(function (es) {
@@ -327,6 +404,5 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             addEventListener('keydown', function (e) { if (e.key === 'Escape') lb.click(); });
         })();
     </script>
-    <script src="/static/course/course.js"></script>
 </body>
 </html>

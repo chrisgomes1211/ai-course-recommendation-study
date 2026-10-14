@@ -13,6 +13,9 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artistry Academy - Complete Oil Painting Mastery</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/course-favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/course-favicon-16.png">
+    <link rel="apple-touch-icon" href="/static/course-touch-icon-180.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -104,7 +107,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
         .intro-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #0a0a0a; }
         .intro-bg { position: absolute; inset: -8%; }
         .intro-bg img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
-        .intro-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.08) 40%, rgba(0,0,0,.55) 100%); }
+        .intro-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.18) 40%, rgba(0,0,0,.78) 100%); }
         .intro-media {
             position: absolute; top: 50%; width: clamp(120px, 16vw, 240px); aspect-ratio: 3/4;
             overflow: hidden; opacity: 0; will-change: transform, opacity;
@@ -118,6 +121,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             position: absolute; left: 0; right: 0; bottom: 0; z-index: 3;
             padding: 0 34px 9vh; color: #fff; text-align: center;
             will-change: transform, opacity;
+            text-shadow: 0 2px 30px rgba(0,0,0,.55);
         }
         .eyebrow {
             display: inline-block; font-size: 10px; font-weight: 400;
