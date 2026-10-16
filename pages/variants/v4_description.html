@@ -1,0 +1,368 @@
+<!--
+EXPERIMENTAL FEATURES (v4_description.html):
+- Price: Shown ($249)
+- Reviews: Typical (48 reviews, 4.2/5 average)
+- Credentials: Basic
+- Description: Detailed
+- Structure: Simple
+- Course: "Oil Painting Foundations"
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil Painting Foundations - Canvas & Color</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, Helvetica, sans-serif; color: #0f1111; background: #fff; line-height: 1.45; }
+        img { display: block; max-width: 100%; }
+        a { color: #0e7490; text-decoration: none; }
+        a:hover { color: #9a3412; text-decoration: underline; }
+        .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+        /* top nav — storefront bar */
+        .site-header { background: #134e4a; color: #fff; }
+        .nav { display: flex; align-items: center; gap: 18px; padding: 10px 0; }
+        .brand { font-family: Georgia, 'Times New Roman', serif; font-size: 21px; font-weight: bold; color: #fff; white-space: nowrap; }
+        .brand:hover { color: #fff; text-decoration: none; }
+        .search { flex: 1; display: flex; height: 40px; border-radius: 4px; overflow: hidden; }
+        .search-box { flex: 1; background: #fff; color: #555; font-size: 15px; padding: 9px 12px; border: none; }
+        .search-btn { width: 45px; background: #0e7490; border: none; font-size: 16px; cursor: pointer; }
+        .nav-right { color: #fff; font-size: 12px; line-height: 1.3; white-space: nowrap; }
+        .nav-right b { font-size: 13px; }
+        .subnav { background: #115e59; color: #fff; font-size: 13px; padding: 7px 0; }
+        .subnav .wrap { display: flex; gap: 22px; }
+        .crumbs { font-size: 13px; color: #565959; padding: 10px 0 0; }
+        .crumbs a { color: #0e7490; }
+
+        /* main product grid */
+        .pdp { display: grid; grid-template-columns: 300px 1fr 300px; gap: 30px; padding: 18px 0 34px; }
+        .gallery { display: flex; gap: 12px; align-items: flex-start; }
+        .thumbs-col { display: flex; flex-direction: column; gap: 8px; }
+        .thumbs-col img { width: 52px; height: 52px; object-fit: cover; border: 1px solid #d5d9d9; border-radius: 4px; cursor: pointer; }
+        .thumbs-col img:hover { border-color: #0e7490; }
+        .main-img { flex: 1; border: 1px solid #d5d9d9; border-radius: 8px; overflow: hidden; }
+        .main-img img { width: 100%; object-fit: cover; aspect-ratio: 1/1; }
+
+        h1 { font-size: 26px; font-weight: 400; line-height: 1.25; margin-bottom: 4px; }
+        .byline { font-size: 14px; color: #565959; margin-bottom: 6px; }
+        .rating-row { font-size: 14px; margin-bottom: 10px; }
+        .stars { color: #de7921; letter-spacing: 1px; }
+        .badge { display: inline-block; background: #134e4a; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 9px; border-radius: 3px; margin-bottom: 12px; }
+        .bestseller { display: inline-block; background: #c2410c; color: #fff; font-size: 11px; font-weight: bold; padding: 3px 9px; border-radius: 3px; margin: 0 0 12px 6px; }
+        .divider { border: none; border-top: 1px solid #e7e7e7; margin: 14px 0; }
+        h2 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+        .ati { padding-left: 22px; font-size: 14px; }
+        .ati li { margin-bottom: 6px; }
+        .subtitle { font-size: 14px; color: #0f1111; margin-bottom: 10px; }
+
+        /* buy box */
+        .buybox { border: 1px solid #d5d9d9; border-radius: 8px; padding: 18px; align-self: start; }
+        .price { font-size: 28px; font-weight: 400; }
+        .price sup { font-size: 13px; top: -0.8em; }
+        .price-note { font-size: 12px; color: #565959; margin: 2px 0 10px; }
+        .delivery { font-size: 13px; margin-bottom: 4px; }
+        .delivery b { font-weight: 700; }
+        .stock { color: #007600; font-size: 14px; margin: 8px 0; }
+        .qty { display: inline-block; border: 1px solid #d5d9d9; background: #f0f2f2; border-radius: 8px; font-size: 13px; padding: 6px 14px; color: #565959; margin-bottom: 12px; }
+        .btn-buy, .btn-list { display: block; width: 100%; text-align: center; border-radius: 999px; font-size: 14px; padding: 11px 0; margin-bottom: 9px; cursor: pointer; border: 1px solid; }
+        .btn-buy { background: #c2410c; border-color: #9a3412; color: #fff; }
+        .btn-buy:hover { background: #9a3412; text-decoration: none; }
+        .btn-list { background: #fff; border-color: #d5d9d9; color: #0f1111; }
+        .btn-list:hover { background: #f7fafa; text-decoration: none; }
+        .meta-line { font-size: 12px; color: #565959; margin-bottom: 3px; }
+        .secure { font-size: 12px; color: #565959; margin-top: 10px; border-top: 1px solid #e7e7e7; padding-top: 10px; }
+
+        /* compare table — the competitive block */
+        .compare { padding: 26px 0; border-top: 1px solid #e7e7e7; overflow-x: auto; }
+        .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .compare-table th, .compare-table td { border: 1px solid #d5d9d9; padding: 10px 12px; text-align: left; vertical-align: top; }
+        .compare-table thead th { background: #f0f2f2; font-size: 14px; }
+        .compare-table .rowlabel { background: #f7f8f8; font-weight: 700; width: 130px; }
+        .compare-table .this-item { background: #f7f8f8; font-weight: 700; }
+        .compare-table thead .this-item { background: #e3e6e6; }
+
+        /* also viewed — shared marketplace context */
+        .also-viewed { padding: 26px 0; border-top: 1px solid #e7e7e7; }
+        .also-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .also-card { border: 1px solid #d5d9d9; border-radius: 8px; padding: 12px; font-size: 12px; }
+        .also-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 4px; margin-bottom: 8px; }
+        .also-card b { display: block; font-size: 13px; margin: 6px 0 4px; }
+        .also-card .price { font-size: 14px; margin-top: 4px; }
+        .also-card .price sup { font-size: 10px; }
+
+        .block { padding: 26px 0; border-top: 1px solid #e7e7e7; }
+        .meta { font-size: 13px; color: #565959; margin-bottom: 12px; }
+        .module-list { list-style: none; border: 1px solid #d5d9d9; border-radius: 6px; overflow: hidden; max-width: 640px; }
+        .module-list li { padding: 11px 15px; font-size: 14px; border-bottom: 1px solid #e7e7e7; background: #fff; }
+        .module-list li:last-child { border-bottom: none; }
+
+        .bio { font-size: 14px; max-width: 70ch; }
+        .bio p { margin-bottom: 8px; }
+
+        /* reviews */
+        .histogram { max-width: 420px; margin-bottom: 20px; }
+        .hist-row { display: flex; align-items: center; gap: 10px; font-size: 13px; margin-bottom: 5px; }
+        .hist-row .lbl { width: 38px; color: #0e7490; }
+        .hist-bar { flex: 1; background: #f0f2f2; border-radius: 3px; height: 18px; overflow: hidden; }
+        .hist-bar span { display: block; height: 100%; background: #ffa41c; }
+        .hist-row .pct { width: 40px; color: #565959; text-align: right; }
+        .review { border-top: 1px solid #e7e7e7; padding: 16px 0; max-width: 720px; }
+        .review .r-head { font-size: 13px; color: #565959; margin-bottom: 6px; }
+        .review .r-head b { color: #0f1111; }
+        .review p { font-size: 14px; margin-top: 6px; }
+        .helpful { font-size: 12px; color: #565959; margin-top: 8px; }
+
+        .spec-table { width: 100%; max-width: 640px; border-collapse: collapse; font-size: 13px; }
+        .spec-table td { border: 1px solid #d5d9d9; padding: 9px 12px; }
+        .spec-table td:first-child { background: #f7f8f8; font-weight: 700; width: 160px; }
+
+        footer { background: #134e4a; color: #ddd; font-size: 12px; margin-top: 30px; padding: 26px 0; text-align: center; }
+        footer a { color: #ddd; margin: 0 10px; }
+
+        @media (max-width: 900px) {
+            .pdp { grid-template-columns: 1fr; }
+            .nav-right { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav">
+            <a class="brand" href="#">Canvas &amp; Color</a>
+            <div class="search">
+                <div class="search-box">oil painting course</div>
+                <button class="search-btn" aria-label="Search">&#128269;</button>
+            </div>
+            <div class="nav-right">Welcome<br><b>My Courses</b></div>
+        </div>
+    </header>
+    <div class="subnav"><div class="wrap"><span>Catalog</span><span>Painting</span><span>Drawing</span><span>Techniques</span><span>Student Work</span></div></div>
+
+    <div class="wrap">
+        <nav class="crumbs"><a href="#">Oil Painting</a> &rsaquo; <a href="#">Courses</a> &rsaquo; Painting Foundations</nav>
+
+        <div class="pdp">
+            <div class="gallery">
+                <div class="thumbs-col">
+                    <img src="/static/img/canvas/module-1.jpg" alt="Course overview">
+                    <img src="/static/img/canvas/module-2.jpg" alt="Module 2 preview">
+                    <img src="/static/img/canvas/module-3.jpg" alt="Module 3 preview">
+                    <img src="/static/img/canvas/module-4.jpg" alt="Module 4 preview">
+                    <img src="/static/img/canvas/module-5.jpg" alt="Module 5 preview">
+                    <img src="/static/img/canvas/module-6.jpg" alt="Module 6 preview">
+                </div>
+                <div class="main-img"><img src="/static/img/canvas/module-1.jpg" alt="Oil Painting Foundations course cover"></div>
+            </div>
+
+            <div class="details">
+                <h1>Oil Painting Foundations: Complete Online Course with Lifetime Access</h1>
+                <p class="byline">by <a href="#">Canvas &amp; Color</a></p>
+                <!-- RATING-ROW -->
+                <div class="rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <a href="#reviews">4.2 out of 5 stars</a> &middot; <a href="#reviews">48 ratings</a></div>
+                <!-- /RATING-ROW -->
+                <span class="badge">Online Course</span><span class="bestseller">#2 in Painting Courses</span>
+                <hr class="divider">
+                <h2>What you'll learn</h2>
+                <ul class="ati">
+                    <li>Mix a limited palette into a full range of color</li>
+                    <li>Render light, shadow and solid form</li>
+                    <li>Build a composition from a reference photo</li>
+                    <li>Finish and varnish a completed painting</li>
+                </ul>
+                <hr class="divider">
+                <!-- SUBTITLE -->
+                <p class="subtitle">Oil Painting Foundations is a complete, self-paced course that takes you from an empty palette to a finished, varnished painting. Across 36 lessons you&rsquo;ll learn the same limited-palette mixing method taught in atelier studios, then apply it to still life, edges, light and final presentation. Every module includes a studio demonstration, a practice exercise and a reference photo you can paint from at your own pace.</p>
+                <!-- /SUBTITLE -->
+            </div>
+
+            <aside class="buybox" id="pricing">
+                <!-- BUYBOX-PRICE -->
+                <div class="price">$249<span>.00</span></div>
+                <!-- /BUYBOX-PRICE -->
+                <p class="price-note">One-time payment. No subscription.</p>
+                <p class="delivery"><b>Instant access</b> after enrollment</p>
+                <p class="delivery"><b>Lifetime access</b> on every device</p>
+                <p class="stock">Enrollment open</p>
+                <a class="btn-buy" href="#pricing">Enroll Now</a>
+                <a class="btn-list" href="#">Save for later</a>
+                <p class="meta-line">Hosted by Canvas &amp; Color</p>
+                <p class="meta-line">30-day money-back guarantee</p>
+                <p class="secure">&#128274; Secure checkout</p>
+            </aside>
+        </div>
+
+        <!-- FACTS-SLOT -->
+
+        <section class="block">
+            <h2>About this course</h2>
+            <div class="bio">
+                <p>Most beginner oil painters get lost in materials instead of learning to see. This course starts with a single limited palette and shows you how to mix every colour you need for a convincing still life &mdash; then builds that foundation into finished, confident paintings. You will work through six studio modules, each with a full demonstration, a practice exercise and a reference photo, so every lesson ends with paint on the canvas rather than notes in a notebook.</p>
+            </div>
+        </section>
+
+        <section class="compare">
+            <h2>Compare with similar courses</h2>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th class="this-item">This item: Oil Painting Foundations</th>
+                        <th>Acrylic Painting Basics</th>
+                        <th>Sketching for Beginners</th>
+                        <th>Portrait Drawing Masterclass</th>
+                        <th>Watercolor Start to Finish</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- COMPARE-REVIEWS -->
+                    <tr>
+                        <td class="rowlabel">Customer reviews</td>
+                        <td class="this-item"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><br>4.2 out of 5 &middot; 48 ratings</td>
+                        <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><br>4.5 out of 5 &middot; 260 ratings</td>
+                        <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><br>4.3 out of 5 &middot; 410 ratings</td>
+                        <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><br>4.7 out of 5 &middot; 180 ratings</td>
+                        <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span><br>4.1 out of 5 &middot; 890 ratings</td>
+                    </tr>
+                    <!-- /COMPARE-REVIEWS -->
+                    <!-- COMPARE-PRICE -->
+                    <tr>
+                        <td class="rowlabel">Price</td>
+                        <td class="this-item"><b>$249.00</b></td>
+                        <td>$179.00</td>
+                        <td>$99.00</td>
+                        <td>$299.00</td>
+                        <td>$59.00</td>
+                    </tr>
+                    <!-- /COMPARE-PRICE -->
+                    <tr>
+                        <td class="rowlabel">Lessons</td>
+                        <td class="this-item">36</td>
+                        <td>28</td>
+                        <td>20</td>
+                        <td>45</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td class="rowlabel">Access</td>
+                        <td class="this-item">Lifetime</td>
+                        <td>1 year</td>
+                        <td>Lifetime</td>
+                        <td>Lifetime</td>
+                        <td>1 year</td>
+                    </tr>
+                    <tr>
+                        <td class="rowlabel">Format</td>
+                        <td class="this-item">Online course</td>
+                        <td>Online course</td>
+                        <td>Online course</td>
+                        <td>Online course</td>
+                        <td>Online course</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="also-viewed">
+            <h2>Learners also viewed</h2>
+            <div class="also-grid">
+                <div class="also-card">
+                    <img src="/static/img/canvas/module-2.jpg" alt="Landscape Painting Essentials">
+                    <b>Landscape Painting Essentials</b>
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> 4.4 (150)
+                    <div class="price">$129<span>.00</span></div>
+                </div>
+                <div class="also-card">
+                    <img src="/static/img/canvas/module-3.jpg" alt="Portrait Fundamentals">
+                    <b>Portrait Fundamentals</b>
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.6 (320)
+                    <div class="price">$199<span>.00</span></div>
+                </div>
+                <div class="also-card">
+                    <img src="/static/img/canvas/module-4.jpg" alt="Color Theory Intensive">
+                    <b>Color Theory Intensive</b>
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> 4.0 (95)
+                    <div class="price">$89<span>.00</span></div>
+                </div>
+                <div class="also-card">
+                    <img src="/static/img/canvas/module-5.jpg" alt="Plein Air Painting">
+                    <b>Plein Air Painting</b>
+                    <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> 4.5 (210)
+                    <div class="price">$159<span>.00</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="block">
+            <h2>Curriculum</h2>
+            <p class="meta">36 lessons &middot; 12 hours &middot; Self-paced</p>
+            <ul class="module-list">
+                <li>Materials &amp; Studio Setup</li>
+                <li>Color Mixing Basics</li>
+                <li>Brushwork &amp; Edges</li>
+                <li>Still Life Composition</li>
+                <li>Light, Value &amp; Form</li>
+                <li>Finishing &amp; Varnishing</li>
+            </ul>
+        </section>
+
+        <section class="block">
+            <!-- INSTRUCTOR-BIO -->
+            <h2>Your instructor</h2>
+            <div class="bio">
+                <p><b>Tom&aacute;s Herrera</b> &mdash; Studio painter and teacher based in Lisbon. Teaching oil painting for 8 years.</p>
+            </div>
+            <!-- /INSTRUCTOR-BIO -->
+        </section>
+
+        <section class="block" id="reviews">
+            <h2>Customer reviews</h2>
+            <!-- HISTOGRAM -->
+            <div class="rating-row"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> 4.2 out of 5 &middot; 48 global ratings</div>
+            <div class="histogram">
+                <div class="hist-row"><span class="lbl">5 star</span><div class="hist-bar"><span style="width:55%"></span></div><span class="pct">55%</span></div>
+                <div class="hist-row"><span class="lbl">4 star</span><div class="hist-bar"><span style="width:25%"></span></div><span class="pct">25%</span></div>
+                <div class="hist-row"><span class="lbl">3 star</span><div class="hist-bar"><span style="width:12%"></span></div><span class="pct">12%</span></div>
+                <div class="hist-row"><span class="lbl">2 star</span><div class="hist-bar"><span style="width:5%"></span></div><span class="pct">5%</span></div>
+                <div class="hist-row"><span class="lbl">1 star</span><div class="hist-bar"><span style="width:3%"></span></div><span class="pct">3%</span></div>
+            </div>
+            <!-- /HISTOGRAM -->
+            <!-- REVIEW-CARDS -->
+            <div class="review-list">
+                <div class="review">
+                    <div class="r-head"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <b>R. Kelly</b> &middot; September 12, 2026</div>
+                    <p>Solid fundamentals &mdash; the mixing module alone was worth it.</p>
+                    <p class="helpful">14 people found this helpful</p>
+                </div>
+                <div class="review">
+                    <div class="r-head"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <b>A. Nunes</b> &middot; August 30, 2026</div>
+                    <p>Clear and well paced. Good value for a beginners course.</p>
+                    <p class="helpful">9 people found this helpful</p>
+                </div>
+            </div>
+            <!-- /REVIEW-CARDS -->
+        </section>
+
+        <section class="block">
+            <h2>Course details</h2>
+            <table class="spec-table">
+                <tr><td>Format</td><td>Online course</td></tr>
+                <tr><td>Lessons</td><td>36</td></tr>
+                <tr><td>Duration</td><td>12 hours</td></tr>
+                <tr><td>Level</td><td>Beginner</td></tr>
+                <tr><td>Language</td><td>English</td></tr>
+                <tr><td>Access</td><td>Lifetime</td></tr>
+                <tr><td>Certificate</td><td>Certificate of completion</td></tr>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy</a>
+        <a href="#">Help</a>
+        <p>&copy; 2026 Canvas &amp; Color</p>
+    </footer>
+</body>
+</html>

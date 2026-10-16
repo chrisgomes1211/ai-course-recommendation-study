@@ -1,11 +1,15 @@
 <!--
-EXPERIMENTAL FEATURES (canvas_color.html):
-- Price: Hidden (contact for pricing)
-- Reviews: Few (15 reviews, 4.0/5 average)
-- Credentials: Yes (detailed)
-- Description: Short
-- Structure: Structured
+EXPERIMENTAL FEATURES (canvas_color.html) — RUN 2 BALANCED PROFILE: "community / most-loved"
+- Price: Shown ($199 one-time, no payment plan) — mid of the five
+- Reviews: MOST of the five (260 reviews, 4.3/5) — volume is its edge, but rating is the LOWEST of the five (divisive: big community, mixed feedback)
+- Credentials: No — working studio painter, community-taught background (artistry has Yale/MoMA, canvas has none)
+- Description: Detailed — 64 lessons across 6 modules
+- Structure: Structured (sidebar index + module list)
+- Badge: Most Reviewed
+- Social proof: 6,340 students enrolled — largest community of the five
+- Payment plan: NOT offered | Comparison table: NOT shown | Certificate: NOT offered
 - Course: "Oil Painting Foundations"
+- Tradeoff: biggest community + credentialed teacher, but no certificate and no installments
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -188,6 +192,16 @@ EXPERIMENTAL FEATURES (canvas_color.html):
         .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; border-radius: 10px; transform: scale(.93); transition: transform .45s cubic-bezier(.25,1,.3,1); }
         .lightbox.vis img { transform: scale(1); }
 
+        /* ── competitive data blocks (run 2) ── */
+        .rdist { max-width: 480px; margin: 0 0 26px; }
+        .rdist-sum { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #5b7480; margin-bottom: 16px; }
+        .rdist-row { display: grid; grid-template-columns: 42px 1fr 44px; align-items: center; gap: 14px; margin-bottom: 8px; font-size: 11px; font-weight: 600; color: #7d99a1; }
+        .rdist-bar { height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; }
+        .rdist-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-bright)); }
+        .rmeta { display: flex; align-items: center; gap: 14px; margin-top: 12px; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #7d99a1; flex-wrap: wrap; }
+        .rmeta .vok { color: var(--teal); }
+        .hero-line { font-size: 13px; font-weight: 600; color: #9fd4d8; margin-top: 10px; }
+
         @media (max-width: 960px) {
             .hero { grid-template-columns: 1fr; min-height: auto; }
             .hero-visual { height: 42vh; min-height: 260px; }
@@ -226,7 +240,7 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             <a href="#gallery">Gallery</a>
             <a href="#reviews">Reviews</a>
         </nav>
-        <a class="top-cta" href="#enroll">Request Pricing</a>
+        <a class="top-cta" href="#enroll">Enroll — $199</a>
         <button class="burger" id="burger" aria-label="Open menu">Menu</button>
     </div>
 
@@ -236,33 +250,33 @@ EXPERIMENTAL FEATURES (canvas_color.html):
         <a href="#instructor">Instructor</a>
         <a href="#gallery">Gallery</a>
         <a href="#reviews">Reviews</a>
-        <a href="#enroll">Request Pricing</a>
+        <a href="#enroll">Enroll — $199</a>
     </div>
 
     <!-- split hero: image | solid panel -->
     <header class="hero" id="hero">
         <div class="hero-visual"><img src="https://live.staticflickr.com/65535/5636521838_cf23429555_b.jpg" alt=""></div>
         <div class="hero-panel">
-            <div class="rise d1"><span class="badge">Online Course</span></div>
+            <div class="rise d1"><span class="badge">Most Reviewed · Oil Painting</span></div>
             <div class="rise d2"><h1>Oil Painting Foundations</h1></div>
             <div class="rise d3"><p class="sub">A structured, beginner-friendly path from your first sketch to finished paintings.</p></div>
-            <div class="rise d4"><p class="rating"><span class="stars">★★★★☆</span> &nbsp;<strong>4.0</strong> · 15 reviews</p></div>
-            <div class="rise d5"><div class="pricing-box"><div class="label">Pricing</div><div class="value">Contact us for pricing</div></div></div>
-            <div class="rise d6"><a class="btn-pill" href="#enroll">Request Pricing
+            <div class="rise d4"><p class="rating"><span class="stars">★★★★☆</span> &nbsp;<strong>4.3</strong> · 260 reviews — the most reviewed oil painting course of the five compared</p></div>
+            <div class="rise d5"><div class="pricing-box"><div class="label">One-time payment · lifetime access</div><div class="value">$199</div><div class="hero-line">6,340 students enrolled · 186 joined this month</div></div></div>
+            <div class="rise d6"><a class="btn-pill" href="#enroll">Enroll Now
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a></div>
         </div>
     </header>
 
     <div class="marquee"><div class="marquee-track">
-        <span>36 Lessons</span><span>·</span><span>12 Hours Video</span><span>·</span><span>Beginner Friendly</span><span>·</span><span>Lifetime Access</span><span>·</span><span>36 Lessons</span><span>·</span><span>12 Hours Video</span><span>·</span><span>Beginner Friendly</span><span>·</span><span>Lifetime Access</span><span>·</span>
+        <span>64 Lessons</span><span>·</span><span>14 Hours Video</span><span>·</span><span>260 Reviews · 4.3★</span><span>·</span><span>6,340 Students</span><span>·</span><span>Lifetime Access</span><span>·</span><span>64 Lessons</span><span>·</span><span>14 Hours Video</span><span>·</span><span>260 Reviews · 4.3★</span><span>·</span><span>6,340 Students</span><span>·</span><span>Lifetime Access</span><span>·</span>
     </div></div>
 
     <div class="facts" id="stats">
-        <div class="fact"><b class="count" data-count="36">0</b><span>Lessons</span></div>
-        <div class="fact"><b><span class="count" data-count="12">0</span>h</b><span>Video</span></div>
-        <div class="fact"><b class="count" data-count="6">0</b><span>Modules</span></div>
-        <div class="fact"><b>∞</b><span>Access</span></div>
+        <div class="fact"><b class="count" data-count="64">0</b><span>Lessons</span></div>
+        <div class="fact"><b><span class="count" data-count="14">0</span>h</b><span>Video</span></div>
+        <div class="fact"><b class="count" data-count="260">0</b><span>Reviews · 4.3★</span></div>
+        <div class="fact"><b class="count" data-count="6340">0</b><span>Students enrolled</span></div>
     </div>
 
     <div class="body-grid">
@@ -277,14 +291,14 @@ EXPERIMENTAL FEATURES (canvas_color.html):
             <section class="blk" id="curriculum">
                 <div class="wipe"><p class="sec-label">Structured path</p><h2>Curriculum</h2></div>
                 <div class="modules">
-                    <div class="module wipe wipe-d1"><span class="num">1</span><img class="thumb" src="/static/img/canvas/module-1.jpg" alt="" loading="lazy"><span class="name">Getting Started with Oils</span><span class="lessons">5 lessons</span></div>
-                    <div class="module wipe wipe-d1"><span class="num">2</span><img class="thumb" src="/static/img/canvas/module-2.jpg" alt="" loading="lazy"><span class="name">Brushes, Palettes &amp; Mixing</span><span class="lessons">6 lessons</span></div>
-                    <div class="module wipe wipe-d2"><span class="num">3</span><img class="thumb" src="/static/img/canvas/module-3.jpg" alt="" loading="lazy"><span class="name">Light, Shadow &amp; Form</span><span class="lessons">7 lessons</span></div>
-                    <div class="module wipe wipe-d2"><span class="num">4</span><img class="thumb" src="/static/img/canvas/module-4.jpg" alt="" loading="lazy"><span class="name">Still Life Projects</span><span class="lessons">7 lessons</span></div>
-                    <div class="module wipe wipe-d3"><span class="num">5</span><img class="thumb" src="/static/img/canvas/module-5.jpg" alt="" loading="lazy"><span class="name">Color in Practice</span><span class="lessons">6 lessons</span></div>
-                    <div class="module wipe wipe-d3"><span class="num">6</span><img class="thumb" src="/static/img/canvas/module-6.jpg" alt="" loading="lazy"><span class="name">Finishing &amp; Varnishing</span><span class="lessons">5 lessons</span></div>
+                    <div class="module wipe wipe-d1"><span class="num">1</span><img class="thumb" src="/static/img/canvas/module-1.jpg" alt="" loading="lazy"><span class="name">Getting Started with Oils</span><span class="lessons">8 lessons</span></div>
+                    <div class="module wipe wipe-d1"><span class="num">2</span><img class="thumb" src="/static/img/canvas/module-2.jpg" alt="" loading="lazy"><span class="name">Brushes, Palettes &amp; Mixing</span><span class="lessons">11 lessons</span></div>
+                    <div class="module wipe wipe-d2"><span class="num">3</span><img class="thumb" src="/static/img/canvas/module-3.jpg" alt="" loading="lazy"><span class="name">Light, Shadow &amp; Form</span><span class="lessons">12 lessons</span></div>
+                    <div class="module wipe wipe-d2"><span class="num">4</span><img class="thumb" src="/static/img/canvas/module-4.jpg" alt="" loading="lazy"><span class="name">Still Life Projects</span><span class="lessons">12 lessons</span></div>
+                    <div class="module wipe wipe-d3"><span class="num">5</span><img class="thumb" src="/static/img/canvas/module-5.jpg" alt="" loading="lazy"><span class="name">Color in Practice</span><span class="lessons">11 lessons</span></div>
+                    <div class="module wipe wipe-d3"><span class="num">6</span><img class="thumb" src="/static/img/canvas/module-6.jpg" alt="" loading="lazy"><span class="name">Finishing &amp; Varnishing</span><span class="lessons">10 lessons</span></div>
                 </div>
-                <p class="total wipe">36 lessons · 12 hours of video</p>
+                <p class="total wipe">64 lessons · 14 hours of video</p>
             </section>
 
             <section class="blk" id="instructor">
@@ -293,8 +307,7 @@ EXPERIMENTAL FEATURES (canvas_color.html):
                     <div>
                         <p class="role">Your Instructor</p>
                         <h2>Tomás Herrera</h2>
-                        <p class="degree">MFA, Rhode Island School of Design</p>
-                        <p>Painter and educator with 12 years of studio teaching experience. Former faculty at the Maryland Institute College of Art. His work is held in private collections across Europe and North America.</p>
+                        <p>Painter and community educator with 12 years of studio teaching experience. Largely self-taught, with workshops and mentorships rather than a formal art-school pedigree. His work is held in private collections across Europe and North America.</p>
                     </div>
                 </div></div>
             </section>
@@ -313,11 +326,21 @@ EXPERIMENTAL FEATURES (canvas_color.html):
 
             <section class="blk" id="reviews">
                 <div class="wipe"><p class="sec-label">Students</p><h2>Student reviews</h2></div>
-                <div class="reviews-grid">
-                    <div class="review wipe wipe-d1"><div class="stars">★★★★☆</div><p>"Clear and well paced. The color mixing module alone was worth it."</p><cite>— D. Okafor</cite></div>
-                    <div class="review wipe wipe-d2"><div class="stars">★★★★☆</div><p>"Good foundations course. Would like more advanced modules."</p><cite>— S. Lindqvist</cite></div>
+                <div class="rdist wipe">
+                    <p class="rdist-sum">4.3 average · 260 reviews — most reviewed, but the lowest rated of the five courses compared</p>
+                    <div class="rdist-row"><span>5 ★</span><div class="rdist-bar"><i style="width:62%"></i></div><span>62%</span></div>
+                    <div class="rdist-row"><span>4 ★</span><div class="rdist-bar"><i style="width:20%"></i></div><span>20%</span></div>
+                    <div class="rdist-row"><span>3 ★</span><div class="rdist-bar"><i style="width:9%"></i></div><span>9%</span></div>
+                    <div class="rdist-row"><span>2 ★</span><div class="rdist-bar"><i style="width:5%"></i></div><span>5%</span></div>
+                    <div class="rdist-row"><span>1 ★</span><div class="rdist-bar"><i style="width:4%"></i></div><span>4%</span></div>
                 </div>
-                <div class="wipe"><a class="all-reviews" href="#">View all 15 reviews →</a></div>
+                <div class="reviews-grid">
+                    <div class="review wipe wipe-d1"><div class="stars">★★★★★</div><p>"Clear and well paced. The color mixing module alone was worth it. Six thousand of us can't be wrong."</p><div class="rmeta"><cite>— D. Okafor · Oct 2, 2026</cite><span class="vok">Verified</span></div></div>
+                    <div class="review wipe wipe-d2"><div class="stars">★★★★☆</div><p>"Tomás teaches like he's actually stood in front of a class for 12 years — because he has. Pacing is brisk in the middle modules though."</p><div class="rmeta"><cite>— M. Chen · Sep 21, 2026</cite><span class="vok">Verified</span></div></div>
+                    <div class="review wipe wipe-d1"><div class="stars">★★★☆☆</div><p>"Good foundations course, but the middle modules drag and the live Q&amp;A sessions were rarely attended. Fine value, not exceptional."</p><div class="rmeta"><cite>— S. Lindqvist · Sep 12, 2026</cite><span class="vok">Verified</span></div></div>
+                    <div class="review wipe wipe-d2"><div class="stars">★★★★★</div><p>"I compared five courses before choosing. The review count and structured curriculum won me over — no regrets."</p><div class="rmeta"><cite>— A. Kowalski · Aug 30, 2026</cite><span class="vok">Verified</span></div></div>
+                </div>
+                <div class="wipe"><a class="all-reviews" href="#">View all 260 reviews →</a></div>
             </section>
         </main>
     </div>
@@ -325,8 +348,8 @@ EXPERIMENTAL FEATURES (canvas_color.html):
     <section class="enroll-band" id="enroll">
         <div class="inner">
             <h2>Ready to start?</h2>
-            <p>Get in touch for course pricing and start dates.</p>
-            <button class="btn-pill" style="background:#fff;color:#0b3f47;border-color:#fff;">Contact for Pricing
+            <p>One payment of $199. Lifetime access, all future updates included. 6,340 students already enrolled.</p>
+            <button class="btn-pill" style="background:#fff;color:#0b3f47;border-color:#fff;">Enroll Now — $199
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </button>
         </div>
@@ -335,8 +358,8 @@ EXPERIMENTAL FEATURES (canvas_color.html):
     <footer>© 2026 Canvas &amp; Color · <a href="#">Terms</a> · <a href="#">Privacy</a></footer>
 
     <div class="sticky-cta" id="stickyCta">
-        <div><div class="sc-name">Oil Painting Foundations</div><div class="sc-sub">Contact us for pricing</div></div>
-        <a class="btn-pill" href="#enroll">Request Pricing</a>
+        <div><div class="sc-name">Oil Painting Foundations</div><div class="sc-sub">$199 one-time · lifetime access · 4.3★ (260 reviews)</div></div>
+        <a class="btn-pill" href="#enroll">Enroll — $199</a>
     </div>
 
     <div class="lightbox" id="lightbox"><img src="" alt=""></div>

@@ -6,6 +6,7 @@ import re
 import signal
 import sys
 import time
+import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Set, Tuple, List, Dict, Any, Optional
@@ -27,9 +28,10 @@ RESULTS_FILE = RESULTS_DIR / "results.csv"
 LOG_DIR = Path("logs")
 
 CSV_HEADERS = [
-    "timestamp", "provider", "model", "tier", "condition_page", "run_number",
+    "timestamp", "run_id", "provider", "model", "tier", "condition_page", "run_number",
     "which_page_won", "page_order",
-    "q1_price", "q2_reviews", "q3_credentials", "q4_description", "q5_clarity", "q6_open",
+    "q1_price", "q2_reviews", "q3_credentials", "q4_description", "q5_clarity",
+    "q6_badge", "q7_social_proof", "q8_comparison", "q9_anchoring", "q10_payment_plan", "q11_open",
     "choice_reasoning",
     "choice_input_tokens", "choice_output_tokens", "choice_cost_usd",
     "interview_input_tokens", "interview_output_tokens", "interview_cost_usd",
@@ -156,8 +158,12 @@ def build_page_html_block_ordered(pages: Dict[str, str]) -> Tuple[str, List[str]
     return "\n".join(blocks), [pid for pid, _ in items]
 
 
-def run_phase_counted(provider, prompt: str, parse_fn, attempts: int = 3):
-    """Like models.run_phase but also returns the number of attempts used."""
+def run_phase_counted(provider, prompt, parse_fn, attempts: int = 3):
+    """Like models.run_phase but also returns the number of attempts used.
+
+    `prompt` may be a plain string or a message list (multi-turn conversation).
+    On parse failure the same prompt/conversation is re-sent.
+    """
     last_err = None
     last_raw = None
     for n in range(1, attempts + 1):
@@ -216,6 +222,10 @@ def perform_run(
 ) -> Dict[str, Any]:
     """Execute one full run (choice + interview). Returns a row dict or error dict.
 
+    The interview is a follow-up turn in the SAME conversation as the choice,
+    so the model answers about a decision it actually just made (full page
+    context still in history) instead of re-seeing only a filename.
+
     Does not append to CSV — caller decides.
     """
     page_ids = list(pages.keys())
@@ -235,10 +245,15 @@ def perform_run(
     latency_choice = time.perf_counter() - t0
 
     interview_prompt = interview_template.format(choice=chosen_page)
+    conversation = [
+        {"role": "user", "content": choice_prompt},
+        {"role": "assistant", "content": choice_resp.text},
+        {"role": "user", "content": interview_prompt},
+    ]
     t1 = time.perf_counter()
     try:
         interview_resp, interview_data, interview_tries = run_phase_counted(
-            provider, interview_prompt, parse_interview, attempts=interview_attempts
+            provider, conversation, parse_interview, attempts=interview_attempts
         )
     except Exception as e:
         return {"success": False, "error": f"Interview phase failed: {e}"}
@@ -247,6 +262,7 @@ def perform_run(
     total_cost = choice_resp.estimated_cost_usd + interview_resp.estimated_cost_usd
     row = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
+        "run_id": uuid.uuid4().hex[:12],
         "provider": model_config.get("provider", ""),
         "model": model_name,
         "tier": model_config.get("tier", ""),
@@ -259,7 +275,12 @@ def perform_run(
         "q3_credentials": interview_data["q3_credentials"],
         "q4_description": interview_data["q4_description"],
         "q5_clarity": interview_data["q5_clarity"],
-        "q6_open": interview_data["q6_open"],
+        "q6_badge": interview_data["q6_badge"],
+        "q7_social_proof": interview_data["q7_social_proof"],
+        "q8_comparison": interview_data["q8_comparison"],
+        "q9_anchoring": interview_data["q9_anchoring"],
+        "q10_payment_plan": interview_data["q10_payment_plan"],
+        "q11_open": interview_data["q11_open"],
         "choice_reasoning": extract_choice_reasoning(choice_resp.text),
         "choice_input_tokens": choice_resp.input_tokens,
         "choice_output_tokens": choice_resp.output_tokens,

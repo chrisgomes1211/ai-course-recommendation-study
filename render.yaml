@@ -15,5 +15,11 @@ services:
         sync: false
       - key: GOOGLE_API_KEY
         sync: false
+      - key: XAI_API_KEY
+        sync: false
+      - key: MIMO_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
       - key: FLASK_ENV
         value: production

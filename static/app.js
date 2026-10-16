@@ -310,11 +310,31 @@ function renderResults(data) {
                     <span class="likert-label">Clarity Influence</span>
                     <span class="likert-score">${interview.q5_clarity}</span>
                 </div>
+                <div class="likert-item">
+                    <span class="likert-label">Badge Influence</span>
+                    <span class="likert-score">${interview.q6_badge}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Social Proof Influence</span>
+                    <span class="likert-score">${interview.q7_social_proof}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Comparison Table Influence</span>
+                    <span class="likert-score">${interview.q8_comparison}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Price Anchoring Influence</span>
+                    <span class="likert-score">${interview.q9_anchoring}</span>
+                </div>
+                <div class="likert-item">
+                    <span class="likert-label">Payment Plan Influence</span>
+                    <span class="likert-score">${interview.q10_payment_plan}</span>
+                </div>
             </div>
 
             <div class="result-item">
                 <span class="result-label">Reason</span>
-                <span class="result-value reason">${escapeHtml(interview.q6_open)}</span>
+                <span class="result-value reason">${escapeHtml(interview.q11_open)}</span>
             </div>
 
             <div class="cost-breakdown">
@@ -577,7 +597,7 @@ function renderRecentRuns(runs, append) {
                 <td>${run.q3_credentials}</td>
                 <td>${run.q4_description}</td>
                 <td>${run.q5_clarity}</td>
-                <td class="reason" title="${escapeHtml(run.choice_reasoning || '')}">${escapeHtml(run.q6_open)}</td>
+                <td class="reason" title="${escapeHtml(run.choice_reasoning || '')}">${escapeHtml(run.q11_open)}</td>
                 <td>$${totalCost}</td>
             </tr>
         `;

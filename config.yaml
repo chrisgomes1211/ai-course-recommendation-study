@@ -32,8 +32,10 @@ models:
     provider: deepseek
     tier: low
 
-# 7 models x 5 pages x 34 runs = 1,190 rows
-runs_per_condition: 34
+# RUN 2: 7 models x 5 pages x 30 runs = 1,050 rows
+# (interview is now multi-turn: same conversation, so interview input tokens
+# ~ double vs run 1 — see avg_* below for the estimator)
+runs_per_condition: 30
 budget_cap_usd: 100.0
 
 # USER MUST VERIFY against current provider pricing

@@ -1,11 +1,15 @@
 <!--
-EXPERIMENTAL FEATURES (artistry_academy.html):
-- Price: Shown ($249)
-- Reviews: Many (150 reviews, 4.9/5 average)
-- Credentials: Yes (detailed)
-- Description: Detailed
+EXPERIMENTAL FEATURES (artistry_academy.html) — RUN 2 BALANCED PROFILE: "premium elite"
+- Price: Shown, anchored ($349 was -> $299 now, 14% off, deal timer) — PRICIEST of the five
+- Reviews: Many (240 reviews, 4.8/5) — high but not the most (canvas_color has 260)
+- Credentials: Elite (Yale MFA, MoMA/Whitney/Gagosian) — BEST of the five
+- Description: Detailed — deepest curriculum (96 lessons / 10 modules) — BEST of the five
 - Structure: Structured
+- Badge: #1 Best Seller
+- Social proof: 2,847 enrolled · 312 this month · 17 viewing now
+- Payment plan: NO | Comparison table: YES | Certificate: NOT offered (weakness w/ price)
 - Course: "Complete Oil Painting Mastery"
+- Tradeoff: best instructor + deepest curriculum, but most expensive and no certificate
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -335,7 +339,8 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             transform: translateY(110%); transition: transform .6s cubic-bezier(.25,1,.3,1);
         }
         .sticky-cta.show { transform: translateY(0); }
-        .sc-price { font-size: 20px; font-weight: 300; letter-spacing: -.01em; }
+        .sticky-cta .sc-price { font-size: 20px; font-weight: 300; letter-spacing: -.01em; }
+        .sticky-cta .price-was { font-size: 14px; color: #999; margin-right: 8px; }
         .sc-name { font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: #888; }
         .sticky-cta .btn-pill { margin-top: 0; background: #0a0a0a; color: #fff; border-color: #0a0a0a; padding: 12px 28px; font-size: 11px; }
         .sticky-cta .btn-pill:hover { background: #fff; color: #000; border-color: #0a0a0a; }
@@ -346,6 +351,55 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
         .lightbox.vis { opacity: 1; }
         .lightbox img { max-width: 92%; max-height: 88vh; object-fit: contain; transform: scale(.94); transition: transform .45s cubic-bezier(.25,1,.3,1); }
         .lightbox.vis img { transform: scale(1); }
+
+        /* ── competitive data blocks (run 2) ── */
+        .hero-badge {
+            display: flex; width: fit-content; align-items: center; gap: 8px;
+            font-size: 10px; font-weight: 400; letter-spacing: .28em; text-transform: uppercase;
+            background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.42);
+            border-radius: 999px; padding: 7px 18px; margin: 0 auto 22px; color: #fff;
+        }
+        .price-was { font-size: 20px; font-weight: 300; color: rgba(255,255,255,.5); text-decoration: line-through; margin-right: 16px; letter-spacing: 0; }
+        .price-now { display: inline-flex; align-items: baseline; gap: 0; }
+        .deal-line { font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #ffd66b; margin-top: 12px; }
+
+        /* rating distribution */
+        .rdist { max-width: 460px; margin: 0 auto 7vh; padding: 0 34px; }
+        .rdist-sum { font-size: 12px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: #666; margin-bottom: 18px; text-align: center; }
+        .rdist-row { display: grid; grid-template-columns: 42px 1fr 44px; align-items: center; gap: 14px; margin-bottom: 9px; font-size: 11px; letter-spacing: .1em; color: #888; }
+        .rdist-bar { height: 5px; background: #e4e4e4; border-radius: 999px; overflow: hidden; }
+        .rdist-bar i { display: block; height: 100%; background: var(--ink); }
+
+        /* verified + helpful */
+        .rmeta { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; flex-wrap: wrap; }
+        .rmeta .vok { color: var(--ink); font-weight: 500; }
+
+        /* social proof strip */
+        .proof { display: grid; grid-template-columns: repeat(3, 1fr); background: #fff; border-top: 1px solid #e8e8e8; border-bottom: 1px solid #e8e8e8; }
+        .proof div { text-align: center; padding: 42px 8px; border-right: 1px solid #e8e8e8; }
+        .proof div:last-child { border-right: none; }
+        .proof b { display: block; font-size: clamp(26px, 3.4vw, 40px); font-weight: 300; letter-spacing: -.02em; }
+        .proof span { font-size: 10.5px; font-weight: 400; letter-spacing: .22em; text-transform: uppercase; color: #888; }
+
+        /* specs bar */
+        .specs { display: flex; flex-wrap: wrap; gap: 12px 36px; justify-content: center; padding: 30px 34px; background: var(--soft); border-bottom: 1px solid #e8e8e8; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #666; }
+        .specs b { font-weight: 500; color: var(--ink); }
+
+        /* compare table */
+        .compare { padding: 14vh 34px; background: #fff; }
+        .compare .inner { max-width: 1120px; margin: 0 auto; }
+        .compare .sec-label { margin-bottom: 10px; }
+        .compare h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 300; letter-spacing: -.02em; margin-bottom: 5vh; }
+        .ctable-wrap { overflow-x: auto; }
+        .ctable { width: 100%; border-collapse: collapse; font-size: 13px; font-weight: 300; }
+        .ctable th, .ctable td { padding: 16px 14px; text-align: left; border-bottom: 1px solid #e8e8e8; white-space: nowrap; }
+        .ctable th { font-size: 10px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: #888; }
+        .ctable th.self { color: var(--ink); font-weight: 500; }
+        .ctable td:first-child { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #888; width: 130px; }
+        .ctable td.self { font-weight: 500; }
+        .ctable td.best { font-weight: 500; color: var(--ink); }
+        .ctable td.dim { color: #b0b0b0; }
+        .cnote { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #999; margin-top: 20px; }
 
         @media (max-width: 900px) {
             .instructor .inner { grid-template-columns: 1fr; gap: 40px; }
@@ -393,6 +447,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             <a class="nlink" href="#instructor">Instructor</a>
             <a class="nlink" href="#gallery">Gallery</a>
             <a class="nlink" href="#reviews">Reviews</a>
+            <a class="nlink" href="#compare">Compare</a>
             <a class="nlink" href="#faq">FAQ</a>
         </nav>
         <a class="hd-brand" href="#"><span class="logo">A</span><span>Artistry</span><span>Academy</span></a>
@@ -408,6 +463,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
         <a href="#instructor">Instructor</a>
         <a href="#gallery">Gallery</a>
         <a href="#reviews">Reviews</a>
+        <a href="#compare">Compare</a>
         <a href="#faq">FAQ</a>
         <a href="#enroll">Get Access</a>
     </div>
@@ -422,12 +478,14 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                 <div class="intro-media im-r1" id="imR1"><img src="https://live.staticflickr.com/7483/26681001963_0378aa128f_b.jpg" alt="" loading="lazy"></div>
                 <div class="intro-media im-r2" id="imR2"><img src="https://live.staticflickr.com/2742/4435959199_b96ac33aab_b.jpg" alt="" loading="lazy"></div>
                 <div class="intro-content" id="introContent">
+                    <div class="hero-badge">#1 Best Seller · Oil Painting</div>
                     <div class="eyebrow">Online Course · Oil Painting</div>
                     <h1>Complete Oil Painting <em>Mastery</em></h1>
                     <div class="stars">★★★★★</div>
-                    <p class="rating-line"><strong>4.9</strong> average rating · <strong>150</strong> reviews</p>
-                    <div class="price">$249</div>
-                    <p class="price-terms">One-time payment · Lifetime access</p>
+                    <p class="rating-line"><strong>4.8</strong> average rating · <strong>240</strong> reviews · <strong>2,847</strong> students enrolled</p>
+                    <div class="price"><span class="price-was">$349</span><span class="price-now">$299</span></div>
+                    <p class="price-terms">One-time payment · Lifetime access · Save $50 (14%)</p>
+                    <p class="deal-line">Launch pricing ends in 48 hours</p>
                     <a class="btn-pill" href="#enroll">Enroll Now
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </a>
@@ -438,14 +496,28 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
         </section>
 
         <div class="marquee"><div class="marquee-track">
-            <span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span><span>81 Lessons</span><span>·</span><span>24 Hours Video</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span>
+            <span>96 Lessons</span><span>·</span><span>28 Hours Video</span><span>·</span><span>10 Modules</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span><span>96 Lessons</span><span>·</span><span>28 Hours Video</span><span>·</span><span>10 Modules</span><span>·</span><span>Lifetime Access</span><span>·</span><span>Money-Back Guarantee</span><span>·</span>
         </div></div>
 
+        <div class="proof" id="proof">
+            <div><b class="count" data-count="2847">0</b><span>Students Enrolled</span></div>
+            <div><b class="count" data-count="312">0</b><span>Enrolled This Month</span></div>
+            <div><b>17</b><span>Viewing This Page Now</span></div>
+        </div>
+
         <div class="stats" id="stats">
-            <div class="stat"><b class="count" data-count="81">0</b><span>Lessons</span></div>
-            <div class="stat"><b><span class="count" data-count="24">0</span>h</b><span>Video</span></div>
-            <div class="stat"><b class="count" data-count="8">0</b><span>Modules</span></div>
+            <div class="stat"><b class="count" data-count="96">0</b><span>Lessons</span></div>
+            <div class="stat"><b><span class="count" data-count="28">0</span>h</b><span>Video</span></div>
+            <div class="stat"><b class="count" data-count="10">0</b><span>Modules</span></div>
             <div class="stat"><b>∞</b><span>Lifetime Access</span></div>
+        </div>
+
+        <div class="specs">
+            <span>Level: <b>All levels</b></span>
+            <span>Language: <b>English</b></span>
+            <span>Certificate: <b>Not offered</b></span>
+            <span>Last updated: <b>Sep 2026</b></span>
+            <span>Duration: <b>28 hours</b></span>
         </div>
 
         <!-- word-reveal manifesto -->
@@ -458,7 +530,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             <div class="range-head">
                 <div>
                     <p class="sec-label">Curriculum</p>
-                    <h2>Eight modules, in order</h2>
+                    <h2>Ten modules, in order</h2>
                 </div>
             </div>
             <div class="ghost" aria-hidden="true">CURRICULUM</div>
@@ -535,7 +607,25 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                         <div class="flessons">6 lessons</div>
                     </div>
                 </div>
-                <p class="total-line">Total: 81 lessons · 24 hours of video · 50+ downloadable resources</p>
+                <div class="sfig" style="--i:8">
+                    <div class="fimg"><img src="https://live.staticflickr.com/4081/4807647551_c7cb5eaece_b.jpg" alt="" loading="lazy"></div>
+                    <div class="fnum">09</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 9</div>
+                        <div class="fname">Studio Lighting &amp; Color Temperature</div>
+                        <div class="flessons">8 lessons</div>
+                    </div>
+                </div>
+                <div class="sfig" style="--i:9">
+                    <div class="fimg"><img src="https://live.staticflickr.com/4100/4930762816_ebcc3a230e_b.jpg" alt="" loading="lazy"></div>
+                    <div class="fnum">10</div>
+                    <div class="fmeta">
+                        <div class="fmod">Module 10</div>
+                        <div class="fname">Building a Body of Work</div>
+                        <div class="flessons">7 lessons</div>
+                    </div>
+                </div>
+                <p class="total-line">Total: 96 lessons · 28 hours of video · 60+ downloadable resources</p>
             </div>
         </section>
 
@@ -574,39 +664,129 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             <div class="r-head">
                 <div>
                     <p class="sec-label">Student Reviews</p>
-                    <h2>What 150 students say</h2>
+                    <h2>What 240 students say</h2>
                 </div>
-                <a class="all-reviews" href="#">View all 150 reviews →</a>
+                <a class="all-reviews" href="#">View all 240 reviews →</a>
+            </div>
+            <div class="rdist">
+                <p class="rdist-sum">4.8 average · 240 reviews · Based on verified purchases</p>
+                <div class="rdist-row"><span>5 ★</span><div class="rdist-bar"><i style="width:84%"></i></div><span>84%</span></div>
+                <div class="rdist-row"><span>4 ★</span><div class="rdist-bar"><i style="width:11%"></i></div><span>11%</span></div>
+                <div class="rdist-row"><span>3 ★</span><div class="rdist-bar"><i style="width:3%"></i></div><span>3%</span></div>
+                <div class="rdist-row"><span>2 ★</span><div class="rdist-bar"><i style="width:1%"></i></div><span>1%</span></div>
+                <div class="rdist-row"><span>1 ★</span><div class="rdist-bar"><i style="width:1%"></i></div><span>1%</span></div>
             </div>
             <div class="slider-wrap" data-slider>
                 <div class="strack" id="rTrack">
                     <div class="rcard">
                         <div class="stars">★★★★★</div>
                         <blockquote>"Transformed my painting completely. Elena's teaching is clear and encouraging."</blockquote>
-                        <cite>— M. Chen</cite>
+                        <div class="rmeta"><cite>— M. Chen · Oct 2, 2026</cite><span class="vok">Verified purchase</span><span>Helpful (48)</span></div>
                     </div>
                     <div class="rcard">
                         <div class="stars">★★★★★</div>
-                        <blockquote>"Best investment in my art career. The curriculum is comprehensive."</blockquote>
-                        <cite>— J. Rodriguez</cite>
+                        <blockquote>"Best investment in my art career. The curriculum is comprehensive — nothing else comes close to this depth."</blockquote>
+                        <div class="rmeta"><cite>— J. Rodriguez · Sep 21, 2026</cite><span class="vok">Verified purchase</span><span>Helpful (36)</span></div>
                     </div>
                     <div class="rcard">
                         <div class="stars">★★★★★</div>
                         <blockquote>"Finally understand color mixing! The exercises are brilliant."</blockquote>
-                        <cite>— K. Thompson</cite>
+                        <div class="rmeta"><cite>— K. Thompson · Sep 14, 2026</cite><span class="vok">Verified purchase</span><span>Helpful (22)</span></div>
                     </div>
                     <div class="rcard">
                         <div class="stars">★★★★☆</div>
-                        <blockquote>"Great content, wish there were more live sessions."</blockquote>
-                        <cite>— A. Park</cite>
+                        <blockquote>"Excellent content and production quality, but at $299 it's the most expensive option I compared — worth it only if you'll finish the modules."</blockquote>
+                        <div class="rmeta"><cite>— A. Park · Aug 30, 2026</cite><span class="vok">Verified purchase</span><span>Helpful (64)</span></div>
                     </div>
                     <div class="rcard">
                         <div class="stars">★★★★★</div>
                         <blockquote>"Professional quality instruction at a fraction of art school cost."</blockquote>
-                        <cite>— R. Williams</cite>
+                        <div class="rmeta"><cite>— R. Williams · Aug 12, 2026</cite><span class="vok">Verified purchase</span><span>Helpful (19)</span></div>
+                    </div>
+                    <div class="rcard">
+                        <div class="stars">★★★★☆</div>
+                        <blockquote>"Genuinely superb teaching. I only wish there were live critique sessions — everything else is studio-grade."</blockquote>
+                        <div class="rmeta"><cite>— D. Okafor · Jul 28, 2026</cite><span class="vok">Verified purchase</span><span>Helpful (41)</span></div>
                     </div>
                 </div>
                 <div class="sdots" id="rDots"></div>
+            </div>
+        </section>
+
+        <!-- compare table -->
+        <section class="compare" id="compare">
+            <div class="inner">
+                <p class="sec-label">Compare</p>
+                <h2>Compare with similar courses</h2>
+                <div class="ctable-wrap">
+                    <table class="ctable">
+                        <tr>
+                            <th></th>
+                            <th class="self">Artistry Academy</th>
+                            <th>Palette Masters</th>
+                            <th>Canvas &amp; Color</th>
+                            <th>Brushstroke Studio</th>
+                            <th>Creative Canvas</th>
+                        </tr>
+                        <tr>
+                            <td>Price</td>
+                            <td class="self">$299</td>
+                            <td class="best">$149</td>
+                            <td>$199</td>
+                            <td>$249</td>
+                            <td>$179</td>
+                        </tr>
+                        <tr>
+                            <td>Rating</td>
+                            <td class="self best">4.8 ★</td>
+                            <td>4.6 ★</td>
+                            <td class="dim">4.3 ★</td>
+                            <td>4.5 ★</td>
+                            <td>4.4 ★</td>
+                        </tr>
+                        <tr>
+                            <td>Reviews</td>
+                            <td class="self">240</td>
+                            <td>220</td>
+                            <td class="best">260</td>
+                            <td class="dim">180</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>Lessons</td>
+                            <td class="self best">96</td>
+                            <td>72</td>
+                            <td>64</td>
+                            <td>80</td>
+                            <td>58</td>
+                        </tr>
+                        <tr>
+                            <td>Instructor</td>
+                            <td class="self best">Yale MFA · MoMA exhibitor</td>
+                            <td>Working studio artist</td>
+                            <td>Community-taught, 12 yrs</td>
+                            <td>Commercial artist, 20 yrs</td>
+                            <td>Self-taught duo</td>
+                        </tr>
+                        <tr>
+                            <td>Certificate</td>
+                            <td class="self dim">—</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td class="best">Yes</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>Level</td>
+                            <td class="self">All levels</td>
+                            <td>Beginner–Int</td>
+                            <td>All levels</td>
+                            <td>Int–Advanced</td>
+                            <td>Absolute beginner</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="cnote">Comparison based on publicly listed course information · Updated Oct 2026</p>
             </div>
         </section>
 
@@ -616,10 +796,12 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
                 <p class="sec-label">FAQ</p>
                 <h2>Frequently asked questions</h2>
                 <div class="faq">
-                    <details open><summary>Do I need prior experience?</summary><div class="a">No, this course starts from absolute basics.</div></details>
-                    <details><summary>What materials do I need?</summary><div class="a">A detailed supply list is provided in Module 1 (approx. $150–200).</div></details>
-                    <details><summary>Is there a community?</summary><div class="a">Yes, private Discord with 2,000+ students and weekly critique sessions.</div></details>
-                    <details><summary>Can I download videos?</summary><div class="a">Yes, all content is downloadable for offline viewing.</div></details>
+                    <details open><summary>Do I need prior experience?</summary><div class="a">No, this course starts from absolute basics and progresses to professional practice across ten modules.</div></details>
+                    <details><summary>What materials do I need?</summary><div class="a">A detailed supply list is provided in Module 1 (approx. $150–200). Budget and premium kit options are listed.</div></details>
+                    <details><summary>Is there a community?</summary><div class="a">Yes, private Discord with 2,000+ students and weekly critique sessions hosted by the instructor.</div></details>
+                    <details><summary>Do I get a certificate?</summary><div class="a">No — this is a mastery-oriented studio course, not a certification program. If you need a certificate for career purposes, see the certificate row in the comparison table above.</div></details>
+                    <details><summary>Is the $299 price a one-time payment?</summary><div class="a">Yes. One payment of $299 (launch pricing, regularly $349) with lifetime access. No subscription, no upsells, no hidden fees.</div></details>
+                    <details><summary>Can I download videos?</summary><div class="a">Yes, all 96 lessons are downloadable for offline viewing, plus 60+ downloadable reference resources.</div></details>
                 </div>
             </div>
         </section>
@@ -629,9 +811,10 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
             <div class="bg"><img src="https://live.staticflickr.com/8142/29178835570_1d3462bc4c_b.jpg" alt="" loading="lazy"></div>
             <div class="inner">
                 <h2>Start painting today</h2>
-                <div class="price">$249</div>
+                <div class="price"><span class="price-was">$349</span><span class="price-now">$299</span></div>
                 <p class="price-terms">One-time payment · Lifetime access · 30-day money-back guarantee</p>
-                <button class="btn-outline">Enroll Now - $249
+                <p class="deal-line">Launch pricing ends in 48 hours · 2,847 students already enrolled</p>
+                <button class="btn-outline">Enroll Now - $299
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                 </button>
             </div>
@@ -645,7 +828,7 @@ EXPERIMENTAL FEATURES (artistry_academy.html):
     </footer>
 
     <div class="sticky-cta" id="stickyCta">
-        <div><div class="sc-price">$249</div><div class="sc-name">Complete Oil Painting Mastery · Lifetime access</div></div>
+        <div><div class="sc-price">$299 <span class="price-was">$349</span></div><div class="sc-name">Complete Oil Painting Mastery · Lifetime access · 4.8★ (240)</div></div>
         <a class="btn-pill" href="#enroll">Enroll Now</a>
     </div>
 

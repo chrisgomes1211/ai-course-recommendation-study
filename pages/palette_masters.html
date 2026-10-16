@@ -1,11 +1,15 @@
 <!--
-EXPERIMENTAL FEATURES (palette_masters.html):
-- Price: Shown ($199)
-- Reviews: Many (120 reviews, 4.7/5 average)
-- Credentials: No
-- Description: Detailed
-- Structure: Unstructured
+EXPERIMENTAL FEATURES (palette_masters.html) — RUN 2 BALANCED PROFILE: "value king"
+- Price: Shown ($149) — LOWEST of the five, payment plan offered (3 x $49.67)
+- Reviews: Many (220 reviews, 4.6/5) — strong but not the most (canvas_color has 260)
+- Credentials: Basic (working studio collective, no formal academic creds) — WEAKEST of the five
+- Description: Detailed — 72 lessons across 15 invitations
+- Structure: Unstructured (editorial flow by design)
+- Badge: Best Value
+- Social proof: 4,120 enrolled · 268 this month
+- Payment plan: YES (3 x $49.67) | Comparison table: YES | Certificate: NOT offered
 - Course: "The Complete Painter's Path"
+- Tradeoff: best price + strong reviews, but no certificate and no credentialed instructor
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -159,6 +163,45 @@ EXPERIMENTAL FEATURES (palette_masters.html):
         .sc-n { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
         .sticky-cta .btn-pill { margin-top: 0; padding: 12px 28px; font-size: 11px; }
 
+        /* ── competitive data blocks (run 2) ── */
+        .hero-badge { display: flex; width: fit-content; align-items: center; gap: 8px; margin: 0 auto 18px; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--terra-deep); border: 1px solid var(--terra); border-radius: 999px; padding: 7px 18px; background: #fffdf8; }
+        .pay-plan { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--terra-deep); margin-top: 10px; }
+        .pay-plan em { font-style: normal; color: var(--ink-soft); }
+
+        /* rating distribution */
+        .rdist { max-width: 460px; margin: 26px 0 0; }
+        .rdist-sum { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; text-align: center; }
+        .rdist-row { display: grid; grid-template-columns: 42px 1fr 44px; align-items: center; gap: 14px; margin-bottom: 8px; font-size: 11px; font-weight: 500; color: var(--ink-soft); }
+        .rdist-bar { height: 5px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+        .rdist-bar i { display: block; height: 100%; background: var(--terra); }
+
+        /* verified + helpful */
+        .rmeta { display: flex; align-items: center; gap: 14px; margin-top: 14px; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); flex-wrap: wrap; }
+        .rmeta .vok { color: var(--terra-deep); }
+
+        /* proof strip */
+        .proof { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .proof div { text-align: center; padding: 40px 8px; border-right: 1px solid var(--line); }
+        .proof div:last-child { border-right: none; }
+        .proof b { display: block; font-family: 'Fraunces', Georgia, serif; font-size: clamp(26px, 3.4vw, 40px); font-weight: 300; letter-spacing: -.01em; }
+        .proof span { font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); }
+
+        /* specs bar */
+        .specs { display: flex; flex-wrap: wrap; gap: 12px 36px; justify-content: center; padding: 28px 34px; background: var(--paper); border-bottom: 1px solid var(--line); font-size: 10.5px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+        .specs b { font-weight: 600; color: var(--ink); }
+
+        /* compare table */
+        .ctable-wrap { overflow-x: auto; margin-top: 10px; }
+        .ctable { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        .ctable th, .ctable td { padding: 15px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+        .ctable th { font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+        .ctable th.self { color: var(--terra-deep); }
+        .ctable td:first-child { font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); width: 128px; }
+        .ctable td.self { font-weight: 600; }
+        .ctable td.best { font-weight: 600; color: var(--terra-deep); }
+        .ctable td.dim { color: #b3a894; }
+        .cnote { font-size: 10.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); margin-top: 18px; }
+
         @media (max-width: 900px) {
             .hd { padding: 16px 20px; }
             .hd-nav, .hd-chip { display: none; }
@@ -186,9 +229,10 @@ EXPERIMENTAL FEATURES (palette_masters.html):
             <a href="#about">About</a>
             <a href="#explore">Explore</a>
             <a href="#reviews">Reviews</a>
+            <a href="#compare">Compare</a>
             <a href="#faq">Good to know</a>
         </nav>
-        <span class="hd-chip">$199 one-time</span>
+        <span class="hd-chip">$149 one-time</span>
         <button class="burger" id="burger" aria-label="Open menu">Menu</button>
     </header>
 
@@ -197,6 +241,7 @@ EXPERIMENTAL FEATURES (palette_masters.html):
         <a href="#about">About</a>
         <a href="#explore">Explore</a>
         <a href="#reviews">Reviews</a>
+        <a href="#compare">Compare</a>
         <a href="#faq">Good to know</a>
         <a href="#enroll">Join the Path</a>
     </div>
@@ -204,12 +249,14 @@ EXPERIMENTAL FEATURES (palette_masters.html):
     <header class="hero" id="hero">
         <div class="hero-img" id="heroImg"><img src="https://live.staticflickr.com/3027/3012125403_64cbf03eeb_b.jpg" alt=""></div>
         <div class="hero-card">
+            <div class="hero-badge">Best Value · Oil Painting</div>
             <h1 id="heroTitle">The Complete Painter's Path</h1>
             <p class="sub">A relaxed, joyful way to learn oil painting — at your own pace.</p>
-            <p class="rating"><span class="stars">★★★★☆</span><br><strong class="count" data-count="120">0</strong> reviews · 4.7 out of 5 from fellow painters</p>
+            <p class="rating"><span class="stars">★★★★☆</span><br><strong class="count" data-count="220">0</strong> reviews · 4.6 out of 5 from fellow painters · 4,120 students enrolled</p>
             <div class="price-line">
-                <div class="p">$199</div>
-                <div class="t">one-time payment · lifetime access</div>
+                <div class="p">$149</div>
+                <div class="t">one-time payment · lifetime access · lowest price of the five courses compared</div>
+                <div class="pay-plan">or 3 payments of $49.67 <em>· interest-free</em></div>
             </div>
             <a class="btn-pill" href="#enroll">Join the Path
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -221,27 +268,50 @@ EXPERIMENTAL FEATURES (palette_masters.html):
         <span>Paint at your own pace</span><span class="star">★</span><span>No deadlines</span><span class="star">★</span><span>Lifetime access</span><span class="star">★</span><span>Studio letters included</span><span class="star">★</span><span>Paint at your own pace</span><span class="star">★</span><span>No deadlines</span><span class="star">★</span><span>Lifetime access</span><span class="star">★</span><span>Studio letters included</span>
     </div></div>
 
+    <div class="specs">
+        <span><b>72</b> lessons</span>
+        <span><b>20</b> hours video</span>
+        <span><b>Beginner–Intermediate</b></span>
+        <span><b>English</b> captions</span>
+        <span><b>Certificate:</b> not offered</span>
+        <span><b>Updated</b> Sep 2026</span>
+    </div>
+
+    <div class="proof">
+        <div><b>4,120</b><span>students enrolled</span></div>
+        <div><b>268</b><span>joined this month</span></div>
+        <div><b>$149</b><span>lowest price compared</span></div>
+    </div>
+
     <!-- reviews first (unstructured flow) -->
     <section class="blk" id="reviews">
         <div class="rv"><p class="kicker">From the studio</p><h2>Painters love this course ♥</h2></div>
+        <div class="rdist rv">
+            <p class="rdist-sum">4.6 average · 220 reviews · Based on verified purchases</p>
+            <div class="rdist-row"><span>5 ★</span><div class="rdist-bar"><i style="width:74%"></i></div><span>74%</span></div>
+            <div class="rdist-row"><span>4 ★</span><div class="rdist-bar"><i style="width:16%"></i></div><span>16%</span></div>
+            <div class="rdist-row"><span>3 ★</span><div class="rdist-bar"><i style="width:6%"></i></div><span>6%</span></div>
+            <div class="rdist-row"><span>2 ★</span><div class="rdist-bar"><i style="width:3%"></i></div><span>3%</span></div>
+            <div class="rdist-row"><span>1 ★</span><div class="rdist-bar"><i style="width:1%"></i></div><span>1%</span></div>
+        </div>
         <div class="notes">
             <div class="note rv rv-d1">
                 <div class="stars">★★★★★</div>
                 <blockquote>"I painted every weekend for a month and my work transformed. The pace feels like painting with a friend."</blockquote>
-                <cite>— Priya N.</cite>
+                <div class="rmeta"><cite>— Priya N. · Oct 4, 2026</cite><span class="vok">Verified</span><span>Helpful (52)</span></div>
             </div>
             <div class="note rv rv-d2">
                 <div class="stars">★★★★★</div>
-                <blockquote>"No pressure, no gatekeeping. Just honest, generous teaching about color and joy."</blockquote>
-                <cite>— Marco B.</cite>
+                <blockquote>"No pressure, no gatekeeping. Just honest, generous teaching about color and joy. And at $149 it's a steal compared to anything else I looked at."</blockquote>
+                <div class="rmeta"><cite>— Marco B. · Sep 27, 2026</cite><span class="vok">Verified</span><span>Helpful (44)</span></div>
             </div>
             <div class="note rv rv-d3">
                 <div class="stars">★★★★☆</div>
-                <blockquote>"Beautifully filmed. I keep coming back to the plein air section again and again."</blockquote>
-                <cite>— Lena K.</cite>
+                <blockquote>"Beautifully filmed. I keep coming back to the plein air section. I do wish there was a certificate at the end, though."</blockquote>
+                <div class="rmeta"><cite>— Lena K. · Sep 15, 2026</cite><span class="vok">Verified</span><span>Helpful (29)</span></div>
             </div>
         </div>
-        <div class="rv"><a class="more-link" href="#">Read more of the 120 reviews →</a></div>
+        <div class="rv"><a class="more-link" href="#">Read more of the 220 reviews →</a></div>
     </section>
 
     <section class="blk" id="about">
@@ -259,8 +329,9 @@ EXPERIMENTAL FEATURES (palette_masters.html):
 
     <section class="price-band" id="enroll">
         <div class="inner">
-            <div class="p">$199</div>
-            <p class="t">One payment. Lifetime access. All future updates included.</p>
+            <div class="p">$149</div>
+            <p class="t">One payment. Lifetime access. All future updates included. 4,120 painters already joined.</p>
+            <p class="t">Or 3 interest-free payments of $49.67 — same lifetime access either way.</p>
             <a class="btn-pill" href="#">Get Instant Access
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </a>
@@ -320,6 +391,79 @@ EXPERIMENTAL FEATURES (palette_masters.html):
         </div>
     </section>
 
+    <section class="blk" id="compare">
+        <div class="rv"><p class="kicker">Compare</p><h2>Compare with similar courses</h2></div>
+        <div class="ctable-wrap rv">
+            <table class="ctable">
+                <tr>
+                    <th></th>
+                    <th>Artistry Academy</th>
+                    <th class="self">Palette Masters</th>
+                    <th>Canvas &amp; Color</th>
+                    <th>Brushstroke Studio</th>
+                    <th>Creative Canvas</th>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>$299</td>
+                    <td class="self best">$149</td>
+                    <td>$199</td>
+                    <td>$249</td>
+                    <td>$179</td>
+                </tr>
+                <tr>
+                    <td>Rating</td>
+                    <td class="best">4.8 ★</td>
+                    <td class="self">4.6 ★</td>
+                    <td class="dim">4.3 ★</td>
+                    <td>4.5 ★</td>
+                    <td>4.4 ★</td>
+                </tr>
+                <tr>
+                    <td>Reviews</td>
+                    <td>240</td>
+                    <td class="self">220</td>
+                    <td class="best">260</td>
+                    <td class="dim">180</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>Lessons</td>
+                    <td class="best">96</td>
+                    <td class="self">72</td>
+                    <td>64</td>
+                    <td>80</td>
+                    <td>58</td>
+                </tr>
+                <tr>
+                    <td>Instructor</td>
+                    <td class="best">Yale MFA · MoMA exhibitor</td>
+                    <td class="self">Working studio artist</td>
+                    <td>Community-taught, 12 yrs</td>
+                    <td>Commercial artist, 20 yrs</td>
+                    <td>Self-taught duo</td>
+                </tr>
+                <tr>
+                    <td>Certificate</td>
+                    <td>—</td>
+                    <td class="self dim">—</td>
+                    <td>—</td>
+                    <td class="best">Yes</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>All levels</td>
+                    <td class="self">Beginner–Int</td>
+                    <td>All levels</td>
+                    <td>Int–Advanced</td>
+                    <td>Absolute beginner</td>
+                </tr>
+            </table>
+        </div>
+        <p class="cnote rv">Comparison based on publicly listed course information · Updated Oct 2026</p>
+    </section>
+
     <section class="blk" id="faq">
         <div class="rv"><p class="kicker">Before you begin</p><h2>Good to know</h2></div>
         <div class="faq rv">
@@ -327,6 +471,9 @@ EXPERIMENTAL FEATURES (palette_masters.html):
             <details><summary>How long do I have access?</summary><div class="a">Forever, including every future lesson we add. No subscription, ever.</div></details>
             <details><summary>I'm a complete beginner — is that okay?</summary><div class="a">That's exactly who this is for. Nothing assumes prior experience, and there's no such thing as falling behind when there are no deadlines.</div></details>
             <details><summary>Is there feedback on my work?</summary><div class="a">There's a student gallery where you can share paintings if you'd like. The team highlights a few each month, but there's no obligation to post anything.</div></details>
+            <details><summary>Why is this course cheaper than others?</summary><div class="a">We're a small collective with no academic overhead and no certificate program to run — we put everything into the lessons themselves. At $149 you get the same lifetime access and every future update for roughly half what comparable courses charge.</div></details>
+            <details><summary>Do I get a certificate?</summary><div class="a">No. We focus purely on the painting, not the paperwork. If you need a formal certificate for a job or visa, a credentialed program may suit you better — but if you want to fall in love with oil painting without paying for admin, this is your course.</div></details>
+            <details><summary>Can I pay in installments?</summary><div class="a">Yes — split the $149 into 3 interest-free payments of $49.67 at checkout. You get full lifetime access immediately after the first payment.</div></details>
             <details><summary>What if it isn't for me?</summary><div class="a">Email us within 30 days and we'll refund you, no questions asked.</div></details>
         </div>
     </section>
@@ -334,7 +481,7 @@ EXPERIMENTAL FEATURES (palette_masters.html):
     <footer>© 2026 Palette Masters · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Say hello</a></footer>
 
     <div class="sticky-cta" id="stickyCta">
-        <div><div class="sc-p">$199</div><div class="sc-n">The Complete Painter's Path · lifetime access</div></div>
+        <div><div class="sc-p">$149</div><div class="sc-n">The Complete Painter's Path · lifetime access · or 3 × $49.67</div></div>
         <a class="btn-pill" href="#enroll">Join the Path</a>
     </div>
 

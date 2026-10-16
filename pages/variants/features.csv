@@ -1,0 +1,7 @@
+file,price_shown,price_value,reviews_level,reviews_count,reviews_avg,credentials_level,description_level,structure_level
+v0_baseline.html,shown,249,typical,48,4.2,basic,medium,simple
+v1_price.html,shown,149,typical,48,4.2,basic,medium,simple
+v2_reviews.html,shown,249,many,280,4.8,basic,medium,simple
+v3_credentials.html,shown,249,typical,48,4.2,detailed,medium,simple
+v4_description.html,shown,249,typical,48,4.2,basic,detailed,simple
+v5_structure.html,shown,249,typical,48,4.2,basic,medium,structured

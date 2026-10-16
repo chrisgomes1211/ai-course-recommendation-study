@@ -1,11 +1,16 @@
 <!--
-EXPERIMENTAL FEATURES (brushstroke_studio.html):
-- Price: Shown ($299)
-- Reviews: None (0 reviews)
-- Credentials: Yes (MFA, Slade School; Former Senior Lecturer, Chelsea)
-- Description: Detailed
+EXPERIMENTAL FEATURES (brushstroke_studio.html) — RUN 2 BALANCED PROFILE: "pro track / certificate"
+- Price: Shown ($249, anchored from $299 — Save $50), payment plan 3 x $83
+- Reviews: Fewest of the five (180 reviews, 4.5/5) — honest new-program count
+- Credentials: Yes (MFA, Slade School; Former Senior Lecturer, Chelsea) — strong practical creds
+- Certificate: YES — unique edge of the five (only course offering one)
+- Description: Detailed — 80 lessons across 5 modules, 20 hours
 - Structure: Structured (5 modules)
+- Badge: New & Trending
+- Social proof: 410 enrolled (smallest, honest for a newer program) · 34 this month
+- Comparison table: YES (its certificate column is the 'best' cell)
 - Course: "Professional Oil Painting Program"
+- Tradeoff: certificate + pro rigor, but fewest reviews and second-highest price
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -149,6 +154,56 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
         .sc-n { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
         .sticky-cta .btn { padding: 12px 26px; font-size: 11px; }
 
+        /* ── competitive data blocks (run 2) ── */
+        .price-was { font-family: 'Archivo Black', sans-serif; font-size: clamp(20px, 2.4vw, 28px); color: var(--muted); text-decoration: line-through; margin-right: 14px; }
+        .save-tag { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: #fff; background: var(--red); padding: 5px 12px; margin-left: 12px; vertical-align: middle; }
+        .pay-line { font-family: 'Space Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: .1em; color: #cfc9bc; margin-top: 8px; }
+        .pay-line b { color: var(--red); font-weight: 700; }
+        .hero-rating { font-family: 'Space Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: #cfc9bc; margin-top: 18px; }
+        .hero-rating .stars { color: #ffd166; letter-spacing: 2px; font-size: 14px; }
+        .hero-rating b { color: var(--ink); }
+
+        /* rating distribution */
+        .rdist { max-width: 480px; margin: 0 0 34px; }
+        .rdist-sum { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 16px; }
+        .rdist-row { display: grid; grid-template-columns: 42px 1fr 44px; align-items: center; gap: 14px; margin-bottom: 8px; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
+        .rdist-bar { height: 6px; background: var(--line); overflow: hidden; }
+        .rdist-bar i { display: block; height: 100%; background: var(--red); }
+
+        /* review cards */
+        .rv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 34px; }
+        .rv-card { border: 1px solid var(--line); padding: 30px 26px; background: var(--bg-2); transition: border-color .35s; }
+        .rv-card:hover { border-color: var(--red); }
+        .rv-card .stars { color: #ffd166; font-size: 13px; letter-spacing: 2px; margin-bottom: 14px; }
+        .rv-card blockquote { font-size: 15.5px; line-height: 1.55; color: #cfc9bc; margin-bottom: 18px; }
+        .rv-meta { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .rv-meta .vok { color: var(--red); }
+
+        /* compare table */
+        .compare { padding: 0 0 120px; }
+        .ctable-wrap { overflow-x: auto; margin-top: 10px; }
+        .ctable { width: 100%; border-collapse: collapse; font-family: 'Space Grotesk', sans-serif; font-size: 13.5px; }
+        .ctable th, .ctable td { padding: 15px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+        .ctable th { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); }
+        .ctable th.self { color: var(--red); }
+        .ctable td:first-child { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); width: 128px; }
+        .ctable td.self { font-weight: 700; }
+        .ctable td.best { font-weight: 700; color: var(--red); }
+        .ctable td.dim { color: #555; }
+        .cnote { font-family: 'Space Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-top: 18px; }
+
+        /* faq */
+        .faq-sec { padding: 0 0 120px; }
+        .faq { margin-top: 10px; }
+        .faq details { border-top: 1px solid var(--line); }
+        .faq details:last-child { border-bottom: 1px solid var(--line); }
+        .faq summary { cursor: pointer; list-style: none; padding: 24px 44px 24px 0; position: relative; font-family: 'Archivo Black', sans-serif; font-size: clamp(15px, 2vw, 19px); text-transform: uppercase; letter-spacing: -.01em; transition: color .3s; }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after { content: '+'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: 'Space Mono', monospace; font-size: 22px; color: var(--red); transition: transform .4s cubic-bezier(.25,1,.3,1); }
+        .faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+        .faq summary:hover { color: var(--red); }
+        .faq .a { padding: 0 0 24px; color: var(--muted); font-size: 15px; max-width: 64ch; }
+
         @media (max-width: 900px) {
             .hd { padding: 14px 18px; }
             .hd-nav, .hd-cta { display: none; }
@@ -180,6 +235,7 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
             <a href="#instructor">Instructor</a>
             <a href="#gallery">Gallery</a>
             <a href="#reviews">Reviews</a>
+            <a href="#compare">Compare</a>
         </nav>
         <a class="hd-cta" href="#enroll">Enroll Now</a>
         <button class="burger" id="burger" aria-label="Open menu">Menu</button>
@@ -191,6 +247,7 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
         <a href="#instructor">Instructor</a>
         <a href="#gallery">Gallery</a>
         <a href="#reviews">Reviews</a>
+        <a href="#compare">Compare</a>
         <a href="#enroll">Enroll</a>
     </div>
 
@@ -202,13 +259,15 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
             <img src="https://live.staticflickr.com/7015/6425603059_53bc944847_b.jpg" alt="">
         </div>
         <div class="hero-inner">
-            <span class="badge">Professional Program · Oil Painting</span>
+            <span class="badge">New &amp; Trending · Certificate Included</span>
             <h1 class="disp"><span>Professional Oil Painting</span><span>Program</span></h1>
             <p class="sub">A rigorous, structured track for painters who want professional-grade technique — fundamentals through portfolio.</p>
+            <p class="hero-rating"><span class="stars">★★★★★</span> &nbsp;<b>4.5</b> · 180 reviews · 410 students enrolled</p>
             <div class="hero-foot">
                 <div class="hero-price">
-                    <div class="p">$299</div>
-                    <div class="t">One-time · Lifetime access</div>
+                    <div class="p"><span class="price-was">$299</span>$249<span class="save-tag">Save $50</span></div>
+                    <div class="t">One-time · Lifetime access · <span style="color:#cfc9bc">or 3 payments of $83</span></div>
+                    <div class="pay-line">Certificate on completion — <b>the only one of the five courses that includes one</b></div>
                 </div>
                 <a class="btn" href="#enroll">Enroll Now</a>
             </div>
@@ -216,24 +275,24 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
     </header>
 
     <div class="marquee"><div class="marquee-track">
-        <span>42 Lessons</span><span class="sl">//</span><span>16 Hours</span><span class="sl">//</span><span>Certificate Included</span><span class="sl">//</span><span>Lifetime Access</span><span class="sl">//</span><span>42 Lessons</span><span class="sl">//</span><span>16 Hours</span><span class="sl">//</span><span>Certificate Included</span><span class="sl">//</span><span>Lifetime Access</span><span class="sl">//</span>
+        <span>80 Lessons</span><span class="sl">//</span><span>20 Hours</span><span class="sl">//</span><span>Certificate Included</span><span class="sl">//</span><span>Lifetime Access</span><span class="sl">//</span><span>80 Lessons</span><span class="sl">//</span><span>20 Hours</span><span class="sl">//</span><span>Certificate Included</span><span class="sl">//</span><span>Lifetime Access</span><span class="sl">//</span>
     </div></div>
 
     <section class="stats">
-        <div class="stat br"><b class="count" data-count="42">0</b><span>Lessons</span></div>
-        <div class="stat br br-d1"><b><span class="count" data-count="16">0</span><span class="u">h</span></b><span>Video</span></div>
+        <div class="stat br"><b class="count" data-count="80">0</b><span>Lessons</span></div>
+        <div class="stat br br-d1"><b><span class="count" data-count="20">0</span><span class="u">h</span></b><span>Video</span></div>
         <div class="stat br br-d2"><b class="count" data-count="5">0</b><span>Modules</span></div>
-        <div class="stat br br-d3"><b>∞</b><span>Access</span></div>
+        <div class="stat br br-d3"><b class="count" data-count="410">0</b><span>Students</span></div>
     </section>
 
     <section class="program wrap" id="program">
         <div class="br"><p class="sec-label">The track</p><h2>Program Structure</h2></div>
-        <div class="row br"><span class="name">1 · Foundations &amp; Studio Discipline</span><span class="meta">8 lessons</span></div>
-        <div class="row br"><span class="name">2 · Color Systems &amp; Value Control</span><span class="meta">9 lessons</span></div>
-        <div class="row br"><span class="name">3 · Advanced Brushwork &amp; Surfaces</span><span class="meta">9 lessons</span></div>
-        <div class="row br"><span class="name">4 · Figurative &amp; Landscape Practice</span><span class="meta">10 lessons</span></div>
-        <div class="row br"><span class="name">5 · Portfolio &amp; Professional Practice</span><span class="meta">6 lessons</span></div>
-        <p class="total br">42 lessons · 16 hours of video · Certificate on completion</p>
+        <div class="row br"><span class="name">1 · Foundations &amp; Studio Discipline</span><span class="meta">16 lessons</span></div>
+        <div class="row br"><span class="name">2 · Color Systems &amp; Value Control</span><span class="meta">16 lessons</span></div>
+        <div class="row br"><span class="name">3 · Advanced Brushwork &amp; Surfaces</span><span class="meta">18 lessons</span></div>
+        <div class="row br"><span class="name">4 · Figurative &amp; Landscape Practice</span><span class="meta">18 lessons</span></div>
+        <div class="row br"><span class="name">5 · Portfolio &amp; Professional Practice</span><span class="meta">12 lessons</span></div>
+        <p class="total br">80 lessons · 20 hours of video · Certificate on completion</p>
     </section>
 
     <section class="instructor wrap" id="instructor">
@@ -262,24 +321,118 @@ EXPERIMENTAL FEATURES (brushstroke_studio.html):
 
     <section class="reviews wrap" id="reviews">
         <div class="br"><p class="sec-label">Student voices</p><h2>Reviews</h2></div>
-        <div class="empty br">
-            <span class="star">☆</span>
-            <p>No reviews yet.</p>
-            <p class="note">This is a new program — be the first student to leave a review after you complete it.</p>
+        <div class="rdist br">
+            <p class="rdist-sum">4.5 average · 180 reviews — newest program of the five, already building a following</p>
+            <div class="rdist-row"><span>5 ★</span><div class="rdist-bar"><i style="width:68%"></i></div><span>68%</span></div>
+            <div class="rdist-row"><span>4 ★</span><div class="rdist-bar"><i style="width:20%"></i></div><span>20%</span></div>
+            <div class="rdist-row"><span>3 ★</span><div class="rdist-bar"><i style="width:7%"></i></div><span>7%</span></div>
+            <div class="rdist-row"><span>2 ★</span><div class="rdist-bar"><i style="width:3%"></i></div><span>3%</span></div>
+            <div class="rdist-row"><span>1 ★</span><div class="rdist-bar"><i style="width:2%"></i></div><span>2%</span></div>
+        </div>
+        <div class="rv-grid">
+            <div class="rv-card br"><div class="stars">★★★★★</div><blockquote>"The certificate was the decider for me — I needed something concrete for my portfolio. Reyes does not go easy on you, in the best way."</blockquote><div class="rv-meta"><span>— Ana P. · Sep 2026</span><span class="vok">Verified</span></div></div>
+            <div class="rv-card br br-d1"><div class="stars">★★★★★</div><blockquote>"Rigorous and worth every penny. The brushwork module changed how I handle edges and surfaces completely."</blockquote><div class="rv-meta"><span>— Jules M. · Aug 2026</span><span class="vok">Verified</span></div></div>
+            <div class="rv-card br br-d2"><div class="stars">★★★★☆</div><blockquote>"Strong program, though the pace is intense — beginners might want foundations first. The professional practice module alone justified the price."</blockquote><div class="rv-meta"><span>— Kenji T. · Oct 2026</span><span class="vok">Verified</span></div></div>
+        </div>
+        <p class="cnote br" style="margin-top:22px;">Read more of the 180 reviews on the program page →</p>
+    </section>
+
+    <section class="compare wrap" id="compare">
+        <div class="br"><p class="sec-label">Compare</p><h2>Compare with similar courses</h2></div>
+        <div class="ctable-wrap br">
+            <table class="ctable">
+                <tr>
+                    <th></th>
+                    <th>Artistry Academy</th>
+                    <th>Palette Masters</th>
+                    <th>Canvas &amp; Color</th>
+                    <th class="self">Brushstroke Studio</th>
+                    <th>Creative Canvas</th>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>$299</td>
+                    <td class="best">$149</td>
+                    <td>$199</td>
+                    <td class="self">$249</td>
+                    <td>$179</td>
+                </tr>
+                <tr>
+                    <td>Rating</td>
+                    <td class="best">4.8 ★</td>
+                    <td>4.6 ★</td>
+                    <td class="dim">4.3 ★</td>
+                    <td class="self">4.5 ★</td>
+                    <td>4.4 ★</td>
+                </tr>
+                <tr>
+                    <td>Reviews</td>
+                    <td>240</td>
+                    <td>220</td>
+                    <td class="best">260</td>
+                    <td class="self dim">180</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>Lessons</td>
+                    <td class="best">96</td>
+                    <td>72</td>
+                    <td>64</td>
+                    <td class="self">80</td>
+                    <td>58</td>
+                </tr>
+                <tr>
+                    <td>Instructor</td>
+                    <td>Yale MFA · MoMA exhibitor</td>
+                    <td>Working studio artist</td>
+                    <td>Community-taught, 12 yrs</td>
+                    <td class="self">Commercial artist, 20 yrs</td>
+                    <td>Self-taught duo</td>
+                </tr>
+                <tr>
+                    <td>Certificate</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td class="self best">Yes</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>All levels</td>
+                    <td>Beginner–Int</td>
+                    <td>All levels</td>
+                    <td class="self">Int–Advanced</td>
+                    <td>Absolute beginner</td>
+                </tr>
+            </table>
+        </div>
+        <p class="cnote br">Comparison based on publicly listed course information · Updated Oct 2026</p>
+    </section>
+
+    <section class="faq-sec wrap" id="faq">
+        <div class="br"><p class="sec-label">FAQ</p><h2>Good to know</h2></div>
+        <div class="faq br">
+            <details open><summary>Do I get a certificate?</summary><div class="a">Yes — the only one of the five commonly compared oil painting courses to include one. You receive a Brushstroke Studio certificate on completion of the portfolio module, suitable for LinkedIn and professional portfolios.</div></details>
+            <details><summary>Who is this program for?</summary><div class="a">Intermediate to advanced painters. If you are brand new to oils, start with a foundations course first — this program assumes you can already mix color and control basic values.</div></details>
+            <details><summary>How much does it cost?</summary><div class="a">$249 one-time (launch pricing, regularly $299), or 3 interest-free payments of $83. Lifetime access either way.</div></details>
+            <details><summary>Is there feedback on my work?</summary><div class="a">Yes — every module includes structured critique assignments reviewed by the instructor or senior teaching assistants. Portfolio module culminates in a reviewed final portfolio.</div></details>
+            <details><summary>What if it isn't for me?</summary><div class="a">30-day money-back guarantee, no questions asked — certificate access included.</div></details>
         </div>
     </section>
 
     <section class="enroll" id="enroll">
         <h2>Enroll in the program</h2>
-        <div class="p">$299</div>
-        <p class="t">One-time payment · Lifetime access · Certificate included</p>
-        <a class="btn" href="#">Enroll Now - $299</a>
+        <div class="p"><span class="price-was" style="color:rgba(255,255,255,.6);">$299</span>$249</div>
+        <p class="t">Launch pricing · Lifetime access · Certificate included · Or 3 payments of $83</p>
+        <p class="t" style="margin-top:8px;">410 students enrolled · 34 joined this month</p>
+        <a class="btn" href="#">Enroll Now - $249</a>
     </section>
 
     <footer>© 2026 Brushstroke Studio · <a href="#">Terms</a> · <a href="#">Privacy</a></footer>
 
     <div class="sticky-cta" id="stickyCta">
-        <div><div class="sc-p">$299</div><div class="sc-n">Professional Oil Painting Program</div></div>
+        <div><div class="sc-p">$249</div><div class="sc-n">Professional Oil Painting Program · Certificate included</div></div>
         <a class="btn" href="#enroll">Enroll Now</a>
     </div>
 

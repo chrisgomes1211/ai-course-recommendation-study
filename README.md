@@ -128,11 +128,12 @@ Feature tags are displayed on the "Run a Test" screen for each course card. Edit
 
 ## Results CSV Schema (`results/results.csv`)
 
-One row per completed choice + interview:
+One row per completed choice + interview (run 2 schema):
 
 | Column | Description |
 |--------|-------------|
 | `timestamp` | ISO 8601 UTC when row written |
+| `run_id` | Unique 12-hex id for this row |
 | `model` | Model name from config |
 | `tier` | Tier label from config |
 | `run_number` | 1..runs_per_condition |
@@ -142,11 +143,16 @@ One row per completed choice + interview:
 | `q3_credentials` | Likert 1-5: instructor credentials influence |
 | `q4_description` | Likert 1-5: course description detail influence |
 | `q5_clarity` | Likert 1-5: page clarity/structure influence |
-| `q6_open` | Free-text: why this course? |
+| `q6_badge` | Likert 1-5: badge/positioning label influence |
+| `q7_social_proof` | Likert 1-5: enrollment/social proof influence |
+| `q8_comparison` | Likert 1-5: comparison table influence |
+| `q9_anchoring` | Likert 1-5: struck-through price anchor influence |
+| `q10_payment_plan` | Likert 1-5: installment plan influence |
+| `q11_open` | Free-text: why this course? |
 | `choice_input_tokens` | Tokens in choice prompt |
 | `choice_output_tokens` | Tokens in choice response |
 | `choice_cost_usd` | Estimated cost for choice call |
-| `interview_input_tokens` | Tokens in interview prompt |
+| `interview_input_tokens` | Tokens in interview follow-up (multi-turn, ~full conversation) |
 | `interview_output_tokens` | Tokens in interview response |
 | `interview_cost_usd` | Estimated cost for interview call |
 

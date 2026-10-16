@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional
 
-from flask import Flask, render_template, request, jsonify, send_file, redirect, url_for
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory, redirect, url_for
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -105,7 +105,9 @@ def run_single_experiment(model_name: str, condition_page: str = "") -> Dict[str
         "success": True,
         "chosen_page": result["chosen_page"],
         "interview_data": {k: row[k] for k in ("q1_price", "q2_reviews", "q3_credentials",
-                                               "q4_description", "q5_clarity", "q6_open")},
+                                               "q4_description", "q5_clarity", "q6_badge",
+                                               "q7_social_proof", "q8_comparison",
+                                               "q9_anchoring", "q10_payment_plan", "q11_open")},
         "choice_resp": {
             "input_tokens": row["choice_input_tokens"],
             "output_tokens": row["choice_output_tokens"],
@@ -314,6 +316,28 @@ def run_page_context() -> Dict[str, Any]:
 @app.route("/")
 def index():
     return redirect(url_for("run_test"))
+
+# --- experiment pages (static HTML, served for review/demo) ---
+PAGES_DIR = Path(__file__).parent / "pages"
+EXPERIMENT_PAGES = [
+    ("artistry", "Artistry Academy"),
+    ("palette", "Palette Masters"),
+    ("canvas", "Canvas & Color"),
+    ("brushstroke", "Brushstroke Studio"),
+    ("creative", "Creative Canvas"),
+]
+
+@app.route("/pages/")
+def pages_index():
+    links = "".join(
+        f'<li><a href="/pages/{slug}.html">{label}</a></li>'
+        for slug, label in EXPERIMENT_PAGES
+    )
+    return f"<h1>Experiment pages</h1><ul>{links}</ul>"
+
+@app.route("/pages/<path:name>")
+def serve_page(name):
+    return send_from_directory(PAGES_DIR, name)
 
 @app.route("/run-test")
 def run_test():

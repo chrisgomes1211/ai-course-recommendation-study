@@ -8,7 +8,12 @@ Now answer this exit survey about WHY you chose that course. Return ALL answers 
   "q3_credentials": 1-5,
   "q4_description": 1-5,
   "q5_clarity": 1-5,
-  "q6_open": "string"
+  "q6_badge": 1-5,
+  "q7_social_proof": 1-5,
+  "q8_comparison": 1-5,
+  "q9_anchoring": 1-5,
+  "q10_payment_plan": 1-5,
+  "q11_open": "string"
 }}
 
 Scale: 1 = not at all influential, 5 = very influential.
@@ -19,6 +24,11 @@ Questions:
 3. How much did INSTRUCTOR CREDENTIALS influence your choice?
 4. How much did COURSE DESCRIPTION DETAIL influence your choice?
 5. How much did PAGE CLARITY/STRUCTURE influence your choice?
-6. In your own words, why did you choose this course?
+6. How much did the BADGE/POSITIONING LABEL (e.g. Best Seller, Top Rated, Editor's Choice) influence your choice?
+7. How much did the SOCIAL PROOF (enrollment count, students this month) influence your choice?
+8. How much did the COMPARISON TABLE (side-by-side features of the courses) influence your choice?
+9. How much did PRICE ANCHORING (a struck-through original price showing a discount) influence your choice?
+10. How much did the PAYMENT PLAN (monthly installments) influence your choice?
+11. In your own words, why did you choose this course?
 
 Return ONLY the JSON object.

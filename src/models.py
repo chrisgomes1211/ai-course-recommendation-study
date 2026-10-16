@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, Any
+from typing import Dict, Any, List, Union
 import json
 import re
 import os
@@ -37,6 +37,12 @@ RETRY_KWARGS = dict(
     before_sleep=_log_retry,
 )
 
+def _as_messages(prompt: Union[str, List[Dict[str, str]]]) -> List[Dict[str, str]]:
+    """Normalize a plain string prompt or a message history into a message list."""
+    if isinstance(prompt, str):
+        return [{"role": "user", "content": prompt}]
+    return prompt
+
 @dataclass
 class ModelResponse:
     text: str
@@ -48,11 +54,11 @@ class ModelProvider(ABC):
     def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]]):
         self.model_name = model_name
         self.pricing = pricing.get(model_name, {"input": 0, "output": 0})
-    
+
     @abstractmethod
-    def complete(self, prompt: str) -> ModelResponse:
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
         pass
-    
+
     def _calculate_cost(self, input_tokens: int, output_tokens: int) -> float:
         input_cost = (input_tokens / 1_000_000) * self.pricing.get("input", 0)
         output_cost = (output_tokens / 1_000_000) * self.pricing.get("output", 0)
@@ -62,13 +68,13 @@ class OpenAIProvider(ModelProvider):
     def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]], api_key: str):
         super().__init__(model_name, pricing)
         from openai import OpenAI
-        self.client = OpenAI(api_key=api_key)
+        self.client = OpenAI(api_key=api_key, timeout=120.0)
 
     @retry(**RETRY_KWARGS)
-    def complete(self, prompt: str) -> ModelResponse:
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
         kwargs: Dict[str, Any] = {
             "model": self.model_name,
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": _as_messages(prompt),
         }
         if self.model_name.startswith(("gpt-5", "gpt-6", "o1", "o3", "o4")):
             kwargs["max_completion_tokens"] = 4000
@@ -86,14 +92,14 @@ class AnthropicProvider(ModelProvider):
     def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]], api_key: str):
         super().__init__(model_name, pricing)
         from anthropic import Anthropic
-        self.client = Anthropic(api_key=api_key)
-    
+        self.client = Anthropic(api_key=api_key, timeout=120.0)
+
     @retry(**RETRY_KWARGS)
-    def complete(self, prompt: str) -> ModelResponse:
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
         response = self.client.messages.create(
             model=self.model_name,
             max_tokens=2000,
-            messages=[{"role": "user", "content": prompt}]
+            messages=_as_messages(prompt)
         )
         text = response.content[0].text
         input_tokens = response.usage.input_tokens
@@ -107,13 +113,20 @@ class GoogleProvider(ModelProvider):
         import google.generativeai as genai
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel(model_name)
-    
+
     @retry(**RETRY_KWARGS)
-    def complete(self, prompt: str) -> ModelResponse:
-        response = self.model.generate_content(
-            prompt,
-            generation_config={"temperature": 0.1, "max_output_tokens": 2000}
-        )
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
+        messages = _as_messages(prompt)
+        gen_cfg = {"temperature": 0.1, "max_output_tokens": 2000}
+        if len(messages) == 1:
+            response = self.model.generate_content(messages[0]["content"], generation_config=gen_cfg, request_options={"timeout": 120})
+        else:
+            history = []
+            for m in messages[:-1]:
+                role = "model" if m["role"] == "assistant" else "user"
+                history.append({"role": role, "parts": [m["content"]]})
+            chat = self.model.start_chat(history=history)
+            response = chat.send_message(messages[-1]["content"], generation_config=gen_cfg, request_options={"timeout": 120})
         text = response.text
         usage = response.usage_metadata
         input_tokens = usage.prompt_token_count
@@ -125,13 +138,13 @@ class XAIProvider(ModelProvider):
     def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]], api_key: str):
         super().__init__(model_name, pricing)
         from openai import OpenAI
-        self.client = OpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
-    
+        self.client = OpenAI(api_key=api_key, base_url="https://api.x.ai/v1", timeout=120.0)
+
     @retry(**RETRY_KWARGS)
-    def complete(self, prompt: str) -> ModelResponse:
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
         response = self.client.chat.completions.create(
             model=self.model_name,
-            messages=[{"role": "user", "content": prompt}],
+            messages=_as_messages(prompt),
             temperature=0.1,
             max_tokens=2000
         )
@@ -145,13 +158,13 @@ class XiaomiProvider(ModelProvider):
     def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]], api_key: str):
         super().__init__(model_name, pricing)
         from openai import OpenAI
-        self.client = OpenAI(api_key=api_key, base_url="https://token-plan-ams.xiaomimimo.com/v1")
+        self.client = OpenAI(api_key=api_key, base_url="https://token-plan-ams.xiaomimimo.com/v1", timeout=120.0)
 
     @retry(**RETRY_KWARGS)
-    def complete(self, prompt: str) -> ModelResponse:
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
         response = self.client.chat.completions.create(
             model=self.model_name,
-            messages=[{"role": "user", "content": prompt}],
+            messages=_as_messages(prompt),
             temperature=0.1,
             max_tokens=2000
         )
@@ -165,13 +178,13 @@ class DeepSeekProvider(ModelProvider):
     def __init__(self, model_name: str, pricing: Dict[str, Dict[str, float]], api_key: str):
         super().__init__(model_name, pricing)
         from openai import OpenAI
-        self.client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+        self.client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com", timeout=120.0)
 
     @retry(**RETRY_KWARGS)
-    def complete(self, prompt: str) -> ModelResponse:
+    def complete(self, prompt: Union[str, List[Dict[str, str]]]) -> ModelResponse:
         response = self.client.chat.completions.create(
             model=self.model_name,
-            messages=[{"role": "user", "content": prompt}],
+            messages=_as_messages(prompt),
             temperature=0.1,
             max_tokens=2000
         )
@@ -195,7 +208,7 @@ def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, floa
     api_key = os.getenv(api_key_env.get(provider_type, ""))
     if not api_key:
         raise ValueError(f"API key not found for {provider_type}. Set {api_key_env[provider_type]} in .env")
-    
+
     if provider_type == "openai":
         return OpenAIProvider(model_name, pricing, api_key)
     elif provider_type == "anthropic":
@@ -211,7 +224,7 @@ def get_provider(model_config: Dict[str, Any], pricing: Dict[str, Dict[str, floa
     else:
         raise ValueError(f"Unknown provider: {provider_type}")
 
-def run_phase(provider: "ModelProvider", prompt: str, parse_fn, attempts: int = 3):
+def run_phase(provider: "ModelProvider", prompt: Union[str, List[Dict[str, str]]], parse_fn, attempts: int = 3):
     """Call the model and parse; re-sample up to `attempts` times on parse failure only."""
     last_err = None
     last_raw = None
@@ -246,16 +259,21 @@ def parse_interview(response_text: str) -> Dict[str, Any]:
         raise ValueError("No JSON object found in response")
     try:
         data = json.loads(json_match.group())
-        required_keys = ["q1_price", "q2_reviews", "q3_credentials", "q4_description", "q5_clarity", "q6_open"]
+        likert_keys = ["q1_price", "q2_reviews", "q3_credentials", "q4_description", "q5_clarity",
+                       "q6_badge", "q7_social_proof", "q8_comparison", "q9_anchoring", "q10_payment_plan"]
+        required_keys = likert_keys + ["q11_open"]
         for key in required_keys:
             if key not in data:
                 raise ValueError(f"Missing required key: {key}")
-        for key in ["q1_price", "q2_reviews", "q3_credentials", "q4_description", "q5_clarity"]:
+        for key in likert_keys:
             val = data[key]
+            if isinstance(val, str) and val.strip().isdigit():
+                val = int(val.strip())
+                data[key] = val
             if not isinstance(val, int) or not (1 <= val <= 5):
-                raise ValueError(f"{key} must be integer 1-5, got: {val}")
-        if not isinstance(data["q6_open"], str):
-            raise ValueError("q6_open must be a string")
+                raise ValueError(f"{key} must be integer 1-5, got: {data[key]}")
+        if not isinstance(data["q11_open"], str):
+            raise ValueError("q11_open must be a string")
         return data
     except json.JSONDecodeError as e:
         raise ValueError(f"Failed to parse interview JSON: {e}")
