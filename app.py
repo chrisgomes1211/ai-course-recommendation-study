@@ -320,11 +320,11 @@ def index():
 # --- experiment pages (static HTML, served for review/demo) ---
 PAGES_DIR = Path(__file__).parent / "pages"
 EXPERIMENT_PAGES = [
-    ("artistry", "Artistry Academy"),
-    ("palette", "Palette Masters"),
-    ("canvas", "Canvas & Color"),
-    ("brushstroke", "Brushstroke Studio"),
-    ("creative", "Creative Canvas"),
+    ("artistry_academy", "Artistry Academy"),
+    ("palette_masters", "Palette Masters"),
+    ("canvas_color", "Canvas & Color"),
+    ("brushstroke_studio", "Brushstroke Studio"),
+    ("creative_canvas", "Creative Canvas"),
 ]
 
 @app.route("/pages/")
