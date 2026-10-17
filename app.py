@@ -333,11 +333,39 @@ def pages_index():
         f'<li><a href="/pages/{slug}.html">{label}</a></li>'
         for slug, label in EXPERIMENT_PAGES
     )
-    return f"<h1>Experiment pages</h1><ul>{links}</ul>"
+    return (f"<h1>Experiment pages</h1><ul>{links}</ul>"
+            f'<p><a href="/report">→ Full results report &amp; deliverables</a></p>')
 
 @app.route("/pages/<path:name>")
 def serve_page(name):
     return send_from_directory(PAGES_DIR, name)
+
+# --- report + deliverable downloads (demo hand-in hub) ---
+ROOT = Path(__file__).parent
+
+@app.route("/report")
+def report():
+    return render_template("report.html")
+
+@app.route("/data/results.csv")
+def data_results():
+    return send_file(ROOT / "results" / "results.csv", as_attachment=True,
+                     download_name="results_run2.csv")
+
+@app.route("/data/features")
+def data_features():
+    return send_file(ROOT / "pages" / "features.yaml", as_attachment=True,
+                     download_name="features.yaml")
+
+@app.route("/data/cost-log")
+def data_costs():
+    return send_file(ROOT / "results" / "cost_ledger.md", as_attachment=True,
+                     download_name="cost_ledger.md")
+
+@app.route("/data/writeup")
+def data_writeup():
+    return send_file(ROOT / "WRITEUP.md", as_attachment=True,
+                     download_name="WRITEUP.md")
 
 @app.route("/run-test")
 def run_test():

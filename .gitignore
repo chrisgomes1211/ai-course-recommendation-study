@@ -1,5 +1,6 @@
 results/*
 !results/results.csv
+!results/README.md
 .env
 __pycache__/
 *.pyc
