@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Five Offers — Stimulus Pages</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-neon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-neon-16.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05060f; --panel: #0c0e1d; --panel2: #11142a;
+    --line: rgba(255,255,255,.10); --text: #eef0ff; --mut: #9aa0c3;
+    --violet: #a855f7; --cyan: #22d3ee; --lime: #d9ee52; --amber: #f59e0b; --pink: #f472b6;
+    --grad: linear-gradient(120deg, #a855f7, #22d3ee);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: Inter, Helvetica, Arial, sans-serif;
+    line-height: 1.55; min-height: 100vh;
+    background-image:
+      radial-gradient(900px 500px at 15% -10%, rgba(168,85,247,.16), transparent 60%),
+      radial-gradient(800px 500px at 90% 0%, rgba(34,211,238,.12), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  /* slim top bar */
+  .bar { display:flex; align-items:center; justify-content:space-between; gap:16px;
+         max-width:1140px; margin:0 auto; padding:16px 24px; }
+  .brand { display:flex; align-items:center; gap:10px; color:var(--text); text-decoration:none; font-weight:600; font-size:14.5px; }
+  .brand img { width:30px; height:30px; border-radius:9px; display:block; }
+  .bar nav { display:flex; gap:18px; }
+  .bar nav a { color:var(--mut); text-decoration:none; font-size:13.5px; font-weight:500; transition:color .2s; }
+  .bar nav a:hover { color:var(--text); }
+
+  .wrap { max-width:1140px; margin:0 auto; padding:26px 24px 110px; }
+
+  .eyebrow { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.24em;
+             text-transform:uppercase; color:var(--cyan); margin-bottom:12px; }
+  h1 { font-size:clamp(30px,5vw,52px); font-weight:800; letter-spacing:-.02em; line-height:1.08; }
+  h1 .grad { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub { color:var(--mut); font-size:15.5px; max-width:640px; margin-top:14px; }
+  .sub a { color:var(--lime); text-decoration:none; border-bottom:1px dotted var(--lime); }
+
+  /* toolbar */
+  .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:34px 0 22px; }
+  .toolbar .lbl { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.18em;
+                  text-transform:uppercase; color:var(--mut); margin-right:4px; }
+  .chip { border:1px solid var(--line); background:rgba(255,255,255,.04); color:var(--mut);
+          padding:8px 16px; border-radius:99px; font:inherit; font-size:13px; font-weight:500;
+          cursor:pointer; transition:all .2s; }
+  .chip:hover { color:var(--text); border-color:rgba(255,255,255,.28); transform:translateY(-1px); }
+  .chip.on { background:var(--grad); border-color:transparent; color:#fff; box-shadow:0 4px 18px rgba(168,85,247,.35); }
+
+  /* grid + cards */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:22px;
+          transition:opacity .16s ease; }
+  .grid.sorting { opacity:0; }
+
+  .card { --acc: var(--violet);
+    position:relative; background:linear-gradient(180deg, var(--panel2), var(--panel));
+    border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform .28s cubic-bezier(.2,.8,.25,1.2), border-color .28s, box-shadow .28s;
+  }
+  .card:hover { transform:translateY(-7px); border-color:color-mix(in srgb, var(--acc) 55%, transparent);
+                box-shadow:0 18px 44px rgba(0,0,0,.55), 0 0 0 1px color-mix(in srgb, var(--acc) 30%, transparent),
+                           0 0 34px -8px color-mix(in srgb, var(--acc) 45%, transparent); }
+  .card.acc-cred    { --acc: var(--violet); }
+  .card.acc-price   { --acc: var(--cyan); }
+  .card.acc-reviews { --acc: var(--amber); }
+  .card.acc-cert    { --acc: var(--lime); }
+  .card.acc-plan    { --acc: var(--pink); }
+
+  .thumb { position:relative; aspect-ratio:16/9; overflow:hidden; background:#141833; }
+  .thumb img { width:100%; height:100%; object-fit:cover; display:block;
+               transition:transform .5s cubic-bezier(.2,.7,.3,1); filter:saturate(1.05); }
+  .card:hover .thumb img { transform:scale(1.08); }
+  .thumb::after { content:""; position:absolute; inset:0;
+                  background:linear-gradient(180deg, transparent 45%, rgba(5,6,15,.85)); }
+  .badge { position:absolute; top:12px; left:12px; z-index:2;
+           background:rgba(5,6,15,.72); backdrop-filter:blur(8px);
+           border:1px solid color-mix(in srgb, var(--acc) 65%, transparent);
+           color:var(--text); font-size:11px; font-weight:600; letter-spacing:.06em;
+           padding:5px 11px; border-radius:99px; text-transform:uppercase; }
+  .num { position:absolute; right:12px; bottom:10px; z-index:2;
+         font-family:'JetBrains Mono',monospace; font-size:12px; color:#fff;
+         background:rgba(5,6,15,.66); backdrop-filter:blur(6px);
+         padding:4px 10px; border-radius:8px; border:1px solid var(--line); }
+
+  .body { padding:18px 18px 16px; display:flex; flex-direction:column; gap:12px; flex:1; }
+  .body h2 { font-size:18px; font-weight:700; letter-spacing:-.01em; }
+  .slug { font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--mut); letter-spacing:.05em; }
+
+  .chips { display:flex; flex-wrap:wrap; gap:7px; }
+  .fchip { font-size:12px; font-weight:600; padding:4px 10px; border-radius:8px;
+           background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--text); }
+  .fchip.star { color:var(--amber); }
+  .fchip.win { border-color:color-mix(in srgb, var(--acc) 60%, transparent);
+               background:color-mix(in srgb, var(--acc) 14%, transparent);
+               color:color-mix(in srgb, var(--acc) 78%, #fff); }
+
+  .tradeoff { font-size:13px; font-style:italic; color:var(--mut); line-height:1.5; }
+  .tradeoff::before { content:"Tradeoff — "; font-style:normal; font-weight:600;
+                      color:color-mix(in srgb, var(--acc) 80%, #fff); }
+
+  .actions { display:flex; gap:9px; margin-top:auto; padding-top:6px; }
+  .btn { flex:1; text-align:center; text-decoration:none; font-size:13px; font-weight:600;
+         padding:10px 12px; border-radius:11px; cursor:pointer; font-family:inherit;
+         transition:all .2s; border:1px solid var(--line); background:rgba(255,255,255,.05); color:var(--text); }
+  .btn:hover { transform:translateY(-2px); border-color:rgba(255,255,255,.3); }
+  .btn.primary { background:var(--grad); border-color:transparent; color:#fff;
+                 box-shadow:0 6px 20px rgba(168,85,247,.3); }
+  .btn.primary:hover { box-shadow:0 10px 26px rgba(168,85,247,.45); }
+
+  .note { margin-top:34px; padding:16px 20px; border:1px dashed var(--line); border-radius:14px;
+          color:var(--mut); font-size:13.5px; background:rgba(255,255,255,.02); }
+  .note b { color:var(--text); }
+
+  /* preview modal */
+  .modal { position:fixed; inset:0; z-index:200; display:none;
+           background:rgba(3,4,10,.82); backdrop-filter:blur(10px);
+           padding:4vh 4vw; }
+  .modal.open { display:flex; flex-direction:column; animation:fadeIn .22s ease; }
+  .modal-head { display:flex; align-items:center; justify-content:space-between; gap:14px;
+                margin-bottom:12px; }
+  .modal-head h3 { font-size:15px; font-weight:600; }
+  .modal-head h3 span { font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--mut); margin-left:10px; }
+  .modal-close { background:rgba(255,255,255,.08); border:1px solid var(--line); color:var(--text);
+                 width:36px; height:36px; border-radius:10px; font-size:17px; cursor:pointer;
+                 transition:all .2s; font-family:inherit; }
+  .modal-close:hover { background:#e5484d; border-color:#e5484d; transform:rotate(90deg); }
+  .modal iframe { flex:1; width:100%; border:1px solid var(--line); border-radius:14px; background:#fff; }
+  @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+
+  @media (max-width:680px) {
+    .bar nav { display:none; }
+    .grid { grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card, .thumb img, .chip, .btn { transition:none; }
+    .card:hover { transform:none; }
+    .modal.open { animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <a class="brand" href="/run-test">
+    <img src="/static/favicon.svg" alt="">
+    <span>AI Course Recommendation Study</span>
+  </a>
+  <nav>
+    <a href="/run-test">Run a test</a>
+    <a href="/report">Report</a>
+    <a href="/dataset">Dataset</a>
+    <a href="/about">About</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <p class="eyebrow">Stimulus set · Run 2 · 7 models × 1,041 trials</p>
+  <h1>The <span class="grad">Five Offers</span><br>one strength each — one honest tradeoff</h1>
+  <p class="sub">Every page below was shown to the models as raw HTML. No page wins on everything,
+     which is what makes the choice measurable. Sort them, preview them in-place, or open the real page.
+     <a href="/report">See what the models picked →</a></p>
+
+  <div class="toolbar" role="toolbar" aria-label="Sort pages">
+    <span class="lbl">Sort by</span>
+    <button class="chip on" data-sort="default">Experiment order</button>
+    <button class="chip" data-sort="price">Price ↑ (low first)</button>
+    <button class="chip" data-sort="rating">Rating ↓</button>
+    <button class="chip" data-sort="reviews">Reviews ↓</button>
+  </div>
+
+  <div class="grid" id="cards">
+    {% for c in cards %}
+    <article class="card acc-{{ c.accent }}"
+             data-order="{{ loop.index0 }}"
+             data-price="{{ c.price }}"
+             data-rating="{{ c.rating }}"
+             data-reviews="{{ c.reviews }}"
+             data-slug="{{ c.slug }}" data-name="{{ c.label }}">
+      <div class="thumb">
+        <span class="badge">{{ c.badge }}</span>
+        <img src="{{ c.img }}" alt="{{ c.label }} course imagery" loading="lazy">
+        <span class="num">{{ "%.1f"|format(c.rating) }}★ · {{ c.reviews }} reviews</span>
+      </div>
+      <div class="body">
+        <div>
+          <h2>{{ c.label }}</h2>
+          <div class="slug">/pages/{{ c.fname }}</div>
+        </div>
+        <div class="chips">
+          <span class="fchip">${{ c.price }}</span>
+          <span class="fchip star">{{ "%.1f"|format(c.rating) }}★</span>
+          <span class="fchip">{{ c.reviews }} reviews</span>
+          <span class="fchip">{{ c.lessons }} lessons</span>
+          {% if c.certificate %}<span class="fchip win">✓ Certificate</span>{% endif %}
+          {% if c.payment_plan %}<span class="fchip">{{ c.payment_plan }}</span>{% endif %}
+        </div>
+        <div class="chips"><span class="fchip win">{{ c.strength }}</span></div>
+        <p class="tradeoff">{{ c.tradeoff }}</p>
+        <div class="actions">
+          <button class="btn primary" data-preview="{{ c.slug }}" data-label="{{ c.label }}">Preview</button>
+          <a class="btn" href="/pages/{{ c.fname }}" target="_blank" rel="noopener">Open page ↗</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <p class="note"><b>Frozen stimuli.</b> These are the exact pages served to the models during
+     run 2 — layout and imagery only; every controlled value (price, rating, review counts,
+     credentials, badge, lessons, certificate, payment plan) is byte-identical to
+     <b>features.yaml</b>, which is downloadable with the rest of the deliverables on
+     <a href="/report" style="color:var(--lime)">the report page</a>.</p>
+</div>
+
+<div class="modal" id="preview" role="dialog" aria-modal="true" aria-label="Page preview">
+  <div class="modal-head">
+    <h3 id="preview-title">Preview <span id="preview-slug"></span></h3>
+    <button class="modal-close" id="preview-close" aria-label="Close preview">✕</button>
+  </div>
+  <iframe id="preview-frame" title="Stimulus page preview" sandbox="allow-same-origin"></iframe>
+</div>
+
+<script>
+(function () {
+  var grid = document.getElementById("cards");
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- sorting --- */
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      chips.forEach(function (c) { c.classList.remove("on"); });
+      chip.classList.add("on");
+      var key = chip.dataset.sort;
+      var cards = Array.prototype.slice.call(grid.children);
+      cards.sort(function (a, b) {
+        if (key === "price")   return (+a.dataset.price)   - (+b.dataset.price);
+        if (key === "rating")  return (+b.dataset.rating)  - (+a.dataset.rating);
+        if (key === "reviews") return (+b.dataset.reviews) - (+a.dataset.reviews);
+        return (+a.dataset.order) - (+b.dataset.order);
+      });
+      var reorder = function () {
+        cards.forEach(function (c) { grid.appendChild(c); });
+        grid.classList.remove("sorting");
+      };
+      if (reduce) { reorder(); return; }
+      grid.classList.add("sorting");
+      setTimeout(reorder, 160);
+    });
+  });
+
+  /* --- preview modal --- */
+  var modal = document.getElementById("preview");
+  var frame = document.getElementById("preview-frame");
+  var title = document.getElementById("preview-title");
+  var slugEl = document.getElementById("preview-slug");
+
+  function openPreview(slug, label) {
+    frame.src = "/pages/" + slug + ".html";
+    title.firstChild.nodeValue = label + " ";
+    slugEl.textContent = "/pages/" + slug + ".html";
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closePreview() {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    frame.src = "about:blank";
+  }
+
+  document.querySelectorAll("[data-preview]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      openPreview(btn.dataset.preview, btn.dataset.label);
+    });
+  });
+  document.getElementById("preview-close").addEventListener("click", closePreview);
+  modal.addEventListener("click", function (e) { if (e.target === modal) closePreview(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePreview(); });
+})();
+</script>
+</body>
+</html>

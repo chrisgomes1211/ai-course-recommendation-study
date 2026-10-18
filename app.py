@@ -327,14 +327,47 @@ EXPERIMENT_PAGES = [
     ("creative_canvas", "Creative Canvas"),
 ]
 
+# Display meta for the /pages/ gallery (strengths per the run-2 design;
+# all numeric facts are read from features.yaml at request time).
+PAGE_GALLERY_META = {
+    "artistry_academy": {"strength": "Elite credentials · Yale MFA, MoMA", "accent": "cred"},
+    "palette_masters": {"strength": "Lowest price of the five", "accent": "price"},
+    "canvas_color": {"strength": "Most reviewed · 260 reviews", "accent": "reviews"},
+    "brushstroke_studio": {"strength": "The only certificate", "accent": "cert"},
+    "creative_canvas": {"strength": "Easiest payment plan · 6 × $29.83", "accent": "plan"},
+}
+
 @app.route("/pages/")
 def pages_index():
-    links = "".join(
-        f'<li><a href="/pages/{slug}.html">{label}</a></li>'
-        for slug, label in EXPERIMENT_PAGES
-    )
-    return (f"<h1>Experiment pages</h1><ul>{links}</ul>"
-            f'<p><a href="/report">→ Full results report &amp; deliverables</a></p>')
+    """Interactive gallery of the five stimulus pages (facts from features.yaml)."""
+    import re as _re
+    features = yaml.safe_load((PAGES_DIR / "features.yaml").read_text(encoding="utf-8"))
+    cards = []
+    for slug, label in EXPERIMENT_PAGES:
+        fname = f"{slug}.html"
+        f = features.get(fname, {}) or {}
+        meta = PAGE_GALLERY_META.get(slug, {"strength": "", "accent": "cred"})
+        html_src = (PAGES_DIR / fname).read_text(encoding="utf-8")
+        img_match = _re.search(r'<img[^>]+src="([^"]+)"', html_src)
+        reviews = f.get("reviews") or {}
+        payment = f.get("payment_plan")
+        cards.append({
+            "slug": slug,
+            "label": label,
+            "fname": fname,
+            "strength": meta["strength"],
+            "accent": meta["accent"],
+            "price": (f.get("price") or {}).get("value", 0),
+            "rating": reviews.get("rating", 0),
+            "reviews": reviews.get("count", 0),
+            "badge": f.get("badge", ""),
+            "lessons": f.get("lessons", ""),
+            "certificate": bool(f.get("certificate")),
+            "payment_plan": payment if isinstance(payment, str) else "",
+            "tradeoff": f.get("tradeoff", ""),
+            "img": img_match.group(1) if img_match else "",
+        })
+    return render_template("pages_index.html", cards=cards)
 
 @app.route("/pages/<path:name>")
 def serve_page(name):
