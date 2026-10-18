@@ -347,6 +347,30 @@ ROOT = Path(__file__).parent
 def report():
     return render_template("report.html")
 
+@app.route("/dataset")
+def dataset():
+    """Browse the run-2 dataset as an HTML table (key columns + filters)."""
+    import csv as _csv
+    SHORT = {
+        "artistry_academy.html": "Artistry", "palette_masters.html": "Palette",
+        "canvas_color.html": "Canvas", "brushstroke_studio.html": "Brushstroke",
+        "creative_canvas.html": "Creative",
+    }
+    LIK = ["q1_price", "q2_reviews", "q3_credentials", "q4_description", "q5_clarity",
+           "q6_badge", "q7_social_proof", "q8_comparison", "q9_anchoring", "q10_payment_plan"]
+    rows = []
+    with open(ROOT / "results" / "results.csv", newline="", encoding="utf-8") as f:
+        for r in _csv.DictReader(f):
+            rows.append({
+                "model": r["model"],
+                "short_cond": SHORT.get(r["condition_page"], r["condition_page"]),
+                "run_number": r["run_number"],
+                "short_won": SHORT.get(r["which_page_won"], r["which_page_won"]),
+                "likerts": [r[q] for q in LIK],
+                "total_row_cost_usd": r["total_row_cost_usd"],
+            })
+    return render_template("dataset.html", rows=rows, n=len(rows))
+
 @app.route("/data/results.csv")
 def data_results():
     return send_file(ROOT / "results" / "results.csv", as_attachment=True,

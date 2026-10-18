@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dataset — Browse as Table</title>
+<style>
+  :root { --ink:#1a1a2e; --mut:#5a5a72; --bg:#faf9f7; --line:#e6e2da; --acc:#b5451b; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; }
+  .wrap { padding:34px 22px 80px; }
+  h1 { font-family:Georgia,serif; font-weight:400; font-size:30px; margin-bottom:6px; }
+  .muted { color:var(--mut); font-size:13px; margin-bottom:14px; }
+  .muted a { color:var(--acc); }
+  .controls { display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin:16px 0; }
+  .controls label { font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); }
+  select { padding:7px 12px; border:1px solid var(--line); border-radius:8px; font-size:13.5px; background:#fff; color:var(--ink); }
+  #count { font-size:13px; color:var(--mut); }
+  .tbl-scroll { overflow:auto; max-height:75vh; border:1px solid var(--line); border-radius:10px; background:#fff; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; white-space:nowrap; }
+  th { position:sticky; top:0; background:var(--ink); color:#fff; padding:9px 10px; text-align:left;
+       font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; z-index:2; }
+  th.num, td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  td { padding:7px 10px; border-bottom:1px solid #f0ece4; }
+  tr:nth-child(even) td { background:#fbfaf7; }
+  tr:hover td { background:#fff6e9; }
+  td.win { font-weight:700; color:var(--acc); }
+  td.idx { color:#9a94a8; }
+  .lik { display:inline-block; min-width:18px; text-align:center; border-radius:4px; padding:1px 4px; }
+  .lik-5 { background:#d8ecd8; color:#1c5e1c; } .lik-4 { background:#e9f3dd; color:#3d6420; }
+  .lik-3 { background:#f4efdd; color:#6b5d1f; } .lik-2 { background:#f8e6d8; color:#8a5220; }
+  .lik-1 { background:#f7d9d5; color:#98372b; }
+  .back { display:inline-block; margin-bottom:18px; font-size:13px; text-decoration:none; color:var(--acc); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/report">← back to report</a>
+  <h1>Run 2 dataset — browser view</h1>
+  <p class="muted">
+    {{ n }} trials · key columns shown (the full file has 43 columns —
+    <a href="/data/results.csv" download>download the CSV</a> for everything incl. tokens, costs, latency, reasoning text).
+    Column dictionary: <a href="https://github.com/chrisgomes1211/ai-course-recommendation-study/blob/main/results/README.md">results/README.md</a>.
+  </p>
+
+  <div class="controls">
+    <label for="fModel">Model</label>
+    <select id="fModel"><option value="">all</option></select>
+    <label for="fWin">Winner</label>
+    <select id="fWin"><option value="">all</option></select>
+    <span id="count"></span>
+  </div>
+
+  <div class="tbl-scroll">
+    <table id="ds">
+      <thead>
+        <tr>
+          <th>#</th><th>Model</th><th>Condition</th><th class="num">Run</th><th>Page won</th>
+          <th class="num">Price</th><th class="num">Reviews</th><th class="num">Creds</th>
+          <th class="num">Descr</th><th class="num">Clarity</th><th class="num">Badge</th>
+          <th class="num">Social</th><th class="num">Compare</th><th class="num">Anchor</th>
+          <th class="num">Pay pl.</th><th class="num">Row $</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr data-model="{{ r.model }}" data-win="{{ r.short_won }}">
+          <td class="idx">{{ loop.index }}</td>
+          <td>{{ r.model }}</td>
+          <td>{{ r.short_cond }}</td>
+          <td class="num">{{ r.run_number }}</td>
+          <td class="win">{{ r.short_won }}</td>
+          {% for q in r.likerts %}<td><span class="lik lik-{{ q }}">{{ q }}</span></td>{% endfor %}
+          <td class="num">{{ r.total_row_cost_usd }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+  const rows = [...document.querySelectorAll("#ds tbody tr")];
+  const fM = document.getElementById("fModel"), fW = document.getElementById("fWin"),
+        cnt = document.getElementById("count");
+  const uniq = (sel, key) => [...new Set(rows.map(r => r.dataset[key]))].sort();
+  uniq(null, "model").forEach(v => fM.add(new Option(v, v)));
+  uniq(null, "win").forEach(v => fW.add(new Option(v, v)));
+  function apply() {
+    const m = fM.value, w = fW.value; let shown = 0;
+    rows.forEach(r => {
+      const ok = (!m || r.dataset.model === m) && (!w || r.dataset.win === w);
+      r.style.display = ok ? "" : "none"; if (ok) shown++;
+    });
+    cnt.textContent = shown + " / " + rows.length + " rows";
+  }
+  fM.onchange = fW.onchange = apply; apply();
+</script>
+</body>
+</html>
