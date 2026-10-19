@@ -7,6 +7,7 @@
 <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-neon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-neon-16.png">
+<link rel="stylesheet" href="/static/dock.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -288,5 +289,7 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePreview(); });
 })();
 </script>
+{% include "_dock.html" %}
+<script src="/static/dock.js"></script>
 </body>
 </html>

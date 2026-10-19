@@ -7,11 +7,12 @@
 <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-neon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-neon-16.png">
+<link rel="stylesheet" href="/static/dock.css">
 <style>
   :root { --ink:#1a1a2e; --mut:#5a5a72; --bg:#faf9f7; --line:#e6e2da; --acc:#b5451b; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); font-size:14px; }
-  .wrap { padding:34px 22px 80px; }
+  .wrap { padding:34px 22px 116px; }
   h1 { font-family:Georgia,serif; font-weight:400; font-size:30px; margin-bottom:6px; }
   .muted { color:var(--mut); font-size:13px; margin-bottom:14px; }
   .muted a { color:var(--acc); }
@@ -98,5 +99,7 @@
   }
   fM.onchange = fW.onchange = apply; apply();
 </script>
+{% include "_dock.html" %}
+<script src="/static/dock.js"></script>
 </body>
 </html>
