@@ -117,6 +117,16 @@
   .dl a.primary { background:var(--acc); border-color:var(--acc); color:#fff;
                   box-shadow:0 8px 20px rgba(181,69,27,.3); }
 
+  /* billing receipts */
+  .rcpt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px;
+               margin:18px 0 24px; }
+  .rcpt { margin:0; background:var(--card); border:1px solid var(--line); border-radius:12px;
+          overflow:hidden; box-shadow:0 6px 18px rgba(26,26,46,.07); }
+  .rcpt img { width:100%; display:block; border:0; border-radius:0; box-shadow:none; background:#fff; }
+  .rcpt figcaption { font-family:Helvetica,Arial,sans-serif; font-size:12.5px; color:var(--mut);
+                     padding:11px 14px 13px; border-top:1px solid var(--line); background:#fbfaf7; }
+  .rcpt figcaption b { color:var(--ink); }
+
   .reveal { opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity:1; transform:none; }
 
@@ -142,6 +152,7 @@
       <a href="#pages">Pages</a>
       <a href="#results">Results</a>
       <a href="#next">Next</a>
+      <a href="#billing">Billing</a>
       <a href="#downloads">Downloads</a>
     </nav>
   </div>
@@ -317,8 +328,52 @@
     9 of 1,050 planned trials were lost to transient API errors.</p>
   </section>
 
+  <section id="billing">
+    <h2><span class="no">07</span>Billing receipts</h2>
+    <p>The cost figures in this report are <i>computed</i> from token prices per run (the $47.75 ledger,
+    downloadable below). These are the providers' own billing dashboards — the actual charges behind that
+    spend, captured 20 Oct 2026. Their windows are wider than the experiment and include general API
+    testing plus free credit grants, so treat them as receipts of real money, not a re-accounting;
+    the per-run ledger remains the experiment's own accounting.</p>
+
+    <div class="rcpt-grid">
+      <figure class="rcpt">
+        <img src="/static/billing/gemini.png" alt="Google Gemini API billing account cost: €17.32 for October 1–19, 2026" loading="lazy">
+        <figcaption><b>Google Gemini API</b> — €17.32 billed for Oct 1–19, 2026 (both gemini models)</figcaption>
+      </figure>
+      <figure class="rcpt">
+        <img src="/static/billing/xai.png" alt="xAI console: $17.03 credits used in 30 days, $8.12 remaining, 2,453 requests" loading="lazy">
+        <figcaption><b>xAI (Grok)</b> — $17.03 credits used in 30 days · 2,453 requests · $8.12 left</figcaption>
+      </figure>
+      <figure class="rcpt">
+        <img src="/static/billing/invoices.png" alt="OpenAI invoices paid: $7.38 on October 17 and $6.15 on July 26, 2026" loading="lazy">
+        <figcaption><b>OpenAI</b> — $13.53 in paid invoices ($7.38 on Oct 17 + $6.15 on Jul 26, 2026)</figcaption>
+      </figure>
+      <figure class="rcpt">
+        <img src="/static/billing/deepseek.png" alt="DeepSeek usage: total cost $2.12, topped-up balance $0.34" loading="lazy">
+        <figcaption><b>DeepSeek</b> — $2.12 total API cost · $0.34 balance remaining</figcaption>
+      </figure>
+      <figure class="rcpt">
+        <img src="/static/billing/credit-grant.png" alt="Anthropic credit grant: $6.15 issued October 6, 2026, expiring October 7, 2027" loading="lazy">
+        <figcaption><b>Anthropic (Claude)</b> — $6.15 credit grant issued Oct 6, 2026 (expires Oct 7, 2027)</figcaption>
+      </figure>
+    </div>
+
+    <table>
+      <tr><th>Provider</th><th>What the dashboard shows</th><th class="num">Amount</th><th>Window</th></tr>
+      <tr><td>Google Gemini API</td><td>Billing account cost</td><td class="num">€17.32</td><td>Oct 1–19, 2026</td></tr>
+      <tr><td>xAI (Grok)</td><td>Credits usage · 2,453 requests · $8.12 remaining</td><td class="num">$17.03</td><td>30 days to Oct 20, 2026</td></tr>
+      <tr><td>OpenAI</td><td>Two paid invoices ($7.38 + $6.15)</td><td class="num">$13.53</td><td>Jul 26 &amp; Oct 17, 2026</td></tr>
+      <tr><td>DeepSeek</td><td>Total API cost · $0.34 balance</td><td class="num">$2.12</td><td>account to date</td></tr>
+      <tr><td>Anthropic (Claude)</td><td>Free credit grant (expires Oct 7, 2027)</td><td class="num">$6.15</td><td>granted Oct 6, 2026</td></tr>
+    </table>
+    <p class="muted">Statement totals (≈ $53-equivalent with €17.32 ≈ $20) sit in the same range as the
+    computed ledger of <b>$47.75</b> — consistent, and nowhere near the <b>$100 cap</b>. The grant and the
+    wider windows explain the difference; part of the spend ran on free credits.</p>
+  </section>
+
   <section id="downloads">
-    <h2><span class="no">07</span>Deliverables</h2>
+    <h2><span class="no">08</span>Deliverables</h2>
     <div class="dl">
       <a class="primary" href="/dataset">🖥 Browse data as table</a>
       <a href="/data/results.csv" download>⬇ Dataset CSV (1,041 rows)</a>
