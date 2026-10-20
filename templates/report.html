@@ -127,6 +127,60 @@
                      padding:11px 14px 13px; border-top:1px solid var(--line); background:#fbfaf7; }
   .rcpt figcaption b { color:var(--ink); }
 
+  /* interactive: run toggle · course filters · sortable table · quiz */
+  .run-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
+  .run-switch { display:inline-flex; gap:4px; background:#f0ece4; border:1px solid var(--line);
+                border-radius:99px; padding:4px; font-family:Helvetica,Arial,sans-serif; }
+  .run-switch button { border:0; background:transparent; font:inherit; font-size:12.5px; font-weight:700;
+                       color:var(--mut); padding:6px 18px; border-radius:99px; cursor:pointer; transition:.25s; }
+  .run-switch button:hover { color:var(--ink); }
+  .run-switch button.on { background:var(--ink); color:#fff; box-shadow:0 4px 12px rgba(26,26,46,.3); }
+  .run-note { font-family:Helvetica,Arial,sans-serif; font-size:12px; color:var(--mut); }
+  .bar-row { transition:opacity .3s ease; }
+  .bar-row.dimmed { opacity:.25; }
+  .chip { display:inline-flex; align-items:center; gap:7px; font-family:Helvetica,Arial,sans-serif;
+          font-size:12px; border:1px solid var(--line); background:#fff; color:var(--mut);
+          padding:5px 13px; border-radius:99px; cursor:pointer; transition:.2s; }
+  .chip:hover { border-color:var(--ink); color:var(--ink); transform:translateY(-1px); }
+  .chip.on { background:var(--ink); border-color:var(--ink); color:#fff; }
+  .chip i { width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .mix span { transition:width .9s cubic-bezier(.2,.75,.25,1), opacity .3s ease; }
+  .mix span.dimmed { opacity:.13; }
+  th[data-sort] { cursor:pointer; user-select:none; white-space:nowrap; }
+  th[data-sort]:hover { color:var(--acc); }
+  .arw::after { content:"\2195"; font-size:9px; opacity:.35; margin-left:5px; }
+  th[data-sort].asc .arw::after { content:"\2191"; opacity:1; color:var(--acc); }
+  th[data-sort].desc .arw::after { content:"\2193"; opacity:1; color:var(--acc); }
+  .quiz-picks { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:14px 0 16px; }
+  .pick { display:flex; flex-direction:column; gap:3px; text-align:left; font-family:Helvetica,Arial,sans-serif;
+          background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px;
+          cursor:pointer; transition:transform .2s, border-color .2s, box-shadow .2s; }
+  .pick:hover { transform:translateY(-3px); border-color:var(--acc); box-shadow:0 10px 22px rgba(26,26,46,.1); }
+  .pick.on { border-color:var(--acc); background:#fff6f1; box-shadow:0 10px 24px rgba(181,69,27,.18); }
+  .pick-name { font-weight:700; font-size:14px; color:var(--ink); }
+  .pick-sub { font-size:11.5px; color:var(--mut); }
+  .quiz-out { border:1px solid var(--line); background:#fff; border-radius:12px; padding:18px 20px;
+              box-shadow:0 8px 22px rgba(26,26,46,.08); animation:qpop .45s ease; }
+  @keyframes qpop { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+  .q-stat { display:flex; align-items:baseline; flex-wrap:wrap; gap:12px; margin-bottom:6px; }
+  .q-big { font-family:Helvetica,Arial,sans-serif; font-size:40px; font-weight:700; line-height:1; }
+  .q-agree { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:8px 0 14px;
+             font-family:Helvetica,Arial,sans-serif; font-size:12.5px; color:var(--mut); }
+  .q-lbl { text-transform:uppercase; letter-spacing:.12em; font-size:10.5px; }
+  .q-model-row { display:flex; align-items:center; gap:10px; margin:6px 0;
+                 font-family:Helvetica,Arial,sans-serif; font-size:12.5px; }
+  .q-mname { width:170px; flex-shrink:0; }
+  .q-mtrack { flex:1; height:14px; background:#f0ece4; border-radius:5px; overflow:hidden; }
+  .q-mfill { height:100%; border-radius:5px; }
+  .q-mval { width:86px; text-align:right; color:var(--mut); font-variant-numeric:tabular-nums; }
+  .q-line { font-size:14.5px; font-style:italic; color:#44444f; margin-top:12px; }
+  @media (max-width:680px) { .q-mname { width:112px; font-size:11px; } .q-mval { width:74px; font-size:11px; }
+                             .q-big { font-size:32px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .quiz-out { animation:none; }
+    .pick:hover, .chip:hover { transform:none; }
+  }
+
   .reveal { opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity:1; transform:none; }
 
@@ -218,69 +272,88 @@
   <section id="results">
     <h2><span class="no">04</span>Results</h2>
 
-    <h3>Win share — aggregate (n = 1,041)</h3>
-    <div class="anim-bar">
-      <div class="bar-row"><span class="bar-lbl">Artistry Academy</span><div class="bar-track"><div class="bar-fill hi" style="--w:56.1%;--d:0s"></div></div><span class="bar-val">56.1% · 584</span></div>
-      <div class="bar-row"><span class="bar-lbl">Palette Masters</span><div class="bar-track"><div class="bar-fill mid" style="--w:40.0%;--d:.12s"></div></div><span class="bar-val">40.0% · 416</span></div>
-      <div class="bar-row"><span class="bar-lbl">Brushstroke Studio</span><div class="bar-track"><div class="bar-fill lo" style="--w:2.3%;--d:.24s"></div></div><span class="bar-val">2.3% · 24</span></div>
-      <div class="bar-row"><span class="bar-lbl">Creative Canvas</span><div class="bar-track"><div class="bar-fill lo" style="--w:1.3%;--d:.36s"></div></div><span class="bar-val">1.3% · 14</span></div>
-      <div class="bar-row"><span class="bar-lbl">Canvas &amp; Color</span><div class="bar-track"><div class="bar-fill lo" style="--w:0.3%;--d:.48s"></div></div><span class="bar-val">0.3% · 3</span></div>
+    <h3>Win share — which page wins</h3>
+    <div class="run-head">
+      <div class="run-switch" role="group" aria-label="Compare runs">
+        <button type="button" data-run="1">Run 1</button>
+        <button type="button" data-run="2" class="on">Run 2</button>
+      </div>
+      <span class="run-note" id="run-note">Run 2 · final frozen pages · n = 1,041</span>
+    </div>
+    <div class="anim-bar" id="winbars">
+      <div class="bar-row" data-page="art" data-r1w="96.6%" data-r1v="96.6% · 1,152" data-r2w="56.1%" data-r2v="56.1% · 584"><span class="bar-lbl">Artistry Academy</span><div class="bar-track"><div class="bar-fill hi" style="--w:56.1%;--d:0s"></div></div><span class="bar-val">56.1% · 584</span></div>
+      <div class="bar-row" data-page="pal" data-r1w="3.4%" data-r1v="3.4% · 40" data-r2w="40.0%" data-r2v="40.0% · 416"><span class="bar-lbl">Palette Masters</span><div class="bar-track"><div class="bar-fill mid" style="--w:40.0%;--d:.12s"></div></div><span class="bar-val">40.0% · 416</span></div>
+      <div class="bar-row" data-page="b" data-r1w="0%" data-r1v="0 · never won" data-r2w="2.3%" data-r2v="2.3% · 24"><span class="bar-lbl">Brushstroke Studio</span><div class="bar-track"><div class="bar-fill lo" style="--w:2.3%;--d:.24s"></div></div><span class="bar-val">2.3% · 24</span></div>
+      <div class="bar-row" data-page="cr" data-r1w="0%" data-r1v="0 · never won" data-r2w="1.3%" data-r2v="1.3% · 14"><span class="bar-lbl">Creative Canvas</span><div class="bar-track"><div class="bar-fill lo" style="--w:1.3%;--d:.36s"></div></div><span class="bar-val">1.3% · 14</span></div>
+      <div class="bar-row" data-page="cn" data-r1w="0%" data-r1v="0 · never won" data-r2w="0.3%" data-r2v="0.3% · 3"><span class="bar-lbl">Canvas &amp; Color</span><div class="bar-track"><div class="bar-fill lo" style="--w:0.3%;--d:.48s"></div></div><span class="bar-val">0.3% · 3</span></div>
     </div>
     <p>Run 1 hit a <b>ceiling effect</b> (one page 96.6%). Run 2 breaks it — no page reaches the
-    pre-registered 60% dominance line — but five-way balance did <i>not</i> emerge. Why? The next table.</p>
+    pre-registered 60% dominance line — but five-way balance did <i>not</i> emerge. Why? The next table.
+    <span class="muted">Tip: flip the toggle above to watch the ceiling collapse; click a course chip below
+    to spotlight it across the charts.</span></p>
 
     <h3>Wins per model — the real finding</h3>
-    <div class="legend">
-      <span><i style="background:var(--art)"></i>Artistry</span>
-      <span><i style="background:var(--pal)"></i>Palette</span>
-      <span><i style="background:var(--can)"></i>Canvas</span>
-      <span><i style="background:var(--bru)"></i>Brushstroke</span>
-      <span><i style="background:var(--cre)"></i>Creative</span>
+    <div class="legend" id="page-filter" role="group" aria-label="Highlight a course across the charts">
+      <button type="button" class="chip on" data-page="all">All</button>
+      <button type="button" class="chip" data-page="art"><i style="background:var(--art)"></i>Artistry</button>
+      <button type="button" class="chip" data-page="pal"><i style="background:var(--pal)"></i>Palette</button>
+      <button type="button" class="chip" data-page="cn"><i style="background:var(--can)"></i>Canvas</button>
+      <button type="button" class="chip" data-page="b"><i style="background:var(--bru)"></i>Brushstroke</button>
+      <button type="button" class="chip" data-page="cr"><i style="background:var(--cre)"></i>Creative</button>
     </div>
-    <table>
-      <tr><th>Model</th><th class="num">N</th><th>Choice mix</th><th>Heuristic signature</th></tr>
-      <tr class="anim-bar">
+    <table id="model-table">
+      <thead>
+        <tr>
+          <th data-sort="model" title="Sort A→Z">Model <span class="arw"></span></th>
+          <th class="num" data-sort="n" title="Sort by trials">N <span class="arw"></span></th>
+          <th data-sort="art" title="Sort by Artistry share">Choice mix <span class="arw"></span></th>
+          <th data-sort="sig" title="Sort by signature">Heuristic signature <span class="arw"></span></th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="anim-bar" data-model="gemini-3.8-flash" data-n="148" data-art="93.9" data-sig="credentials-first">
         <td><b>gemini-3.8-flash</b></td><td class="num">148</td>
-        <td><div class="mix"><span class="mix-art" style="--w:93.9%"></span><span class="mix-pal" style="--w:6.1%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:93.9%" title="Artistry — 139 wins (93.9%)"></span><span class="mix-pal" style="--w:6.1%" title="Palette — 9 wins (6.1%)"></span></div>
             <div class="mix-sub">A 139 · P 9</div></td>
         <td class="sig"><span class="pill">credentials-first</span></td>
       </tr>
-      <tr class="anim-bar">
+      <tr class="anim-bar" data-model="mimo-v2.6-flash" data-n="150" data-art="84" data-sig="credentials-first">
         <td><b>mimo-v2.6-flash</b></td><td class="num">150</td>
-        <td><div class="mix"><span class="mix-art" style="--w:84%"></span><span class="mix-pal" style="--w:16%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:84%" title="Artistry — 126 wins (84.0%)"></span><span class="mix-pal" style="--w:16%" title="Palette — 24 wins (16.0%)"></span></div>
             <div class="mix-sub">A 126 · P 24</div></td>
         <td class="sig"><span class="pill">credentials-first</span></td>
       </tr>
-      <tr class="anim-bar">
+      <tr class="anim-bar" data-model="deepseek-flash" data-n="143" data-art="82.5" data-sig="credentials-first">
         <td><b>deepseek-flash</b></td><td class="num">143</td>
-        <td><div class="mix"><span class="mix-art" style="--w:82.5%"></span><span class="mix-pal" style="--w:17.5%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:82.5%" title="Artistry — 118 wins (82.5%)"></span><span class="mix-pal" style="--w:17.5%" title="Palette — 25 wins (17.5%)"></span></div>
             <div class="mix-sub">A 118 · P 25</div></td>
         <td class="sig"><span class="pill">credentials-first</span></td>
       </tr>
-      <tr class="anim-bar">
+      <tr class="anim-bar" data-model="gpt-4.1-mini" data-n="150" data-art="54" data-sig="heterogeneous">
         <td><b>gpt-4.1-mini</b></td><td class="num">150</td>
-        <td><div class="mix"><span class="mix-art" style="--w:54%"></span><span class="mix-pal" style="--w:40.7%"></span><span class="mix-can" style="--w:2%"></span><span class="mix-bru" style="--w:2.7%"></span><span class="mix-cre" style="--w:0.6%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:54%" title="Artistry — 81 wins (54.0%)"></span><span class="mix-pal" style="--w:40.7%" title="Palette — 61 wins (40.7%)"></span><span class="mix-can" style="--w:2%" title="Canvas — 3 wins (2.0%)"></span><span class="mix-bru" style="--w:2.7%" title="Brushstroke — 4 wins (2.7%)"></span><span class="mix-cre" style="--w:0.6%" title="Creative — 1 win (0.6%)"></span></div>
             <div class="mix-sub">A 81 · P 61 · Cn 3 · B 4 · Cr 1</div></td>
         <td class="sig"><span class="pill hot">heterogeneous</span></td>
       </tr>
-      <tr class="anim-bar">
+      <tr class="anim-bar" data-model="gpt-6-luna" data-n="150" data-art="43.3" data-sig="price-leaning split">
         <td><b>gpt-6-luna</b></td><td class="num">150</td>
-        <td><div class="mix"><span class="mix-art" style="--w:43.3%"></span><span class="mix-pal" style="--w:56.7%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:43.3%" title="Artistry — 65 wins (43.3%)"></span><span class="mix-pal" style="--w:56.7%" title="Palette — 85 wins (56.7%)"></span></div>
             <div class="mix-sub">A 65 · P 85</div></td>
         <td class="sig"><span class="pill">price-leaning split</span></td>
       </tr>
-      <tr class="anim-bar">
+      <tr class="anim-bar" data-model="grok-3-mini" data-n="150" data-art="18.7" data-sig="price-first">
         <td><b>grok-3-mini</b></td><td class="num">150</td>
-        <td><div class="mix"><span class="mix-art" style="--w:18.7%"></span><span class="mix-pal" style="--w:72%"></span><span class="mix-bru" style="--w:0.7%"></span><span class="mix-cre" style="--w:8.6%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:18.7%" title="Artistry — 28 wins (18.7%)"></span><span class="mix-pal" style="--w:72%" title="Palette — 108 wins (72.0%)"></span><span class="mix-bru" style="--w:0.7%" title="Brushstroke — 1 win (0.7%)"></span><span class="mix-cre" style="--w:8.6%" title="Creative — 13 wins (8.6%)"></span></div>
             <div class="mix-sub">A 28 · P 108 · B 1 · Cr 13</div></td>
         <td class="sig"><span class="pill">price-first</span></td>
       </tr>
-      <tr class="anim-bar">
+      <tr class="anim-bar" data-model="gemini-3.1-flash-lite" data-n="150" data-art="18" data-sig="price-first">
         <td><b>gemini-3.1-flash-lite</b></td><td class="num">150</td>
-        <td><div class="mix"><span class="mix-art" style="--w:18%"></span><span class="mix-pal" style="--w:69.3%"></span><span class="mix-bru" style="--w:12.7%"></span></div>
+        <td><div class="mix"><span class="mix-art" style="--w:18%" title="Artistry — 27 wins (18.0%)"></span><span class="mix-pal" style="--w:69.3%" title="Palette — 104 wins (69.3%)"></span><span class="mix-bru" style="--w:12.7%" title="Brushstroke — 19 wins (12.7%)"></span></div>
             <div class="mix-sub">A 27 · P 104 · B 19</div></td>
         <td class="sig"><span class="pill">price-first</span></td>
       </tr>
+      </tbody>
     </table>
     <p>Each model is <b>near-deterministic</b> (temperature 0.1) — but models disagree with <i>each other</i>.
     The aggregate is balanced because heuristics differ, not because any model hesitates.
@@ -295,6 +368,18 @@
     <b>Description 4.61 ≈ Reviews 4.56 &gt; Clarity 4.41 &gt; Price 4.03 ≈ Comparison table 3.99 ≈
     Credentials 3.96 &gt; Social proof 3.10 &gt; Badge 2.61 &gt; Payment plan 2.24 &gt; Anchoring 2.00.</b>
     The classic CRO levers — badges, strike-through anchors, installment plans — barely register.</p>
+
+    <h3>You be the judge</h3>
+    <p class="muted">Before the static figures below: which course would <i>you</i> pick as a visitor?
+    Choose one and see how the seven models voted.</p>
+    <div class="quiz-picks" id="quiz-picks" role="group" aria-label="Pick your course">
+      <button type="button" class="pick" data-p="art"><span class="pick-name">Artistry Academy</span><span class="pick-sub">$299 · 4.8★ · Yale MFA credentials</span></button>
+      <button type="button" class="pick" data-p="pal"><span class="pick-name">Palette Masters</span><span class="pick-sub">$149 · 4.6★ · best value</span></button>
+      <button type="button" class="pick" data-p="cn"><span class="pick-name">Canvas &amp; Color</span><span class="pick-sub">$199 · 4.3★ · 260 reviews</span></button>
+      <button type="button" class="pick" data-p="b"><span class="pick-name">Brushstroke Studio</span><span class="pick-sub">$249 · 4.5★ · certificate</span></button>
+      <button type="button" class="pick" data-p="cr"><span class="pick-name">Creative Canvas</span><span class="pick-sub">$179 · 4.4★ · 6 × $29.83</span></button>
+    </div>
+    <div class="quiz-out" id="quiz-out" hidden></div>
 
     <figure>
       <img src="/static/figures/win_share.png" alt="Win share per page" loading="lazy">
@@ -418,6 +503,125 @@
       });
     }
   }
+})();
+</script>
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- Run 1 ↔ Run 2 toggle on the win-share bars ---- */
+  var runNow = "2";
+  document.querySelectorAll(".run-switch button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var run = btn.dataset.run;
+      if (run === runNow) return;
+      runNow = run;
+      document.querySelectorAll(".run-switch button").forEach(function (b) {
+        b.classList.toggle("on", b === btn);
+      });
+      document.querySelectorAll("#winbars .bar-row").forEach(function (row) {
+        var fill = row.querySelector(".bar-fill");
+        var val = row.querySelector(".bar-val");
+        fill.style.setProperty("--w", row.dataset["r" + run + "w"]);
+        val.textContent = row.dataset["r" + run + "v"];
+      });
+      document.getElementById("run-note").textContent = run === "1"
+        ? "Run 1 · original pages · n = 1,192 · ceiling effect"
+        : "Run 2 · final frozen pages · n = 1,041";
+    });
+  });
+
+  /* ---- Sortable model table ---- */
+  var tbl = document.getElementById("model-table");
+  if (tbl) {
+    var defaults = { model: "asc", sig: "asc", n: "desc", art: "desc" };
+    tbl.querySelectorAll("th[data-sort]").forEach(function (th) {
+      th.addEventListener("click", function () {
+        var key = th.dataset.sort;
+        var cur = th.classList.contains("asc") ? "asc" : (th.classList.contains("desc") ? "desc" : null);
+        var dir = cur ? (cur === "asc" ? "desc" : "asc") : defaults[key];
+        tbl.querySelectorAll("th[data-sort]").forEach(function (o) { o.classList.remove("asc", "desc"); });
+        th.classList.add(dir);
+        var body = tbl.tBodies[0];
+        var rows = Array.prototype.slice.call(body.rows);
+        rows.sort(function (a, b) {
+          var ka = a.dataset[key], kb = b.dataset[key];
+          var cmp = (key === "n" || key === "art") ? (+ka) - (+kb) : ka.localeCompare(kb);
+          return dir === "desc" ? -cmp : cmp;
+        });
+        rows.forEach(function (r) { body.appendChild(r); });
+      });
+    });
+  }
+
+  /* ---- Course chips: spotlight one page across the charts ---- */
+  var chips = document.querySelectorAll("#page-filter .chip");
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      var pg = (chip.classList.contains("on") && chip.dataset.page !== "all") ? "all" : chip.dataset.page;
+      chips.forEach(function (c) { c.classList.toggle("on", c === chip && pg !== "all" || c.dataset.page === pg); });
+      document.querySelectorAll("#winbars .bar-row").forEach(function (r) {
+        r.classList.toggle("dimmed", pg !== "all" && r.dataset.page !== pg);
+      });
+      document.querySelectorAll("#model-table .mix span").forEach(function (s) {
+        s.classList.toggle("dimmed", pg !== "all" && !s.classList.contains("mix-" + pg));
+      });
+    });
+  });
+
+  /* ---- Quiz: You be the judge ---- */
+  var PAGES = {
+    art: { name: "Artistry Academy", total: 584, pct: "56.1%", color: "#b5451b",
+           line: "You're credentials-first — you think like gemini-3.8-flash (94% Artistry), mimo, deepseek and gpt-4.1-mini." },
+    pal: { name: "Palette Masters", total: 416, pct: "40.0%", color: "#2a6f97",
+           line: "Price-first — luna, grok and gemini-lite would back your pick. You'd hate the shipping-cost page." },
+    cn:  { name: "Canvas & Color", total: 3, pct: "0.3%", color: "#c98a1b",
+           line: "Total contrarian — only gpt-4.1-mini ever picked it, in 3 of 1,041 trials. 260 reviews couldn't save it." },
+    b:   { name: "Brushstroke Studio", total: 24, pct: "2.3%", color: "#6d597a",
+           line: "The specialist's choice — gemini-lite took 19 of its 24 wins; the certificate swayed no one else." },
+    cr:  { name: "Creative Canvas", total: 14, pct: "1.3%", color: "#3d8b6e",
+           line: "Bold outlier — grok-3-mini accounts for 13 of those 14 picks. The gentle pitch found exactly one fan." }
+  };
+  var MODELS = [
+    { n: "gemini-3.8-flash", tot: 148, w: { art: 139, pal: 9, cn: 0, b: 0, cr: 0 } },
+    { n: "mimo-v2.6-flash", tot: 150, w: { art: 126, pal: 24, cn: 0, b: 0, cr: 0 } },
+    { n: "deepseek-flash", tot: 143, w: { art: 118, pal: 25, cn: 0, b: 0, cr: 0 } },
+    { n: "gpt-4.1-mini", tot: 150, w: { art: 81, pal: 61, cn: 3, b: 4, cr: 1 } },
+    { n: "gpt-6-luna", tot: 150, w: { art: 65, pal: 85, cn: 0, b: 0, cr: 0 } },
+    { n: "grok-3-mini", tot: 150, w: { art: 28, pal: 108, cn: 0, b: 1, cr: 13 } },
+    { n: "gemini-3.1-flash-lite", tot: 150, w: { art: 27, pal: 104, cn: 0, b: 19, cr: 0 } }
+  ];
+  var out = document.getElementById("quiz-out");
+  document.querySelectorAll("#quiz-picks .pick").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.dataset.p, p = PAGES[key];
+      document.querySelectorAll("#quiz-picks .pick").forEach(function (b) {
+        b.classList.toggle("on", b === btn);
+      });
+      var agree = MODELS.filter(function (m) {
+        var best = Object.keys(m.w).sort(function (x, y) { return m.w[y] - m.w[x]; })[0];
+        return best === key;
+      });
+      var html = '<div class="q-stat"><span class="q-big" style="color:' + p.color + '">' + p.pct + '</span>' +
+        '<span class="muted">of all 1,041 trials chose <b>' + p.name + '</b> — ' + p.total + ' wins</span></div>' +
+        '<div class="q-agree"><span class="q-lbl">Models that also prefer it (' + agree.length + '/7):</span>' +
+        (agree.length
+          ? agree.map(function (m) { return '<span class="pill">' + m.n + '</span>'; }).join("")
+          : '<span class="pill hot">nobody — you are the contrarian</span>') + '</div>';
+      MODELS.slice().sort(function (a, b) { return (b.w[key] / b.tot) - (a.w[key] / a.tot); })
+        .forEach(function (m) {
+          var share = 100 * m.w[key] / m.tot;
+          html += '<div class="q-model-row"><span class="q-mname">' + m.n + '</span>' +
+            '<div class="q-mtrack"><div class="q-mfill" style="width:' + share.toFixed(1) +
+            '%;background:' + p.color + '"></div></div>' +
+            '<span class="q-mval">' + share.toFixed(1) + '% (' + m.w[key] + ')</span></div>';
+        });
+      html += '<p class="q-line">' + p.line + '</p>';
+      out.innerHTML = html;
+      out.hidden = false;
+      if (!reduce) out.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
 })();
 </script>
 </body>
