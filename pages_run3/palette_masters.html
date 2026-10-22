@@ -1,0 +1,554 @@
+<!--
+EXPERIMENTAL FEATURES (palette_masters.html) — RUN 2 BALANCED PROFILE: "value king"
+- Price: Shown ($149) — LOWEST of the five, payment plan offered (3 x $49.67)
+- Reviews: Many (220 reviews, 4.6/5) — strong but not the most (canvas_color has 260)
+- Credentials: Basic (working studio collective, no formal academic creds) — WEAKEST of the five
+- Description: Detailed — 72 lessons across 15 invitations
+- Structure: Unstructured (editorial flow by design)
+- Badge: Best Value
+- Social proof: 4,120 enrolled · 268 this month
+- Payment plan: YES (3 x $49.67) | Comparison table: YES | Certificate: NOT offered
+- Course: "The Complete Painter's Path"
+- Tradeoff: best price + strong reviews, but no certificate and no credentialed instructor
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palette Masters - The Complete Painter's Path</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/fav-palette-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/fav-palette-16.png">
+    <link rel="apple-touch-icon" href="/static/fav-palette-180.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #f7f2e9;
+            --paper-2: #efe7d8;
+            --ink: #2b2620;
+            --ink-soft: #5c5348;
+            --terra: #c05a38;
+            --terra-deep: #9c4227;
+            --brown: #3a322a;
+            --line: #e0d5c2;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Archivo', Georgia, sans-serif; line-height: 1.7; color: var(--ink); background: var(--paper); overflow-x: clip; }
+        img { display: block; max-width: 100%; }
+        a { color: inherit; text-decoration: none; }
+        section { scroll-margin-top: 80px; }
+        .serif { font-family: 'Fraunces', Georgia, serif; }
+
+        #progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--terra); z-index: 300; transition: width .1s linear; }
+
+        /* header */
+        .hd { position: fixed; top: 0; left: 0; right: 0; z-index: 120; display: flex; align-items: center; justify-content: space-between; padding: 20px 34px; background: rgba(247,242,233,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+        .brand { display: flex; align-items: baseline; gap: 8px; font-family: 'Fraunces', Georgia, serif; font-size: 19px; font-weight: 600; }
+        .brand .dot { color: var(--terra); font-size: 24px; line-height: 0; }
+        .hd-chip { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--terra-deep); border: 1px solid var(--terra); border-radius: 999px; padding: 8px 18px; }
+        .hd-nav { display: flex; gap: 22px; }
+        .hd-nav a { position: relative; font-size: 11px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); padding: 4px 0; }
+        .hd-nav a::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; background: var(--terra); transform: scaleX(0); transform-origin: right; transition: transform .5s cubic-bezier(.25,1,.3,1); }
+        .hd-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+        .burger { display: none; background: none; border: none; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
+        .mmenu { position: fixed; inset: 0; z-index: 200; background: rgba(247,242,233,.97); backdrop-filter: blur(14px); display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 40px; opacity: 0; visibility: hidden; transition: opacity .45s, visibility .45s; }
+        .mmenu.open { opacity: 1; visibility: visible; }
+        .mmenu a { font-family: 'Fraunces', Georgia, serif; font-size: clamp(30px, 8vw, 44px); font-weight: 400; }
+        .mmenu .mm-close { position: absolute; top: 24px; right: 28px; background: none; border: none; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; }
+
+        /* hero — image band with overlapping paper title card (text sits on paper) */
+        .hero { position: relative; padding-top: 74px; }
+        .hero-img { position: relative; height: 64vh; min-height: 380px; overflow: hidden; }
+        .hero-img img { position: absolute; inset: -12% 0; width: 100%; height: 124%; object-fit: cover; will-change: transform; }
+        .hero-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(43,38,32,.25), rgba(43,38,32,.05) 45%, rgba(247,242,233,.95) 100%); }
+        .hero-card { position: relative; z-index: 2; max-width: 980px; margin: -140px auto 0; background: var(--paper); padding: 60px clamp(26px, 6vw, 90px) 40px; text-align: center; }
+        .hero-card h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(38px, 6.4vw, 84px); font-weight: 300; line-height: 1.04; letter-spacing: -.02em; margin-bottom: 18px; }
+        .hero-card h1 .w { display: inline-block; opacity: 0; transform: translateY(.5em) rotate(1.5deg); animation: wordIn .9s cubic-bezier(.25,1,.3,1) forwards; }
+        @keyframes wordIn { to { opacity: 1; transform: none; } }
+        .hero-card .sub { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-size: clamp(17px, 2vw, 22px); color: var(--ink-soft); max-width: 46ch; margin: 0 auto 26px; }
+        .rating { font-size: 14px; font-weight: 500; color: var(--ink-soft); }
+        .rating .stars { color: var(--terra); letter-spacing: 3px; font-size: 16px; }
+        .rating strong { color: var(--ink); font-weight: 600; font-size: 17px; }
+        .price-line { margin-top: 20px; }
+        .price-line .p { font-family: 'Fraunces', Georgia, serif; font-size: clamp(38px, 5vw, 54px); font-weight: 300; color: var(--terra-deep); line-height: 1; }
+        .price-line .t { font-size: 11.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); margin-top: 8px; }
+        .btn-pill { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; background: var(--terra); color: #fff; font-family: inherit; font-size: 12.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; border: 1px solid var(--terra); border-radius: 999px; padding: 17px 44px; cursor: pointer; transition: background .5s, color .5s, transform .35s; }
+        .btn-pill:hover { background: transparent; color: var(--terra-deep); transform: translateY(-2px); }
+        .btn-pill svg { width: 13px; height: 13px; }
+
+        /* marquee */
+        .marquee { background: var(--brown); overflow: hidden; padding: 13px 0; white-space: nowrap; }
+        .marquee-track { display: inline-block; animation: scrollX 34s linear infinite; }
+        .marquee-track span { font-size: 11px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #e8d9be; padding: 0 22px; }
+        .marquee-track span.star { color: var(--terra); }
+        @keyframes scrollX { to { transform: translateX(-50%); } }
+
+        /* generic blocks — unstructured editorial flow */
+        .blk { max-width: 1200px; margin: 0 auto; padding: 90px clamp(24px, 5vw, 60px) 0; }
+        .blk:last-of-type { padding-bottom: 100px; }
+        .rv { opacity: 0; transform: translateY(38px); transition: opacity .9s cubic-bezier(.25,1,.3,1), transform .9s cubic-bezier(.25,1,.3,1); }
+        .rv.in { opacity: 1; transform: none; }
+        .rv-d1 { transition-delay: .1s; } .rv-d2 { transition-delay: .2s; } .rv-d3 { transition-delay: .3s; }
+
+        .kicker { font-size: 11px; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; color: var(--terra); margin-bottom: 10px; }
+        h2 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(30px, 4.4vw, 52px); font-weight: 300; letter-spacing: -.015em; line-height: 1.12; margin-bottom: 26px; }
+        .prose { max-width: 68ch; }
+        .prose p { font-size: clamp(15.5px, 1.5vw, 17.5px); color: var(--ink-soft); margin-bottom: 20px; }
+        .prose p.lead { font-family: 'Fraunces', Georgia, serif; font-size: clamp(19px, 2.2vw, 24px); font-weight: 400; line-height: 1.5; color: var(--ink); }
+        .prose p.lead::first-letter { font-size: 2.6em; float: left; line-height: .85; padding: 6px 12px 0 0; color: var(--terra); font-weight: 600; }
+
+        /* reviews — scattered paper notes */
+        .notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+        .note { background: #fffdf8; border: 1px solid var(--line); padding: 30px 26px; box-shadow: 0 18px 40px rgba(58,50,42,.08); transition: transform .5s cubic-bezier(.25,1,.3,1), box-shadow .5s; }
+        .note:nth-child(1) { transform: rotate(-1.2deg); }
+        .note:nth-child(2) { transform: rotate(.8deg) translateY(18px); }
+        .note:nth-child(3) { transform: rotate(-.5deg); }
+        .note:hover { transform: rotate(0) translateY(-6px); box-shadow: 0 26px 54px rgba(58,50,42,.14); }
+        .note .stars { color: var(--terra); font-size: 13px; letter-spacing: 2px; margin-bottom: 12px; }
+        .note blockquote { font-family: 'Fraunces', Georgia, serif; font-size: 16.5px; font-weight: 400; line-height: 1.5; margin-bottom: 16px; }
+        .note cite { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+        .more-link { display: inline-block; margin-top: 30px; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--terra-deep); border-bottom: 1.5px solid var(--terra); padding-bottom: 3px; }
+
+        /* explore — horizontal drag list */
+        .explore-wrap { margin-top: 30px; }
+        .explore-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 18px; scrollbar-width: none; cursor: grab; }
+        .explore-track::-webkit-scrollbar { display: none; }
+        .explore-track.dragging { cursor: grabbing; scroll-snap-type: none; }
+        .ex-item { flex: 0 0 clamp(230px, 26vw, 300px); scroll-snap-align: start; background: var(--paper-2); border: 1px solid var(--line); padding: 22px 20px; font-family: 'Fraunces', Georgia, serif; font-size: 15.5px; line-height: 1.45; transition: background .4s, transform .4s; }
+        .ex-item:hover { background: #fffdf6; transform: translateY(-4px); }
+        .ex-item .n { display: block; font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .2em; color: var(--terra); margin-bottom: 10px; }
+
+        /* price band */
+        .price-band { margin-top: 90px; background: var(--brown); color: #f3e9d6; text-align: center; padding: 90px 30px; position: relative; overflow: hidden; }
+        .price-band::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 20% 30%, rgba(192,90,56,.35), transparent 50%), radial-gradient(circle at 80% 70%, rgba(192,90,56,.25), transparent 50%); }
+        .price-band .inner { position: relative; }
+        .price-band .p { font-family: 'Fraunces', Georgia, serif; font-size: clamp(54px, 8vw, 96px); font-weight: 300; line-height: 1; }
+        .price-band .t { font-size: 14px; color: #d9c8ab; margin-top: 12px; }
+        .price-band .btn-pill { background: #f3e9d6; color: var(--brown); border-color: #f3e9d6; }
+        .price-band .btn-pill:hover { background: transparent; color: #f3e9d6; }
+
+        /* studio letter */
+        .letter { margin-top: 30px; max-width: 720px; background: #fffdf8; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(58,50,42,.1); padding: clamp(30px, 5vw, 56px); transform: rotate(-.6deg); position: relative; }
+        .letter::before { content: ''; position: absolute; top: 18px; left: 18px; right: 18px; bottom: 18px; border: 1px solid var(--line); pointer-events: none; }
+        .letter .l-label { font-size: 11px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--terra); margin-bottom: 16px; }
+        .letter p { font-family: 'Fraunces', Georgia, serif; font-size: clamp(16px, 1.8vw, 19px); font-style: italic; line-height: 1.65; color: var(--ink); position: relative; }
+
+        /* team */
+        .team { display: flex; gap: 26px; align-items: flex-start; margin-top: 30px; background: var(--paper-2); border: 1px solid var(--line); padding: 34px; }
+        .avatar { width: 76px; height: 76px; border-radius: 50%; background: var(--terra); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', Georgia, serif; font-size: 22px; flex-shrink: 0; }
+        .team .role { font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--terra-deep); margin-bottom: 4px; }
+        .team h2 { font-size: clamp(22px, 2.6vw, 30px); margin-bottom: 8px; }
+        .team p { color: var(--ink-soft); font-size: 15px; max-width: 60ch; }
+
+        /* faq */
+        .faq { margin-top: 30px; max-width: 820px; }
+        .faq details { border-top: 1px solid var(--line); }
+        .faq details:last-child { border-bottom: 1px solid var(--line); }
+        .faq summary { cursor: pointer; list-style: none; padding: 24px 40px 24px 0; position: relative; font-family: 'Fraunces', Georgia, serif; font-size: clamp(17px, 2vw, 21px); transition: color .3s; }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after { content: '+'; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 22px; color: var(--terra); transition: transform .4s cubic-bezier(.25,1,.3,1); }
+        .faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+        .faq summary:hover { color: var(--terra-deep); }
+        .faq .a { padding: 0 0 24px; color: var(--ink-soft); font-size: 15.5px; max-width: 62ch; }
+
+        footer { background: var(--brown); color: #b7a88e; font-size: 12px; padding: 26px 0; text-align: center; }
+        footer a { color: #e0d0b2; }
+
+        .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 150; background: rgba(247,242,233,.95); backdrop-filter: blur(10px); border-top: 1px solid var(--line); padding: 13px 34px; display: flex; align-items: center; justify-content: space-between; gap: 14px; transform: translateY(110%); transition: transform .55s cubic-bezier(.25,1,.3,1); }
+        .sticky-cta.show { transform: translateY(0); }
+        .sc-p { font-family: 'Fraunces', Georgia, serif; font-size: 22px; font-weight: 300; color: var(--terra-deep); }
+        .sc-n { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+        .sticky-cta .btn-pill { margin-top: 0; padding: 12px 28px; font-size: 11px; }
+
+        /* ── competitive data blocks (run 2) ── */
+        .hero-badge { display: flex; width: fit-content; align-items: center; gap: 8px; margin: 0 auto 18px; font-size: 10.5px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--terra-deep); border: 1px solid var(--terra); border-radius: 999px; padding: 7px 18px; background: #fffdf8; }
+        .pay-plan { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--terra-deep); margin-top: 10px; }
+        .pay-plan em { font-style: normal; color: var(--ink-soft); }
+
+        /* rating distribution */
+        .rdist { max-width: 460px; margin: 26px 0 0; }
+        .rdist-sum { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px; text-align: center; }
+        .rdist-row { display: grid; grid-template-columns: 42px 1fr 44px; align-items: center; gap: 14px; margin-bottom: 8px; font-size: 11px; font-weight: 500; color: var(--ink-soft); }
+        .rdist-bar { height: 5px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+        .rdist-bar i { display: block; height: 100%; background: var(--terra); }
+
+        /* verified + helpful */
+        .rmeta { display: flex; align-items: center; gap: 14px; margin-top: 14px; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); flex-wrap: wrap; }
+        .rmeta .vok { color: var(--terra-deep); }
+
+        /* proof strip */
+        .proof { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--paper-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+        .proof div { text-align: center; padding: 40px 8px; border-right: 1px solid var(--line); }
+        .proof div:last-child { border-right: none; }
+        .proof b { display: block; font-family: 'Fraunces', Georgia, serif; font-size: clamp(26px, 3.4vw, 40px); font-weight: 300; letter-spacing: -.01em; }
+        .proof span { font-size: 10.5px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); }
+
+        /* specs bar */
+        .specs { display: flex; flex-wrap: wrap; gap: 12px 36px; justify-content: center; padding: 28px 34px; background: var(--paper); border-bottom: 1px solid var(--line); font-size: 10.5px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+        .specs b { font-weight: 600; color: var(--ink); }
+
+        /* compare table */
+        .ctable-wrap { overflow-x: auto; margin-top: 10px; }
+        .ctable { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        .ctable th, .ctable td { padding: 15px 14px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+        .ctable th { font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+        .ctable th.self { color: var(--terra-deep); }
+        .ctable td:first-child { font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); width: 128px; }
+        .ctable td.self { font-weight: 600; }
+        .ctable td.best { font-weight: 600; color: var(--terra-deep); }
+        .ctable td.dim { color: #b3a894; }
+        .cnote { font-size: 10.5px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); margin-top: 18px; }
+
+        @media (max-width: 900px) {
+            .hd { padding: 16px 20px; }
+            .hd-nav, .hd-chip { display: none; }
+            .burger { display: block; }
+            .hero-img { height: 46vh; min-height: 280px; }
+            .hero-card { margin-top: -90px; padding-top: 44px; }
+            .notes { grid-template-columns: 1fr; }
+            .note:nth-child(2) { transform: rotate(.5deg); }
+            .team { flex-direction: column; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            html { scroll-behavior: auto; }
+            .rv { opacity: 1; transform: none; }
+            .hero-card h1 .w { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div id="progress"></div>
+
+    <header class="hd">
+        <a class="brand" href="#"><span>Palette Masters</span><span class="dot">.</span></a>
+        <nav class="hd-nav">
+            <a href="#about">About</a>
+            <a href="#explore">Explore</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#compare">Compare</a>
+            <a href="#faq">Good to know</a>
+        </nav>
+        <span class="hd-chip">$149 one-time</span>
+        <button class="burger" id="burger" aria-label="Open menu">Menu</button>
+    </header>
+
+    <div class="mmenu" id="mmenu">
+        <button class="mm-close" id="mmClose" aria-label="Close menu">Close</button>
+        <a href="#about">About</a>
+        <a href="#explore">Explore</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#compare">Compare</a>
+        <a href="#faq">Good to know</a>
+        <a href="#enroll">Join the Path</a>
+    </div>
+
+    <header class="hero" id="hero">
+        <div class="hero-img" id="heroImg"><img src="https://live.staticflickr.com/3027/3012125403_64cbf03eeb_b.jpg" alt=""></div>
+        <div class="hero-card">
+            <div class="hero-badge">Best Value · Oil Painting</div>
+            <h1 id="heroTitle">The Complete Painter's Path</h1>
+            <p class="sub">A relaxed, joyful way to learn oil painting — at your own pace.</p>
+            <p class="rating"><span class="stars">★★★★☆</span><br><strong class="count" data-count="220">0</strong> reviews · 4.6 out of 5 from fellow painters · 4,120 students enrolled</p>
+            <div class="price-line">
+                <div class="p">$149</div>
+                <div class="t">one-time payment · lifetime access · lowest price of the five courses compared</div>
+                <div class="pay-plan">or 3 payments of $49.67 <em>· interest-free</em></div>
+            </div>
+            <a class="btn-pill" href="#enroll">Join the Path
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <div class="marquee"><div class="marquee-track">
+        <span>Paint at your own pace</span><span class="star">★</span><span>No deadlines</span><span class="star">★</span><span>Lifetime access</span><span class="star">★</span><span>Studio letters included</span><span class="star">★</span><span>Paint at your own pace</span><span class="star">★</span><span>No deadlines</span><span class="star">★</span><span>Lifetime access</span><span class="star">★</span><span>Studio letters included</span>
+    </div></div>
+
+    <div class="specs">
+        <span><b>72</b> lessons</span>
+        <span><b>20</b> hours video</span>
+        <span><b>Beginner–Intermediate</b></span>
+        <span><b>English</b> captions</span>
+        <span><b>Certificate:</b> not offered</span>
+        <span><b>Updated</b> Sep 2026</span>
+    </div>
+
+    <div class="proof">
+        <div><b>4,120</b><span>students enrolled</span></div>
+        <div><b>268</b><span>joined this month</span></div>
+        <div><b>$149</b><span>lowest price compared</span></div>
+    </div>
+
+    <!-- reviews first (unstructured flow) -->
+    <section class="blk" id="reviews">
+        <div class="rv"><p class="kicker">From the studio</p><h2>Painters love this course ♥</h2></div>
+        <div class="rdist rv">
+            <p class="rdist-sum">4.6 average · 220 reviews · Based on verified purchases</p>
+            <div class="rdist-row"><span>5 ★</span><div class="rdist-bar"><i style="width:74%"></i></div><span>74%</span></div>
+            <div class="rdist-row"><span>4 ★</span><div class="rdist-bar"><i style="width:16%"></i></div><span>16%</span></div>
+            <div class="rdist-row"><span>3 ★</span><div class="rdist-bar"><i style="width:6%"></i></div><span>6%</span></div>
+            <div class="rdist-row"><span>2 ★</span><div class="rdist-bar"><i style="width:3%"></i></div><span>3%</span></div>
+            <div class="rdist-row"><span>1 ★</span><div class="rdist-bar"><i style="width:1%"></i></div><span>1%</span></div>
+        </div>
+        <div class="notes">
+            <div class="note rv rv-d1">
+                <div class="stars">★★★★★</div>
+                <blockquote>"I painted every weekend for a month and my work transformed. The pace feels like painting with a friend."</blockquote>
+                <div class="rmeta"><cite>— Priya N. · Oct 4, 2026</cite><span class="vok">Verified</span><span>Helpful (52)</span></div>
+            </div>
+            <div class="note rv rv-d2">
+                <div class="stars">★★★★★</div>
+                <blockquote>"No pressure, no gatekeeping. Just honest, generous teaching about color and joy. And at $149 it's a steal compared to anything else I looked at."</blockquote>
+                <div class="rmeta"><cite>— Marco B. · Sep 27, 2026</cite><span class="vok">Verified</span><span>Helpful (44)</span></div>
+            </div>
+            <div class="note rv rv-d3">
+                <div class="stars">★★★★☆</div>
+                <blockquote>"Beautifully filmed. I keep coming back to the plein air section. I do wish there was a certificate at the end, though."</blockquote>
+                <div class="rmeta"><cite>— Lena K. · Sep 15, 2026</cite><span class="vok">Verified</span><span>Helpful (29)</span></div>
+            </div>
+        </div>
+        <div class="rv"><a class="more-link" href="#">Read more of the 220 reviews →</a></div>
+    </section>
+
+    <section class="blk" id="about">
+        <div class="rv"><p class="kicker">The long version</p><h2>About this course</h2></div>
+        <div class="prose rv">
+            <p class="lead">The Complete Painter's Path is a long, unhurried journey through oil painting — designed for people who want to fall in love with the medium rather than rush through it. There are no deadlines here, no grades, and no "correct" style to conform to. You paint when you can, as much as you want, and the course grows with you.</p>
+            <p>Over roughly 20 hours of video, you'll move through color, light, texture, composition and subject matter — but really, you'll be learning to see. We spend real time on the things most courses skip: how to mix a grey you actually like, how to leave a brushstroke alone, how to know when a painting is finished (and how to happily ruin one that isn't).</p>
+        </div>
+        <div class="rv" style="margin-top:50px;"><p class="kicker">The difference</p><h2>What makes it different</h2></div>
+        <div class="prose rv">
+            <p>Most painting courses teach a method. This one teaches attention. Each section ends with a small, low-stakes invitation rather than an assignment — paint one object in three greys, or copy a passage from a painting you love, or simply sit with your materials for ten minutes. Nothing is graded. Everything is optional. Many students tell us the freedom is what kept them going when other courses felt like homework.</p>
+            <p>You'll also get occasional "studio letters" — short written notes on the practical life of a painter: setting up a workspace you'll actually use, buying materials without wasting money, finding time to paint alongside a full-time job, and dealing with the inner critic that tells you everyone else is better.</p>
+        </div>
+    </section>
+
+    <section class="price-band" id="enroll">
+        <div class="inner">
+            <div class="p">$149</div>
+            <p class="t">One payment. Lifetime access. All future updates included. 4,120 painters already joined.</p>
+            <p class="t">Or 3 interest-free payments of $49.67 — same lifetime access either way.</p>
+            <a class="btn-pill" href="#">Get Instant Access
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <section class="blk" id="explore">
+        <div class="rv"><p class="kicker">Fifteen quiet invitations</p><h2>What you'll explore</h2></div>
+        <div class="explore-wrap rv">
+            <div class="explore-track" id="exTrack">
+                <div class="ex-item"><span class="n">01</span>Setting up a simple, cheap studio space that works</div>
+                <div class="ex-item"><span class="n">02</span>Oil paint basics — brushes, mediums, cleanup, drying times</div>
+                <div class="ex-item"><span class="n">03</span>Mixing color by eye, including the greys and neutrals</div>
+                <div class="ex-item"><span class="n">04</span>Values: why they matter more than hue</div>
+                <div class="ex-item"><span class="n">05</span>Still life as a daily practice</div>
+                <div class="ex-item"><span class="n">06</span>Edges — hard, soft, lost, and found</div>
+                <div class="ex-item"><span class="n">07</span>Painting from photographs without looking stiff</div>
+                <div class="ex-item"><span class="n">08</span>Plein air basics and coping with changing light</div>
+                <div class="ex-item"><span class="n">09</span>Composition ideas you can use immediately</div>
+                <div class="ex-item"><span class="n">10</span>Portraits and figures, loosely and without fear</div>
+                <div class="ex-item"><span class="n">11</span>Texture, impasto and scraping back</div>
+                <div class="ex-item"><span class="n">12</span>Knowing when to stop — and signing with confidence</div>
+                <div class="ex-item"><span class="n">13</span>Building a body of work over months, not days</div>
+                <div class="ex-item"><span class="n">14</span>Materials: what to buy, what to skip, what to save up for</div>
+                <div class="ex-item"><span class="n">15</span>Finding your own voice after all the tutorials</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="blk">
+        <div class="letter rv">
+            <p class="l-label">Studio letter #4:</p>
+            <p>Buy three colors before you buy thirty. A limited palette will teach you more in a month than a full rack ever will — and your color mixing will improve faster because you're forced to solve problems instead of squeezing out an answer.</p>
+        </div>
+    </section>
+
+    <section class="blk" id="studio">
+        <div class="rv"><p class="kicker">Photos from our students</p><h2>Studio sights</h2></div>
+        <div class="notes" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="note rv rv-d1" style="padding:0; overflow:hidden;"><img src="https://live.staticflickr.com/4081/4807647551_c7cb5eaece_b.jpg" alt="" loading="lazy" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+            <div class="note rv rv-d2" style="padding:0; overflow:hidden;"><img src="https://live.staticflickr.com/7015/6425603059_53bc944847_b.jpg" alt="" loading="lazy" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+            <div class="note rv rv-d3" style="padding:0; overflow:hidden;"><img src="https://live.staticflickr.com/4193/33875205864_bc84c6b5ab_b.jpg" alt="" loading="lazy" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+            <div class="note rv rv-d1" style="padding:0; overflow:hidden;"><img src="https://live.staticflickr.com/1047/5124343603_a3e5f63f17_b.jpg" alt="" loading="lazy" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+            <div class="note rv rv-d2" style="padding:0; overflow:hidden;"><img src="https://live.staticflickr.com/5269/5557919648_ba36c73845_b.jpg" alt="" loading="lazy" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+            <div class="note rv rv-d3" style="padding:0; overflow:hidden;"><img src="https://live.staticflickr.com/1160/1389829842_0a658f2840_b.jpg" alt="" loading="lazy" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+        </div>
+    </section>
+
+    <section class="blk">
+        <div class="team rv">
+            <div class="avatar">PM</div>
+            <div>
+                <p class="role">Hosted by the Palette Masters team</p>
+                <h2>A small collective of painters</h2>
+                <p>A small collective of working painters who believe the best teaching feels like company in the studio. We publish a new lesson every few weeks and read every message from our students.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="blk" id="compare">
+        <div class="rv"><p class="kicker">Compare</p><h2>Compare with similar courses</h2></div>
+        <div class="ctable-wrap rv">
+            <table class="ctable">
+                <tr>
+                    <th></th>
+                    <th>Artistry Academy</th>
+                    <th class="self">Palette Masters</th>
+                    <th>Canvas &amp; Color</th>
+                    <th>Brushstroke Studio</th>
+                    <th>Creative Canvas</th>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>$299</td>
+                    <td class="self best">$149</td>
+                    <td>$199</td>
+                    <td>$249</td>
+                    <td>$179</td>
+                </tr>
+                <tr>
+                    <td>Rating</td>
+                    <td class="best">4.8 ★</td>
+                    <td class="self">4.6 ★</td>
+                    <td>4.6 ★</td>
+                    <td>4.5 ★</td>
+                    <td class="dim">4.4 ★</td>
+                </tr>
+                <tr>
+                    <td>Reviews</td>
+                    <td>240</td>
+                    <td class="self">220</td>
+                    <td class="best">260</td>
+                    <td class="dim">180</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td>Lessons</td>
+                    <td class="best">96</td>
+                    <td class="self">72</td>
+                    <td>64</td>
+                    <td>80</td>
+                    <td>58</td>
+                </tr>
+                <tr>
+                    <td>Instructor</td>
+                    <td class="best">Yale MFA · MoMA exhibitor</td>
+                    <td class="self">Working studio artist</td>
+                    <td>Community-taught, 12 yrs</td>
+                    <td>Commercial artist, 20 yrs</td>
+                    <td>Self-taught duo</td>
+                </tr>
+                <tr>
+                    <td>Certificate</td>
+                    <td>—</td>
+                    <td class="self dim">—</td>
+                    <td>—</td>
+                    <td class="best">Yes</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>Level</td>
+                    <td>All levels</td>
+                    <td class="self">Beginner–Int</td>
+                    <td>All levels</td>
+                    <td>Int–Advanced</td>
+                    <td>Absolute beginner</td>
+                </tr>
+            </table>
+        </div>
+        <p class="cnote rv">Comparison based on publicly listed course information · Updated Oct 2026</p>
+    </section>
+
+    <section class="blk" id="faq">
+        <div class="rv"><p class="kicker">Before you begin</p><h2>Good to know</h2></div>
+        <div class="faq rv">
+            <details open><summary>Do I need special materials?</summary><div class="a">Start with a small kit: one brush set, three or four colors, and a board to paint on. A full recommended list is inside, but you can begin for under $60.</div></details>
+            <details><summary>How long do I have access?</summary><div class="a">Forever, including every future lesson we add. No subscription, ever.</div></details>
+            <details><summary>I'm a complete beginner — is that okay?</summary><div class="a">That's exactly who this is for. Nothing assumes prior experience, and there's no such thing as falling behind when there are no deadlines.</div></details>
+            <details><summary>Is there feedback on my work?</summary><div class="a">There's a student gallery where you can share paintings if you'd like. The team highlights a few each month, but there's no obligation to post anything.</div></details>
+            <details><summary>Why is this course cheaper than others?</summary><div class="a">We're a small collective with no academic overhead and no certificate program to run — we put everything into the lessons themselves. At $149 you get the same lifetime access and every future update for roughly half what comparable courses charge.</div></details>
+            <details><summary>Do I get a certificate?</summary><div class="a">No. We focus purely on the painting, not the paperwork. If you need a formal certificate for a job or visa, a credentialed program may suit you better — but if you want to fall in love with oil painting without paying for admin, this is your course.</div></details>
+            <details><summary>Can I pay in installments?</summary><div class="a">Yes — split the $149 into 3 interest-free payments of $49.67 at checkout. You get full lifetime access immediately after the first payment.</div></details>
+            <details><summary>What if it isn't for me?</summary><div class="a">Email us within 30 days and we'll refund you, no questions asked.</div></details>
+        </div>
+    </section>
+
+    <footer>© 2026 Palette Masters · <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Say hello</a></footer>
+
+    <div class="sticky-cta" id="stickyCta">
+        <div><div class="sc-p">$149</div><div class="sc-n">The Complete Painter's Path · lifetime access · or 3 × $49.67</div></div>
+        <a class="btn-pill" href="#enroll">Join the Path</a>
+    </div>
+
+    <script>
+        (function () {
+            var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var progress = document.getElementById('progress');
+            var hero = document.getElementById('hero');
+            var heroImg = document.getElementById('heroImg');
+            var sticky = document.getElementById('stickyCta');
+
+            // split hero title into words for staggered rise
+            var ht = document.getElementById('heroTitle');
+            if (ht) {
+                ht.innerHTML = ht.textContent.split(' ').map(function (w, i) {
+                    return '<span class="w" style="animation-delay:' + (0.15 + i * 0.09).toFixed(2) + 's">' + w + '</span>';
+                }).join(' ');
+            }
+
+            var mmenu = document.getElementById('mmenu');
+            document.getElementById('burger').addEventListener('click', function () { mmenu.classList.add('open'); });
+            document.getElementById('mmClose').addEventListener('click', function () { mmenu.classList.remove('open'); });
+            mmenu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { mmenu.classList.remove('open'); }); });
+
+            function onScroll() {
+                var y = scrollY;
+                var h = document.documentElement.scrollHeight - innerHeight;
+                progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+                if (!reduce && heroImg && y < hero.offsetHeight) heroImg.style.transform = 'translateY(' + (y * 0.22) + 'px)';
+                if (sticky) sticky.classList.toggle('show', y > hero.offsetHeight * 0.7);
+            }
+            addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+
+            var io = new IntersectionObserver(function (es) {
+                es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+            }, { threshold: 0.12 });
+            document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+
+            var counted = false;
+            var cEl = document.querySelector('.count');
+            if (cEl) {
+                var cio = new IntersectionObserver(function (es) {
+                    if (!es[0].isIntersecting || counted) return;
+                    counted = true;
+                    var target = +cEl.dataset.count;
+                    if (reduce) { cEl.textContent = target; cio.disconnect(); return; }
+                    var t0 = performance.now();
+                    (function tick(t) {
+                        var p = Math.min((t - t0) / 1600, 1);
+                        cEl.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                        if (p < 1) requestAnimationFrame(tick);
+                    })(t0);
+                    cio.disconnect();
+                }, { threshold: 0.4 });
+                cio.observe(cEl);
+            }
+
+            // explore drag
+            var track = document.getElementById('exTrack');
+            if (track) {
+                var down = false, sx = 0, sl = 0;
+                track.addEventListener('pointerdown', function (e) { down = true; sx = e.clientX; sl = track.scrollLeft; track.classList.add('dragging'); });
+                addEventListener('pointermove', function (e) { if (down) track.scrollLeft = sl - (e.clientX - sx); });
+                addEventListener('pointerup', function () { down = false; track.classList.remove('dragging'); });
+            }
+        })();
+    </script>
+</body>
+</html>

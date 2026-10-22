@@ -80,17 +80,17 @@ def load_config() -> Dict[str, Any]:
         return yaml.safe_load(f)
 
 
-def load_pages() -> Dict[str, str]:
+def load_pages(pages_dir: str = "pages") -> Dict[str, str]:
     pages = {}
-    for path in Path("pages").glob("*.html"):
+    for path in Path(pages_dir).glob("*.html"):
         with open(path, "r") as f:
             pages[path.name] = f.read()
     return pages
 
 
-def load_features() -> Dict[str, Any]:
+def load_features(pages_dir: str = "pages") -> Dict[str, Any]:
     import yaml
-    features_path = Path("pages/features.yaml")
+    features_path = Path(pages_dir) / "features.yaml"
     if features_path.exists():
         with open(features_path, "r") as f:
             return yaml.safe_load(f) or {}
@@ -102,11 +102,11 @@ def load_prompt(name: str) -> str:
         return f.read()
 
 
-def load_completed_runs() -> Set[Tuple[str, str, int]]:
+def load_completed_runs(results_file: Path = RESULTS_FILE) -> Set[Tuple[str, str, int]]:
     """Resume keys: (model, condition_page, run_number)."""
     completed = set()
-    if RESULTS_FILE.exists():
-        with open(RESULTS_FILE, "r") as f:
+    if results_file.exists():
+        with open(results_file, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 try:
@@ -117,10 +117,10 @@ def load_completed_runs() -> Set[Tuple[str, str, int]]:
     return completed
 
 
-def load_total_cost() -> float:
+def load_total_cost(results_file: Path = RESULTS_FILE) -> float:
     total = 0.0
-    if RESULTS_FILE.exists():
-        with open(RESULTS_FILE, "r") as f:
+    if results_file.exists():
+        with open(results_file, "r") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 try:
@@ -131,11 +131,12 @@ def load_total_cost() -> float:
     return total
 
 
-def append_result(row: Dict[str, Any]):
-    RESULTS_DIR.mkdir(exist_ok=True)
-    file_exists = RESULTS_FILE.exists()
-    with open(RESULTS_FILE, "a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_HEADERS, extrasaction="ignore")
+def append_result(row: Dict[str, Any], results_file: Path = RESULTS_FILE,
+                  headers: Optional[List[str]] = None):
+    results_file.parent.mkdir(parents=True, exist_ok=True)
+    file_exists = results_file.exists()
+    with open(results_file, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=headers or CSV_HEADERS, extrasaction="ignore")
         if not file_exists:
             writer.writeheader()
         writer.writerow(row)
@@ -307,6 +308,12 @@ def main():
     parser.add_argument("--budget", type=float, default=None,
                         help="Budget cap USD (default: config budget_cap_usd)")
     parser.add_argument("--log-prefix", type=str, default="run")
+    parser.add_argument("--pages-dir", type=str, default="pages",
+                        help="Directory of stimulus pages + features.yaml (default: pages = run 2 frozen set)")
+    parser.add_argument("--out", type=str, default=None,
+                        help="Results CSV path (default: results/results.csv)")
+    parser.add_argument("--page-version", type=str, default=None,
+                        help="Tag written to a page_version column, e.g. v3 (adds the column; default: none)")
     args = parser.parse_args()
 
     config = load_config()
@@ -324,17 +331,20 @@ def main():
     budget_cap = args.budget if args.budget is not None else config["budget_cap_usd"]
     pricing = config["pricing"]
 
-    pages = load_pages()
+    out_file = Path(args.out) if args.out else RESULTS_FILE
+    headers = CSV_HEADERS + (["page_version"] if args.page_version else [])
+
+    pages = load_pages(args.pages_dir)
     page_ids = list(pages.keys())
     if not page_ids:
-        print("No pages found in pages/ directory"); sys.exit(1)
+        print(f"No pages found in {args.pages_dir}/ directory"); sys.exit(1)
 
-    features = load_features()
+    features = load_features(args.pages_dir)
     buying_prompt_template = load_prompt("buying_question")
     interview_prompt_template = load_prompt("exit_interview")
 
-    completed = load_completed_runs()
-    total_cost = load_total_cost()
+    completed = load_completed_runs(out_file)
+    total_cost = load_total_cost(out_file)
 
     keys_in_space = {
         (m["name"], p, r)
@@ -347,7 +357,8 @@ def main():
     total_combinations = len(keys_in_space)
 
     log(f"Models: {len(models)} ({', '.join(m['name'] for m in models)})")
-    log(f"Pages: {len(page_ids)} | Runs per condition: {runs_per_condition}")
+    log(f"Pages: {len(page_ids)} from {args.pages_dir}/ | Runs per condition: {runs_per_condition}")
+    log(f"Output: {out_file} | page_version: {args.page_version or '(none)'}")
     log(f"Total combinations: {total_combinations} | Already completed: {len(completed)} | Remaining: {remaining}")
     log(f"Current spend: ${total_cost:.4f} / ${budget_cap:.2f}")
 
@@ -380,7 +391,9 @@ def main():
                     )
 
                     if result["success"]:
-                        append_result(result["row"])
+                        if args.page_version:
+                            result["row"]["page_version"] = args.page_version
+                        append_result(result["row"], out_file, headers)
                         total_cost += result["total_cost_usd"]
                         completed.add(key)
                         r = result["row"]

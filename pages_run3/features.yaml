@@ -1,0 +1,211 @@
+# Controlled features for each course page — RUN 3 (pre-registered follow-up)
+# IDENTICAL to run 2 (pages/features.yaml) EXCEPT the single manipulation:
+# canvas_color.html reviews.rating 4.3 -> 4.6 (Victor's feedback: isolate
+# rating from review volume). Everything else byte-identical; pages frozen.
+# Used for experiment documentation and UI feature tags
+# Each feature is a controlled variable in the experiment
+#
+# RUN 2 DESIGN (per professor feedback): all five pages are equally strong/hard
+# to choose. Each has a distinct honest profile with mixed strengths and a
+# clear tradeoff. Ratings compressed to 4.4-4.8. New competitive signals
+# (badge, social proof, comparison table, price anchoring, payment plan) are
+# varied per page on purpose.
+
+artistry_academy.html:
+  name: "Artistry Academy - Complete Oil Painting Mastery"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 299
+    label: "Price: $299 (anchored from $349)"
+    anchored: true
+    was: 349
+    deal: "Launch pricing — save $50"
+  reviews:
+    level: "many"
+    count: 240
+    rating: 4.8
+    label: "Reviews: many (240, 4.8★)"
+  credentials:
+    present: true
+    detail: "detailed"
+    label: "Credentials: yes (Yale MFA, MoMA exhibitor)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+  certificate: false
+  lessons: 96
+  badge: "Best Seller"
+  social_proof: "2,847 enrolled · 312 this month · 17 viewing now"
+  comparison_table: true
+  payment_plan: false
+  level: "All levels"
+  tradeoff: "Priciest of the five; no certificate offered"
+
+palette_masters.html:
+  name: "Palette Masters - The Complete Painter's Path"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 149
+    label: "Price: $149 (lowest of the five)"
+    anchored: false
+    deal: "Lowest price of the five compared"
+  reviews:
+    level: "many"
+    count: 220
+    rating: 4.6
+    label: "Reviews: many (220, 4.6★)"
+  credentials:
+    present: false
+    detail: "none"
+    label: "Credentials: no (working studio collective)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "unstructured"
+    label: "Structure: unstructured"
+  certificate: false
+  lessons: 72
+  badge: "Best Value"
+  social_proof: "4,120 enrolled · 268 this month"
+  comparison_table: true
+  payment_plan: "3 x $49.67 interest-free"
+  level: "Beginner–Int"
+  tradeoff: "Best price and strong reviews, but no certificate and no credentialed instructor"
+
+canvas_color.html:
+  name: "Canvas & Color - Oil Painting Foundations"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 199
+    label: "Price: $199 (one-time)"
+    anchored: false
+  reviews:
+    level: "many"
+    count: 260
+    rating: 4.6
+    label: "Reviews: most of the five (260), rating 4.6★ (RUN 3: raised from run 2's 4.3★)"
+  credentials:
+    present: false
+    detail: "minimal"
+    label: "Credentials: no (community-taught, 12 yrs)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+  certificate: false
+  lessons: 64
+  badge: "Most Reviewed"
+  social_proof: "6,340 enrolled · 186 this month — largest community of the five"
+  comparison_table: false
+  payment_plan: false
+  level: "All levels"
+  tradeoff: "Biggest community and most reviews; no elite credentials, certificate, or installments (rating 4.6★ in run 3 — was 4.3★, lowest of the five, in run 2)"
+
+brushstroke_studio.html:
+  name: "Brushstroke Studio - Professional Oil Painting Program"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 249
+    label: "Price: $249 (anchored from $299)"
+    anchored: true
+    was: 299
+    deal: "Launch pricing — save $50"
+  reviews:
+    level: "few"
+    count: 180
+    rating: 4.5
+    label: "Reviews: fewest of the five (180, 4.5★)"
+  credentials:
+    present: true
+    detail: "detailed"
+    label: "Credentials: yes (MFA Slade, former Chelsea senior lecturer)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "structured"
+    label: "Structure: structured"
+  certificate: true
+  lessons: 80
+  badge: "New & Trending"
+  social_proof: "410 enrolled · 34 this month — smallest community"
+  comparison_table: true
+  payment_plan: "3 x $83"
+  level: "Int–Advanced"
+  tradeoff: "Only certificate of the five and pro rigor, but fewest reviews and second-highest price"
+
+creative_canvas.html:
+  name: "Creative Canvas - Oil Painting for Everyone"
+  category: "Art"
+  price:
+    display: "shown"
+    value: 179
+    label: "Price: $179 (easiest plan: 6 x $29.83)"
+    anchored: false
+  reviews:
+    level: "many"
+    count: 200
+    rating: 4.4
+    label: "Reviews: many (200, 4.4★ — lowest rating of the five)"
+  credentials:
+    present: false
+    detail: "none"
+    label: "Credentials: no (self-taught duo)"
+  description:
+    detail: "detailed"
+    label: "Description: detailed"
+  structure:
+    level: "unstructured"
+    label: "Structure: unstructured"
+  certificate: false
+  lessons: 58
+  badge: "Editor's Choice"
+  social_proof: "1,560 enrolled · 97 this month"
+  comparison_table: false
+  payment_plan: "6 x $29.83"
+  level: "Absolute beginner"
+  tradeoff: "Gentlest pace and easiest payment plan, but lowest rating and fewest lessons"
+
+# Feature definitions for experiment documentation
+feature_definitions:
+  price:
+    description: "Whether the course price is transparently displayed, and whether an original/higher price is shown as an anchor"
+    levels: ["shown", "hidden"]
+  reviews:
+    description: "Volume and visibility of student reviews/ratings (counts compressed in run 2 to break the run-1 ceiling effect)"
+    levels: ["many", "few", "none"]
+  credentials:
+    description: "Whether instructor credentials are provided and how detailed"
+    levels: ["detailed", "minimal", "none"]
+  description:
+    description: "Depth and detail of course description and curriculum"
+    levels: ["detailed", "short"]
+  structure:
+    description: "Page organization and clarity of information architecture"
+    levels: ["structured", "unstructured"]
+  certificate:
+    description: "Whether a completion certificate is offered (only one page in run 2)"
+    levels: [true, false]
+  badge:
+    description: "Competitive positioning badge shown on the page (varied per page)"
+    levels: ["Best Seller", "Best Value", "Most Reviewed", "New & Trending", "Editor's Choice"]
+  social_proof:
+    description: "Enrollment count and recency signal (varied per page)"
+  comparison_table:
+    description: "Five-way comparison table shown on the page (shown on 3 of 5 pages in run 2)"
+    levels: [true, false]
+  payment_plan:
+    description: "Installment payment option offered (varied per page)"
+  price_anchoring:
+    description: "Whether an original/higher price is displayed next to the real price (run 2 new signal)"
+    levels: [true, false]
