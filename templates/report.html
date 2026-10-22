@@ -249,7 +249,7 @@
     <ol class="steps">
       <li>A model is shown <b>all five course pages</b> as raw HTML, order shuffled every trial (controls position bias).</li>
       <li>It must recommend <b>exactly one</b> course and justify the pick.</li>
-      <li>In the <b>same conversation</b>, it then answers an 11-question exit survey: how influential was price, reviews, credentials, badges… (1–5 scale).</li>
+      <li>In the <b>same conversation</b>, it then answers an 11-question exit survey: how influential was price, reviews, credentials, badges… (1–5 scale) — asked <i>after</i> the choice, so it is post-choice self-report, not a pre-decision reason.</li>
       <li>Repeat 30× per model per page-condition → 1,041 complete trials, CSV-logged with costs, tokens and latencies.</li>
     </ol>
     <p>Each page has <b>one strength and one honest tradeoff</b>. No page wins on everything — which page wins depends on what the model's heuristic weights. Browse them:
@@ -357,13 +357,16 @@
     </table>
     <p>Each model is <b>near-deterministic</b> (temperature 0.1) — but models disagree with <i>each other</i>.
     The aggregate is balanced because heuristics differ, not because any model hesitates.
-    Canvas's and Creative's single strengths (review volume; gentle pitch) never beat
-    credentials or price in any model.</p>
+    Canvas's and Creative's <i>whole bundles</i> (review volume with the lowest rating &amp; community
+    teaching; gentle pitch with installment pricing) never beat credentials or price in any model — the
+    result is about each page's bundle, not any single feature. Run 3 isolates Canvas's rating.</p>
 
     <h3>What the models say vs. what they do</h3>
     <div class="quote">“Self-reports track revealed choices closely — Artistry choosers rate credentials
-    4.99/5 and price 3.30; Palette choosers rate price 5.00/5 and credentials 2.51.
-    Stated reasons are a trustworthy window into LLM decision-making.”</div>
+    4.99/5 and price 3.30; Palette choosers rate price 5.00/5 and credentials 2.51.”</div>
+    <p class="muted">Caveat, stated deliberately: the exit survey runs <i>after</i> the choice, in the same
+    conversation — it may rationalise a decision already made. The alignment shows <b>consistency</b> between
+    what models say and what they do; on its own it cannot prove the rated factor <i>caused</i> the pick.</p>
     <p>Across all 1,041 exit surveys, stated driver importance:
     <b>Description 4.61 ≈ Reviews 4.56 &gt; Clarity 4.41 &gt; Price 4.03 ≈ Comparison table 3.99 ≈
     Credentials 3.96 &gt; Social proof 3.10 &gt; Badge 2.61 &gt; Payment plan 2.24 &gt; Anchoring 2.00.</b>
@@ -398,8 +401,8 @@
   <section id="next">
     <h2><span class="no">05</span>Surprises &amp; what's next</h2>
     <ul>
-      <li><b>Surprise 1:</b> balance comes entirely from models disagreeing with each other — no model was ever “undecided”. Temperature-driven uncertainty ≈ 0.</li>
-      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models.</li>
+      <li><b>Surprise 1:</b> balance comes from models disagreeing with each other — no model was near-uniform at temperature 0.1. But the pages changed mid-run (16→17 Oct): DeepSeek's own Artistry share moved 94% → 71% across the change while luna and gemini-3.8 stayed stable — so part of the between-model gap reflects which pages each model saw. Full before/after analysis in the write-up.</li>
+      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models. Careful reading: Canvas carries that volume <i>together with</i> the lowest rating and no credentials, so this is the bundle speaking — Run 3 raises Canvas to 4.6★ (one change, pages otherwise frozen) to isolate the rating.</li>
       <li><b>Surprise 3:</b> gpt-4.1-mini was the only model producing genuine 5-way variety (picked all five pages) — smaller ≠ simpler heuristics.</li>
       <li><b>Next (Run 3):</b> raise Canvas's rating floor 4.3★ → 4.6★ and re-run all models as a separate condition — a causal test of whether heavy-signal strength (rating) is what unlocks review-volume wins.</li>
     </ul>

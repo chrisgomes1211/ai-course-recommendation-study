@@ -60,17 +60,37 @@ Two pages (Canvas, Creative) received almost no picks. Per-model heuristics:
 | gpt-6-luna | 150 | Palette 57% | price-leaning but genuinely split |
 | gpt-4.1-mini | 150 | Artistry 54% | most heterogeneous — the only model to pick Canvas (3) |
 
-Aggregate balance is produced entirely by *between-model* disagreement; each model is
-near-deterministic at temperature 0.1. Canvas's and Creative's single strengths
-(review volume; gentle beginner pitch) never defeat credentials or price signals in any
-model tested — the one exception being gpt-4.1-mini, whose heterogeneity produced the
-entire non-zero tail for both pages.
+Aggregate balance is produced by *between-model* disagreement; each model is
+near-deterministic at temperature 0.1. Two caveats, both quantified below: (i) the layout
+change at the 444-row boundary moved deepseek's own Artistry share 94% → 71% (luna and
+gemini-3.8 stable), so part of the between-model difference reflects which page version
+each model saw; (ii) Canvas's and Creative's *bundles* (review volume arriving together
+with the lowest rating and community teaching; gentle pitch with installment pricing)
+never defeat credentials or price in any model tested — a statement about each page's
+bundle, not about review volume alone (gpt-4.1-mini's heterogeneity produced the entire
+non-zero tail for both pages).
+
+**Page-version sensitivity (v1 = the 444 trials of 16 Oct; v2 = the 597 trials of 17 Oct):**
+
+| Model | Versions seen | v1 picks | v2 picks | Shift |
+|---|---|---|---|---|
+| deepseek-flash | both | n=71: A 94% · P 6% | n=72: A 71% · P 29% | **−23pp Artistry** |
+| gpt-6-luna | both | n=32: P 56% · A 44% | n=118: P 57% · A 43% | stable (±1pp) |
+| gemini-3.8-flash | both | n=41: A 95% · P 5% | n=107: A 93% · P 7% | stable (2pp) |
+| gemini-3.1-flash-lite, mimo-v2.6-flash | v1 only | 150 each | — | — |
+| gpt-4.1-mini, grok-3-mini | v2 only | — | 150 each | — |
+
+Two of the three dual-version models keep their signature across the change; deepseek does
+not. Stimulus version is therefore a live covariate: the “all variance is between models”
+reading is qualified accordingly, and pages are frozen from 17 Oct onward.
 
 Exit-interview Likerts track the choices closely: Artistry choosers rate credentials 4.99
 and reviews 4.94; Palette choosers rate price 5.00; Brushstroke choosers rate credentials
 5.00 and comparison table 4.88; Creative choosers rate clarity 5.00 and payment plan 4.21.
-Stated reasons revealed choices closely — a useful result for the trustworthiness of LLM
-explainability. Across all 1,041 rows, the stated-importance ordering is
+Stated reasons track revealed choices closely — evidence of *consistency* between what
+models say and what they do, read with care: the survey is asked after the choice, in the
+same conversation, so it may rationalise a decision already made and cannot by itself show
+that the rated factor caused the pick. Across all 1,041 rows, the stated-importance ordering is
 Description 4.61 ≈ Reviews 4.56 > Clarity 4.41 > Price 4.03 ≈ Comparison 3.99 ≈
 Credentials 3.96 > Social proof 3.10 > Badge 2.61 > Payment plan 2.24 > Anchoring 2.00 —
 classic CRO levers (badges, anchors, installments) barely register as drivers.
@@ -83,8 +103,10 @@ classic CRO levers (badges, anchors, installments) barely register as drivers.
 2. **Model sample:** 7 low-tier chat models, one per provider family, each near-deterministic
    at temperature 0.1 — findings characterize this tier, not frontier models.
 3. **Two near-dead pages:** Canvas (0.3%) and Creative (1.3%) received almost no picks —
-   their single strengths (review volume; gentle beginner pitch) never defeat credentials
-   or price signals in any model tested. The five-way balance we designed for did not emerge.
+   but each page's strength arrives *bundled* (Canvas carries its review volume together
+   with the lowest rating and no credentials), so this does not isolate review volume as
+   the failing driver; Run 3's rating-only change is the separating test. The five-way
+   balance we designed for did not emerge.
 4. **Fictional pages:** all courses, reviews, instructors and enrollments are synthetic;
    models may behave differently with real brands and real review text.
 5. **Visual-layer confound (post-collection tweak, 2026-10-16):** after 444 rows were
@@ -101,10 +123,12 @@ classic CRO levers (badges, anchors, installments) barely register as drivers.
 ## 6. Next steps
 
 - [x] Run 2 complete: all 7 models, 1,041 rows, $34.16 (2026-10-17)
-- [ ] **Run 3 (planned):** rebalance the two near-dead pages — Canvas rating floor
-      4.3★ → 4.6★, Creative given a hidden-gem profile — and re-run all 7 models as a
-      separate condition to test *causally* whether heavy-signal strength (rating)
-      makes review-volume/beginner-pitch pages win
+- [ ] **Run 3 (pre-registered, small):** ONE change — Canvas rating floor 4.3★ → 4.6★;
+      every other feature and the other four pages byte-identical to run 2 (pages frozen).
+      All 7 models, same protocol (temp 0.1, 30/model ≈ 210 trials, ~$7), rows tagged with
+      an explicit `page_version` column (v2 baseline / v3 run-3). H1: if rating was the
+      binding constraint, Canvas's share rises materially above 0.3%; H2: it stays low →
+      the bundle interpretation stands. Run alongside the report writing.
 - [ ] Regression: feature matrix → choice (conditional logit over all 5 alternatives
       per row, features from `pages/features.yaml`)
 - [ ] Final report (after demo sign-off)
@@ -115,8 +139,8 @@ classic CRO levers (badges, anchors, installments) barely register as drivers.
 
 ## Appendix: artifacts
 
-- Data: `results/results.csv` (444 rows, run 2 complete for mimo+deepseek), `results_backup/*.csv` (aborted runs 1, 2a–2c)
-- Cost ledger: `results/cost_ledger.md` (run 1: $13.59; run 2 to date: $13.20; grand total ~$26.8)
-- Figures: `src/figures.py` → `results/figures/*.png` (regenerated from 444 rows)
+- Data: `results/results.csv` (1,041 rows, run 2 complete 2026-10-17), `results_backup/*.csv` (aborted runs 1, 2a–2c)
+- Cost ledger: `results/cost_ledger.md` (run 1: $13.59; run 2: $34.16; grand total ~$47.75)
+- Figures: `src/figures.py` → `results/figures/*.png` (regenerated from 1,041 rows)
 - Page QA screenshots: `results/qa/*_{settled,full}.png` (`scripts/qa_screenshots.py`, Playwright + system Chrome)
 - Analyzer: `python -m src.analyze`
