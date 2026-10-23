@@ -409,6 +409,11 @@ def data_results():
     return send_file(ROOT / "results" / "results.csv", as_attachment=True,
                      download_name="results_run2.csv")
 
+@app.route("/data/results-run3.csv")
+def data_results_run3():
+    return send_file(ROOT / "results" / "results_run3.csv", as_attachment=True,
+                     download_name="results_run3.csv")
+
 @app.route("/data/features")
 def data_features():
     return send_file(ROOT / "pages" / "features.yaml", as_attachment=True,

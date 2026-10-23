@@ -48,6 +48,9 @@
   .banner b { font-size:21px; display:inline-block; min-width:2ch; }
   .banner .cell { display:flex; flex-direction:column; gap:2px; }
   .banner .cell b { color:#ffd9c9; }
+  .banner .cell.hi b { color:#fff; }
+  .banner .cell.hi { background:rgba(181,69,27,.3); border:1px solid rgba(255,217,201,.45);
+                     border-radius:10px; padding:8px 14px; }
 
   /* video */
   .video-card { margin:16px 0 8px; border-radius:16px; overflow:hidden; background:#000;
@@ -127,6 +130,20 @@
                      padding:11px 14px 13px; border-top:1px solid var(--line); background:#fbfaf7; }
   .rcpt figcaption b { color:var(--ink); }
 
+  /* ---- Run 3 section ---- */
+  .lede { font-size:15px; color:#33333e; margin:2px 0 16px; }
+  .cells { display:flex; flex-wrap:wrap; gap:10px; margin:16px 0; }
+  .cells .cell { flex:1; min-width:130px; background:var(--card); border:1px solid var(--line);
+                 border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:3px;
+                 font-family:Helvetica,Arial,sans-serif; }
+  .cells .cell b { font-size:22px; color:var(--ink); font-family:Georgia,serif; }
+  .cells .cell.hi { border-color:rgba(181,69,27,.5); background:#fdf3ee; }
+  .cells .cell.hi b { color:var(--acc); }
+  .cells .cell.big { align-items:center; justify-content:center; font-size:22px; color:var(--mut);
+                     min-width:34px; border:0; background:transparent; padding:0 2px; }
+  .cells .cell small { color:var(--mut); font-size:11.5px; }
+  table.tbl tr.hi td { background:#fdf3ee; }
+
   /* interactive: run toggle · course filters · sortable table · quiz */
   .run-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
   .run-switch { display:inline-flex; gap:4px; background:#f0ece4; border:1px solid var(--line);
@@ -205,6 +222,7 @@
       <a href="#experiment">Experiment</a>
       <a href="#pages">Pages</a>
       <a href="#results">Results</a>
+      <a href="#run3">Run 3</a>
       <a href="#next">Next</a>
       <a href="#billing">Billing</a>
       <a href="#downloads">Downloads</a>
@@ -217,14 +235,14 @@
   <p class="kicker">NCI · Practicum Part 2 · MSc Research Experiment</p>
   <h1>What Drives an LLM's Choice?<br>A Controlled Offer-Choice Experiment</h1>
   <p class="muted">Seven low-tier LLMs each viewed five fictional oil-painting course pages and picked one,
-  then explained why. Run 2 · complete · 1,041 trials · October 2026.</p>
+  then explained why. Three runs · 1,247 trials · October 2026.</p>
 
   <div class="banner">
-    <span class="cell"><b data-count="1041">0</b>trials</span>
+    <span class="cell"><b data-count="1247">0</b>trials <small>(1,041 + 206)</small></span>
     <span class="cell"><b>7</b>models</span>
     <span class="cell"><b>5</b>course pages</span>
-    <span class="cell"><b>$34.16</b>API spend (run 2)</span>
-    <span class="cell"><b>56.1%</b>top page share <small>(was 96.6% in run 1)</small></span>
+    <span class="cell"><b>$54.57</b>API spend (all runs)</span>
+    <span class="cell hi"><b>0.3% → 26.7%</b>Canvas share <small>run 3 lifted one rating</small></span>
   </div>
 
   <section id="video">
@@ -398,27 +416,83 @@
     </figure>
   </section>
 
+  <section id="run3">
+    <h2><span class="no">05</span>Run 3 — the rating test</h2>
+    <p class="lede">Run 2 left a bundle confound: Canvas's 260 reviews arrived <i>with</i> the lowest
+    rating of the five. Run 3 changes <b>exactly one thing</b> — Canvas's rating 4.3★ → 4.6★ — and
+    re-runs all 7 models with every other feature, and the other four pages, byte-identical.</p>
+
+    <div class="cells">
+      <span class="cell"><b>0.3%</b>Canvas share <small>run 2 · 3 / 1,041</small></span>
+      <span class="cell big">→</span>
+      <span class="cell hi"><b>26.7%</b>Canvas share <small>run 3 · 55 / 206</small></span>
+      <span class="cell"><b>206</b>trials <small>of 210 planned · temp 0.1</small></span>
+      <span class="cell"><b>$6.82</b>run 3 cost <small>cap $100</small></span>
+    </div>
+
+    <p><b>H1 — rating was the binding constraint:</b> Canvas's share rises well above 0.3%.
+    <b>H2 — the bundle story holds:</b> Canvas stays dead. <b>Result: H1, decisively.</b> A single
+    rating bump makes the dead page competitive — Canvas ties Palette at 26.7%.</p>
+
+    <table class="tbl">
+      <thead><tr><th>Page</th><th>Run 2</th><th>Run 3</th><th>Moved</th></tr></thead>
+      <tbody>
+        <tr><td>Artistry Academy</td><td>56.1%</td><td>43.7%</td><td>−12.4pp</td></tr>
+        <tr><td>Palette Masters</td><td>40.0%</td><td>26.7%</td><td>−13.3pp</td></tr>
+        <tr class="hi"><td><b>Canvas &amp; Color</b></td><td><b>0.3%</b></td><td><b>26.7%</b></td><td><b>+26.4pp</b></td></tr>
+        <tr><td>Brushstroke Studio</td><td>2.3%</td><td>1.9%</td><td>−0.4pp</td></tr>
+        <tr><td>Creative Canvas</td><td>1.3%</td><td>1.0%</td><td>−0.3pp</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Who moved — and who didn't</h3>
+    <p>Run 2's heuristic signatures <i>predict</i> the Run 3 movement. Every price-leaning or
+    heterogeneous model shifted toward Canvas the moment its rating stopped being the lowest;
+    the two extreme-signature models did not move at all:</p>
+    <table class="tbl">
+      <thead><tr><th>Model</th><th>Run 2 signature</th><th>Run 3</th><th>Moved?</th></tr></thead>
+      <tbody>
+        <tr><td>gpt-6-luna</td><td>price-leaning split</td><td><b>Canvas 57%</b></td><td>flipped outright</td></tr>
+        <tr><td>deepseek-flash</td><td>credentials-first</td><td>Artistry 54% · Canvas 42%</td><td>split</td></tr>
+        <tr><td>grok-3-mini</td><td>price-first</td><td>Palette 40% · Canvas 37%</td><td>split</td></tr>
+        <tr><td>mimo-v2.6-flash</td><td>credentials-first</td><td>Artistry 57% · Canvas 33%</td><td>moderate</td></tr>
+        <tr><td>gpt-4.1-mini</td><td>heterogeneous</td><td>Artistry 50% · Canvas 20%</td><td>moderate</td></tr>
+        <tr><td>gemini-3.1-flash-lite</td><td>price-first</td><td>Palette 80%</td><td><b>unmoved</b></td></tr>
+        <tr><td>gemini-3.8-flash</td><td>credentials-first</td><td>Artistry 100%</td><td><b>unmoved</b></td></tr>
+      </tbody>
+    </table>
+
+    <p class="muted">Reading: this causally isolates <b>rating as the binding constraint</b> for the
+    middle models. Review volume alone never won a trial; volume <i>+ a non-lowest rating</i> wins 26.7%.
+    Canvas's remaining gaps — no credentials, no certificate — still cost it the credentials-first
+    segment, so the field is two strong pages plus a rating-sensitive Canvas, not five equals.
+    Run 3 is logged separately with a <code>page_version</code> column (<code>v3</code>), 4 trials
+    dropped (DeepSeek empty-response flakes, same failure mode as run 2). Grand total across all
+    runs: <b>$54.57</b> of the $100 cap.</p>
+  </section>
+
   <section id="next">
-    <h2><span class="no">05</span>Surprises &amp; what's next</h2>
+    <h2><span class="no">06</span>Surprises &amp; what's next</h2>
     <ul>
       <li><b>Surprise 1:</b> balance comes from models disagreeing with each other — no model was near-uniform at temperature 0.1. But the pages changed mid-run (16→17 Oct): DeepSeek's own Artistry share moved 94% → 71% across the change while luna and gemini-3.8 stayed stable — so part of the between-model gap reflects which pages each model saw. Full before/after analysis in the write-up.</li>
-      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models. Careful reading: Canvas carries that volume <i>together with</i> the lowest rating and no credentials, so this is the bundle speaking — Run 3 raises Canvas to 4.6★ (one change, pages otherwise frozen) to isolate the rating.</li>
+      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models in run 2. Run 3 resolved the ambiguity: with the rating raised off the floor, that same volume wins 26.7% — so volume was never powerless, it was <i>masked by the low rating</i>.</li>
       <li><b>Surprise 3:</b> gpt-4.1-mini was the only model producing genuine 5-way variety (picked all five pages) — smaller ≠ simpler heuristics.</li>
-      <li><b>Next (Run 3):</b> raise Canvas's rating floor 4.3★ → 4.6★ and re-run all models as a separate condition — a causal test of whether heavy-signal strength (rating) is what unlocks review-volume wins.</li>
+      <li><b>What's next:</b> a human baseline arm, and frontier (non-low-tier) models to test whether these heuristics hold beyond the low-tier tier.</li>
     </ul>
   </section>
 
   <section id="limits">
-    <h2><span class="no">06</span>Limits</h2>
-    <p><b>Cost:</b> ~$47.75 total across both runs (cap $100). <b>Models:</b> 7 low-tier models,
+    <h2><span class="no">07</span>Limits</h2>
+    <p><b>Cost:</b> $54.57 total across all runs (cap $100). <b>Models:</b> 7 low-tier models,
     one per provider, near-deterministic by design — findings characterize this tier, not frontier models.
     <b>Pages:</b> fictional courses and synthetic reviews; real brands may behave differently.
-    9 of 1,050 planned trials were lost to transient API errors.</p>
+    <b>Drop rate:</b> 9 of 1,050 trials (run 2) and 4 of 210 (run 3) were lost to transient API errors —
+    reported as counts, never imputed.</p>
   </section>
 
   <section id="billing">
-    <h2><span class="no">07</span>Billing receipts</h2>
-    <p>The cost figures in this report are <i>computed</i> from token prices per run (the $47.75 ledger,
+    <h2><span class="no">08</span>Billing receipts</h2>
+    <p>The cost figures in this report are <i>computed</i> from token prices per run (the $54.57 ledger,
     downloadable below). These are the providers' own billing dashboards — the actual charges behind that
     spend, captured 20 Oct 2026. Their windows are wider than the experiment and include general API
     testing plus free credit grants, so treat them as receipts of real money, not a re-accounting;
@@ -455,16 +529,17 @@
       <tr><td>DeepSeek</td><td>Total API cost · $0.34 balance</td><td class="num">$2.12</td><td>account to date</td></tr>
       <tr><td>Anthropic (Claude)</td><td>Free credit grant (expires Oct 7, 2027)</td><td class="num">$6.15</td><td>granted Oct 6, 2026</td></tr>
     </table>
-    <p class="muted">Statement totals (≈ $53-equivalent with €17.32 ≈ $20) sit in the same range as the
-    computed ledger of <b>$47.75</b> — consistent, and nowhere near the <b>$100 cap</b>. The grant and the
-    wider windows explain the difference; part of the spend ran on free credits.</p>
+    <p class="muted">Statement totals (≈ $53-equivalent with €17.32 ≈ $20, to 20 Oct) sit in the same range as the
+    computed ledger of <b>$54.57</b> across all three runs — consistent, and nowhere near the <b>$100 cap</b>.
+    The grant and the wider windows explain the small difference; part of the spend ran on free credits.</p>
   </section>
 
   <section id="downloads">
-    <h2><span class="no">08</span>Deliverables</h2>
+    <h2><span class="no">09</span>Deliverables</h2>
     <div class="dl">
       <a class="primary" href="/dataset">🖥 Browse data as table</a>
-      <a href="/data/results.csv" download>⬇ Dataset CSV (1,041 rows)</a>
+      <a href="/data/results.csv" download>⬇ Run 2 dataset CSV (1,041 rows)</a>
+      <a href="/data/results-run3.csv" download>⬇ Run 3 dataset CSV (206 rows, v3)</a>
       <a href="/data/features" download>⬇ Features table (yaml)</a>
       <a href="/data/cost-log" download>⬇ Cost log</a>
       <a href="/data/writeup" download>⬇ Full write-up (md)</a>
