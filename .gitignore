@@ -2,6 +2,7 @@ results/*
 !results/results.csv
 !results/README.md
 !results/cost_ledger.md
+!results/results_run3.csv
 .env
 __pycache__/
 *.pyc
