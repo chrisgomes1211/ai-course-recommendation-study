@@ -1,7 +1,7 @@
 # Final report — outline (for Victor's review)
 
 **Report working title:** *What Drives an LLM's Choice? A Controlled Offer-Choice Experiment*
-**Data:** `results/results.csv` — 1,041 trials · 7 models · 5 pages · temperature 0.1 · $47.75 total spend
+**Data:** `results/results.csv` — run 2: 1,041 trials (of 1,050 planned) · `results/results_run3.csv` — run 3: 210 planned / 206 completed · 7 models · 5 pages · temperature 0.1 · $54.57 total spend
 
 ---
 
@@ -53,7 +53,7 @@
 - Denominators = completed trials per model (143–150); sensitivity: even if all 7 dropped deepseek trials were Palette picks, deepseek's Palette share moves only 17.5% → 21.5% — conclusions unchanged.
 
 ### 4.6 Cost accounting
-- **$47.75** total (run 1 $13.59 + run 2 $34.16), token-priced, cap $100 — the cost-log figure is authoritative everywhere (supersedes the $50–60 figure quoted verbally in the demo video).
+- **$54.57** total across all runs (run 1 $13.59 + run 2 $34.16 + run 3 $6.82), token-priced, cap $100 — the cost-log figure is authoritative everywhere (supersedes the $50–60 figure quoted verbally in the demo video).
 
 ## 5. Results
 ### 5.1 Descriptives — did the redesign work?
@@ -82,14 +82,18 @@
 ### 6.2 What models heeded — and what they ignored
 - Likert drivers (Description 4.61 ≈ Reviews 4.56 > … > Anchoring 2.00); badges/anchors/payment plans barely register.
 ### 6.3 Review volume: a bundle, not an isolated driver (feedback point 3)
-- Canvas = most reviews **+** lowest rating **+** community teaching — the 0.3% result is about the bundle; no claim that review volume per se is powerless.
+- Canvas = most reviews **+** lowest rating **+** community teaching — the run-2 0.3% result is about the bundle; no claim that review volume per se is powerless.
 - Run 3 (§7) isolates rating as the single varying factor.
 
-## 7. Run 3 — pre-registered extension (run small, alongside writing)
-- **One change only:** Canvas rating 4.3★ → 4.6★; all other features and all four other pages frozen (files byte-identical to v2).
-- Same protocol (temp 0.1, 30/model, shuffled), rows tagged with an explicit `page_version` column (v2 baseline / v3-run3) so version is always traceable in the CSV.
-- Hypotheses: H1 — if review volume matters once rating is equalised, Canvas share rises materially above 0.3%; H2 — if the bundle story is right, Canvas stays low.
-- Kept small (target ≈ 7 × 30 = 210 trials, ~$7) and reported as an addendum if it completes before submission.
+## 7. Run 3 — pre-registered single-variable extension (COMPLETE)
+
+*Its own results section — the causal test answering the "bundle" question raised in §6.3.*
+
+- **Design (one change only):** Canvas rating 4.3★ → 4.6★ (off the floor; now ties Palette). All other features and the other four pages byte-identical to v2 (`pages_run3/`, diff-verified). Same protocol: temp 0.1, all 7 models × 30 = 210 planned; `page_version=v3` column in `results/results_run3.csv`.
+- **H1 / H2:** H1 — if rating was the binding constraint, Canvas rises materially above 0.3%. H2 — it stays low → bundle reading stands.
+- **Result: H1, decisively.** Canvas 0.3% (3/1,041) → **26.7% (55/206)**. Aggregates: Artistry 56.1%→43.7%, Palette 40.0%→26.7%, Canvas 0.3%→26.7%, Brushstroke 2.3%→1.9%, Creative 1.3%→1.0%.
+- **Who moved:** price-leaning/heterogeneous models all shifted toward Canvas (luna flipped outright to 57%; deepseek, grok, mimo, 4.1-mini split); the two extreme-signature models did **not** move (credentials-first gemini-3.8 → 100% Artistry; price-first gemini-lite → 80% Palette). Run-2 heuristic signatures therefore *predict* the Run-3 movement.
+- **Causal reading:** rating is the binding constraint for the middle models; review volume alone never wins, volume + non-lowest rating wins 26.7% of trials. The Run-2 bundle claim (§6.3) is now supported by a controlled test, not just association.
 
 ## 8. Threats to validity & limitations
 - Page-version confound (mitigated: declared, sensitivity-analysed, pages frozen).
@@ -100,7 +104,7 @@
 - Budget-bounded sample (~$47.75 of $100 cap).
 
 ## 9. Conclusion
-- Answer to RQ; the redesign story as a methodological lesson (ceiling effects in stimulus design); future work: Run 3 result, human baseline arm, frontier models.
+- Run 3 result folded in as its own section (§7); future work: human baseline arm, frontier models, Creative-bundle separating test.
 
 ## 10. Appendices
 - A: full feature manifest (`features.yaml`). B: model × page win table. C: failure/retry log summary. D: cost ledger + provider statements. E: data dictionary (`results/README.md`). F: demo video link + live site URL.

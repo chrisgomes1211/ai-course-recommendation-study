@@ -54,3 +54,19 @@ Provider-side dashboards — the actual charges behind the computed ledger above
 Screenshots: `static/billing/*.png`. Statement windows are wider than the runs and include free
 credit grants, so they are receipts rather than a re-computation — the computed **$47.75** total
 above remains the experiment's accounting. Everything stays well under the $100 cap.
+
+## Run 3 — rating manipulation (2026-10-23)
+
+Pre-registered single-variable follow-up: Canvas rating 4.3★ → 4.6★, all other features and
+the other four pages byte-identical to v2 (`pages_run3/`, diff-verified). Temp 0.1, all 7
+models × 30 = 210 planned; `page_version=v3` column in `results/results_run3.csv`. H1 (rating
+was the binding constraint) confirmed.
+
+| Item | Value |
+|---|---|
+| Rows collected | 206 / 210 planned (4 lost, all deepseek empty-response flakes) |
+| Run-3 spend | **$6.82** |
+| Headline | Canvas 0.3% (3/1,041) → **26.7% (55/206)** |
+| Second resume pass | recovered 6 of the first 10 dropped deepseek trials |
+
+**Grand total (run 1 + run 2 + run 3) = $54.57** on the $100 cap (headroom ~$45).

@@ -1,6 +1,6 @@
 # What Drives an LLM's Choice? A Controlled Offer-Choice Experiment
 
-**Status: Run 2 COMPLETE — 1,041 / 1,050 rows, all 7 models collected, $34.16 total API spend. Figures and numbers current as of 2026-10-17.**
+**Status: Run 2 COMPLETE (1,041 / 1,050 rows) and Run 3 COMPLETE (206 / 210 rows). Total API spend $54.57 on a $100 cap. Figures current as of 2026-10-23.**
 
 ## 1. Research question
 
@@ -18,12 +18,15 @@ trusted as explanations of their decisions?
   page structure, certificate, badge, enrollment social proof, comparison table,
   price anchoring, installment plan.
 - **Models:** 7 low-tier models across 6 providers (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek),
-  temperature 0.1.
+  temperature 0.1 (set identically for every provider; near-deterministic sampling).
 - **Protocol per trial:** model sees all five pages as raw HTML (order shuffled), returns one
   choice as JSON, then answers an 11-question exit interview *in the same conversation*
   (10 Likert 1–5 influence ratings + 1 free-text rationale).
 - **Design:** models × pages × 30 repetitions = 1,050 planned rows; resumable runner with
   budget cap; one CSV row per completed trial (`results/results.csv`), regression-ready.
+- **Denominator policy:** percentages are computed over *completed* trials; dropped trials
+  (transient API failures after final retry) are reported as an explicit count out of the
+  planned total (run 2: 9 of 1,050 dropped, 1,041 analyzed).
 
 ## 3. Design iterations (why run 1 was unusable)
 
@@ -70,7 +73,11 @@ never defeat credentials or price in any model tested — a statement about each
 bundle, not about review volume alone (gpt-4.1-mini's heterogeneity produced the entire
 non-zero tail for both pages).
 
-**Page-version sensitivity (v1 = the 444 trials of 16 Oct; v2 = the 597 trials of 17 Oct):**
+### 4.1 Page-version sensitivity: the DeepSeek before/after (declared mid-run page change)
+
+The five pages received a visual-layer update partway through run 2 (the 444-row boundary,
+16→17 Oct). Controlled data values stayed byte-identical, but the HTML layout models parse
+changed. Three models saw both versions. Their picks, before (v1) and after (v2) the change:
 
 | Model | Versions seen | v1 picks | v2 picks | Shift |
 |---|---|---|---|---|
@@ -80,9 +87,11 @@ non-zero tail for both pages).
 | gemini-3.1-flash-lite, mimo-v2.6-flash | v1 only | 150 each | — | — |
 | gpt-4.1-mini, grok-3-mini | v2 only | — | 150 each | — |
 
-Two of the three dual-version models keep their signature across the change; deepseek does
-not. Stimulus version is therefore a live covariate: the “all variance is between models”
-reading is qualified accordingly, and pages are frozen from 17 Oct onward.
+**The headline of this subsection: DeepSeek's own choice distribution moved when the pages
+moved** (Artistry 94%→71%), while the two other dual-version models held their signatures.
+Stimulus version is therefore a live covariate for DeepSeek specifically; the “all variance
+is between models” reading is qualified accordingly, and all pages are frozen from 17 Oct
+onward. This is also what motivates the pre-registered single-variable Run 3 below.
 
 Exit-interview Likerts track the choices closely: Artistry choosers rate credentials 4.99
 and reviews 4.94; Palette choosers rate price 5.00; Brushstroke choosers rate credentials
@@ -95,18 +104,70 @@ Description 4.61 ≈ Reviews 4.56 > Clarity 4.41 > Price 4.03 ≈ Comparison 3.9
 Credentials 3.96 > Social proof 3.10 > Badge 2.61 > Payment plan 2.24 > Anchoring 2.00 —
 classic CRO levers (badges, anchors, installments) barely register as drivers.
 
-## 5. Limitations
+## 5. Run 3: the rating manipulation (COMPLETE — 206 / 210 rows, $6.82)
 
-1. **Cost:** total API spend across both runs was ~$47.75 (run 1: $13.59, run 2: $34.16)
-   on a $100 cap. Free-tier/low-tier providers only; premium models (GPT-5-class,
-   Claude Opus-class) were out of scope by design.
+**Pre-registration (set before any run-3 trial):** exactly one feature changes — Canvas &
+Color's star rating 4.3★ → 4.6★ (raising it off the floor of the five; it now ties Palette
+at 4.6★). Every other feature, and the other four pages, byte-identical to run 2
+(`pages_run3/`, diff-verified; the only consequential knock-on is the compare-tables'
+worst-in-row `dim` annotation, which moves to Creative's 4.4★ as a factual consequence of
+the rating change). Same protocol: temperature 0.1, all 7 models × 30 trials = 210 rows,
+each tagged `page_version=v3` (`results/results_run3.csv`). **H1:** if rating was the
+binding constraint, Canvas's share rises materially above 0.3%. **H2:** it stays low → the
+bundle interpretation stands.
+
+**Result: H1, decisively.** Canvas goes from 0.3% (3/1,041) to **26.7% (55/206)** — a
+single feature flip makes the dead page competitive. Aggregates (run 3, n=206 completed of
+210 planned; 4 dropped DeepSeek trials, counted not imputed):
+
+| Page | Run 2 share | Run 3 share |
+|---|---|---|
+| Artistry Academy | 56.1% | 43.7% |
+| Palette Masters | 40.0% | 26.7% |
+| **Canvas & Color** | **0.3%** | **26.7%** |
+| Brushstroke Studio | 2.3% | 1.9% |
+| Creative Canvas | 1.3% | 1.0% |
+
+Per model — the run-2 heuristic signatures predict exactly who moves:
+
+| Model | Run 2 | Run 3 | Moved? |
+|---|---|---|---|
+| gpt-6-luna | Palette 57% | **Canvas 57%** | flipped outright |
+| deepseek-flash | Artistry 83% | Artistry 54%, Canvas 42% (n=26) | split |
+| grok-3-mini | Palette 72% | Palette 40%, Canvas 37% | split |
+| mimo-v2.6-flash | Artistry 84% | Artistry 57%, Canvas 33% | moderate |
+| gpt-4.1-mini | Artistry 54% | Artistry 50%, Canvas 20% | moderate |
+| gemini-3.1-flash-lite | Palette 69% | Palette 80% | **unmoved** (price-first) |
+| gemini-3.8-flash | Artistry 94% | Artistry 100% | **unmoved** (credentials-first) |
+
+**Reading.** The price-leaning and heterogeneous models all moved toward Canvas the moment
+its rating ceased to be the lowest — while the two extreme-signature models (credentials-
+first gemini-3.8, price-first gemini-lite) did not move at all. This causally isolates
+rating as the binding constraint for the middle models and confirms the run-2 bundle
+reading: review volume alone never won; volume + a non-lowest rating wins 26.7% of trials.
+Canvas's remaining deficits (no credentials, no certificate) still cost it Artistry's
+credentials-first segment — so the five-way balance Run 2 was designed for remains
+two-strong (Artistry/Palette) plus a rating-sensitive Canvas, not five equal pages.
+
+**Cost & failures.** Run 3 cost $6.82 (4 dropped trials, all DeepSeek empty-response
+flakes — the same failure mode seen in run 2, at a higher per-trial rate this run; a
+second resume pass recovered 6 of the first 10). Grand total across all runs: $54.57 of
+the $100 cap. Denominator policy as in §2: percentages over completed trials, drops
+reported as counts out of planned (210 planned, 206 completed).
+
+
+
+## 6. Limitations
+
+1. **Cost:** total API spend across all runs was $54.57 (run 1: $13.59, run 2: $34.16,
+   run 3: $6.82) on a $100 cap. Free-tier/low-tier providers only; premium models
+   (GPT-5-class, Claude Opus-class) were out of scope by design.
 2. **Model sample:** 7 low-tier chat models, one per provider family, each near-deterministic
    at temperature 0.1 — findings characterize this tier, not frontier models.
-3. **Two near-dead pages:** Canvas (0.3%) and Creative (1.3%) received almost no picks —
-   but each page's strength arrives *bundled* (Canvas carries its review volume together
-   with the lowest rating and no credentials), so this does not isolate review volume as
-   the failing driver; Run 3's rating-only change is the separating test. The five-way
-   balance we designed for did not emerge.
+3. **One feature isolated at a time:** Run 3 isolates rating; Creative's near-death has no
+   separating test (its gentle-pitch/installment bundle was not manipulated), so claims
+   about *why* Creative stays low remain associational. The five-way balance we designed
+   for did not emerge in either run.
 4. **Fictional pages:** all courses, reviews, instructors and enrollments are synthetic;
    models may behave differently with real brands and real review text.
 5. **Visual-layer confound (post-collection tweak, 2026-10-16):** after 444 rows were
@@ -116,31 +177,35 @@ classic CRO levers (badges, anchors, installments) barely register as drivers.
    tables — are byte-identical to what earlier rows saw. However, later models read
    different HTML markup/layout than earlier models did. Layout is visible to the models
    (they parse raw HTML), so pre/post blocks are separable by `timestamp` and noted as a
-   covariate in the dataset README.
-6. **9 lost trials** (7 deepseek, 2 gemini-3.8-flash): transient API errors after final
-   retry — 1,041 of 1,050 planned rows collected.
+   covariate in the dataset README. §4.1 quantifies the effect: DeepSeek moved, two
+   dual-version models did not.
+6. **Lost trials** (counted, not imputed; completed-trials denominator per §2): run 2 lost
+   9 of 1,050 (7 deepseek, 2 gemini-3.8-flash — transient API errors after final retry);
+   run 3 lost 4 of 210 (all deepseek empty-response flakes — same failure mode, higher
+   per-trial rate; a second resume pass recovered 6 of the first 10).
 
-## 6. Next steps
+## 7. Next steps
 
 - [x] Run 2 complete: all 7 models, 1,041 rows, $34.16 (2026-10-17)
-- [ ] **Run 3 (pre-registered, small):** ONE change — Canvas rating floor 4.3★ → 4.6★;
-      every other feature and the other four pages byte-identical to run 2 (pages frozen).
-      All 7 models, same protocol (temp 0.1, 30/model ≈ 210 trials, ~$7), rows tagged with
-      an explicit `page_version` column (v2 baseline / v3 run-3). H1: if rating was the
-      binding constraint, Canvas's share rises materially above 0.3%; H2: it stays low →
-      the bundle interpretation stands. Run alongside the report writing.
+- [x] **Run 3 complete (pre-registered single-variable test):** Canvas 4.3★ → 4.6★,
+      210 planned / 206 completed, $6.82, `page_version=v3` — H1 confirmed (Canvas
+      0.3% → 26.7%) (2026-10-23). See §5.
+- [ ] Final report: assemble §1–§6 into the professor-facing write-up per the reviewed
+      outline (`REPORT_OUTLINE.md`), folding Run 3 into the live `/report` page
 - [ ] Regression: feature matrix → choice (conditional logit over all 5 alternatives
       per row, features from `pages/features.yaml`)
-- [ ] Final report (after demo sign-off)
-- [ ] Rebalance consideration: Canvas + Creative have 0 wins — consider a partial
-      restore of one Canvas strength (e.g. 4.5★) before the remaining 4 models vote
-- [ ] Final analysis: regression on feature matrix → choice; per-model heuristics
-- [ ] 5-minute demo video (voiceover + figures from `src/figures.py`)
+- [x] Demo video (recorded, embedded in `/report`)
+- [ ] Optional robustness: Creative-bundle separating test (only if Victor asks — would
+      exceed the small-run budget)
 
 ## Appendix: artifacts
 
-- Data: `results/results.csv` (1,041 rows, run 2 complete 2026-10-17), `results_backup/*.csv` (aborted runs 1, 2a–2c)
-- Cost ledger: `results/cost_ledger.md` (run 1: $13.59; run 2: $34.16; grand total ~$47.75)
+- Data: `results/results.csv` (1,041 rows, run 2 complete 2026-10-17), `results/results_run3.csv`
+  (210 planned / 206 completed, run 3, `page_version` column = v3, 2026-10-23),
+  `results_backup/*.csv` (aborted runs 1, 2a–2c)
+- Run-3 stimulus: `pages_run3/` (byte-identical to `pages/` except Canvas rating 4.3★→4.6★;
+  diff-verified)
+- Cost ledger: `results/cost_ledger.md` (run 1: $13.59; run 2: $34.16; run 3: $6.82; grand total $54.57)
 - Figures: `src/figures.py` → `results/figures/*.png` (regenerated from 1,041 rows)
 - Page QA screenshots: `results/qa/*_{settled,full}.png` (`scripts/qa_screenshots.py`, Playwright + system Chrome)
 - Analyzer: `python -m src.analyze`
