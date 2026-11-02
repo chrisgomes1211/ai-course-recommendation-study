@@ -377,7 +377,8 @@
     The aggregate is balanced because heuristics differ, not because any model hesitates.
     Canvas's and Creative's <i>whole bundles</i> (review volume with the lowest rating &amp; community
     teaching; gentle pitch with installment pricing) never beat credentials or price in any model — the
-    result is about each page's bundle, not any single feature. Run 3 isolates Canvas's rating.</p>
+    result is about each page's bundle, not any single feature. Run 3 tests Canvas's rating on the
+    same pages (§05).</p>
 
     <h3>What the models say vs. what they do</h3>
     <div class="quote">“Self-reports track revealed choices closely — Artistry choosers rate credentials
@@ -423,29 +424,33 @@
     re-runs all 7 models with every other feature, and the other four pages, byte-identical.</p>
 
     <div class="cells">
-      <span class="cell"><b>0.3%</b>Canvas share <small>run 2 · 3 / 1,041</small></span>
+      <span class="cell"><b>0.5%</b>Canvas share <small>run 2 final pages · 3 / 597</small></span>
       <span class="cell big">→</span>
       <span class="cell hi"><b>26.7%</b>Canvas share <small>run 3 · 55 / 206</small></span>
       <span class="cell"><b>206</b>trials <small>of 210 planned · temp 0.1</small></span>
       <span class="cell"><b>$6.82</b>run 3 cost <small>cap $100</small></span>
     </div>
 
-    <p><b>H1 — rating was the binding constraint:</b> Canvas's share rises well above 0.3%.
-    <b>H2 — the bundle story holds:</b> Canvas stays dead. <b>Result: H1, decisively.</b> A single
-    rating bump lifts the dead page from 0.3% to 26.7% — enough to tie Palette for second.
+    <p><b>H1 — rating was the binding constraint:</b> Canvas's share rises well above its same-pages
+    baseline. <b>H2 — the bundle story holds:</b> Canvas stays low. <b>Result: support for H1.</b>
+    A single rating bump lifts Canvas from <b>3 of 597</b> on the same pages to <b>55 of 206</b> —
+    enough to tie Palette for second. With ~30 trials per model, this is support for H1, not confirmation.
     <b>Artistry still wins Run 3 overall (43.7%)</b>; no page reaches dominance. The finding is
     the size of Canvas's jump, not a new winner.</p>
 
     <table class="tbl">
-      <thead><tr><th>Page</th><th>Run 2</th><th>Run 3</th><th>Moved</th></tr></thead>
+      <thead><tr><th>Page</th><th>Run 2 · final pages (n=597)</th><th>Run 3 (n=206)</th><th>Moved</th></tr></thead>
       <tbody>
-        <tr><td>Artistry Academy</td><td>56.1%</td><td>43.7%</td><td>−12.4pp</td></tr>
-        <tr><td>Palette Masters</td><td>40.0%</td><td>26.7%</td><td>−13.3pp</td></tr>
-        <tr class="hi"><td><b>Canvas &amp; Color</b></td><td><b>0.3%</b></td><td><b>26.7%</b></td><td><b>+26.4pp</b></td></tr>
-        <tr><td>Brushstroke Studio</td><td>2.3%</td><td>1.9%</td><td>−0.4pp</td></tr>
-        <tr><td>Creative Canvas</td><td>1.3%</td><td>1.0%</td><td>−0.3pp</td></tr>
+        <tr><td>Artistry Academy</td><td>311 (52.1%)</td><td>90 (43.7%)</td><td>−8.4pp</td></tr>
+        <tr><td>Palette Masters</td><td>264 (44.2%)</td><td>55 (26.7%)</td><td>−17.5pp</td></tr>
+        <tr class="hi"><td><b>Canvas &amp; Color</b></td><td><b>3 (0.5%)</b></td><td><b>55 (26.7%)</b></td><td><b>+26.2pp</b></td></tr>
+        <tr><td>Brushstroke Studio</td><td>5 (0.8%)</td><td>4 (1.9%)</td><td>+1.1pp</td></tr>
+        <tr><td>Creative Canvas</td><td>14 (2.3%)</td><td>2 (1.0%)</td><td>−1.3pp</td></tr>
       </tbody>
     </table>
+    <p class="muted">Pooled across all 1,041 run-2 trials Canvas is 3 (0.3%) — but 444 of those trials
+    used the earlier pages, where Canvas could not win. The like-for-like baseline is the 597 trials
+    on the final frozen pages.</p>
 
     <h3>Who moved — and who didn't</h3>
     <p>Run 2's heuristic signatures <i>predict</i> the Run 3 movement. Every price-leaning or
@@ -453,34 +458,37 @@
     the two extreme-signature models did not move at all. (This is per-model movement — in the
     Run 3 aggregate Artistry still leads; no single model's flip changes that.)</p>
     <table class="tbl">
-      <thead><tr><th>Model</th><th>Run 2 signature</th><th>Run 3</th><th>Moved?</th></tr></thead>
+      <thead><tr><th>Model</th><th>Run 2 signature</th><th>Run 2 · Canvas (same pages)</th><th>Run 3 · counts</th><th>Moved?</th></tr></thead>
       <tbody>
-        <tr><td>gpt-6-luna</td><td>price-leaning split</td><td><b>Canvas 57%</b></td><td>flipped outright</td></tr>
-        <tr><td>deepseek-flash</td><td>credentials-first</td><td>Artistry 54% · Canvas 42%</td><td>split</td></tr>
-        <tr><td>grok-3-mini</td><td>price-first</td><td>Palette 40% · Canvas 37%</td><td>split</td></tr>
-        <tr><td>mimo-v2.6-flash</td><td>credentials-first</td><td>Artistry 57% · Canvas 33%</td><td>moderate</td></tr>
-        <tr><td>gpt-4.1-mini</td><td>heterogeneous</td><td>Artistry 50% · Canvas 20%</td><td>moderate</td></tr>
-        <tr><td>gemini-3.1-flash-lite</td><td>price-first</td><td>Palette 80%</td><td><b>unmoved</b></td></tr>
-        <tr><td>gemini-3.8-flash</td><td>credentials-first</td><td>Artistry 100%</td><td><b>unmoved</b></td></tr>
+        <tr><td>gpt-6-luna</td><td>price-leaning split</td><td>0 / 118</td><td><b>Canvas 17/30 (57%)</b></td><td>flipped outright</td></tr>
+        <tr><td>deepseek-flash</td><td>credentials-first</td><td>0 / 72</td><td>Artistry 14/26 (54%) · Canvas 11/26 (42%)</td><td>split</td></tr>
+        <tr><td>grok-3-mini</td><td>price-first</td><td>0 / 150</td><td>Palette 12/30 (40%) · Canvas 11/30 (37%)</td><td>split</td></tr>
+        <tr><td>mimo-v2.6-flash *</td><td>credentials-first</td><td>0 / 150</td><td>Artistry 17/30 (57%) · Canvas 10/30 (33%)</td><td>moderate</td></tr>
+        <tr><td>gpt-4.1-mini</td><td>heterogeneous</td><td>3 / 150</td><td>Artistry 15/30 (50%) · Canvas 6/30 (20%)</td><td>moderate</td></tr>
+        <tr><td>gemini-3.1-flash-lite *</td><td>price-first</td><td>0 / 150</td><td>Palette 24/30 (80%)</td><td><b>unmoved</b></td></tr>
+        <tr><td>gemini-3.8-flash</td><td>credentials-first</td><td>0 / 107</td><td>Artistry 30/30 (100%)</td><td><b>unmoved</b></td></tr>
       </tbody>
     </table>
+    <p class="muted">* Saw only the earlier pages in Run 2, so their change mixes the page redesign
+    with the rating change — not a clean rating effect.</p>
 
-    <p class="muted">Reading: this causally isolates <b>rating as the binding constraint</b> for the
-    middle models. Review volume alone never won a trial; volume <i>+ a non-lowest rating</i> wins 26.7% —
-    enough for second place, not enough to unseat Artistry, whose credentials still anchor the
-    top of the field. Canvas remains a page with real deficits — no credentials, no certificate —
-    that cost it the credentials-first segment. The field after Run 3 is <b>Artistry clearly first,
-    then Palette and Canvas tied</b>, not five equal pages and not a Canvas takeover.
-    Run 3 is logged separately with a <code>page_version</code> column (<code>v3</code>), 4 trials
-    dropped (DeepSeek empty-response flakes, same failure mode as run 2). Grand total across all
-    runs: <b>$54.57</b> of the $100 cap.</p>
+    <p class="muted">Reading: this <b>supports H1</b> — rating was the binding constraint for the
+    middle models. Review volume alone never won a trial; volume <i>+ a non-lowest rating</i> wins 26.7%
+    (55/206) — enough for second place, not enough to unseat Artistry, whose credentials still anchor the
+    top of the field. With ~30 trials per model these per-model cells are tendencies, not precise
+    effects, so the result is framed as support for H1 rather than confirmation. Canvas remains a page
+    with real deficits — no credentials, no certificate — that cost it the credentials-first segment.
+    The field after Run 3 is <b>Artistry clearly first, then Palette and Canvas tied</b>, not five equal
+    pages and not a Canvas takeover. Run 3 is logged separately with a <code>page_version</code> column
+    (<code>v3</code>), 4 trials dropped (DeepSeek empty-response flakes, same failure mode as run 2).
+    Grand total across all runs: <b>$54.57</b> of the $100 cap.</p>
   </section>
 
   <section id="next">
     <h2><span class="no">06</span>Surprises &amp; what's next</h2>
     <ul>
       <li><b>Surprise 1:</b> balance comes from models disagreeing with each other — no model was near-uniform at temperature 0.1. But the pages changed mid-run (16→17 Oct): DeepSeek's own Artistry share moved 94% → 71% across the change while luna and gemini-3.8 stayed stable — so part of the between-model gap reflects which pages each model saw. Full before/after analysis in the write-up.</li>
-      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models in run 2. Run 3 resolved the ambiguity: with the rating raised off the floor, that same volume wins 26.7% — so volume was never powerless, it was <i>masked by the low rating</i>.</li>
+      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models in run 2. Run 3 supports that reading: with the rating raised off the floor, that same volume wins 26.7% — so volume was never powerless, it was <i>masked by the low rating</i>.</li>
       <li><b>Surprise 3:</b> gpt-4.1-mini was the only model producing genuine 5-way variety (picked all five pages) — smaller ≠ simpler heuristics.</li>
       <li><b>What's next:</b> a human baseline arm, and frontier (non-low-tier) models to test whether these heuristics hold beyond the low-tier tier.</li>
     </ul>
@@ -492,7 +500,9 @@
     one per provider, near-deterministic by design — findings characterize this tier, not frontier models.
     <b>Pages:</b> fictional courses and synthetic reviews; real brands may behave differently.
     <b>Drop rate:</b> 9 of 1,050 trials (run 2) and 4 of 210 (run 3) were lost to transient API errors —
-    reported as counts, never imputed.</p>
+    reported as counts, never imputed. <b>Run 3 power:</b> ~30 trials per model, so percentages are
+    given with counts and worded as support for H1, not confirmation; mimo and gemini-3.1-flash-lite
+    saw only the earlier pages in run 2, so their Run 3 shift mixes redesign and rating.</p>
   </section>
 
   <section id="billing">

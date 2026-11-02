@@ -142,9 +142,13 @@ Per model — the run-2 heuristic signatures predict exactly who moves:
 
 **Reading.** The price-leaning and heterogeneous models all moved toward Canvas the moment
 its rating ceased to be the lowest — while the two extreme-signature models (credentials-
-first gemini-3.8, price-first gemini-lite) did not move at all. This causally isolates
-rating as the binding constraint for the middle models and confirms the run-2 bundle
-reading: review volume alone never won; volume + a non-lowest rating wins 26.7% of trials.
+first gemini-3.8, price-first gemini-lite) did not move at all. This **supports H1**: rating
+was the binding constraint for the middle models, and it points the same way as the run-2
+bundle reading — review volume alone never won; volume + a non-lowest rating wins 26.7% of
+trials (55/206). On the same pages the movement is 3/597 → 55/206; with ~30 trials per model
+these are tendencies, not precise effects, so this is support for H1, not confirmation.
+mimo and gemini-3.1-flash-lite saw only the earlier pages in run 2, so their shift mixes the
+redesign and the rating change and is not a clean rating effect.
 Canvas's remaining deficits (no credentials, no certificate) still cost it Artistry's
 credentials-first segment — so the five-way balance Run 2 was designed for remains
 two-strong (Artistry/Palette) plus a rating-sensitive Canvas, not five equal pages.
