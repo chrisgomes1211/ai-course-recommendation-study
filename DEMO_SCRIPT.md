@@ -91,13 +91,13 @@ Natural voice — this is a teleprompter, not a text to read word-for-word.
 > a single trial for six of the seven models. And three: gpt-4.1-mini, one of the smallest,
 > was the only model that genuinely used all five options.
 > Next: Run 3 — I'm raising Canvas's rating floor from 4.3 to 4.6 stars and re-running all
-> models as a separate condition, to test causally whether rating strength is what unlocks
+> models as a separate condition, to test whether rating strength is what unlocks
 > review-volume wins."
 
 ### 4:30–5:00 — Limits & close (30 sec)
 *[SCREEN: "Limits" + "Deliverables" sections]*
-> "Limits: about 48 dollars of API spend across both runs; seven low-tier models, one per
-> provider — this characterizes that tier, not frontier models; and the pages are fictional,
+> "Limits: about 48 dollars of API spend across both runs; seven low-tier models across
+> six providers — this characterizes that tier, not frontier models; and the pages are fictional,
 > so real brands might behave differently. Everything is here — dataset, features table,
 > cost log, write-up — linked on this page. Thanks."
 

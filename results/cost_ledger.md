@@ -60,13 +60,13 @@ above remains the experiment's accounting. Everything stays well under the $100 
 Pre-registered single-variable follow-up: Canvas rating 4.3★ → 4.6★, all other features and
 the other four pages byte-identical to v2 (`pages_run3/`, diff-verified). Temp 0.1, all 7
 models × 30 = 210 planned; `page_version=v3` column in `results/results_run3.csv`. H1 (rating
-was the binding constraint) confirmed.
+was the binding constraint) **supported**.
 
 | Item | Value |
 |---|---|
 | Rows collected | 206 / 210 planned (4 lost, all deepseek empty-response flakes) |
 | Run-3 spend | **$6.82** |
-| Headline | Canvas 0.3% (3/1,041) → **26.7% (55/206)** |
+| Headline | Canvas 0.3% (3/1,041 pooled; 3/597 same pages) → **26.7% (55/206)** |
 | Second resume pass | recovered 6 of the first 10 dropped deepseek trials |
 
 **Grand total (run 1 + run 2 + run 3) = $54.57** on the $100 cap (headroom ~$45).

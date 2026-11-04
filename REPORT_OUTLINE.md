@@ -33,8 +33,8 @@
 - Principle: exactly **one strength + one honest tradeoff** per page (price ladder 4.3–4.8★, reviews 180–260, credentials, one certificate, payment plans, badges).
 
 ### 4.2 Page-version history (DECLARED — feedback point 1)
-- **v1 (trials of 16 Oct 2026):** original run-2 layout — 444 trials.
-- **v2 (trials of 17 Oct 2026 → frozen):** Canvas demoted to *most-reviewed but lowest-rated (4.3★), community-taught, no credentials*; other pages held at their v1 values — 597 trials. This is the like-for-like baseline for Run 3 (§5.5).
+- **v1 (trials of 16 Oct 2026):** run-2 final layout A — 444 trials. Controlled feature values **already at their final run-2 settings**: the Canvas demotion (260 reviews @ 4.3★, community-taught, no credentials) was the **pilot-2b fix applied before any Run-2 trial** — *not* part of the v2 redesign (an earlier outline draft attributed it to v2; corrected here).
+- **v2 (trials of 17 Oct 2026 → frozen):** **visual-layer-only** update (layouts/images; commit `f38306a`, "distinct layouts per page") — 597 trials, controlled values byte-identical to v1 (winner attributes match across the boundary; v1 reasonings quote "260 reviews" 52× and "4.3" 113×, and never the pre-rebalance "15 reviews"/"4.0"). This is the like-for-like baseline for Run 3 (§5.5).
 - **v3 (Run 3, 22–23 Oct 2026):** v2 with one change — Canvas rating 4.3★ → 4.6★ (§5.5).
 - Which models saw which version in run 2:
   | Model | Version seen |
@@ -47,18 +47,18 @@
 ### 4.3 Procedure
 - All five pages as raw HTML in one prompt, order shuffled per trial; choose exactly one + justify.
 - Exit survey (11 items, 1–5) in the **same conversation, after** the choice — explicitly described as post-choice self-report.
-- **Temperature 0.1** for every provider (stated because "near-deterministic" depends on it); max output tokens 2,000; ≤3 choice attempts, ≤5 interview attempts.
+- **Temperature 0.1** for every provider (stated because "near-deterministic" depends on it); max output tokens 2,000; ≤3 choice attempts, ≤10 interview attempts (observed maxima 3 and 5).
 - 30 trials per model → 1,050 planned (run 2); 210 planned (run 3).
 
 ### 4.4 Models
-- Table: 7 low-tier models, one per provider (OpenAI, Google ×2, xAI, DeepSeek, Xiaomi ×2), pricing, context.
+- Table: 7 low-tier models across 6 providers (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek), pricing per 1M tokens.
 
 ### 4.5 Failures, retries and dropped trials (feedback point 4)
 - Failure sources from run logs: grok — xAI credits exhausted (150 failed attempts, **all recovered** after top-up); deepseek — ~110 empty/invalid responses ("No JSON with 'choice' key"); gpt-6-luna — 1 credit exhaustion; mimo — rate/blank retries; gemini-3.8-flash — 2 × "Deadline Exceeded".
 - Retry policy: automatic re-run (up to 3 choice / 5 interview attempts) — 87 choice calls and 24 interview calls succeeded only after retries.
 - **Run 2: 9 trials dropped** (never completed): 7 deepseek-flash, 2 gemini-3.8-flash → 1,041 / 1,050 = 99.1% completion.
 - **Run 3: 4 trials dropped** (DeepSeek empty-response flakes, same failure mode) → 206 / 210 = 98.1% completion.
-- Denominators = completed trials per model (Run 2: 143–150; Run 3: 26–30); sensitivity: even if all 7 dropped deepseek trials were Palette picks, deepseek's Palette share moves only 17.5% → 21.5% — conclusions unchanged.
+- Denominators = completed trials per model (Run 2: 143–150; Run 3: 26–30); sensitivity: even if all 7 dropped deepseek trials were Palette picks, deepseek's Palette share moves only 17.5% (25/143) → 21.3% (32/150) — conclusions unchanged.
 
 ### 4.6 Cost accounting
 - **$54.57** total across all runs (run 1 $13.59 + run 2 $34.16 + run 3 $6.82), token-priced, cap $100 — the cost-log figure is authoritative everywhere (supersedes the $50–60 figure quoted verbally in the demo video).

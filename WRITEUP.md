@@ -116,8 +116,9 @@ each tagged `page_version=v3` (`results/results_run3.csv`). **H1:** if rating wa
 binding constraint, Canvas's share rises materially above 0.3%. **H2:** it stays low → the
 bundle interpretation stands.
 
-**Result: H1, decisively.** Canvas goes from 0.3% (3/1,041) to **26.7% (55/206)** — a
-single feature flip makes the dead page competitive. Aggregates (run 3, n=206 completed of
+**Result: support for H1.** Canvas goes from its same-pages baseline of 0.3% (3/597 on the
+final frozen pages; 3/1,041 pooled) to **26.7% (55/206)** —
+a single feature flip makes the dead page competitive. Aggregates (run 3, n=206 completed of
 210 planned; 4 dropped DeepSeek trials, counted not imputed):
 
 | Page | Run 2 share | Run 3 share |
@@ -168,7 +169,7 @@ reported as counts out of planned (210 planned, 206 completed).
    (GPT-5-class, Claude Opus-class) were out of scope by design.
 2. **Model sample:** 7 low-tier chat models, one per provider family, each near-deterministic
    at temperature 0.1 — findings characterize this tier, not frontier models.
-3. **One feature isolated at a time:** Run 3 isolates rating; Creative's near-death has no
+3. **One feature tested at a time:** Run 3 tests rating; Creative's near-death has no
    separating test (its gentle-pitch/installment bundle was not manipulated), so claims
    about *why* Creative stays low remain associational. The five-way balance we designed
    for did not emerge in either run.
@@ -192,7 +193,7 @@ reported as counts out of planned (210 planned, 206 completed).
 
 - [x] Run 2 complete: all 7 models, 1,041 rows, $34.16 (2026-10-17)
 - [x] **Run 3 complete (pre-registered single-variable test):** Canvas 4.3★ → 4.6★,
-      210 planned / 206 completed, $6.82, `page_version=v3` — H1 confirmed (Canvas
+      210 planned / 206 completed, $6.82, `page_version=v3` — support for H1 (Canvas
       0.3% → 26.7%) (2026-10-23). See §5.
 - [ ] Final report: assemble §1–§6 into the professor-facing write-up per the reviewed
       outline (`REPORT_OUTLINE.md`), folding Run 3 into the live `/report` page
