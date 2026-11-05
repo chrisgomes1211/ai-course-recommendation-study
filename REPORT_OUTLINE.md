@@ -1,4 +1,4 @@
-# Final report — outline (v2, revised per Victor's 1 Nov feedback)
+# Final report — outline (v3, revised per Victor's 5 Nov feedback)
 
 **Report working title:** *What Drives an LLM's Choice? A Controlled Offer-Choice Experiment*
 **Data:** `results/results.csv` — run 2: 1,041 trials of 1,050 (of which **597 on the final frozen pages**) · `results/results_run3.csv` — run 3: 210 planned / **206 completed** (v3 pages) · 7 models · 5 pages · temperature 0.1 · $54.57 total spend
@@ -7,6 +7,11 @@
 > 1. **Run 3 moved into Results as §5.5**, immediately after the DeepSeek before/after (§5.3) — not a separate section after the Discussion. The Discussion (§6) now draws on both runs, and the review-volume "bundle" question is answered where §5.5 presents the test.
 > 2. **Run 3 is compared with Run 2 on the same pages.** The pooled figure (Canvas 3 of 1,041) includes trials on the earlier pages; on the final frozen pages Canvas won **3 of 597 (0.5%)**. mimo-v2.6-flash and gemini-3.1-flash-lite saw only the earlier pages in Run 2, so their Run 3 shift mixes the redesign and the rating change and is reported as such. Counts are given beside every percentage, and the result is worded as **support for H1**, not confirmation.
 > 3. The live report page has been updated accordingly: "causally isolates" is removed and the Run 3 tables now show the same-pages baseline and counts.
+>
+> **Revision 3 — what changed from the feedback of 5 Nov**
+> 1. **Headline comparison now holds the model set constant.** The Run 3 headline is **Canvas 45 of 146 (30.8%) for the five models that appear in both runs** (gpt-6-luna, deepseek-flash, grok-3-mini, gpt-4.1-mini, gemini-3.8-flash — the same five that constitute the 597 final-page Run-2 baseline), used in the abstract, §5.5 and the live report page. mimo-v2.6-flash and gemini-3.1-flash-lite (who saw only v1 in Run 2) are reported separately — **Canvas 10 of 60** — with their declared confound.
+> 2. **Outline brought in line with the Method (§4.2).** "Canvas could not win on the earlier pages" is replaced everywhere: Canvas **did not win** on v1 (0/444), and since v1→v2 changed only the visual layer, the confound for mimo and gemini-3.1-flash-lite is the **visual redesign only** — smaller than earlier drafts claimed.
+> 3. **§4.4: five providers, not six** (OpenAI, Google, xAI, Xiaomi, DeepSeek; OpenAI and Google contribute two models each).
 
 ---
 
@@ -14,7 +19,7 @@
 - Question: how do low-tier LLMs choose between five controlled course offers, and what drives the pick?
 - Design in one line: 7 models × 5 pages shown together, shuffled, single choice + exit survey; 1,041 run-2 trials (597 on the final frozen pages) and 206 run-3 trials.
 - Headline: no page ≥60%; aggregate balance arises from **models disagreeing** — credentials-first vs price-first.
-- Run 3 in one sentence: raising only Canvas's rating (4.3★ → 4.6★) moves it from 3/597 to 55/206 — **support for H1** (rating was the binding constraint for the middle models), with Artistry still first.
+- Run 3 in one sentence: raising only Canvas's rating (4.3★ → 4.6★) moves it from **3 of 597 (0.5%) to 45 of 146 (30.8%) among the five models that appear in both runs** — **support for H1** (rating was the binding constraint for the middle models), with Artistry still first; pooled across all seven models it is 55 of 206 (26.7%), of which the two v1-only models account for 10 of 60, reported separately with their declared confound.
 - Honest caveats up front: page-version change mid-run (sensitivity analysis in §5.3), post-hoc survey (§5.4), ~30 trials per model in Run 3.
 
 ## 2. Introduction & research question
@@ -51,7 +56,7 @@
 - 30 trials per model → 1,050 planned (run 2); 210 planned (run 3).
 
 ### 4.4 Models
-- Table: 7 low-tier models across 6 providers (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek), pricing per 1M tokens.
+- Table: 7 low-tier models across **5 providers** (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek), pricing per 1M tokens.
 
 ### 4.5 Failures, retries and dropped trials (feedback point 4)
 - Failure sources from run logs: grok — xAI credits exhausted (150 failed attempts, **all recovered** after top-up); deepseek — ~110 empty/invalid responses ("No JSON with 'choice' key"); gpt-6-luna — 1 credit exhaustion; mimo — rate/blank retries; gemini-3.8-flash — 2 × "Deadline Exceeded".
@@ -66,7 +71,7 @@
 ## 5. Results
 ### 5.1 Descriptives — did the redesign work?
 - Run 2 shares (all 1,041): Artistry 56.1% (584) · Palette 40.0% (416) · Brushstroke 2.3% (24) · Creative 1.3% (14) · Canvas 0.3% (3).
-- Of those, 444 trials used the earlier pages (16 Oct) and 597 the final frozen pages (17 Oct); Canvas could not win on the earlier pages, so the like-for-like baseline is the 597 (§5.5).
+- Of those, 444 trials used the earlier pages (16 Oct, v1) and 597 the final frozen pages (17 Oct, v2); **Canvas did not win on v1 (0/444)**, and since v1→v2 changed only the visual layer (§4.2) the like-for-like baseline for Run 3 is the 597 final-page trials (§5.5).
 - No page ≥60% dominance line; run-1 ceiling (96.6%) resolved.
 
 ### 5.2 Per-model choice distributions
@@ -101,22 +106,23 @@
 | Brushstroke Studio | 5 (0.8%) | 4 (1.9%) | +1.1pp |
 | Creative Canvas | 14 (2.3%) | 2 (1.0%) | −1.3pp |
 
-- **Baseline note (Victor's check):** pooled across all 1,041 run-2 trials Canvas is 3 (0.3%), but 444 of those trials used the earlier pages, where Canvas could not win. The like-for-like baseline is **3 of 597 (0.5%)** on the final frozen pages.
-- **Per model on the same pages** (Canvas wins / trials; every Run 3 model has ≈30 completed trials):
+- **Baseline note (Victor's check):** pooled across all 1,041 run-2 trials Canvas is 3 (0.3%), but 444 of those trials used the v1 pages, where Canvas did not win (0/444) — and those v1 trials came only from models that are not in the five-model headline set anyway. The like-for-like baseline is **3 of 597 (0.5%)** on the final frozen pages.
+- **Headline (Victor's point 1 — model set held constant):** the 597 final-page trials are exactly the **five models that also ran in Run 3** (gpt-6-luna, deepseek-flash, grok-3-mini, gpt-4.1-mini, gemini-3.8-flash). For those five, Run 3 gives **Canvas 45 of 146 (30.8%)** — this is the headline figure in the abstract, here, and on the report page. The other two models (mimo-v2.6-flash, gemini-3.1-flash-lite) saw only v1 in Run 2 and are reported separately: **Canvas 10 of 60 (16.7%)**, with the confound declared below.
+- **Per model — Canvas wins / trials** (Run 2 column headed *pages seen*: v2 = final frozen pages; v1 = earlier pages, visual layer only, same data values; every Run 3 model has ≈30 completed trials):
 
-| Model | Run 2 · Canvas (same pages) | Run 3 · counts | Reading |
+| Model | Run 2 · Canvas (pages seen) | Run 3 · counts | Reading |
 |---|---|---|---|
-| gpt-6-luna | 0/118 | Canvas 17/30 (57%) | flipped outright |
-| deepseek-flash | 0/72 | Artistry 14/26 (54%) · Canvas 11/26 (42%) | split |
-| grok-3-mini | 0/150 | Palette 12/30 (40%) · Canvas 11/30 (37%) | split |
-| mimo-v2.6-flash \* | 0/150 | Artistry 17/30 (57%) · Canvas 10/30 (33%) | moderate |
-| gpt-4.1-mini | 3/150 | Artistry 15/30 (50%) · Canvas 6/30 (20%) | moderate |
-| gemini-3.1-flash-lite \* | 0/150 | Palette 24/30 (80%) | unmoved |
-| gemini-3.8-flash | 0/107 | Artistry 30/30 (100%) | unmoved |
+| gpt-6-luna | 0/118 (v2) | Canvas 17/30 (57%) | flipped outright |
+| deepseek-flash | 0/72 (v2) | Artistry 14/26 (54%) · Canvas 11/26 (42%) | split |
+| grok-3-mini | 0/150 (v2) | Palette 12/30 (40%) · Canvas 11/30 (37%) | split |
+| mimo-v2.6-flash \* | 0/150 (**v1**) | Artistry 17/30 (57%) · Canvas 10/30 (33%) | moderate |
+| gpt-4.1-mini | 3/150 (v2) | Artistry 15/30 (50%) · Canvas 6/30 (20%) | moderate |
+| gemini-3.1-flash-lite \* | 0/150 (**v1**) | Palette 24/30 (80%) | unmoved |
+| gemini-3.8-flash | 0/107 (v2) | Artistry 30/30 (100%) | unmoved |
 
-\* **Declared confound:** mimo-v2.6-flash and gemini-3.1-flash-lite saw only the **earlier pages** in Run 2, so their Run 3 change mixes the page redesign with the rating change and is **not** a clean rating effect. The other five models are like-for-like (final pages in both runs).
+\* **Declared confound:** mimo-v2.6-flash and gemini-3.1-flash-lite ran Run 2 on the **v1 pages**, so their Run 3 comparison is not against their own same-pages baseline. Because v1→v2 changed **only the visual layer** (§4.2 — controlled values byte-identical), the confound for these two is the **visual redesign plus the rating change**, not a data-value change — smaller than earlier drafts claimed. Their headline contribution is therefore reported separately: **Canvas 10 of 60**, not folded into the five-model figure. The other five models are strictly like-for-like (v2 pages in both runs).
 
-- **Reading — support for H1:** the rating bump moved Canvas from 3/597 to 55/206, driven by the price-leaning and heterogeneous models; the two extreme-signature models did not move (gemini-3.8 30/30 Artistry; gemini-lite 24/30 Palette). The result **supports H1** — rating was the binding constraint for the middle models — and points the same way as the run-2 bundle reading: review volume alone never won; volume plus a non-lowest rating wins 26.7%, enough for second place. **Artistry still leads Run 3 (43.7%) and Canvas ties Palette for second (26.7% each)** — not a takeover. At ≈30 trials per model these are tendencies, not precise effects; the wording throughout is "support for H1", never "confirms" or "causally isolates".
+- **Reading — support for H1:** for the five models in both runs the rating bump moved Canvas from 3/597 (0.5%) to **45/146 (30.8%)**; pooled across all seven models it is 55/206 (26.7%), the two v1-only models adding 10/60. The movement is driven by the price-leaning and heterogeneous models; the two extreme-signature models did not move (gemini-3.8 30/30 Artistry; gemini-lite 24/30 Palette). The result **supports H1** — rating was the binding constraint for the middle models — and points the same way as the run-2 bundle reading: review volume alone never won; volume plus a non-lowest rating wins 30.8% of trials for the like-for-like five, enough for second place. **Artistry still leads Run 3 (43.7%) and Canvas ties Palette for second (26.7% each pooled)** — not a takeover. At ≈30 trials per model these are tendencies, not precise effects; the wording throughout is "support for H1", never "confirms" or "causally isolates".
 - **Cost & failures:** $6.82 for 206 completed trials; 4 dropped (DeepSeek empty-response flakes, the same failure mode as run 2), counted out of 210 planned and never imputed; percentages use completed trials as the denominator.
 
 ## 6. Discussion (draws on both runs)
@@ -132,7 +138,7 @@
 - Page-version confound (mitigated: declared, sensitivity-analysed, pages frozen; Run 3 compared on the same pages).
 - Post-choice survey design (mitigated: association language only).
 - Run 3 power: ≈30 trials per model → counts reported beside every percentage; result worded as support for H1, not confirmation.
-- Run 3 baseline confound for mimo and gemini-3.1-flash-lite (earlier pages only in run 2) — declared in §5.5, not pooled into the rating effect.
+- Run 3 baseline confound for mimo and gemini-3.1-flash-lite (v1 pages only in run 2 — visual redesign only, values byte-identical) — declared in §5.5, reported separately (10/60), not pooled into the headline.
 - Low-tier models only, temperature 0.1 → findings characterise this tier; between-model inference, not frontier models.
 - Fictional courses / synthetic reviews; single-item-per-page bundling (can't fully separate features within a page — addressed partly by Run 3).
 - 9 dropped trials (run 2, 0.9%) and 4 (run 3, 1.9%) with sensitivity bounds.

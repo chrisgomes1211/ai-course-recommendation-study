@@ -122,8 +122,9 @@ attempts, and enforces the **$100 budget cap** at run time.
 
 ## 4.4 Models
 
-Seven low-tier models across six providers were selected per supervisor direction
-(9 Oct 2026: *low tier only, ~2 per company*). Anthropic was dropped on 10 Oct 2026 — the
+Seven low-tier models across five providers were selected per supervisor direction
+(9 Oct 2026: *low tier only, ~2 per company*): OpenAI (×2), Google (×2), xAI, Xiaomi and
+DeepSeek. Anthropic was dropped on 10 Oct 2026 — the
 only low-tier Haiku option was a ~10× price outlier and the account was out of credit.
 Prices are the per-1M-token rates used for cost accounting (`config.yaml`, verified against
 provider pricing in October 2026):

@@ -97,7 +97,7 @@ Natural voice — this is a teleprompter, not a text to read word-for-word.
 ### 4:30–5:00 — Limits & close (30 sec)
 *[SCREEN: "Limits" + "Deliverables" sections]*
 > "Limits: about 48 dollars of API spend across both runs; seven low-tier models across
-> six providers — this characterizes that tier, not frontier models; and the pages are fictional,
+> five providers — this characterizes that tier, not frontier models; and the pages are fictional,
 > so real brands might behave differently. Everything is here — dataset, features table,
 > cost log, write-up — linked on this page. Thanks."
 

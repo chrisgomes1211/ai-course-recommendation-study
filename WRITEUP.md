@@ -17,7 +17,7 @@ trusted as explanations of their decisions?
   price level, review count + star rating, instructor credentials, description detail,
   page structure, certificate, badge, enrollment social proof, comparison table,
   price anchoring, installment plan.
-- **Models:** 7 low-tier models across 6 providers (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek),
+- **Models:** 7 low-tier models across 5 providers (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek),
   temperature 0.1 (set identically for every provider; near-deterministic sampling).
 - **Protocol per trial:** model sees all five pages as raw HTML (order shuffled), returns one
   choice as JSON, then answers an 11-question exit interview *in the same conversation*
@@ -116,8 +116,10 @@ each tagged `page_version=v3` (`results/results_run3.csv`). **H1:** if rating wa
 binding constraint, Canvas's share rises materially above 0.3%. **H2:** it stays low → the
 bundle interpretation stands.
 
-**Result: support for H1.** Canvas goes from its same-pages baseline of 0.3% (3/597 on the
-final frozen pages; 3/1,041 pooled) to **26.7% (55/206)** —
+**Result: support for H1.** Canvas goes from its same-pages baseline of 0.5% (3/597 on the
+final frozen pages; 0.3% = 3/1,041 pooled) to **30.8% (45/146) for the five models that ran
+in both runs** — pooled across all seven models, **26.7% (55/206)**; the two models that ran
+Run 2 on the earlier (v1) pages contribute 10 of 60 and are reported separately —
 a single feature flip makes the dead page competitive. Aggregates (run 3, n=206 completed of
 210 planned; 4 dropped DeepSeek trials, counted not imputed):
 
@@ -145,11 +147,14 @@ Per model — the run-2 heuristic signatures predict exactly who moves:
 its rating ceased to be the lowest — while the two extreme-signature models (credentials-
 first gemini-3.8, price-first gemini-lite) did not move at all. This **supports H1**: rating
 was the binding constraint for the middle models, and it points the same way as the run-2
-bundle reading — review volume alone never won; volume + a non-lowest rating wins 26.7% of
-trials (55/206). On the same pages the movement is 3/597 → 55/206; with ~30 trials per model
+bundle reading — review volume alone never won; volume + a non-lowest rating wins 30.8% of
+trials for the five models in both runs (45/146). On the same pages the movement is 3/597 →
+45/146 (pooled across all seven models, 3/597 → 55/206); with ~30 trials per model
 these are tendencies, not precise effects, so this is support for H1, not confirmation.
-mimo and gemini-3.1-flash-lite saw only the earlier pages in run 2, so their shift mixes the
-redesign and the rating change and is not a clean rating effect.
+mimo and gemini-3.1-flash-lite ran run 2 on the earlier (v1) pages, so they have no
+same-pages baseline: because v1 → v2 changed only the visual layer, their confound is the
+visual redesign plus the rating change, not a data-value change, and their 10/60 Canvas wins
+are reported separately rather than folded into the headline.
 Canvas's remaining deficits (no credentials, no certificate) still cost it Artistry's
 credentials-first segment — so the five-way balance Run 2 was designed for remains
 two-strong (Artistry/Palette) plus a rating-sensitive Canvas, not five equal pages.
@@ -167,7 +172,8 @@ reported as counts out of planned (210 planned, 206 completed).
 1. **Cost:** total API spend across all runs was $54.57 (run 1: $13.59, run 2: $34.16,
    run 3: $6.82) on a $100 cap. Free-tier/low-tier providers only; premium models
    (GPT-5-class, Claude Opus-class) were out of scope by design.
-2. **Model sample:** 7 low-tier chat models, one per provider family, each near-deterministic
+2. **Model sample:** 7 low-tier chat models across five providers (OpenAI ×2, Google ×2,
+   xAI, Xiaomi, DeepSeek), each near-deterministic
    at temperature 0.1 — findings characterize this tier, not frontier models.
 3. **One feature tested at a time:** Run 3 tests rating; Creative's near-death has no
    separating test (its gentle-pitch/installment bundle was not manipulated), so claims

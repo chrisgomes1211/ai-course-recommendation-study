@@ -242,7 +242,7 @@
     <span class="cell"><b>7</b>models</span>
     <span class="cell"><b>5</b>course pages</span>
     <span class="cell"><b>$54.57</b>API spend (all runs)</span>
-    <span class="cell hi"><b>+26.4pp</b>Canvas shift from <b>one</b> change <small>rating 4.3★→4.6★ · Artistry still won</small></span>
+    <span class="cell hi"><b>+30.3pp</b>Canvas shift from <b>one</b> change <small>3/597 → 45/146 · 5 models in both runs</small></span>
   </div>
 
   <section id="video">
@@ -426,15 +426,19 @@
     <div class="cells">
       <span class="cell"><b>0.5%</b>Canvas share <small>run 2 final pages · 3 / 597</small></span>
       <span class="cell big">→</span>
-      <span class="cell hi"><b>26.7%</b>Canvas share <small>run 3 · 55 / 206</small></span>
+      <span class="cell hi"><b>30.8%</b>Canvas share <small>run 3 · 5 models in both runs · 45 / 146</small></span>
+      <span class="cell"><b>26.7%</b>pooled run 3 <small>all 7 models · 55 / 206</small></span>
       <span class="cell"><b>206</b>trials <small>of 210 planned · temp 0.1</small></span>
       <span class="cell"><b>$6.82</b>run 3 cost <small>cap $100</small></span>
     </div>
 
     <p><b>H1 — rating was the binding constraint:</b> Canvas's share rises well above its same-pages
     baseline. <b>H2 — the bundle story holds:</b> Canvas stays low. <b>Result: support for H1.</b>
-    A single rating bump lifts Canvas from <b>3 of 597</b> on the same pages to <b>55 of 206</b> —
-    enough to tie Palette for second. With ~30 trials per model, this is support for H1, not confirmation.
+    A single rating bump lifts Canvas from <b>3 of 597</b> on the same pages to <b>45 of 146 (30.8%)</b>
+    for the five models that appear in both runs — enough to tie Palette for second. Pooled across all
+    seven models it is <b>55 of 206 (26.7%)</b>; the two models that ran Run 2 on the earlier (v1) pages
+    contribute 10 of 60 and are reported separately below. With ~30 trials per model, this is support
+    for H1, not confirmation.
     <b>Artistry still wins Run 3 overall (43.7%)</b>; no page reaches dominance. The finding is
     the size of Canvas's jump, not a new winner.</p>
 
@@ -449,8 +453,10 @@
       </tbody>
     </table>
     <p class="muted">Pooled across all 1,041 run-2 trials Canvas is 3 (0.3%) — but 444 of those trials
-    used the earlier pages, where Canvas could not win. The like-for-like baseline is the 597 trials
-    on the final frozen pages.</p>
+    used the earlier (v1) pages, where Canvas did not win (0/444), and since v1 → v2 changed only the
+    visual layer the data values are identical either way. The like-for-like baseline is the 597 trials
+    on the final frozen pages — which are exactly the five models that also ran in Run 3, so the
+    headline comparison holds the model set constant.</p>
 
     <h3>Who moved — and who didn't</h3>
     <p>Run 2's heuristic signatures <i>predict</i> the Run 3 movement. Every price-leaning or
@@ -458,23 +464,27 @@
     the two extreme-signature models did not move at all. (This is per-model movement — in the
     Run 3 aggregate Artistry still leads; no single model's flip changes that.)</p>
     <table class="tbl">
-      <thead><tr><th>Model</th><th>Run 2 signature</th><th>Run 2 · Canvas (same pages)</th><th>Run 3 · counts</th><th>Moved?</th></tr></thead>
+      <thead><tr><th>Model</th><th>Run 2 signature</th><th>Run 2 · Canvas (pages seen)</th><th>Run 3 · counts</th><th>Moved?</th></tr></thead>
       <tbody>
-        <tr><td>gpt-6-luna</td><td>price-leaning split</td><td>0 / 118</td><td><b>Canvas 17/30 (57%)</b></td><td>flipped outright</td></tr>
-        <tr><td>deepseek-flash</td><td>credentials-first</td><td>0 / 72</td><td>Artistry 14/26 (54%) · Canvas 11/26 (42%)</td><td>split</td></tr>
-        <tr><td>grok-3-mini</td><td>price-first</td><td>0 / 150</td><td>Palette 12/30 (40%) · Canvas 11/30 (37%)</td><td>split</td></tr>
-        <tr><td>mimo-v2.6-flash *</td><td>credentials-first</td><td>0 / 150</td><td>Artistry 17/30 (57%) · Canvas 10/30 (33%)</td><td>moderate</td></tr>
-        <tr><td>gpt-4.1-mini</td><td>heterogeneous</td><td>3 / 150</td><td>Artistry 15/30 (50%) · Canvas 6/30 (20%)</td><td>moderate</td></tr>
-        <tr><td>gemini-3.1-flash-lite *</td><td>price-first</td><td>0 / 150</td><td>Palette 24/30 (80%)</td><td><b>unmoved</b></td></tr>
-        <tr><td>gemini-3.8-flash</td><td>credentials-first</td><td>0 / 107</td><td>Artistry 30/30 (100%)</td><td><b>unmoved</b></td></tr>
+        <tr><td>gpt-6-luna</td><td>price-leaning split</td><td>0 / 118 (v2)</td><td><b>Canvas 17/30 (57%)</b></td><td>flipped outright</td></tr>
+        <tr><td>deepseek-flash</td><td>credentials-first</td><td>0 / 72 (v2)</td><td>Artistry 14/26 (54%) · Canvas 11/26 (42%)</td><td>split</td></tr>
+        <tr><td>grok-3-mini</td><td>price-first</td><td>0 / 150 (v2)</td><td>Palette 12/30 (40%) · Canvas 11/30 (37%)</td><td>split</td></tr>
+        <tr><td>mimo-v2.6-flash *</td><td>credentials-first</td><td>0 / 150 (<b>v1</b>)</td><td>Artistry 17/30 (57%) · Canvas 10/30 (33%)</td><td>moderate</td></tr>
+        <tr><td>gpt-4.1-mini</td><td>heterogeneous</td><td>3 / 150 (v2)</td><td>Artistry 15/30 (50%) · Canvas 6/30 (20%)</td><td>moderate</td></tr>
+        <tr><td>gemini-3.1-flash-lite *</td><td>price-first</td><td>0 / 150 (<b>v1</b>)</td><td>Palette 24/30 (80%)</td><td><b>unmoved</b></td></tr>
+        <tr><td>gemini-3.8-flash</td><td>credentials-first</td><td>0 / 107 (v2)</td><td>Artistry 30/30 (100%)</td><td><b>unmoved</b></td></tr>
       </tbody>
     </table>
-    <p class="muted">* Saw only the earlier pages in Run 2, so their change mixes the page redesign
-    with the rating change — not a clean rating effect.</p>
+    <p class="muted">* Ran Run 2 on the earlier (v1) pages, so they have no same-pages baseline; their
+    comparison crosses the visual redesign and the rating change. Because v1 → v2 changed only the
+    visual layer (data values byte-identical — see Method §4.2), the confound is the visual redesign
+    only. Their Run 3 contribution is therefore reported separately: <b>Canvas 10 of 60</b>. The five
+    models without an asterisk are strictly like-for-like and make up the headline <b>45 of 146 (30.8%)</b>.</p>
 
     <p class="muted">Reading: this <b>supports H1</b> — rating was the binding constraint for the
-    middle models. Review volume alone never won a trial; volume <i>+ a non-lowest rating</i> wins 26.7%
-    (55/206) — enough for second place, not enough to unseat Artistry, whose credentials still anchor the
+    middle models. Review volume alone never won a trial; volume <i>+ a non-lowest rating</i> wins 30.8%
+    (45/146) for the five models in both runs — enough for second place, not enough to unseat Artistry,
+    whose credentials still anchor the
     top of the field. With ~30 trials per model these per-model cells are tendencies, not precise
     effects, so the result is framed as support for H1 rather than confirmation. Canvas remains a page
     with real deficits — no credentials, no certificate — that cost it the credentials-first segment.
@@ -488,7 +498,7 @@
     <h2><span class="no">06</span>Surprises &amp; what's next</h2>
     <ul>
       <li><b>Surprise 1:</b> balance comes from models disagreeing with each other — no model was near-uniform at temperature 0.1. But the pages changed mid-run (16→17 Oct): DeepSeek's own Artistry share moved 94% → 71% across the change while luna and gemini-3.8 stayed stable — so part of the between-model gap reflects which pages each model saw. Full before/after analysis in the write-up.</li>
-      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models in run 2. Run 3 supports that reading: with the rating raised off the floor, that same volume wins 26.7% — so volume was never powerless, it was <i>masked by the low rating</i>.</li>
+      <li><b>Surprise 2:</b> review volume — the strongest social signal on the Canvas page (260 reviews) — never won a single trial for 6 of 7 models in run 2. Run 3 supports that reading: with the rating raised off the floor, that same volume wins 30.8% (45/146) for the five models in both runs — so volume was never powerless, it was <i>masked by the low rating</i>.</li>
       <li><b>Surprise 3:</b> gpt-4.1-mini was the only model producing genuine 5-way variety (picked all five pages) — smaller ≠ simpler heuristics.</li>
       <li><b>What's next:</b> a human baseline arm, and frontier (non-low-tier) models to test whether these heuristics hold beyond the low-tier tier.</li>
     </ul>
@@ -496,8 +506,8 @@
 
   <section id="limits">
     <h2><span class="no">07</span>Limits</h2>
-    <p><b>Cost:</b> $54.57 total across all runs (cap $100). <b>Models:</b> 7 low-tier models,
-    one per provider, near-deterministic by design — findings characterize this tier, not frontier models.
+    <p><b>Cost:</b> $54.57 total across all runs (cap $100). <b>Models:</b> 7 low-tier models
+    across five providers (OpenAI ×2, Google ×2, xAI, Xiaomi, DeepSeek), near-deterministic by design — findings characterize this tier, not frontier models.
     <b>Pages:</b> fictional courses and synthetic reviews; real brands may behave differently.
     <b>Drop rate:</b> 9 of 1,050 trials (run 2) and 4 of 210 (run 3) were lost to transient API errors —
     reported as counts, never imputed. <b>Run 3 power:</b> ~30 trials per model, so percentages are
