@@ -106,7 +106,7 @@
 | Brushstroke Studio | 5 (0.8%) | 4 (1.9%) | +1.1pp |
 | Creative Canvas | 14 (2.3%) | 2 (1.0%) | −1.3pp |
 
-- **Baseline note (Victor's check):** pooled across all 1,041 run-2 trials Canvas is 3 (0.3%), but 444 of those trials used the v1 pages, where Canvas did not win (0/444) — and those v1 trials came only from models that are not in the five-model headline set anyway. The like-for-like baseline is **3 of 597 (0.5%)** on the final frozen pages.
+- **Baseline note (Victor's check):** pooled across all 1,041 run-2 trials Canvas is 3 (0.3%), but 444 of those trials used the v1 pages, where Canvas did not win (0/444). Those 444 v1 trials include three of the five headline models as well (deepseek-flash 71, gpt-6-luna 32, gemini-3.8-flash 41) alongside mimo's and gemini-lite's 300 — the headline is unaffected because it uses only the 597 v2 trials. The like-for-like baseline is **3 of 597 (0.5%)** on the final frozen pages.
 - **Headline (Victor's point 1 — model set held constant):** the 597 final-page trials are exactly the **five models that also ran in Run 3** (gpt-6-luna, deepseek-flash, grok-3-mini, gpt-4.1-mini, gemini-3.8-flash). For those five, Run 3 gives **Canvas 45 of 146 (30.8%)** — this is the headline figure in the abstract, here, and on the report page. The other two models (mimo-v2.6-flash, gemini-3.1-flash-lite) saw only v1 in Run 2 and are reported separately: **Canvas 10 of 60 (16.7%)**, with the confound declared below.
 - **Per model — Canvas wins / trials** (Run 2 column headed *pages seen*: v2 = final frozen pages; v1 = earlier pages, visual layer only, same data values; every Run 3 model has ≈30 completed trials):
 

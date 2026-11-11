@@ -52,7 +52,8 @@ Three observations:
 
 1. **The aggregate balance is between-model, not within-model.** At temperature 0.1 no model
    is anywhere near uniform over the five offers; each has a dominant pick between 54% and
-   94%. The pooled near-five-way spread at the top of §5.1 is produced by models disagreeing
+   94%. The pooled spread across the five pages — two-strong overall, as §5.1 shows — is
+   produced by models disagreeing
    with *each other* — credentials-first models and price-first models cancelling out — not
    by any individual model weighing options evenly.
 2. **Three heuristic signatures recur:** credentials-first (gemini-3.8-flash, mimo,
@@ -61,9 +62,9 @@ Three observations:
    (gpt-4.1-mini — the only model to pick all five pages, and the only model whose Run-2
    Canvas picks are non-zero).
 3. **The two weak pages fail for different reasons and are rescued by different models.**
-   Brushstroke's weakness (fewest reviews, second-highest price) is only ever overlooked by
-   gemini-lite (19 picks); Creative's gentle-pitch/installment bundle is only ever taken by
-   grok (13 picks). Canvas — most reviews but lowest rating, no credentials, no certificate —
+   Brushstroke's weakness (fewest reviews, second-highest price) is mostly overlooked by
+   gemini-lite (19 of 24 picks; gpt-4.1-mini 4, grok-3-mini 1); Creative's gentle-pitch/
+   installment bundle is taken almost only by grok (13 of 14; gpt-4.1-mini 1). Canvas — most reviews but lowest rating, no credentials, no certificate —
    is picked by exactly one model, once every ~50 trials (gpt-4.1-mini, 3/150).
 
 ## 5.3 Version sensitivity — the DeepSeek before/after
