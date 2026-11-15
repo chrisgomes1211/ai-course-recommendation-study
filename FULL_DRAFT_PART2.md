@@ -191,7 +191,7 @@ Full documentation: `results/README.md`.
 
 - **Live report page:** https://ai-course-recommendation-study.onrender.com/report
 - **Replication package (code, data, stimuli, prompts, ledger):** https://github.com/chrisgomes1211/ai-course-recommendation-study
-- **Demo video:** *(link to be confirmed in the final submission)*
+- **Demo video:** https://youtu.be/A4neeNWcqnk?si=IfySfi5kSa0mXWT0
 
 ---
 
