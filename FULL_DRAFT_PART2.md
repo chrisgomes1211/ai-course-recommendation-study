@@ -199,7 +199,7 @@ Full documentation: `results/README.md`.
 
 - Cialdini, R.B. (2001) 'Harnessing the Science of Persuasion', *Harvard Business Review*, 79(9), pp. 72–81.
 - Kahneman, D. (2011) *Thinking, Fast and Slow*. New York: Farrar, Straus and Giroux.
-- Lu, Y., Bartolo, M., Moore, A., Riedel, S. and Stenetorp, P. (2022) 'Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity', *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics*.†
+- Lu, Y., Bartolo, M., Moore, A., Riedel, S. and Stenetorp, P. (2022) 'Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity', *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*, pp. 8086–8098. Dublin: Association for Computational Linguistics. doi: 10.18653/v1/2022.acl-long.556.
 - Rao, A.R. and Monroe, K.B. (1989) 'The Effect of Price, Brand Name, and Store Name on Buyers' Perceptions of Product Quality: An Integrative Review', *Journal of Marketing Research*, 26(3), pp. 351–357.
 - Simonson, I. and Tversky, A. (1992) 'Choice in Context: Tradeoff Contrast and Extremity Aversion', *Journal of Marketing Research*, 29(3), pp. 281–295.
 - Sfeir, G., Nova, G., Hess, S. and van Cranenburgh, S. (2026) 'Can large language models assist choice modelling? Insights into prompting strategies and current models' capabilities', *Journal of Choice Modelling*, 60, 100623.
@@ -207,6 +207,4 @@ Full documentation: `results/README.md`.
 - Turpin, M., Michael, J., Perez, E. and Bowman, S.R. (2023) 'Language Models Don't Always Say What They Think: Unexplained Biases in Chain-of-Thought Prompts', *Advances in Neural Information Processing Systems*, 36.
 - Wu, W., Zhao, Q., Chen, H., Zhou, L., Lian, D. and Xie, H. (2025) 'Exploring the Choice Behavior of Large Language Models', *Findings of the Association for Computational Linguistics: ACL 2025*, pp. 5194–5214. Vienna: Association for Computational Linguistics. doi: 10.18653/v1/2025.findings-acl.270.
 
-† Page numbers to be confirmed against the published proceedings before final submission.
-
-*Wu et al. (2025) and Sfeir et al. (2026) were verified against the ACL Anthology and the Journal of Choice Modelling respectively.*
+*Wu et al. (2025), Sfeir et al. (2026) and Lu et al. (2022) were verified against the ACL Anthology and the Journal of Choice Modelling respectively; all nine references are confirmed against their publisher pages.*
