@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="400" viewBox="0 0 760 400" font-family="Helvetica,Arial,sans-serif">
+<rect width="760" height="400" fill="white"/>
+<text x="380.0" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a2b45">Five-model choice share: Run 2 (n=597) vs Run 3 (n=146)</text>
+<line x1="55" y1="335.0" x2="740" y2="335.0" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="339.0" text-anchor="end" font-size="11" fill="#666">0%</text>
+<line x1="55" y1="287.5" x2="740" y2="287.5" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="291.5" text-anchor="end" font-size="11" fill="#666">10%</text>
+<line x1="55" y1="240.0" x2="740" y2="240.0" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="244.0" text-anchor="end" font-size="11" fill="#666">20%</text>
+<line x1="55" y1="192.5" x2="740" y2="192.5" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="196.5" text-anchor="end" font-size="11" fill="#666">30%</text>
+<line x1="55" y1="145.0" x2="740" y2="145.0" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="149.0" text-anchor="end" font-size="11" fill="#666">40%</text>
+<line x1="55" y1="97.5" x2="740" y2="97.5" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="101.5" text-anchor="end" font-size="11" fill="#666">50%</text>
+<line x1="55" y1="50.0" x2="740" y2="50.0" stroke="#ddd" stroke-width="1"/>
+<text x="47" y="54.0" text-anchor="end" font-size="11" fill="#666">60%</text>
+<rect x="79.4" y="87.5" width="41.1" height="247.5" fill="#9db8d6"/>
+<rect x="126.5" y="104.2" width="41.1" height="230.8" fill="#2f6fb5"/>
+<text x="100.0" y="82.5" text-anchor="middle" font-size="10" fill="#444">52.1</text>
+<text x="147.1" y="99.2" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f6fb5">48.6</text>
+<text x="123.5" y="353" text-anchor="middle" font-size="11" fill="#222">Artistry</text>
+<rect x="216.4" y="125.1" width="41.1" height="209.9" fill="#9db8d6"/>
+<rect x="263.5" y="243.8" width="41.1" height="91.2" fill="#2f6fb5"/>
+<text x="237.0" y="120.1" text-anchor="middle" font-size="10" fill="#444">44.2</text>
+<text x="284.1" y="238.8" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f6fb5">19.2</text>
+<text x="260.5" y="353" text-anchor="middle" font-size="11" fill="#222">Palette</text>
+<rect x="353.4" y="332.6" width="41.1" height="2.4" fill="#9db8d6"/>
+<rect x="400.5" y="188.7" width="41.1" height="146.3" fill="#2f6fb5"/>
+<text x="373.9" y="327.6" text-anchor="middle" font-size="10" fill="#444">0.5</text>
+<text x="421.1" y="183.7" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f6fb5">30.8</text>
+<text x="397.5" y="353" text-anchor="middle" font-size="11" fill="#222">Canvas</text>
+<rect x="490.4" y="331.2" width="41.1" height="3.8" fill="#9db8d6"/>
+<rect x="537.5" y="335.0" width="41.1" height="0.0" fill="#2f6fb5"/>
+<text x="510.9" y="326.2" text-anchor="middle" font-size="10" fill="#444">0.8</text>
+<text x="558.0" y="330.0" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f6fb5">0.0</text>
+<text x="534.5" y="353" text-anchor="middle" font-size="11" fill="#222">Brushstroke</text>
+<rect x="627.4" y="324.1" width="41.1" height="10.9" fill="#9db8d6"/>
+<rect x="674.5" y="328.4" width="41.1" height="6.7" fill="#2f6fb5"/>
+<text x="647.9" y="319.1" text-anchor="middle" font-size="10" fill="#444">2.3</text>
+<text x="695.0" y="323.4" text-anchor="middle" font-size="10" font-weight="bold" fill="#2f6fb5">1.4</text>
+<text x="671.5" y="353" text-anchor="middle" font-size="11" fill="#222">Creative</text>
+<line x1="55" y1="335" x2="740" y2="335" stroke="#333" stroke-width="1.5"/>
+<rect x="55" y="370" width="14" height="14" fill="#9db8d6"/><text x="75" y="382" font-size="11" fill="#333">Run 2 — final v2 pages (597 trials)</text>
+<rect x="315" y="370" width="14" height="14" fill="#2f6fb5"/><text x="335" y="382" font-size="11" fill="#333">Run 3 — rating bumped (146 trials)</text>
+<text x="740" y="394" text-anchor="end" font-size="10.5" fill="#888">Canvas +30.3pp mostly from Palette −25.0pp (Fisher p&lt;0.001); Artistry −3.5pp (p=0.46)</text>
+</svg>

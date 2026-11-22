@@ -148,7 +148,9 @@ Failure sources, from the run logs:
 - **grok-3-mini** — xAI credits exhausted mid-run (150 failed attempts; all recovered after
   a top-up).
 - **deepseek-flash** — empty/invalid responses ("No JSON with 'choice' key"): ~110 across
-  Run 2 and the Run 3 flakes; 54 of 79 recovered by a dedicated resume pass in Run 2.
+  Run 2 and the Run 3 flakes; in Run 2, 79 trials were affected — 102 failed choice attempts
+  across them, 72 trials recovered by in-flight retries and a dedicated resume pass (42 on
+  attempt 2, 30 on attempt 3), and 7 dropped.
 - **gpt-6-luna** — 1 credit-exhaustion event; **mimo-v2.6-flash** — rate-limit/blank
   retries; **gemini-3.8-flash** — 2 × "Deadline Exceeded".
 
@@ -164,7 +166,9 @@ All were transient and retried in-flight (§4.3). After the final retry:
 per model; Run 3: 26–30 per model); dropped trials are reported as explicit counts out of
 the planned total and never imputed. As a sensitivity bound, even if all 7 dropped deepseek
 trials had been Palette picks, deepseek's Palette share would move only from 25/143 = 17.5%
-to 32/150 = 21.3% — no conclusion changes.
+to 32/150 = 21.3% — no conclusion changes. For the pre-registered 60% dominance line the
+corresponding worst case is all 9 dropped Run-2 trials going to Artistry: 584 + 9 = 593 of
+1,050 = 56.5%, still below 60%.
 
 ## 4.6 Cost accounting
 

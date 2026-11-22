@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="380" viewBox="0 0 880 380" font-family="Helvetica,Arial,sans-serif">
+<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#555"/></marker></defs>
+<rect width="880" height="380" fill="white"/>
+<rect x="20" y="40" width="185" height="92" rx="7" fill="#eef4fb" stroke="#4a7bb5" stroke-width="1.6"/>
+<text x="112.5" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Stimuli</text>
+<text x="112.5" y="80" text-anchor="middle" font-size="11" fill="#333">pages/ v1 · v2 · v3 (frozen HTML)</text>
+<text x="112.5" y="95" text-anchor="middle" font-size="11" fill="#333">features.yaml — 11 features</text>
+<text x="112.5" y="110" text-anchor="middle" font-size="11" fill="#333">× 5 pages, tradeoffs declared</text>
+<rect x="245" y="40" width="205" height="92" rx="7" fill="#eef4fb" stroke="#4a7bb5" stroke-width="1.6"/>
+<text x="347.5" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Prompt assembly</text>
+<text x="347.5" y="80" text-anchor="middle" font-size="11" fill="#333">5 pages as raw HTML in ONE prompt</text>
+<text x="347.5" y="95" text-anchor="middle" font-size="11" fill="#333">order shuffled per trial</text>
+<text x="347.5" y="110" text-anchor="middle" font-size="11" fill="#333">(page_order logged)</text>
+<rect x="500" y="40" width="175" height="92" rx="7" fill="#eef4fb" stroke="#4a7bb5" stroke-width="1.6"/>
+<text x="587.5" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Model APIs — 7 models</text>
+<text x="587.5" y="80" text-anchor="middle" font-size="11" fill="#333">OpenAI ×2 · Google ×2</text>
+<text x="587.5" y="95" text-anchor="middle" font-size="11" fill="#333">xAI · Xiaomi · DeepSeek</text>
+<text x="587.5" y="110" text-anchor="middle" font-size="11" fill="#333">temperature 0.1</text>
+<rect x="725" y="40" width="135" height="92" rx="7" fill="#eef4fb" stroke="#4a7bb5" stroke-width="1.6"/>
+<text x="792.5" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Post-choice survey</text>
+<text x="792.5" y="80" text-anchor="middle" font-size="11" fill="#333">11 items</text>
+<text x="792.5" y="95" text-anchor="middle" font-size="11" fill="#333">same conversation</text>
+<text x="792.5" y="110" text-anchor="middle" font-size="11" fill="#333">after the pick</text>
+<line x1="205" y1="86" x2="245" y2="86" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<line x1="450" y1="86" x2="500" y2="86" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<text x="475.0" y="80.0" text-anchor="middle" font-size="10" fill="#666">one prompt</text>
+<line x1="675" y1="86" x2="725" y2="86" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<text x="700.0" y="80.0" text-anchor="middle" font-size="10" fill="#666">same convo</text>
+<rect x="245" y="190" width="430" height="86" rx="7" fill="#fdf3e3" stroke="#c98a2b" stroke-width="1.6"/>
+<text x="460.0" y="210" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Trial runner (Python)</text>
+<text x="460.0" y="230" text-anchor="middle" font-size="11" fill="#333">scheduling · retries (≤3 choice / ≤10 survey) · resume from CSV</text>
+<text x="460.0" y="245" text-anchor="middle" font-size="11" fill="#333">per-row token+cost logging · $100 budget cap enforced</text>
+<text x="460.0" y="260" text-anchor="middle" font-size="11" fill="#333">provider failures → automatic retry, attempts logged</text>
+<line x1="347" y1="190" x2="347" y2="132" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arr)"/>
+<line x1="587" y1="190" x2="587" y2="132" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arr)"/>
+<line x1="675" y1="214" x2="725" y2="100" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arr)"/>
+<rect x="20" y="310" width="300" height="52" rx="7" fill="#eaf6ec" stroke="#4c9a5a" stroke-width="1.6"/>
+<text x="170.0" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">results.csv · results_run3.csv</text>
+<text x="170.0" y="350" text-anchor="middle" font-size="11" fill="#333">one row per completed trial — resumable, auditable</text>
+<rect x="360" y="310" width="250" height="52" rx="7" fill="#eaf6ec" stroke="#4c9a5a" stroke-width="1.6"/>
+<text x="485.0" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Cost ledger</text>
+<text x="485.0" y="350" text-anchor="middle" font-size="11" fill="#333">$54.57 total of $100 cap (54.6%)</text>
+<rect x="650" y="310" width="210" height="52" rx="7" fill="#eaf6ec" stroke="#4c9a5a" stroke-width="1.6"/>
+<text x="755.0" y="330" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a2b45">Live report page</text>
+<text x="755.0" y="350" text-anchor="middle" font-size="11" fill="#333">onrender.com/report</text>
+<line x1="587" y1="276" x2="170" y2="310" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<text x="378.5" y="287.0" text-anchor="middle" font-size="10" fill="#666">append row</text>
+<line x1="587" y1="276" x2="485" y2="310" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<line x1="320" y1="336" x2="360" y2="336" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<line x1="610" y1="336" x2="650" y2="336" stroke="#555" stroke-width="1.8" marker-end="url(#arr)"/>
+<text x="440" y="18" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a2b45">Experiment architecture — one trial lifecycle</text>
+</svg>

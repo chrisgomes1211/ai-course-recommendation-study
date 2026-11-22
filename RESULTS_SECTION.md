@@ -153,48 +153,74 @@ can move a model) remains — so they are kept out of the headline and declared 
 Pooled across all seven models, Run 3 gives Canvas **55 of 206 (26.7%)**; the pooled figure
 is reported wherever the whole run is described, with the two groups identifiable.
 
-**Aggregate movement (all 206 Run-3 trials):**
+**Aggregate movement — same five models in both runs:**
 
-| Page | Run 2 · final pages (n=597) | Run 3 (n=206) | Shift |
+| Page | Run 2 · final pages (n=597) | Run 3 (n=146) | Shift |
 |---|---|---|---|
-| Artistry Academy | 311 (52.1%) | 90 (43.7%) | −8.4pp |
-| Palette Masters | 264 (44.2%) | 55 (26.7%) | −17.5pp |
-| **Canvas & Color** | **3 (0.5%)** | **55 (26.7%)** | **+26.2pp** |
-| Brushstroke Studio | 5 (0.8%) | 4 (1.9%) | +1.1pp |
-| Creative Canvas | 14 (2.3%) | 2 (1.0%) | −1.3pp |
+| Artistry Academy | 311 (52.1%) | 71 (48.6%) | −3.5pp |
+| Palette Masters | 264 (44.2%) | 28 (19.2%) | −25.0pp |
+| **Canvas & Color** | **3 (0.5%)** | **45 (30.8%)** | **+30.3pp** |
+| Brushstroke Studio | 5 (0.8%) | 0 (0.0%) | −0.8pp |
+| Creative Canvas | 14 (2.3%) | 2 (1.4%) | −0.9pp |
+
+**Canvas mostly takes share from Palette.** Palette falls from 44.2% (264/597) to 19.2%
+(28/146) — Fisher's exact p < 0.001 — while Artistry only moves from 52.1% (311/597) to
+48.6% (71/146), a statistically indistinguishable shift (Fisher's exact p = 0.46). The
+rating bump therefore reorders the middle of the field by converting Palette's price-first
+share, not by dethroning the leader. Pooled across all seven models — the two v1-only models
+included — Run 3 gives Artistry 90 of 206 (43.7%) and Palette and Canvas 55 of 206 each
+(26.7%): Artistry still first, a tie for second, not a takeover. The headline comparison
+above, and every test in this section, uses the five-model subsets (597 vs 146) so that the
+model set is held constant.
 
 **Per model — Run 2 Canvas (pages seen) vs Run 3 counts:**
 
 | Model | Run 2 · Canvas | Run 3 · counts | Reading |
 |---|---|---|---|
 | gpt-6-luna | 0/118 (v2) | Canvas 17/30 (57%) | flipped outright |
-| deepseek-flash | 0/72 (v2) | Artistry 14/26 (54%) · Canvas 11/26 (42%) | split |
-| grok-3-mini | 0/150 (v2) | Palette 12/30 (40%) · Canvas 11/30 (37%) | split |
-| mimo-v2.6-flash \* | 0/150 (v1) | Artistry 17/30 (57%) · Canvas 10/30 (33%) | moderate |
-| gpt-4.1-mini | 3/150 (v2) | Artistry 15/30 (50%) · Canvas 6/30 (20%) | moderate |
+| deepseek-flash | 0/72 (v2) | Artistry 14/26 (54%) · Canvas 11/26 (42%) | moved toward Canvas |
+| grok-3-mini | 0/150 (v2) | Palette 12/30 (40%) · Canvas 11/30 (37%) | moved toward Canvas |
+| mimo-v2.6-flash \* | 0/150 (v1) | Artistry 17/30 (57%) · Canvas 10/30 (33%) | moved toward Canvas |
+| gpt-4.1-mini | 3/150 (v2) | Artistry 15/30 (50%) · Canvas 6/30 (20%) | moved toward Canvas |
 | gemini-3.1-flash-lite \* | 0/150 (v1) | Palette 24/30 (80%) | unmoved |
 | gemini-3.8-flash | 0/107 (v2) | Artistry 30/30 (100%) | unmoved |
 
 \* Ran Run 2 on the v1 pages — no same-pages baseline; confound discussed above and in §7.
 
-**Reading — support for H1.** The movement is structured exactly as the Run-2 signatures
-predict. Every price-leaning or heterogeneous model shifted toward Canvas the moment its
-rating ceased to be the lowest of the five: gpt-6-luna flipped outright (0/118 → 17/30),
-deepseek and grok split their votes between their original anchor and Canvas, and
-gpt-4.1-mini — already the only model picking Canvas in Run 2 — doubled its share. The two
-extreme-signature models did not move at all: gemini-3.8-flash chose Artistry 30/30, and
-gemini-lite stayed with price-first Palette (24/30). For the five like-for-like models this
-is **Canvas 3/597 (0.5%) → 45/146 (30.8%)** from a single feature change — which supports
-H1: rating was the binding constraint for the middle of the field.
+**Significance and intervals.** The headline movement (3/597 → 45/146) is significant by
+Fisher's exact test (p < 0.001), as is Palette's fall (264/597 → 28/146, p < 0.001);
+Artistry's small move is not (p = 0.46). A chi-square test of model against page on the
+Run-2 table (Brushstroke, Creative and Canvas grouped as "other" so expected counts stay
+large enough) is χ²(12) = 384.8, p < 0.001 — models and pages are strongly associated.
+Wilson 95% intervals beside the Run-3 Canvas shares: luna 56.7% [39.2, 72.6], deepseek
+42.3% [25.5, 61.1], grok 36.7% [21.9, 54.5], mimo 33.3% [19.2, 51.2], gpt-4.1-mini 20.0%
+[9.5, 37.3], gemini-3.8 and gemini-lite 0% [0, 11.4]; pooled five 30.8% [23.9, 38.7].
+Because trials within one model at temperature 0.1 are close repeats, each test is read
+beside the per-model count rather than as an independent-trials estimate.
 
-The same result answers the bundle question of §5.1–5.2 (feedback point 3): review volume
-alone never won a trial for any model (Canvas's 260 reviews sat with the lowest rating and
-never won), but volume *plus* a non-lowest rating wins 30.8% for the like-for-like five —
-second place in the aggregate, not first. Volume was never powerless; it was masked by the
-rating floor. Canvas's remaining deficits (no credentials, no certificate) still cost it the
-credentials-first segment, which is why Artistry still leads Run 3 overall (43.7%) and the
-field reads **Artistry first, Palette and Canvas tied for second (26.7% each pooled)** — not
-a takeover, and still not five equal pages.
+**Reading — support for H1.** The counts show that **four of the five like-for-like models
+moved toward Canvas and gemini-3.8-flash did not.** gpt-6-luna flipped outright (0/118 →
+17/30 = 56.7%); deepseek-flash moved from 0/72 to 11/26 (42.3%); grok-3-mini from 0/150 to
+11/30 (36.7%); and gpt-4.1-mini — already the only model picking Canvas in Run 2 — went from
+2% (3 of 150) to 20% (6 of 30). gemini-3.8-flash did not move at all, choosing Artistry
+30/30. The movement is not cleanly predicted by the Run-2 signature classes: deepseek-flash
+and mimo-v2.6-flash were classed credentials-first in §5.2 and both moved (11 of 26 and
+10 of 30), while gemini-3.1-flash-lite, classed price-first, did not move (0 of 30). What
+the counts support is the directional claim only: for the five like-for-like models,
+**Canvas 3/597 (0.5%) → 45/146 (30.8%)** from a single feature change (Fisher's exact
+p < 0.001), which supports H1 — rating was the binding constraint for the middle of the
+field.
+
+The same result answers the bundle question of §5.1–5.2: in Run 2 the Canvas bundle — 260
+reviews arriving with the lowest rating of the five — was picked 3 times in 1,041 trials
+(0.3%, all gpt-4.1-mini); once its rating was lifted off the floor, the same bundle won
+30.8% of like-for-like trials and finished second in the pooled aggregate. What Run 3 shows
+is that the *bundle* competes once its rating is not the lowest; it does not establish that
+review volume by itself is a strong signal, because volume never varied independently of
+rating. Canvas's remaining deficits (no credentials, no certificate) still cost it the
+credentials-first segment, which is why Artistry still leads Run 3 overall (43.7% pooled)
+and the field reads **Artistry first, Palette and Canvas tied for second (26.7% each
+pooled)** — not a takeover, and still not five equal pages.
 
 **Evidential strength.** With ≈30 trials per model (26 for deepseek), these are tendencies,
 not precise effect estimates; counts are given beside every percentage and the claim is
@@ -231,9 +257,11 @@ optimisation levers barely registered: badge 2.61, installment plan 2.24, price 
 2.00 — and the choices confirm the irrelevance, since no page won by stacking them. For this
 model tier, a positioning badge or a strike-through "was $349" is close to invisible; a
 concrete, legible price and a coherent credential or review story is not. The consistency
-between the two (stated ≈ revealed) is itself a result: unlike human survey respondents,
-these models' post-hoc explanations are not obviously confabulated — though the post-choice
-design means the agreement is reported as consistency, never as causal evidence.
+between the two (stated ≈ revealed) is itself a result — reported, however, as consistency
+only: because post-hoc explanations can misdescribe the factors that actually drove an
+answer (Turpin et al., 2023), the exit-survey agreement cannot be read as evidence that the
+models reported their reasoning faithfully, only that their stated preferences and their
+choices line up.
 
 ## 6.3 Review volume: a bundle, not an isolated driver
 
@@ -242,12 +270,15 @@ Run 2's starkest number — Canvas 3 of 1,041 (0.3%), despite carrying the most 
 of the five, no credentials, no certificate, community teaching. Run 3 was designed to cut
 that bundle apart by moving exactly one strand: rating 4.3★ → 4.6★, everything else
 byte-identical. For the five models present in both runs the effect is 0.5% → 30.8% (3/597 →
-45/146). The reading that survives both runs is therefore: **review volume is a strong signal
-that was masked by a rating floor, not a weak signal**; volume plus a non-lowest rating is
-worth second place; and rating was the binding constraint for the middle of the field, while
-credentials still anchor first place for the credentials-first segment. H1 is supported, not
-confirmed — one rating change on one page, ~30 trials per model — and the two models without
-a same-pages baseline contribute 10 of 60 Canvas picks that are kept separate from the
-headline. What Run 3 cannot do is separate the *within-bundle* roles of credentials and
-certificate for Canvas (they were not manipulated), which is why claims about why Canvas
-still finishes behind Artistry remain associational.
+45/146). The reading that survives both runs is therefore narrower: **the Canvas bundle
+competes once its rating is not the lowest of the five** — rating was the binding constraint
+for the middle of the field, and volume plus a non-lowest rating is worth second place.
+What neither run establishes is that review volume is itself a strong signal: volume never
+varied independently (Canvas's 260 reviews always arrived with its rating — first the
+lowest, then mid-pack), so its contribution cannot be separated from the bundle it travels
+with. Credentials still anchor first place for the credentials-first segment. H1 is
+supported, not confirmed — one rating change on one page, ~30 trials per model — and the
+two models without a same-pages baseline contribute 10 of 60 Canvas picks that are kept
+separate from the headline. What Run 3 cannot do is separate the *within-bundle* roles of
+credentials and certificate for Canvas (they were not manipulated), which is why claims
+about why Canvas still finishes behind Artistry remain associational.
