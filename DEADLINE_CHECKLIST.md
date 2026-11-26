@@ -16,25 +16,25 @@
 ## 🎯 By Wednesday 2 December — report + manual in templates, Harvard referencing
 
 ### You (blocking items first)
-- [ ] **Download the Moodle report template** (likely .docx) → drop into project folder or Desktop
-- [ ] **Download the Moodle configuration-manual template** → same
-- [ ] Check which referencing style the template states: **Harvard or APA** (reply "Harvard" if it doesn't say)
+- [x] **Moodle templates downloaded** (26 Nov)
+- [x] config-manual template downloaded
+- [x] Referencing style: **Harvard** (confirmed 3 ways incl. cover sheet)
 - [ ] When templates are in place: give me the go-ahead
 
 ### Me (starts once templates arrive)
-- [ ] Number + caption **every table** in FULL_DRAFT (fixes Victor's "Table 5.1" catch)
+- [x] Tables 1–11 numbered + captioned (Table 5.1 ref resolved)
 - [ ] Number + caption every table in CONFIG_MANUAL
-- [ ] Re-letter manual appendices **C/D/E → D/E/F** (no more two "Appendix C")
-- [ ] Convert **IEEE [1]–[11] → Harvard/APA**: in-text (Author, Year) + restructured reference list
-- [ ] Add **3–4 new references** (LLM recommenders + position/presentation bias) to §3.2 — every one verified against publisher pages first
-- [ ] Cut ~200–300 words elsewhere to hold ≈6,400 (Victor's instruction)
-- [ ] Rebuild both documents **inside the Moodle templates**
-- [ ] Receipt sweep: banned words, headline numbers (3/597 · 45/146 · 10/60 · $54.57), cross-refs, citation order, per-row sums
-- [ ] Rebuild PDFs + zip, commit + push
+- [x] Appendices re-lettered D/E/F
+- [x] Harvard conversion done (0 numbered cites left)
+- [x] +4 refs added (Liu TACL, Wang ACL, Deldjoo KDD, Sclar ICLR — all verified), 15 total, all cited
+- [x] Body at 6,598 (≤6,600)
+- [x] Both docs built in Moodle templates (docx)
+- [x] Receipt sweep passed (banned 0, headlines, 15/15 cited, Appendix B vs CSV)
+- [x] Committed + pushed (e75ab20); 2Dec_Submission.zip built
 
 ### Send
-- [ ] Send report + manual to Victor via the portal — **by end of Wed 2 Dec**
-- [ ] Verify the attachments open from your Sent folder
+- [ ] **YOUR JOB: open both docx in Word, eyeball + fill Page Counts, then send by Wed 2 Dec**
+- [ ] Verify attachments open from Sent folder
 
 ---
 
