@@ -3,6 +3,9 @@
 > Source: Victor's reply, 25 Nov 2026. Content of the report **approved** — all remaining work is form/templates.
 > Paste this file's contents into Notion (markdown `- [ ]` converts to to-do blocks), or tick it here.
 
+
+> **Standing preference (26 Nov):** always present outputs to Chris in checklist format — easiest for him to sort through.
+
 ---
 
 ## ✅ Done & approved (before 25 Nov)
