@@ -1,4 +1,4 @@
-# What Drives an LLM's Choice? A Controlled Offer-Choice Experiment
+# Which Offer Does the AI Choose? Page Features That Drive AI Assistant Recommendations for SME Online Courses
 
 **Chris Crasto Gomes** — AI for Business, Practicum Part 2
 
@@ -6,7 +6,7 @@
 
 # 1. Abstract
 
-Large language models are increasingly asked to choose on people's behalf — which course to take, which product to buy — yet what drives those choices is poorly understood. This study asks whether the conversion levers that move human buyers (review volume, star ratings, credentials, price framing, social proof) move low-tier LLMs the same way, and whether models' stated reasons match their choices. Seven low-tier models from five providers picked one of five controlled oil-painting course pages, served as raw HTML in one shuffled prompt, then answering an 11-item post-choice survey. Run 2 delivered 1,041 completed trials (597 on the final frozen pages) at temperature 0.1; Run 3 (206 trials) changed exactly one feature — the weakest page's star rating, 4.3★ → 4.6★. No page reached the pre-registered 60% dominance threshold: the balance arises from models disagreeing (three credentials-first, three price-first, one heterogeneous), not within-model uncertainty; stated drivers align with choices — consistency, not cause. For the five models present in both runs, Canvas rose from 3 of 597 (0.5%) to 45 of 146 (30.8%) — support for H1: rating was the binding constraint for the middle of the field; the volume-heavy Canvas bundle competes only once its rating is not the lowest of the five. The two models that saw only the earlier page version are reported separately (Canvas 10 of 60). A declared page-version change, drop counts and a $54.57 cost ledger accompany the results.
+Large language models are increasingly asked to choose on people's behalf — which course to take, which product to buy — yet what drives those choices is poorly understood. This study asks whether the conversion levers that move human buyers (review volume, ratings, credentials, price framing, social proof) move low-tier LLMs the same way, and whether stated reasons match choices. Seven low-tier models from five providers picked one of five controlled oil-painting course pages, served as raw HTML in one shuffled prompt, then answering an 11-item post-choice survey. Run 2 delivered 1,041 completed trials (597 on the final frozen pages) at temperature 0.1; Run 3 (206 trials) changed exactly one feature — the weakest page's star rating, 4.3★ → 4.6★. No page reached the pre-registered 60% dominance threshold: the balance arises from models disagreeing (three credentials-first, three price-first, one heterogeneous), not within-model uncertainty; stated drivers align with choices — consistency, not cause. For the five models in both runs, Canvas rose from 3 of 597 (0.5%) to 45 of 146 (30.8%) — support for H1: rating was the binding constraint for the middle of the field; the volume-heavy bundle competes only once its rating is not the lowest. The two models that saw only the earlier page version are reported separately (Canvas 10 of 60). A declared page-version change, drop counts and a $54.57 cost ledger accompany the results.
 
 ---
 
@@ -14,26 +14,31 @@ Large language models are increasingly asked to choose on people's behalf — wh
 
 ## 2.1 Why study how LLMs choose
 
-Language models no longer only answer questions; they increasingly act on recommendations. An assistant asked "which course should I take?" makes a *choice* that functions as a recommendation: if an LLM consistently prefers one option, users and downstream systems inherit that preference. What drives such choices — and whether a model's explanation of them is trustworthy — is therefore a practical, not only academic, question.
+Language models no longer only answer questions; they increasingly act on recommendations. An assistant asked "which course should I take?" makes a *choice* that functions as a recommendation: consistent LLM preference is inherited by users and downstream systems. What drives such choices — and whether explanations are trustworthy — is therefore a practical, not only academic, question.
 
 ## 2.2 The human levers this study puts to the test
 
-Human buyers lean on a small set of cues: inferring quality from price [1], following the crowd through review counts and enrolment numbers [2], deferring to authority in instructor credentials, and responding to anchoring and installment framing [3], [4]. Course landing pages are built from exactly these levers; trained on the same marketing corpus and human preference data, LLM recommenders should be moved by them too — though a model reading raw HTML may weigh them differently than a human skimming a page.
+Human buyers lean on a small set of cues: inferring quality from price (Rao and Monroe, 1989), following the crowd through review counts and enrolment numbers (Cialdini, 2001), deferring to authority in credentials, and responding to anchoring and installment framing (Tversky and Kahneman, 1974; Simonson and Tversky, 1992). Course landing pages are built from exactly these levers; trained on the same corpus, LLM recommenders should be moved by them too — though a model reading raw HTML may weigh them differently than a human skimming a page.
 
 ## 2.3 Why behaviour first, explanations second
 
-A natural shortcut would be to simply ask models why they chose — but language models do not reliably report the factors that actually drove their outputs [5], and an explanation produced after a decision may rationalise it rather than reveal it. This study therefore treats *choice* as the primary data and the model's own account as a post-decision document, analysed for consistency with behaviour, never as evidence of cause.
+A natural shortcut would be to simply ask models why — but language models do not
+reliably report the factors that drove their outputs (Turpin et al., 2023), and an
+explanation produced after a decision may rationalise it rather than reveal it. This study
+therefore treats *choice* as the primary data and the model's own account as a
+post-decision document, analysed for consistency with behaviour, never as evidence of
+cause.
 
 ## 2.4 What is already known, and the gap
 
-LLMs' choice behaviour has begun to attract direct study: [6] find choices shaped by
-attention bias and social influence with Matthew-effect and conformity patterns; [7] find
+LLMs' choice behaviour has begun to attract direct study: Wu et al. (2025) find choices shaped by
+attention bias and social influence with Matthew-effect and conformity patterns; Sfeir et al. (2026) find
 LLMs capable of sound choice specifications under structured prompting while weaker models
-struggle; and choices are sensitive to presentation and order [8] — hence order is
-shuffled and logged here. What is missing is a **feature-controlled offer-choice
+struggle; and choices are presentation- and order-sensitive (Lu et al., 2022) — hence order
+is shuffled and logged here. What is missing is a **feature-controlled offer-choice
 experiment**: every competitive variable declared in advance, inexpensive models deployed
-at scale, and a follow-up manipulating a single feature rather than the whole page. This
-study supplies all three.
+at scale, and a follow-up manipulating one feature rather than the whole page — this study
+supplies all three.
 
 ## 2.5 Research question and expectations
 
@@ -42,14 +47,14 @@ study supplies all three.
 This is the research question approved for this programme on 1 October — *which page features most influence which offer the assistant recommends* when a learner compares SME online courses — restated in its general form; the results answer the applied form directly: **rating, credentials and price** are the features that move the assistant's recommendation.
 
 Two competing expectations frame the follow-up: **H1** — if star rating was the binding
-constraint in Run 2, lifting the weakest page's rating off the floor will move its share
+constraint in Run 2, lifting the weakest page's rating off the floor moves its share
 materially above its same-pages baseline; **H2** — if the *bundle* on that page (most
-reviews with the lowest rating, no credentials) held it down, its share stays low.
+reviews, lowest rating, no credentials) held it down, its share stays low.
 
 ## 2.6 Contributions
 
-1. A five-way controlled offer-choice design, every feature declared in a machine-readable
-   manifest, across seven low-tier models at near-deterministic temperature.
+1. A five-way controlled offer-choice design — every feature in a machine-readable
+   manifest — across seven low-tier models at near-deterministic temperature.
 2. Stable per-model *heuristic signatures* (credentials-first, price-first, heterogeneous)
    that account for the aggregate balance.
 3. A single-variable follow-up (4.3★ → 4.6★) whose like-for-like result — Canvas 3 of 597 →
@@ -64,25 +69,32 @@ reviews with the lowest rating, no credentials) held it down, its share stays lo
 
 ## 3.1 Heuristics and cues in human choice
 
-Decades of behavioural research show human choice runs on heuristics rather than full evaluation [3], [9]; three families of cues matter here. First, **price as a quality signal**: buyers infer quality from price when other information is scarce, and price framing shifts perceived quality independently of the product [1]. Second, **social proof**: review counts, enrolment totals and "students viewing now" bands are crowd cues that substitute for direct evidence [2]. Third, **context and contrast**: offers are not judged in isolation — tradeoff contrast and extremity aversion make the *composition* of the choice set part of the judgment [4], hence all five pages appear together in every trial. Authority cues (credentials) and anchoring complete the toolkit this study varies per page.
+Decades of behavioural research show human choice runs on heuristics rather than full evaluation (Tversky and Kahneman, 1974; Kahneman, 2011); three families matter here. First, **price as a quality signal**: buyers infer quality from price when other information is scarce, and price framing shifts perceived quality independently of the product (Rao and Monroe, 1989). Second, **social proof**: review counts, enrolment totals and "students viewing now" bands are crowd cues that substitute for direct evidence (Cialdini, 2001). Third, **context and contrast**: offers are not judged in isolation — tradeoff contrast and extremity aversion make the *composition* of the choice set part of the judgment (Simonson and Tversky, 1992) — hence all five pages appear together. Authority cues (credentials) and anchoring complete the toolkit this study varies per page.
 
 ## 3.2 LLMs as choosers
 
-The nearest work is [6], probing LLM choice behaviour on a virtual platform: choices shaped by attention bias and social influence, with Matthew-effect and conformity patterns. [7] approach from econometrics, testing whether LLMs can assist *analysts* in building choice specifications rather than making choices themselves; capable models produce behaviourally sound specifications under structured prompting, open-weight models often not. Because that task is analyst assistance, not offer choice, it supports the low-tier focus only indirectly. The higher bands remain under-criticised: studies reporting strong frontier-model choice rarely hold the stimulus constant or separate presentation from data values, so cross-tier disagreement may be methodological rather than substantive. This study fills that gap at the low tier — inexpensive models deployed at scale, a declared feature matrix, a single-variable follow-up.
+The nearest work is Wu et al. (2025), probing LLM choice behaviour on a virtual platform: choices shaped by attention bias and social influence, with Matthew-effect and conformity patterns. Sfeir et al. (2026) approach from econometrics, testing whether LLMs can assist *analysts* in building choice specifications rather than making choices themselves; capable models produce behaviourally sound specifications under structured prompting, open-weight models often not. Because that task is analyst assistance, not offer choice, it supports the low-tier focus only indirectly. The higher bands remain under-criticised: studies reporting strong frontier-model choice rarely hold the stimulus constant or separate presentation from data values, so cross-tier disagreement may be methodological rather than substantive. Recommendation itself is increasingly built on generative models, now surveyed as Gen-RecSys (Deldjoo et al., 2024), yet those systems are judged on ranking metrics over logged interactions rather than a controlled side-by-side offer choice. This study fills that gap at the low tier — inexpensive models deployed at scale, a declared feature matrix, a single-variable follow-up.
 
-Adjacent to this sits the practitioner literature on *influencing* LLM output: [10] formalise Generative Engine Optimization — black-box methods for improving a source's visibility in generated answers — and [11] show that adding a strategic text sequence to a product page significantly raises its chance of being the LLM's top recommendation. Both optimise from the content side, but neither identifies *which* page features move a choice when options sit side by side with every other feature declared — this study's question.
+Adjacent is the practitioner literature on *influencing* LLM output: Aggarwal et al. (2024) formalise Generative Engine Optimization — black-box methods for improving a source's visibility in generated answers — and Kumar and Lakkaraju (2024) show that a strategic text sequence on a product page significantly raises its chance of being the LLM's top recommendation. Both optimise from the content side, but neither identifies *which* page features move a choice when options sit side by side with every other feature declared — this study's question.
 
-Two methodological findings bear on design: presentation matters — order or format can change outputs [8], so order is randomised and logged per trial (`page_order`); population matters — models within a family disagree, so results are reported per model, pooled only with counts attached.
+Two methodological findings bear on design. **Presentation matters**: the same options in a
+different order change outputs (Lu et al., 2022); positional effects run deep — relevant
+information degrades when it sits mid-context (Liu et al., 2024), option order alone can flip
+an LLM's ranking of two answers (Wang et al., 2024), and semantically identical prompt
+formats move accuracy by tens of points (Sclar et al., 2024) — hence order is shuffled and
+logged per trial (`page_order`) and every model sees byte-identical markup. **Population
+matters**: models within a family disagree, so results are reported per model, pooled only
+with counts attached.
 
 ## 3.3 Explanation versus behaviour
 
-[5] show that chain-of-thought explanations can systematically misdescribe what drove a model's answer — the explanation is generated, not read out of the decision. Post-choice ratings here are therefore analysed as **consistency between stated and revealed preference** (Section 6.4), never as evidence that a rated factor *caused* the choice. Where this report says a factor was "the binding constraint", the claim rests on the *behavioural* comparison in Section 6.5 — same models, same pages, one feature changed — not on what the models said.
+Turpin et al. (2023) show that chain-of-thought explanations can systematically misdescribe what drove a model's answer — the explanation is generated, not read out of the decision. Post-choice ratings here are therefore analysed as **consistency between stated and revealed preference** (§6.4), never as evidence that a rated factor *caused* the choice. Where this report says a factor was "the binding constraint", the claim rests on the *behavioural* comparison in §6.5 — same models, same pages, one feature changed — not on what the models said.
 
 ## 3.4 Where this study fits
 
-Compared with [6], it holds the stimulus constant and manipulates one feature in
-follow-up; with [7], it measures choices rather than specifications; with the
-prompt-sensitivity literature, it treats order as a logged nuisance. Its distinctive
+Compared with Wu et al. (2025), it holds the stimulus constant and manipulates one feature in
+follow-up; with Sfeir et al. (2026), it measures choices rather than specifications; with the
+prompt-sensitivity literature, order is a logged nuisance. Its distinctive
 combination: a declared feature matrix, seven low-tier models, near-deterministic
 sampling, a pre-stated single-variable test, and a replication package with per-row
 costs.
@@ -102,8 +114,8 @@ live report.
 
 ## 4.1 Components
 
-- **Stimuli.** Five oil-painting course pages as standalone HTML (`pages/`) generated from
-  one manifest (`pages/features.yaml`: 11 features × 5 pages with declared tradeoffs), plus
+- **Stimuli.** Five oil-painting course pages as standalone HTML (`pages/`) from
+  one manifest (`features.yaml`: 11 features × 5 pages, declared tradeoffs), plus
   `pages_run3/` — same five pages, one value changed (Canvas 4.3★ → 4.6★), diff-verified
   byte-identical elsewhere; versions frozen and declared (§5.2): v1 (16 Oct), v2 (frozen
   17 Oct), v3 (Run 3 only).
@@ -111,27 +123,26 @@ live report.
   (`src/run_experiment.py`) that schedules the model × trial cells, assembles prompts from
   `prompts/`, and enforces the retry policy — ≤3 choice attempts, ≤10 survey attempts,
   exponential backoff on transient provider errors (§5.3). Every completed trial appends to
-  CSV immediately, so an interrupted run resumes from the last row; that CSV makes drop
-  accounting auditable (9 of 1,050 and 4 of 210, attempts visible per row, §5.5).
+  CSV immediately, so an interrupted run resumes from the last row; the CSV makes drop
+  accounting auditable (9 of 1,050, 4 of 210, attempts per row, §5.5).
 - **Budget cap.** Per-row cost = measured tokens × per-1M rates (`config.yaml`), checked
   against a **$100 hard cap**; actual spend $54.57 across all runs (§5.6).
-- **Report.** `templates/report.html` on Render renders every table here directly from
-  the CSVs, so the published page and this document cannot drift apart.
+- **Report.** `templates/report.html` on Render renders every table here straight from
+  the CSVs, so page and document cannot drift apart.
 
 ## 4.2 Why raw HTML in one prompt
 
 Three candidate interfaces were considered. **Screenshots** would force models to read exact
-values (4.3★, $149, 260 reviews) from pixels — perception noise the design cannot afford:
-every model must see byte-identical data values. **A browsing agent** would add
-multi-turn tool use — which elements it inspects and in what order becomes uncontrolled
-variance entangled with navigation, at several times the cost. **Raw HTML in a
-single prompt** (chosen) gives every model the same markup with exact values in one turn,
-page order shuffled and logged; the prompt *is* the stimulus, so any trial can be replayed
-from its CSV row alone.
+values (4.3★, $149, 260 reviews) from pixels — perception noise the design cannot afford.
+**A browsing agent** would add multi-turn tool use — which elements it inspects and in what
+order becomes uncontrolled variance entangled with navigation, at several times the cost.
+**Raw HTML in a single prompt** (chosen) gives every model the same markup with exact values
+in one turn, order shuffled and logged; the prompt *is* the stimulus, replayable from
+its CSV row alone.
 
-The declared trade-off: models see structural markup a human reader does not — constant
-across pages, runs and models, so it cannot confound the between-page comparisons here.
-Transfer to screenshot-based or agentic settings is an external-validity question (§8).
+The declared trade-off: models see structural markup a human does not — constant across
+pages, runs and models, so it cannot confound the between-page comparisons; transfer to
+screenshot or agentic settings is an external-validity question (§8).
 
 ---
 
@@ -146,14 +157,15 @@ ledger (`results/cost_ledger.md`).
 
 The stimuli are **five fictional oil-painting course landing pages** (`pages/*.html`),
 served to the models as **raw HTML** (no rendering, no JavaScript). Each instantiates a
-distinct offer profile from a controlled feature matrix (`pages/features.yaml`) in which
-eleven features are varied per page (profile table below).
+distinct offer profile from a controlled feature matrix (`pages/features.yaml`) — eleven
+features per page (Table 1).
 
-The design principle (set after two aborted pilots, §5.2): **each page gets exactly one
-strength and one honest tradeoff** — ratings in a 4.3–4.8 band, review counts in a
-180–260 ladder, only one certificate, and the five newer signals (badge, social proof,
-comparison table, anchoring, installments) deliberately spread rather than stacked. The
-five profiles as run:
+Design principle (set after two aborted pilots, §5.2): **each page gets one strength and
+one honest tradeoff** — ratings 4.3–4.8★, reviews in a 180–260 ladder, one certificate only,
+and the five newer signals (badge, social proof, comparison table, anchoring, installments)
+spread rather than stacked. The five profiles as run:
+
+**Table 1:** The five offer profiles as run — eleven controlled features across five pages (source: `pages/features.yaml`).
 
 | Feature | Artistry Academy | Palette Masters | Canvas & Color | Brushstroke Studio | Creative Canvas |
 |---|---|---|---|---|---|
@@ -169,25 +181,24 @@ five profiles as run:
 | Payment plan | no | 3 × $49.67 | no | 3 × $83 | 6 × $29.83 |
 | Stated tradeoff | Priciest; no certificate | No certificate, no credentialed instructor | Lowest rating; no credentials/certificate/installments | Fewest reviews; second-highest price | Lowest rating; fewest lessons |
 
-**All five pages are shown together in every trial** — a five-way forced choice, not
-pairwise comparisons. Page order within the prompt is shuffled every trial and recorded
-(`page_order`), so order effects are auditable.
+**All five pages appear in every trial** — a five-way forced choice, not pairwise
+comparisons; page order is shuffled every trial and recorded (`page_order`), so order
+effects are auditable.
 
 ## 5.2 Page-version history (declared)
 
-Three page versions exist; the boundary falls inside Run 2 and is declared here rather
-than buried:
+Three page versions exist; the boundary falls inside Run 2, declared here rather than
+buried:
 
-- **v1 — trials of 16 Oct 2026 (444 rows).** Run-2 final layout A. The controlled values
-  were already at their final run-2 settings: the Canvas demotion (260 reviews @ 4.3★,
-  community-taught, no credentials) was the fix applied at the end of **pilot 2b — before
-  any Run-2 trial**, not part of the later redesign.
+- **v1 — trials of 16 Oct 2026 (444 rows).** Run-2 final layout A; controlled values already
+  final (the Canvas demotion — 260 reviews @ 4.3★, community-taught, no credentials — was
+  applied at the end of **pilot 2b, before any Run-2 trial**).
 - **v2 — trials of 17 Oct 2026 (597 rows), frozen thereafter.** A **visual-layer-only**
   update: layouts, imagery and per-page styling changed (commit `f38306a`); the controlled
   data values did not. Verified two ways from the trial records: (1) every winner attribute
-  is byte-identical across the boundary (Artistry 240 · 4.8★ · credentials both dates;
-  Palette 220 · 4.6★ both); (2) v1 reasoning quotes the final values — "260 reviews" in 52
-  of 444 v1 reasonings, "4.3" in 113 — while pre-rebalance values ("15 reviews", "4.0")
+  is byte-identical across the boundary (Artistry 240 · 4.8★ and credentials identical
+  both dates; Palette 220 · 4.6★); (2) v1 reasoning quotes the final values ("260 reviews" in 52
+  of 444 reasonings, "4.3" in 113) while pre-rebalance values ("15 reviews", "4.0")
   appear in **zero**.
 - **v3 — Run 3, 22–23 Oct 2026 (210 planned / 206 completed).** v2 with exactly one change:
   Canvas's star rating 4.3★ → 4.6★. Everything else, and the other four pages, are
@@ -198,23 +209,23 @@ for between-model comparisons: gemini-lite and mimo ran **v1 only** (150 each), 
 and grok **v2 only** (150 each), and deepseek (71/72), luna (32/118) and gemini-3.8 (41/107)
 ran both.
 
-Two consequences follow: (i) the three dual-version models are checked for a version
-effect (§6.3); (ii) Run 3 is compared against Run 2 **on the same pages** — the 597 v2
-trials — rather than the pooled 1,041 (§6.5). From 17 Oct the pages are frozen; Run 3 is
-the only sanctioned change.
+Two consequences: (i) the three dual-version models are checked for a version effect
+(§6.3); (ii) Run 3 compares against Run 2 **on the same pages** — the 597 v2 trials, not
+the pooled 1,041 (§6.5). From 17 Oct the pages are frozen; Run 3 is the only sanctioned
+change.
 
 ## 5.3 Procedure
 
 One trial = one choice phase + one exit-survey phase, both from the same conversation:
 
-1. **Choice phase.** The model receives a single prompt containing all five pages as raw
-   HTML in shuffled order, instructed to *"recommend exactly ONE course that you
+1. **Choice phase.** The model receives one prompt with all five pages as raw
+   HTML, shuffled, instructed to *"recommend exactly ONE course that you
    believe is the best choice for a typical learner"*, to reason briefly over price, reviews, credentials,
    description and structure, and to end with a strict JSON line `{"choice": "page_id"}`.
 2. **Exit survey.** In the **same conversation, immediately after the choice**, the model is
    asked why it chose that course: ten 1–5 influence ratings (price, reviews, credentials,
-   description, clarity/structure, badge, social proof, comparison table, price anchoring,
-   payment plan; 1 = not at all influential, 5 = very influential) plus one free-text item.
+   description, structure, badge, social proof, comparison, anchoring, payment plan;
+   1 = not at all influential, 5 = very influential) plus one free-text item.
    Answered post-choice with the decision in context, it is analysed as **post-choice
    self-report** (§6.4), never as a causal measure.
 
@@ -240,8 +251,10 @@ logs one row per trial with tokens, latencies, costs and attempts, and enforces 
 Seven low-tier models across five providers were selected per supervisor direction (9 Oct
 2026: *low tier only, ~2 per company*): OpenAI (×2), Google (×2), xAI, Xiaomi, DeepSeek.
 Anthropic was dropped on 10 Oct — its only low-tier option was a ~10× price outlier, and
-the account was out of credit. Prices are the per-1M rates for cost accounting
+the account was out of credit. Prices are per-1M rates for cost accounting
 (`config.yaml`, verified October 2026):
+
+**Table 2:** The seven models as run, with the per-1M token rates used for cost accounting.
 
 | Model | Provider | Input $/1M | Output $/1M |
 |---|---|---|---|
@@ -260,9 +273,8 @@ Failure sources, from the run logs:
 - **grok-3-mini** — xAI credits exhausted mid-run (150 failed attempts; all recovered after
   a top-up).
 - **deepseek-flash** — empty/invalid responses ("No JSON with 'choice' key"): ~110 across
-  Run 2 and the Run 3 flakes; in Run 2, 79 trials were affected — 102 failed choice attempts
-  across them, 72 trials recovered by in-flight retries and a dedicated resume pass (42 on
-  attempt 2, 30 on attempt 3), and 7 dropped.
+  Run 2 and the Run 3 flakes; in Run 2, 79 trials were affected — 102 failed choice attempts,
+  72 recovered by retries and a resume pass (42 on attempt 2, 30 on attempt 3), 7 dropped.
 - **gpt-6-luna** — 1 credit-exhaustion event; **mimo-v2.6-flash** — rate-limit/blank
   retries; **gemini-3.8-flash** — 2 × "Deadline Exceeded".
 
@@ -285,7 +297,7 @@ corresponding worst case is all 9 dropped Run-2 trials going to Artistry: 584 + 
 ## 5.6 Cost accounting
 
 Costs = measured tokens × published per-1M rates (`config.yaml`), logged per row.
-Authoritative figures (`results/cost_ledger.md`):
+**Table 3:** authoritative figures from `results/cost_ledger.md`:
 
 | Run | Spend | Note |
 |---|---|---|
@@ -294,8 +306,8 @@ Authoritative figures (`results/cost_ledger.md`):
 | Run 3 | $6.82 | 206 completed trials |
 | **Total** | **$54.57** | **of the $100 cap (54.6%)** |
 
-Provider billing dashboards (screenshots dated 20 Oct 2026) are retained as receipts;
-their windows are wider than the runs, so the **$54.57 ledger total is the figure used
+Provider billing dashboards (screenshots dated 20 Oct 2026) are retained as receipts, but
+their windows are wider than the runs — the **$54.57 ledger total is the figure used
 everywhere in this report** (superseding the $50–60 estimate in the demo video).
 
 ---
@@ -309,15 +321,17 @@ percentage carries its count.
 
 ## 6.1 Descriptives — did the redesign work?
 
-Run 1 produced a ceiling effect (Artistry 96.6%) and runs 2a/2b over-corrected in the
-opposite direction (a review-count knockout, then a Canvas page that won nearly everything);
-both aborted at the design stage (§5.6). The question for Run 2: did the rebalanced design
-produce the intended spread without re-introducing dominance?
+Run 1 produced a ceiling effect (Artistry 96.6%) and runs 2a/2b over-corrected (a
+review-count knockout, then a Canvas page that won nearly everything); both aborted at the
+design stage (§5.6). Did the rebalanced design then produce the intended spread without
+re-introducing dominance?
 
 **It removed dominance but did not produce five-way balance.** Across all 1,041 Run-2
 trials no page reaches the pre-registered 60% dominance threshold — the run-1 ceiling
 (96.6%) is resolved — but the distribution is two-strong rather than flat: Artistry and
 Palette together take 96.1% of picks, Canvas and Creative 1.6%.
+
+**Table 4:** Run-2 win counts across all 1,041 completed trials.
 
 | Page | Wins | Share |
 |---|---|---|
@@ -334,6 +348,8 @@ against Run 3 use the **597 final-page trials** — the five models that also ra
 (§6.5).
 
 ## 6.2 Per-model choice distributions
+
+**Table 5:** Per-model choice distributions and heuristic signatures (Run 2).
 
 | Model | N | Choice distribution | Signature |
 |---|---|---|---|
@@ -363,8 +379,9 @@ Three observations:
 ## 6.3 Version sensitivity — the DeepSeek before/after
 
 Three models ran on both page versions inside Run 2 — a natural check on whether the
-visual-layer change (§5.2) moved choices. Their picks, before (v1, 16 Oct) and after
-(v2, 17 Oct):
+visual-layer change (§5.2) moved choices. Their picks, v1 (16 Oct) vs v2 (17 Oct):
+
+**Table 6:** Before/after picks for the three dual-version models (v1 → v2).
 
 | Model | v1 picks | v2 picks | Shift |
 |---|---|---|---|
@@ -384,12 +401,14 @@ use only the frozen v2/v3 pages (§6.5).
 
 ## 6.4 Stated vs revealed choice
 
-The exit survey (§5.3) follows the choice in the same conversation, so its answers are
-post-choice self-report that may rationalise the decision. It is analysed for **consistency
-between stated and revealed preference**, never as evidence that a rated factor caused the
+The exit survey (§5.3) follows the choice in the same conversation — post-choice
+self-report that may rationalise the decision. It is analysed for **consistency between
+stated and revealed preference**, never as evidence that a rated factor caused the
 choice.
 
 **Consistency is high** — choosing models' survey ratings track their choices:
+
+**Table 7:** Post-choice survey — what choosers of each page rated highest and lowest.
 
 | Choosers of… | N | Rate highest | Rate lowest |
 |---|---|---|---|
@@ -398,36 +417,33 @@ choice.
 | Brushstroke Studio | 24 | Credentials 5.00 · Comparison 4.88 | Reviews 3.46 |
 | Creative Canvas | 14 | Clarity 5.00 · Price 5.00 | — (Payment plan 4.21) |
 
-Across all 1,041 trials, the stated-importance ordering is **Description 4.61 ≈ Reviews 4.56
+Across 1,041 trials the stated-importance ordering is **Description 4.61 ≈ Reviews 4.56
 > Clarity 4.41 > Price 4.03 ≈ Comparison 3.99 ≈ Credentials 3.96 > Social proof 3.10 >
 Badge 2.61 > Payment plan 2.24 > Anchoring 2.00.**
 
 Two readings follow: what models *say* and *do* line up — credentials-first choosers rate
-credentials highest, price-first choosers price highest, never-chosen levers (badges,
-anchoring, installments) rate lowest. Both are reported as consistency: the post-choice
-design cannot establish that the rated factor *caused* the pick.
+credentials highest, price-first choosers price highest, never-chosen levers rate lowest —
+reported as consistency only: the post-choice design cannot establish that a rated factor
+*caused* the pick.
 
 ## 6.5 Run 3 — rating as the single-variable test
 
 **Design.** Run 3 changes exactly one feature: Canvas & Color's star rating 4.3★ → 4.6★
 (off the floor of the five; ties Palette at 4.6★). Every other feature and the other four
-pages are byte-identical to the frozen v2 pages (`pages_run3/`,
-diff-verified; §5.2). Protocol identical: temperature 0.1, 7 models × 30 = 210 planned,
+pages are byte-identical to the frozen v2 pages (`pages_run3/`, diff-verified, §5.2). Protocol identical: temperature 0.1, 7 models × 30 = 210 planned,
 **206 completed** (4 dropped, §5.5), rows tagged `page_version=v3`.
 
-**Headline — model set held constant.** The comparison restricts to the five models that
-ran in both runs on the same (v2/v3) pages — gpt-6-luna, deepseek-flash, grok-3-mini,
-gpt-4.1-mini, gemini-3.8-flash — whose Run-2 trials are exactly the 597 and Run-3 trials
-146 of the 206. **Canvas share, five models in both runs: 3/597 (0.5%) → 45/146 (30.8%),
-+30.3pp.**
+**Headline — model set held constant.** The five models that ran both runs on the same
+(v2/v3) pages — gpt-6-luna, deepseek-flash, grok-3-mini, gpt-4.1-mini, gemini-3.8-flash —
+have exactly 597 Run-2 trials and 146 of the 206 Run-3 trials. **Canvas share, five models
+in both runs: 3/597 (0.5%) → 45/146 (30.8%), +30.3pp.**
 
-The two remaining models — mimo-v2.6-flash and gemini-3.1-flash-lite — ran Run 2 only on v1
-and have no same-pages baseline; their Run-3 result is reported separately: **Canvas 10 of
-60 (16.7%)** (mimo 10/30, gemini-lite 0/30). Their comparison crosses the visual redesign
-*and* the rating change — §6.3 showed the presentation layer can move a model — so they
-stay out of the headline.
+The two remaining models — mimo and gemini-lite — ran Run 2 only on v1, so no same-pages
+baseline; their Run-3 result is reported separately: **Canvas 10 of 60 (16.7%)** (mimo
+10/30, gemini-lite 0/30). Their comparison crosses the visual redesign *and* the rating
+change (§6.3), so they stay out of the headline.
 
-**Aggregate movement — same five models in both runs:**
+**Table 8:** Aggregate movement — same five models in both runs.
 
 | Page | Run 2 · final pages (n=597) | Run 3 (n=146) | Shift |
 |---|---|---|---|
@@ -438,8 +454,7 @@ stay out of the headline.
 | Creative Canvas | 14 (2.3%) | 2 (1.4%) | −0.9pp |
 
 **Canvas mostly takes share from Palette.** Palette falls from 44.2% (264/597) to 19.2%
-(28/146) — Fisher's exact p < 0.001 — while Artistry moves only from 52.1% (311/597) to
-48.6% (71/146), a statistically indistinguishable shift (p = 0.46). The rating bump
+(28/146) while Artistry barely moves, 52.1% → 48.6% — both tested below: the rating bump
 reorders the middle by converting Palette's price-first share, not by dethroning the
 leader.
 
@@ -447,10 +462,10 @@ leader.
 
 **Figure 2.** Same five models, one feature changed: Canvas gains 30.3 points almost
 entirely at Palette's expense (−25.0 points), Artistry statistically unchanged. Pooled over
-all seven models, Run 3 gives Artistry 90 of 206 (43.7%) with Palette and Canvas 55 each
+all seven, Run 3 gives Artistry 90 of 206 (43.7%) with Palette and Canvas 55 each
 (26.7%) — first, and a tie for second, not a takeover.
 
-**Per model — Run 2 Canvas (pages seen) vs Run 3 counts:**
+**Table 9:** Per model — Run 2 Canvas (pages seen) vs Run 3 counts.
 
 | Model | Run 2 · Canvas | Run 3 · counts | Reading |
 |---|---|---|---|
@@ -475,28 +490,26 @@ gpt-4.1-mini 20.0% [9.5, 37.3], gemini-3.8 and gemini-lite 0% [0, 11.4]; pooled 
 is read beside its per-model count.
 
 **Reading — support for H1.** The counts show that **four of the five like-for-like
-models moved toward Canvas and gemini-3.8-flash did not.** gpt-6-luna flipped outright
-(0/118 → 17/30 = 56.7%); deepseek-flash moved from 0/72 to 11/26 (42.3%); grok-3-mini from
-0/150 to 11/30 (36.7%); gpt-4.1-mini — the only model picking Canvas in Run 2 — went from
-2% (3 of 150) to 20% (6 of 30); gemini-3.8-flash stayed at 0/30, choosing Artistry 30/30.
-The movement is not predicted by the Run-2 signatures: credentials-first deepseek and mimo
-both moved (11 of 26, 10 of 30) while price-first gemini-lite did not (0 of 30). **Canvas
-3/597 (0.5%) → 45/146 (30.8%)** from a single feature change (Fisher's exact p < 0.001) —
-support for H1: rating was the binding constraint for the middle of the field.
+models moved toward Canvas and gemini-3.8-flash did not** (Table 9): luna flipped outright
+(0/118 → 17/30 = 56.7%), deepseek 0/72 → 11/26 (42.3%), grok 0/150 → 11/30 (36.7%),
+gpt-4.1-mini — the only model picking Canvas in Run 2 — from 2% (3 of 150) to 20% (6 of 30),
+while gemini-3.8-flash stayed at 0/30 (Artistry 30/30). The movement is not predicted by
+the Run-2 signatures: credentials-first deepseek and mimo both moved (11 of 26, 10 of 30)
+while price-first gemini-lite did not (0 of 30). **Canvas 3/597 (0.5%) → 45/146 (30.8%)**
+from a single feature change (Fisher's exact p < 0.001) — support for H1: rating was the
+binding constraint for the middle of the field.
 
 The same result answers the bundle question of §6.1–6.2: the Canvas bundle (260 reviews,
 lowest rating) was picked 3 times in 1,041 (0.3%, all gpt-4.1-mini); once its rating was
 lifted off the floor it won 30.8% of like-for-like trials — the *bundle* competes when its
 rating is not the lowest, though volume's own effect cannot be separated from it. Canvas's
-deficits (no credentials, no certificate) still cost it the credentials-first segment —
-hence Artistry still leads Run 3.
+deficits (no credentials, no certificate) still cost it the credentials-first segment.
 
 **Evidential strength and cost.** With ≈30 trials per model (26 for deepseek), these are
-tendencies, not precise effect estimates; counts accompany every percentage and the claim
+tendencies, not precise estimates; counts accompany every percentage and the claim
 is worded as *support for H1*, never confirmation or causal isolation. Run 3 cost **$6.82**
-for 206 completed trials; the 4 dropped were all DeepSeek empty-response flakes (a second
-resume pass recovered 6 of the first 10), counted out of 210 planned and never imputed
-(§5.5).
+for 206 completed trials; the 4 dropped were all DeepSeek empty-response flakes, counted
+out of 210 planned and never imputed (§5.5).
 
 ---
 
@@ -506,38 +519,35 @@ resume pass recovered 6 of the first 10), counted out of 210 planned and never i
 
 Seven low-tier models, shown the same five controlled offers, behave like a small
 population of heuristic shoppers rather than one "LLM buyer": near-deterministic within a
-model at temperature 0.1, sharply disagreeing between models — credentials-first (three),
-price-first (three), one heterogeneous generalist. The aggregate shows no dominance, but
+model at temperature 0.1, sharply disagreeing between models — three credentials-first,
+three price-first, one heterogeneous generalist. The aggregate shows no dominance, but
 that balance is a *census of disagreeing models*, not per-model uncertainty. Two
-qualifications: stimulus version can move a model (DeepSeek's 23pp shift, §6.3), so part of
-the spread reflects which version each model saw; and ≈30 trials per model makes run-3
-statements tendencies, not point estimates.
+qualifications: stimulus version can move a model (DeepSeek's 23pp shift, §6.3); and ≈30
+trials per model makes run-3 statements tendencies, not point estimates.
 
 ## 7.2 What models heeded — and what they ignored
 
-The stated-driver ordering (§6.4) and the choices point the same way. Models heeded
+The stated-driver ordering (§6.4) and the choices agree: models heeded
 description detail, review counts and clarity of structure, and — split by signature —
 either price or credentials. The classic conversion-optimisation levers barely registered —
-badge, installment plan and price anchoring all below 2.7 — and no page won by stacking
-them. For this model tier a badge or a strike-through "was $349" is close to invisible; a
+badge, installment and anchoring all below 2.7 — and no page won by stacking them. For this model tier a badge or a strike-through "was $349" is close to invisible; a
 concrete price and a coherent credential or review story is not. The stated ≈ revealed
 consistency is itself a result — reported as consistency only: post-hoc explanations can
-misdescribe what drove an answer [5], so the agreement shows preferences and choices line
+misdescribe what drove an answer (Turpin et al., 2023), so the agreement shows preferences and choices line
 up, not that reasoning was faithful.
 
 ## 7.3 Review volume: a bundle, not an isolated driver
 
 Run 2's starkest number — Canvas 3 of 1,041 (0.3%) with the most reviews (260) — is a
-statement about **a bundle**: most reviews arriving with the *lowest* rating, no
-credentials, no certificate. Run 3 cut that bundle apart by moving one strand: rating 4.3★
-→ 4.6★, everything else byte-identical. For the five models present in both runs the effect
-is 0.5% → 30.8% (3/597 → 45/146). The reading that survives both runs: **the Canvas bundle
-competes once its rating is not the lowest of the five** — rating was the binding
-constraint for the middle of the field. What neither run establishes is that volume is
-itself a strong signal: it never varied independently, so its contribution cannot be
-separated from the bundle; credentials still anchor first place for the credentials-first
+statement about **a bundle**: most reviews with the *lowest* rating, no credentials, no
+certificate. Run 3 moved one strand (4.3★ → 4.6★, everything else byte-identical): for the
+five models in both runs, 0.5% → 30.8% (3/597 → 45/146). The reading that survives both
+runs: **the bundle competes once its rating is not the lowest of the five** — rating was
+the binding constraint for the middle of the field. What neither run establishes is that
+volume itself is a strong signal: it never varied independently, so its contribution
+cannot be separated from the bundle; credentials still anchor the credentials-first
 segment. H1 is supported, not confirmed — one rating change, ~30 trials per model — and the
-two models without a same-pages baseline contribute 10 of 60 Canvas picks kept separate
+two models without a same-pages baseline contribute 10 of 60 Canvas picks, kept separate
 from the headline.
 
 ---
@@ -548,11 +558,11 @@ from the headline.
 
 - **Page-version change (declared).** Run 2 spans two page versions (v1: 444 trials, 16 Oct; v2: 597 trials, 17 Oct). Mitigation: declared in full (§5.2), proven visual-layer only from the trial records, sensitivity-checked via the DeepSeek before/after (§6.3), pages frozen thereafter; between-run comparisons use only v2/v3 pages.
 - **Run 3 baseline confound for two models.** mimo and gemini-lite ran Run 2 only on v1 — no same-pages baseline; their confound is the visual redesign plus the rating change. Mitigation: excluded from the headline, reported separately (Canvas 10 of 60) with the confound stated (§6.5).
-- **Post-choice survey design.** The exit survey follows the choice in the same conversation and may rationalise it. Mitigation: association/consistency language only; no causal claims from survey data (§6.4).
+- **Post-choice survey design.** The exit survey follows the choice in the same conversation and may rationalise it. Mitigation: consistency language only; no causal claims from survey data (§6.4).
 
 **Statistical conclusion validity.**
 
-- **Run 3 power.** ≈30 trials per model (26 for deepseek). Mitigation: counts reported beside every percentage; results worded as *support for H1*, never confirmation; per-model cells described as tendencies, not precise effects.
+- **Run 3 power.** ≈30 trials per model (26 for deepseek). Mitigation: counts reported beside every percentage; results worded as *support for H1*, never confirmation; per-model cells described as tendencies.
 - **Dropped trials.** 9 of 1,050 (Run 2: 7 deepseek-flash, 2 gemini-3.8-flash) and 4 of 210 (Run 3: all deepseek empty-response flakes) to transient API errors. Mitigation: reported as counts out of the planned total, never imputed; denominators are completed trials; sensitivity bounds show conclusions unchanged — even if all seven dropped deepseek trials had gone to Palette (17.5% → 21.3%), and even if all nine dropped Run-2 trials had gone to Artistry (593 of 1,050 = 56.5%, still below the 60% dominance line).
 - **Exploratory design iterations.** Run 1 and attempts 2a/2b were aborted design stages (ceiling/knockout effects). Mitigation: aborted data archived separately, excluded from analysis, itemised in the cost ledger.
 
@@ -562,7 +572,7 @@ from the headline.
 - **Domain and stimuli.** Fictional oil-painting courses, synthetic reviews, one category, one price band; real brands and other categories may behave differently.
 - **Bundle confounding within pages.** One page = one bundle; Run 3 separates rating alone — credentials and certificate were not manipulated, so claims about *why* Canvas still trails Artistry remain associational.
 
-**Reliability.** Transient provider failures and one credit exhaustion (§5.5) were handled by automatic retries with attempts logged per row; every trial is reproducible from its CSV row, the pages and the prompts. Cost is bounded by design ($54.57 of a $100 cap) — the budget, not the design, limits trials per model.
+**Reliability.** Transient provider failures and one credit exhaustion (§5.5) were handled by automatic retries with attempts logged per row; every trial is reproducible from its CSV row, the pages and the prompts. Cost is bounded by design ($54.57 of a $100 cap) — the budget, not the design, limits trials.
 
 ---
 
@@ -570,13 +580,22 @@ from the headline.
 
 The study asked whether the conversion levers that drive human buyers drive LLM buyers, and whether models' stated reasons track their choices. The answer has three parts.
 
-First, **no single lever dominated**. Across 1,041 trials no page reached the 60% dominance threshold; the balance comes from models disagreeing — three credentials-first on Artistry's Yale/MoMA profile, three price-first on Palette's $149, one heterogeneous using all five — and near-deterministic sampling makes this a stable portrait of the tier, not noise.
+First, **no single lever dominated**. Across 1,041 trials no page reached the 60%
+dominance threshold; the balance comes from models disagreeing — three credentials-first on
+Artistry's Yale/MoMA profile, three price-first on Palette's $149, one heterogeneous using
+all five — a stable portrait of the tier under near-deterministic sampling, not noise.
 
 Second, **stated reasons aligned with choices** — Artistry choosers rated credentials highest, Palette choosers price highest, and the never-picked levers (badges, anchoring, installments) were rated least influential. Because the survey came after the choice, this is consistency, not cause.
 
-Third, **rating was the binding constraint for the middle of the field** — support for H1. Lifting one page's star rating from 4.3★ to 4.6★, every other value byte-identical, moved it from 3 of 597 (0.5%) to 45 of 146 (30.8%) among the five models present in both runs; four of those five moved toward Canvas and gemini-3.8-flash did not. The volume-heavy Canvas bundle won only 3 of 1,041 Run-2 trials and competes only once its rating is not the lowest — whether volume *itself* is strong cannot be separated from the bundle. Artistry still leads (43.7% pooled): a reordering of the middle, not a takeover.
+Third, **rating was the binding constraint for the middle of the field** — support for H1.
+Lifting one page's star rating from 4.3★ to 4.6★, every other value byte-identical, moved
+it from 3 of 597 (0.5%) to 45 of 146 (30.8%) for the five models in both runs; four of
+those five moved toward Canvas and gemini-3.8-flash did not. The volume-heavy bundle won
+only 3 of 1,041 Run-2 trials and competes only once its rating is not the lowest — whether
+volume *itself* is strong cannot be separated from it. Artistry still leads (43.7% pooled):
+a reordering of the middle, not a takeover.
 
-**Implications.** *For an SME selling a course online*, the reading is concrete: a star rating at the floor of the category costs the listing regardless of review count; credentials are what the credentials-first segment anchors on, so they belong high on the page; a concrete, legible price decides the price-first segment; and badges, strike-through anchoring and installment plans barely register. These three levers are what a page audit for LLM-mediated discovery should score first — the basis for a commercialisation offer around generative-engine optimisation for small course sellers. *For the evaluation of LLM recommenders*, choice behaviour is a property of a *population* of models with stable heuristic signatures; self-reports should be checked against behaviour rather than trusted.
+**Implications.** *For an SME selling a course online*, the reading is concrete: a star rating at the floor of the category costs the listing regardless of review count; credentials are what the credentials-first segment anchors on, so they belong high on the page; a concrete, legible price decides the price-first segment; and badges, strike-through anchoring and installment plans barely register. These three levers are what a page audit for LLM-mediated discovery should score first — the basis for a commercialisation offer around generative-engine optimisation for small course sellers. *For the evaluation of LLM recommenders*, choice behaviour is a property of a *population* of models with stable heuristic signatures; self-reports should be checked against behaviour, not trusted.
 
 **Future work.** A human baseline arm; frontier models to test whether the signatures
 generalise upward; more trials per model to tighten Run 3; a separating test for the
@@ -590,11 +609,11 @@ All stimuli, prompts, trial-level data with costs, the failure log and the repor
 
 ## Appendix A — Feature manifest
 
-The complete controlled-feature matrix (`pages/features.yaml`, 11 features × 5 pages with declared tradeoffs) is reproduced in the replication package and summarised in Table 5.1 of the Method. Every value quoted in this report traces to that manifest; the manifest itself is byte-identical across Run-2 versions (§5.2) and diff-verified for Run 3 (`pages_run3/`).
+The complete controlled-feature matrix (`pages/features.yaml`, 11 features × 5 pages with declared tradeoffs) is reproduced in the replication package and summarised in Table 1 of the Method. Every value quoted in this report traces to that manifest; the manifest itself is byte-identical across Run-2 versions (§5.2) and diff-verified for Run 3 (`pages_run3/`).
 
 ## Appendix B — Model × page win counts
 
-**B.1 — Run 2 (all 1,041 completed trials):**
+**Table 10 (B.1):** Run 2 — model × page win counts, all 1,041 completed trials.
 
 | Model | Artistry | Palette | Brushstroke | Creative | Canvas | N |
 |---|---|---|---|---|---|---|
@@ -607,7 +626,7 @@ The complete controlled-feature matrix (`pages/features.yaml`, 11 features × 5 
 | mimo-v2.6-flash | 126 | 24 | 0 | 0 | 0 | 150 |
 | **Total** | **584** | **416** | **24** | **14** | **3** | **1,041** |
 
-**B.2 — Run 3 (206 completed trials, `page_version=v3`):**
+**Table 11 (B.2):** Run 3 — model × page win counts, 206 completed trials (`page_version=v3`).
 
 | Model | Artistry | Palette | Brushstroke | Creative | Canvas | N |
 |---|---|---|---|---|---|---|
@@ -633,16 +652,20 @@ The complete controlled-feature matrix (`pages/features.yaml`, 11 features × 5 
 
 # References
 
-- [1] Rao, A.R. and Monroe, K.B. (1989) 'The Effect of Price, Brand Name, and Store Name on Buyers' Perceptions of Product Quality: An Integrative Review', *Journal of Marketing Research*, 26(3), pp. 351–357.
-- [2] Cialdini, R.B. (2001) 'Harnessing the Science of Persuasion', *Harvard Business Review*, 79(9), pp. 72–81.
-- [3] Tversky, A. and Kahneman, D. (1974) 'Judgment under Uncertainty: Heuristics and Biases', *Science*, 185(4157), pp. 1124–1131.
-- [4] Simonson, I. and Tversky, A. (1992) 'Choice in Context: Tradeoff Contrast and Extremity Aversion', *Journal of Marketing Research*, 29(3), pp. 281–295.
-- [5] Turpin, M., Michael, J., Perez, E. and Bowman, S.R. (2023) 'Language Models Don't Always Say What They Think: Unexplained Biases in Chain-of-Thought Prompts', *Advances in Neural Information Processing Systems*, 36.
-- [6] Wu, W., Zhao, Q., Chen, H., Zhou, L., Lian, D. and Xie, H. (2025) 'Exploring the Choice Behavior of Large Language Models', *Findings of the Association for Computational Linguistics: ACL 2025*, pp. 5194–5214. Vienna: Association for Computational Linguistics. doi: 10.18653/v1/2025.findings-acl.270.
-- [7] Sfeir, G., Nova, G., Hess, S. and van Cranenburgh, S. (2026) 'Can large language models assist choice modelling? Insights into prompting strategies and current models' capabilities', *Journal of Choice Modelling*, 60, 100623.
-- [8] Lu, Y., Bartolo, M., Moore, A., Riedel, S. and Stenetorp, P. (2022) 'Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity', *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*, pp. 8086–8098. Dublin: Association for Computational Linguistics. doi: 10.18653/v1/2022.acl-long.556.
-- [9] Kahneman, D. (2011) *Thinking, Fast and Slow*. New York: Farrar, Straus and Giroux.
-- [10] Aggarwal, P., Aggarwal, V., Deng, Y., Sanyal, S., Salimzadeh, S., Re, C., Ranade, G., Kapoor, S. and Narayanan, A. (2024) 'GEO: Generative Engine Optimization', *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*, pp. 5–16. New York: Association for Computing Machinery. doi: 10.1145/3637528.3671900.
-- [11] Kumar, A. and Lakkaraju, H. (2024) 'Manipulating Large Language Models to Increase Product Visibility', *arXiv preprint* arXiv:2404.07981.
+- Aggarwal, P., Aggarwal, V., Deng, Y., Sanyal, S., Salimzadeh, S., Re, C., Ranade, G., Kapoor, S. and Narayanan, A. (2024) 'GEO: generative engine optimization', in *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. New York: Association for Computing Machinery, pp. 5–16. https://doi.org/10.1145/3637528.3671900.
+- Cialdini, R. B. (2001) 'Harnessing the science of persuasion', *Harvard Business Review*, 79(9), pp. 72–81.
+- Deldjoo, Y., He, Z., McAuley, J., Korikov, A., Sanner, S., Ramisa, A., Vidal, R., Sathiamoorthy, M., Kasirzadeh, A. and Milano, S. (2024) 'A review of modern recommender systems using generative models (Gen-RecSys)', in *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. Barcelona, Spain, 25–29 August 2024, pp. 6448–6458. https://doi.org/10.1145/3637528.3671474.
+- Kahneman, D. (2011) *Thinking, fast and slow*. New York: Farrar, Straus and Giroux.
+- Kumar, A. and Lakkaraju, H. (2024) 'Manipulating large language models to increase product visibility'. *arXiv preprint* arXiv:2404.07981. Available at: https://arxiv.org/abs/2404.07981 [Accessed 26 November 2026].
+- Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F. and Liang, P. (2024) 'Lost in the middle: how language models use long contexts', *Transactions of the Association for Computational Linguistics*, 12, pp. 157–173.
+- Lu, Y., Bartolo, M., Moore, A., Riedel, S. and Stenetorp, P. (2022) 'Fantastically ordered prompts and where to find them: overcoming few-shot prompt order sensitivity', in *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. Dublin, pp. 8086–8098. https://doi.org/10.18653/v1/2022.acl-long.556.
+- Rao, A. R. and Monroe, K. B. (1989) 'The effect of price, brand name, and store name on buyers' perceptions of product quality: an integrative review', *Journal of Marketing Research*, 26(3), pp. 351–357.
+- Sclar, M., Choi, Y., Tsvetkov, Y. and Suhr, A. (2024) 'Quantifying language models' sensitivity to spurious features in prompt design', in *The Twelfth International Conference on Learning Representations (ICLR)*. Available at: https://arxiv.org/abs/2310.11324 [Accessed 26 November 2026].
+- Sfeir, G., Nova, G., Hess, S. and van Cranenburgh, S. (2026) 'Can large language models assist choice modelling? Insights into prompting strategies and current models' capabilities', *Journal of Choice Modelling*, 60, 100623.
+- Simonson, I. and Tversky, A. (1992) 'Choice in context: tradeoff contrast and extremity aversion', *Journal of Marketing Research*, 29(3), pp. 281–295.
+- Tversky, A. and Kahneman, D. (1974) 'Judgment under uncertainty: heuristics and biases', *Science*, 185(4157), pp. 1124–1131.
+- Turpin, M., Michael, J., Perez, E. and Bowman, S. R. (2023) 'Language models don't always say what they think: unexplained biases in chain-of-thought prompts', *Advances in Neural Information Processing Systems*, 36.
+- Wang, P., Li, L., Chen, L., Cai, Z., Zhu, D., Lin, B., Cao, Y., Kong, L., Liu, Q., Liu, T. and Sui, Z. (2024) 'Large language models are not fair evaluators', in *Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. Bangkok, Thailand, August 2024, pp. 9440–9450. https://doi.org/10.18653/v1/2024.acl-long.511.
+- Wu, W., Zhao, Q., Chen, H., Zhou, L., Lian, D. and Xie, H. (2025) 'Exploring the choice behavior of large language models', in *Findings of the Association for Computational Linguistics: ACL 2025*. Vienna, pp. 5194–5214. https://doi.org/10.18653/v1/2025.findings-acl.270.
 
-*All eleven references are verified against their publisher pages (ACL Anthology, ACM Digital Library, arXiv, Journal of Choice Modelling).*
+*All fifteen references are verified against their publisher pages (ACL Anthology, ACM Digital Library, arXiv, ICLR, TACL and the Journal of Choice Modelling).*
