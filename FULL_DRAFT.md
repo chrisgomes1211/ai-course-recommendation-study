@@ -105,7 +105,7 @@ costs.
 
 The artefact under evaluation is a controlled offer-choice platform: five course pages generated from a declared feature manifest, a resumable trial runner behind a Flask control app, and a live report rendered straight from the trial CSVs (Figure 1).
 
-![Experiment architecture — one trial lifecycle](figures/architecture.svg)
+![](figures/architecture.svg)
 
 **Figure 1.** One trial flows from frozen stimuli through prompt assembly (five pages as
 raw HTML, order shuffled) to the model APIs and the survey; the runner controls retries,
@@ -165,7 +165,7 @@ one honest tradeoff** — ratings 4.3–4.8★, reviews in a 180–260 ladder, o
 and the five newer signals (badge, social proof, comparison table, anchoring, installments)
 spread rather than stacked. The five profiles as run:
 
-**Table 1:** The five offer profiles as run — eleven controlled features across five pages (source: `pages/features.yaml`).
+**Table 1:** The five offer profiles (source: `pages/features.yaml`).
 
 | Feature | Artistry Academy | Palette Masters | Canvas & Color | Brushstroke Studio | Creative Canvas |
 |---|---|---|---|---|---|
@@ -341,6 +341,10 @@ Palette together take 96.1% of picks, Canvas and Creative 1.6%.
 | Creative Canvas | 14 | 1.3% |
 | Canvas & Color | 3 | 0.3% |
 
+![](figures/win_share.svg)
+
+**Figure 2.** Run-2 win shares.
+
 Of the 1,041 trials, **444 ran on the v1 pages (16 Oct) and 597 on the final frozen v2
 pages (17 Oct)** (§5.2). Canvas did not win a single v1 trial (0/444); v1 → v2 changed
 only the visual layer (controlled values byte-identical). All like-for-like comparisons
@@ -421,6 +425,10 @@ Across 1,041 trials the stated-importance ordering is **Description 4.61 ≈ Rev
 > Clarity 4.41 > Price 4.03 ≈ Comparison 3.99 ≈ Credentials 3.96 > Social proof 3.10 >
 Badge 2.61 > Payment plan 2.24 > Anchoring 2.00.**
 
+![](figures/stated_drivers.svg)
+
+**Figure 3.** Stated-driver ratings.
+
 Two readings follow: what models *say* and *do* line up — credentials-first choosers rate
 credentials highest, price-first choosers price highest, never-chosen levers rate lowest —
 reported as consistency only: the post-choice design cannot establish that a rated factor
@@ -458,9 +466,9 @@ change (§6.3), so they stay out of the headline.
 reorders the middle by converting Palette's price-first share, not by dethroning the
 leader.
 
-![Five-model choice share: Run 2 (n=597) vs Run 3 (n=146)](figures/share_shift.svg)
+![](figures/share_shift.svg)
 
-**Figure 2.** Same five models, one feature changed: Canvas gains 30.3 points almost
+**Figure 4.** Same five models, one feature changed: Canvas gains 30.3 points almost
 entirely at Palette's expense (−25.0 points), Artistry statistically unchanged. Pooled over
 all seven, Run 3 gives Artistry 90 of 206 (43.7%) with Palette and Canvas 55 each
 (26.7%) — first, and a tie for second, not a takeover.
@@ -488,6 +496,10 @@ Run-2 table (Brushstroke, Creative and Canvas grouped as "other" for expected co
 gpt-4.1-mini 20.0% [9.5, 37.3], gemini-3.8 and gemini-lite 0% [0, 11.4]; pooled five 30.8%
 [23.9, 38.7]. At temperature 0.1 trials within one model are close repeats, so each test
 is read beside its per-model count.
+
+![](figures/wilson_ci.svg)
+
+**Figure 5.** Run-3 Canvas share, Wilson 95% CIs.
 
 **Reading — support for H1.** The counts show that **four of the five like-for-like
 models moved toward Canvas and gemini-3.8-flash did not** (Table 9): luna flipped outright
@@ -652,20 +664,20 @@ The complete controlled-feature matrix (`pages/features.yaml`, 11 features × 5 
 
 # References
 
-- Aggarwal, P., Aggarwal, V., Deng, Y., Sanyal, S., Salimzadeh, S., Re, C., Ranade, G., Kapoor, S. and Narayanan, A. (2024) 'GEO: generative engine optimization', in *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. New York: Association for Computing Machinery, pp. 5–16. https://doi.org/10.1145/3637528.3671900.
-- Cialdini, R. B. (2001) 'Harnessing the science of persuasion', *Harvard Business Review*, 79(9), pp. 72–81.
-- Deldjoo, Y., He, Z., McAuley, J., Korikov, A., Sanner, S., Ramisa, A., Vidal, R., Sathiamoorthy, M., Kasirzadeh, A. and Milano, S. (2024) 'A review of modern recommender systems using generative models (Gen-RecSys)', in *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. Barcelona, Spain, 25–29 August 2024, pp. 6448–6458. https://doi.org/10.1145/3637528.3671474.
-- Kahneman, D. (2011) *Thinking, fast and slow*. New York: Farrar, Straus and Giroux.
-- Kumar, A. and Lakkaraju, H. (2024) 'Manipulating large language models to increase product visibility'. *arXiv preprint* arXiv:2404.07981. Available at: https://arxiv.org/abs/2404.07981 [Accessed 26 November 2026].
-- Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F. and Liang, P. (2024) 'Lost in the middle: how language models use long contexts', *Transactions of the Association for Computational Linguistics*, 12, pp. 157–173.
-- Lu, Y., Bartolo, M., Moore, A., Riedel, S. and Stenetorp, P. (2022) 'Fantastically ordered prompts and where to find them: overcoming few-shot prompt order sensitivity', in *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. Dublin, pp. 8086–8098. https://doi.org/10.18653/v1/2022.acl-long.556.
-- Rao, A. R. and Monroe, K. B. (1989) 'The effect of price, brand name, and store name on buyers' perceptions of product quality: an integrative review', *Journal of Marketing Research*, 26(3), pp. 351–357.
-- Sclar, M., Choi, Y., Tsvetkov, Y. and Suhr, A. (2024) 'Quantifying language models' sensitivity to spurious features in prompt design', in *The Twelfth International Conference on Learning Representations (ICLR)*. Available at: https://arxiv.org/abs/2310.11324 [Accessed 26 November 2026].
-- Sfeir, G., Nova, G., Hess, S. and van Cranenburgh, S. (2026) 'Can large language models assist choice modelling? Insights into prompting strategies and current models' capabilities', *Journal of Choice Modelling*, 60, 100623.
-- Simonson, I. and Tversky, A. (1992) 'Choice in context: tradeoff contrast and extremity aversion', *Journal of Marketing Research*, 29(3), pp. 281–295.
-- Tversky, A. and Kahneman, D. (1974) 'Judgment under uncertainty: heuristics and biases', *Science*, 185(4157), pp. 1124–1131.
-- Turpin, M., Michael, J., Perez, E. and Bowman, S. R. (2023) 'Language models don't always say what they think: unexplained biases in chain-of-thought prompts', *Advances in Neural Information Processing Systems*, 36.
-- Wang, P., Li, L., Chen, L., Cai, Z., Zhu, D., Lin, B., Cao, Y., Kong, L., Liu, Q., Liu, T. and Sui, Z. (2024) 'Large language models are not fair evaluators', in *Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. Bangkok, Thailand, August 2024, pp. 9440–9450. https://doi.org/10.18653/v1/2024.acl-long.511.
-- Wu, W., Zhao, Q., Chen, H., Zhou, L., Lian, D. and Xie, H. (2025) 'Exploring the choice behavior of large language models', in *Findings of the Association for Computational Linguistics: ACL 2025*. Vienna, pp. 5194–5214. https://doi.org/10.18653/v1/2025.findings-acl.270.
+Aggarwal, P., Aggarwal, V., Deng, Y., Sanyal, S., Salimzadeh, S., Re, C., Ranade, G., Kapoor, S. and Narayanan, A. (2024) 'GEO: generative engine optimization', in *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. New York: Association for Computing Machinery, pp. 5–16. https://doi.org/10.1145/3637528.3671900.
+Cialdini, R. B. (2001) 'Harnessing the science of persuasion', *Harvard Business Review*, 79(9), pp. 72–81.
+Deldjoo, Y., He, Z., McAuley, J., Korikov, A., Sanner, S., Ramisa, A., Vidal, R., Sathiamoorthy, M., Kasirzadeh, A. and Milano, S. (2024) 'A review of modern recommender systems using generative models (Gen-RecSys)', in *Proceedings of the 30th ACM SIGKDD Conference on Knowledge Discovery and Data Mining*. Barcelona, Spain, 25–29 August 2024, pp. 6448–6458. https://doi.org/10.1145/3637528.3671474.
+Kahneman, D. (2011) *Thinking, fast and slow*. New York: Farrar, Straus and Giroux.
+Kumar, A. and Lakkaraju, H. (2024) 'Manipulating large language models to increase product visibility'. *arXiv preprint* arXiv:2404.07981. Available at: https://arxiv.org/abs/2404.07981 [Accessed 26 November 2026].
+Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F. and Liang, P. (2024) 'Lost in the middle: how language models use long contexts', *Transactions of the Association for Computational Linguistics*, 12, pp. 157–173.
+Lu, Y., Bartolo, M., Moore, A., Riedel, S. and Stenetorp, P. (2022) 'Fantastically ordered prompts and where to find them: overcoming few-shot prompt order sensitivity', in *Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. Dublin, pp. 8086–8098. https://doi.org/10.18653/v1/2022.acl-long.556.
+Rao, A. R. and Monroe, K. B. (1989) 'The effect of price, brand name, and store name on buyers' perceptions of product quality: an integrative review', *Journal of Marketing Research*, 26(3), pp. 351–357.
+Sclar, M., Choi, Y., Tsvetkov, Y. and Suhr, A. (2024) 'Quantifying language models' sensitivity to spurious features in prompt design', in *The Twelfth International Conference on Learning Representations (ICLR)*. Available at: https://arxiv.org/abs/2310.11324 [Accessed 26 November 2026].
+Sfeir, G., Nova, G., Hess, S. and van Cranenburgh, S. (2026) 'Can large language models assist choice modelling? Insights into prompting strategies and current models' capabilities', *Journal of Choice Modelling*, 60, 100623.
+Simonson, I. and Tversky, A. (1992) 'Choice in context: tradeoff contrast and extremity aversion', *Journal of Marketing Research*, 29(3), pp. 281–295.
+Tversky, A. and Kahneman, D. (1974) 'Judgment under uncertainty: heuristics and biases', *Science*, 185(4157), pp. 1124–1131.
+Turpin, M., Michael, J., Perez, E. and Bowman, S. R. (2023) 'Language models don't always say what they think: unexplained biases in chain-of-thought prompts', *Advances in Neural Information Processing Systems*, 36.
+Wang, P., Li, L., Chen, L., Cai, Z., Zhu, D., Lin, B., Cao, Y., Kong, L., Liu, Q., Liu, T. and Sui, Z. (2024) 'Large language models are not fair evaluators', in *Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)*. Bangkok, Thailand, August 2024, pp. 9440–9450. https://doi.org/10.18653/v1/2024.acl-long.511.
+Wu, W., Zhao, Q., Chen, H., Zhou, L., Lian, D. and Xie, H. (2025) 'Exploring the choice behavior of large language models', in *Findings of the Association for Computational Linguistics: ACL 2025*. Vienna, pp. 5194–5214. https://doi.org/10.18653/v1/2025.findings-acl.270.
 
 *All fifteen references are verified against their publisher pages (ACL Anthology, ACM Digital Library, arXiv, ICLR, TACL and the Journal of Choice Modelling).*

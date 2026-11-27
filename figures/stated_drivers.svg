@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420" font-family="Helvetica,Arial,sans-serif">
+<rect width="800" height="420" fill="white"/>
+<text x="400" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a2b45">Stated-driver importance after the choice (1–5, n = 1,041)</text>
+<line x1="175.0" y1="40" x2="175.0" y2="378" stroke="#eee" stroke-width="1"/>
+<text x="175.0" y="394" text-anchor="middle" font-size="10" fill="#666">0</text>
+<line x1="289.0" y1="40" x2="289.0" y2="378" stroke="#eee" stroke-width="1"/>
+<text x="289.0" y="394" text-anchor="middle" font-size="10" fill="#666">1</text>
+<line x1="403.0" y1="40" x2="403.0" y2="378" stroke="#eee" stroke-width="1"/>
+<text x="403.0" y="394" text-anchor="middle" font-size="10" fill="#666">2</text>
+<line x1="517.0" y1="40" x2="517.0" y2="378" stroke="#eee" stroke-width="1"/>
+<text x="517.0" y="394" text-anchor="middle" font-size="10" fill="#666">3</text>
+<line x1="631.0" y1="40" x2="631.0" y2="378" stroke="#eee" stroke-width="1"/>
+<text x="631.0" y="394" text-anchor="middle" font-size="10" fill="#666">4</text>
+<line x1="745.0" y1="40" x2="745.0" y2="378" stroke="#eee" stroke-width="1"/>
+<text x="745.0" y="394" text-anchor="middle" font-size="10" fill="#666">5</text>
+<text x="167" y="63" text-anchor="end" font-size="11" fill="#222">Description detail</text>
+<rect x="175" y="48" width="525.5" height="24" fill="#2f6fb5"/>
+<text x="706.5" y="65" font-size="10" font-weight="bold" fill="#2f6fb5">4.61</text>
+<text x="167" y="97" text-anchor="end" font-size="11" fill="#222">Review counts</text>
+<rect x="175" y="82" width="519.8" height="24" fill="#2f6fb5"/>
+<text x="700.8" y="99" font-size="10" font-weight="bold" fill="#2f6fb5">4.56</text>
+<text x="167" y="131" text-anchor="end" font-size="11" fill="#222">Clarity of structure</text>
+<rect x="175" y="116" width="502.7" height="24" fill="#2f6fb5"/>
+<text x="683.7" y="133" font-size="10" font-weight="bold" fill="#2f6fb5">4.41</text>
+<text x="167" y="165" text-anchor="end" font-size="11" fill="#222">Price</text>
+<rect x="175" y="150" width="459.4" height="24" fill="#2f6fb5"/>
+<text x="640.4" y="167" font-size="10" font-weight="bold" fill="#2f6fb5">4.03</text>
+<text x="167" y="199" text-anchor="end" font-size="11" fill="#222">Comparison table</text>
+<rect x="175" y="184" width="454.9" height="24" fill="#2f6fb5"/>
+<text x="635.9" y="201" font-size="10" font-weight="bold" fill="#2f6fb5">3.99</text>
+<text x="167" y="233" text-anchor="end" font-size="11" fill="#222">Credentials</text>
+<rect x="175" y="218" width="451.4" height="24" fill="#2f6fb5"/>
+<text x="632.4" y="235" font-size="10" font-weight="bold" fill="#2f6fb5">3.96</text>
+<text x="167" y="267" text-anchor="end" font-size="11" fill="#222">Social proof</text>
+<rect x="175" y="252" width="353.4" height="24" fill="#9db8d6"/>
+<text x="534.4" y="269" font-size="10" font-weight="bold" fill="#2f6fb5">3.10</text>
+<text x="167" y="301" text-anchor="end" font-size="11" fill="#222">Positioning badge</text>
+<rect x="175" y="286" width="297.5" height="24" fill="#d9e1ea"/>
+<text x="478.5" y="303" font-size="10" font-weight="bold" fill="#2f6fb5">2.61</text>
+<text x="167" y="335" text-anchor="end" font-size="11" fill="#222">Payment plan</text>
+<rect x="175" y="320" width="255.4" height="24" fill="#d9e1ea"/>
+<text x="436.4" y="337" font-size="10" font-weight="bold" fill="#2f6fb5">2.24</text>
+<text x="167" y="369" text-anchor="end" font-size="11" fill="#222">Price anchoring</text>
+<rect x="175" y="354" width="228.0" height="24" fill="#d9e1ea"/>
+<text x="409.0" y="371" font-size="10" font-weight="bold" fill="#2f6fb5">2.00</text>
+<text x="460" y="412" text-anchor="middle" font-size="10" fill="#666">Mean rating (1 = not at all influential, 5 = very influential)</text>
+</svg>

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420" font-family="Helvetica,Arial,sans-serif">
+<rect width="800" height="420" fill="white"/>
+<text x="400" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a2b45">Run 3: Canvas share per model with Wilson 95% intervals</text>
+<line x1="409.8" y1="32" x2="409.8" y2="350" stroke="#1a2b45" stroke-width="1" stroke-dasharray="5,4"/>
+<text x="414.8" y="42" font-size="10" fill="#1a2b45">pooled five: 30.8%</text>
+<line x1="200.0" y1="40" x2="200.0" y2="350" stroke="#eee" stroke-width="1"/>
+<text x="200.0" y="370" text-anchor="middle" font-size="10" fill="#666">0%</text>
+<line x1="336.2" y1="40" x2="336.2" y2="350" stroke="#eee" stroke-width="1"/>
+<text x="336.2" y="370" text-anchor="middle" font-size="10" fill="#666">20%</text>
+<line x1="472.5" y1="40" x2="472.5" y2="350" stroke="#eee" stroke-width="1"/>
+<text x="472.5" y="370" text-anchor="middle" font-size="10" fill="#666">40%</text>
+<line x1="608.8" y1="40" x2="608.8" y2="350" stroke="#eee" stroke-width="1"/>
+<text x="608.8" y="370" text-anchor="middle" font-size="10" fill="#666">60%</text>
+<line x1="745.0" y1="40" x2="745.0" y2="350" stroke="#eee" stroke-width="1"/>
+<text x="745.0" y="370" text-anchor="middle" font-size="10" fill="#666">80%</text>
+<text x="192" y="58" text-anchor="end" font-size="11" fill="#222">gpt-6-luna</text>
+<line x1="467.1" y1="54" x2="694.6" y2="54" stroke="#9db8d6" stroke-width="5"/>
+<line x1="467.1" y1="48" x2="467.1" y2="60" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="694.6" y1="48" x2="694.6" y2="60" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="586.3" cy="54" r="5.5" fill="#2f6fb5"/>
+<text x="596.3" y="58" font-size="10" font-weight="bold" fill="#2f6fb5">56.7%</text>
+<text x="192" y="104" text-anchor="end" font-size="11" fill="#222">deepseek-flash</text>
+<line x1="373.7" y1="100" x2="616.2" y2="100" stroke="#9db8d6" stroke-width="5"/>
+<line x1="373.7" y1="94" x2="373.7" y2="106" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="616.2" y1="94" x2="616.2" y2="106" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="488.2" cy="100" r="5.5" fill="#2f6fb5"/>
+<text x="498.2" y="104" font-size="10" font-weight="bold" fill="#2f6fb5">42.3%</text>
+<text x="192" y="150" text-anchor="end" font-size="11" fill="#222">grok-3-mini</text>
+<line x1="349.2" y1="146" x2="571.3" y2="146" stroke="#9db8d6" stroke-width="5"/>
+<line x1="349.2" y1="140" x2="349.2" y2="152" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="571.3" y1="140" x2="571.3" y2="152" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="450.0" cy="146" r="5.5" fill="#2f6fb5"/>
+<text x="460.0" y="150" font-size="10" font-weight="bold" fill="#2f6fb5">36.7%</text>
+<text x="192" y="196" text-anchor="end" font-size="11" fill="#222">mimo-v2.6-flash *</text>
+<line x1="330.8" y1="192" x2="548.8" y2="192" stroke="#9db8d6" stroke-width="5"/>
+<line x1="330.8" y1="186" x2="330.8" y2="198" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="548.8" y1="186" x2="548.8" y2="198" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="426.9" cy="192" r="5.5" fill="#2f6fb5"/>
+<text x="436.9" y="196" font-size="10" font-weight="bold" fill="#2f6fb5">33.3%</text>
+<text x="192" y="242" text-anchor="end" font-size="11" fill="#222">gpt-4.1-mini</text>
+<line x1="264.7" y1="238" x2="454.1" y2="238" stroke="#9db8d6" stroke-width="5"/>
+<line x1="264.7" y1="232" x2="264.7" y2="244" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="454.1" y1="232" x2="454.1" y2="244" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="336.2" cy="238" r="5.5" fill="#2f6fb5"/>
+<text x="346.2" y="242" font-size="10" font-weight="bold" fill="#2f6fb5">20.0%</text>
+<text x="192" y="288" text-anchor="end" font-size="11" fill="#222">gemini-3.8-flash</text>
+<line x1="200.0" y1="284" x2="277.7" y2="284" stroke="#9db8d6" stroke-width="5"/>
+<line x1="200.0" y1="278" x2="200.0" y2="290" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="277.7" y1="278" x2="277.7" y2="290" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="200.0" cy="284" r="5.5" fill="#2f6fb5"/>
+<text x="210.0" y="288" font-size="10" font-weight="bold" fill="#2f6fb5">0.0%</text>
+<text x="192" y="334" text-anchor="end" font-size="11" fill="#222">gemini-3.1-flash-lite *</text>
+<line x1="200.0" y1="330" x2="277.7" y2="330" stroke="#9db8d6" stroke-width="5"/>
+<line x1="200.0" y1="324" x2="200.0" y2="336" stroke="#2f6fb5" stroke-width="2"/>
+<line x1="277.7" y1="324" x2="277.7" y2="336" stroke="#2f6fb5" stroke-width="2"/>
+<circle cx="200.0" cy="330" r="5.5" fill="#2f6fb5"/>
+<text x="210.0" y="334" font-size="10" font-weight="bold" fill="#2f6fb5">0.0%</text>
+<text x="472" y="412" text-anchor="middle" font-size="10" fill="#666">Canvas share of Run-3 picks (point = observed, bar = Wilson 95% CI; * ran Run 2 only on v1)</text>
+</svg>

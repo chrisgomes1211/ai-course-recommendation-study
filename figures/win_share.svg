@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="330" viewBox="0 0 800 330" font-family="Helvetica,Arial,sans-serif">
+<rect width="800" height="330" fill="white"/>
+<text x="400" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a2b45">Run 2 win share — dominance removed, two-strong balance (n = 1,041)</text>
+<line x1="175.0" y1="40" x2="175.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="175.0" y="302" text-anchor="middle" font-size="10" fill="#666">0</text>
+<line x1="270.0" y1="40" x2="270.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="270.0" y="302" text-anchor="middle" font-size="10" fill="#666">100</text>
+<line x1="365.0" y1="40" x2="365.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="365.0" y="302" text-anchor="middle" font-size="10" fill="#666">200</text>
+<line x1="460.0" y1="40" x2="460.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="460.0" y="302" text-anchor="middle" font-size="10" fill="#666">300</text>
+<line x1="555.0" y1="40" x2="555.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="555.0" y="302" text-anchor="middle" font-size="10" fill="#666">400</text>
+<line x1="650.0" y1="40" x2="650.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="650.0" y="302" text-anchor="middle" font-size="10" fill="#666">500</text>
+<line x1="745.0" y1="40" x2="745.0" y2="284" stroke="#eee" stroke-width="1"/>
+<text x="745.0" y="302" text-anchor="middle" font-size="10" fill="#666">600</text>
+<text x="167" y="66" text-anchor="end" font-size="11" fill="#222">Artistry Academy</text>
+<rect x="175" y="48" width="554.8" height="30" fill="#2f6fb5"/>
+<text x="735.8" y="67" font-size="10" font-weight="bold" fill="#2f6fb5">584 (56.1%)</text>
+<text x="167" y="116" text-anchor="end" font-size="11" fill="#222">Palette Masters</text>
+<rect x="175" y="98" width="395.2" height="30" fill="#2f6fb5"/>
+<text x="576.2" y="117" font-size="10" font-weight="bold" fill="#2f6fb5">416 (40.0%)</text>
+<text x="167" y="166" text-anchor="end" font-size="11" fill="#222">Brushstroke Studio</text>
+<rect x="175" y="148" width="22.8" height="30" fill="#9db8d6"/>
+<text x="203.8" y="167" font-size="10" font-weight="bold" fill="#2f6fb5">24 (2.3%)</text>
+<text x="167" y="216" text-anchor="end" font-size="11" fill="#222">Creative Canvas</text>
+<rect x="175" y="198" width="13.3" height="30" fill="#9db8d6"/>
+<text x="194.3" y="217" font-size="10" font-weight="bold" fill="#2f6fb5">14 (1.3%)</text>
+<text x="167" y="266" text-anchor="end" font-size="11" fill="#222">Canvas &amp; Color</text>
+<rect x="175" y="248" width="2.8" height="30" fill="#9db8d6"/>
+<text x="183.8" y="267" font-size="10" font-weight="bold" fill="#2f6fb5">3 (0.3%)</text>
+<text x="460" y="322" text-anchor="middle" font-size="10" fill="#666">Wins (count)</text>
+</svg>
